@@ -10,11 +10,16 @@
     "target": "ES2019",
     "strict": true,
     "allowJs": true,
+    "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
     },
+    "typeRoots": ["./types", "./node_modules/@types"],
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true

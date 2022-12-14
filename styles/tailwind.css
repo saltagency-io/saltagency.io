@@ -1,0 +1,17 @@
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+
+@tailwind utilities;
+@tailwind screens;
+
+/* tailwind is configured to prefer this font */
+@font-face {
+  font-family: 'Lexend';
+  src: url('/fonts/Lexend-Light.woff2') format('woff2'),
+    url('/fonts/Lexend-Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
