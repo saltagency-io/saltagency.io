@@ -6,9 +6,11 @@ import clsx from 'clsx'
 export function Container({
   children,
   className,
+  as: Tag = 'div',
 }: {
   children: React.ReactNode
   className?: string
+  as?: React.ElementType
 }) {
-  return <div className={clsx('max-w-7xl mx-auto', className)}>{children}</div>
+  return <Tag className={clsx('max-w-7xl mx-auto', className)}>{children}</Tag>
 }

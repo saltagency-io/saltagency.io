@@ -19,17 +19,30 @@ import {
   apiPlugin,
   useStoryblokState,
   StoryblokComponent,
+  StoryData,
 } from '@storyblok/react'
 
 // import { GridLines } from '~/components/grid'
 import { getStoryBySlug } from '~/lib/api'
 import { SbButton } from '~/storyblok/button'
+import { SbFooter } from '~/storyblok/footer'
 import { SbHeader } from '~/storyblok/header'
 import { SbHero } from '~/storyblok/hero'
 import { SbPage } from '~/storyblok/page'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
+import type { StoryContent } from '~/types'
+import { getDomainUrl } from '~/utils/misc'
 import { isPreview } from '~/utils/storyblok'
+
+export type LoaderData = {
+  initialStory: StoryData<StoryContent>
+  preview: boolean
+  requestInfo: {
+    origin: string
+    path: string
+  }
+}
 
 // TODO: use .env
 storyblokInit({
@@ -38,6 +51,7 @@ storyblokInit({
   components: {
     page: SbPage,
     header: SbHeader,
+    footer: SbFooter,
     hero: SbHero,
     button: SbButton,
   },
@@ -65,6 +79,25 @@ export const links: LinksFunction = () => {
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
+    {
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
+      href: '/favicons/apple-touch-icon.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '32x32',
+      href: '/favicons/favicon-32x32.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '16x16',
+      href: '/favicons/favicon-16x16.png',
+    },
+    { rel: 'manifest', href: '/site.webmanifest' },
+    { rel: 'icon', href: '/favicon.ico' },
     { rel: 'icon', href: '/favicon.ico' },
     { rel: 'stylesheet', href: tailwindStyles },
     { rel: 'stylesheet', href: appStyles },
@@ -73,13 +106,18 @@ export const links: LinksFunction = () => {
 
 export async function loader({ request }: DataFunctionArgs) {
   const preview = isPreview(request)
-  console.log({preview})
   const initialStory = await getStoryBySlug('layout', preview)
 
-  return json({
+  const data: LoaderData = {
     initialStory,
     preview,
-  })
+    requestInfo: {
+      origin: getDomainUrl(request),
+      path: new URL(request.url).pathname,
+    },
+  }
+
+  return json(data)
 }
 
 export default function App() {
@@ -100,6 +138,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <StoryblokComponent blok={footer} key={footer._uid} />.
         {/*<GridLines />*/}
       </body>
     </html>

@@ -4,15 +4,23 @@ import { Link } from '@remix-run/react'
 
 import { storyblokEditable } from '@storyblok/react'
 
-import { Header } from '~/components/header'
+import { Footer } from '~/components/footer'
 import { Menu } from '~/components/menu'
-import type { HeaderBlok } from '~/types'
+import type { FooterBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
-export function SbHeader({ blok }: { blok: HeaderBlok }) {
+export function SbFooter({ blok }: { blok: FooterBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      <Header logoUrl={blok.logo.filename} logoAlt={blok.logo.alt}>
+      <Footer
+        logoUrl={blok.logo.filename}
+        logoAlt={blok.logo.alt}
+        disclaimer={blok.disclaimer}
+        legalLinks={blok.legalLinks.map(({ target, text }) => ({
+          url: target.cached_url,
+          text: text,
+        }))}
+      >
         <Menu>
           {blok.menu.map((link) => (
             <Link
@@ -25,7 +33,7 @@ export function SbHeader({ blok }: { blok: HeaderBlok }) {
             </Link>
           ))}
         </Menu>
-      </Header>
+      </Footer>
     </StoryBlokWrapper>
   )
 }

@@ -1,6 +1,6 @@
-import { Link } from '@remix-run/react'
-
 import type * as React from 'react'
+
+import { Link } from '@remix-run/react'
 
 import { Container } from '~/components/container'
 
@@ -12,11 +12,11 @@ type Props = {
 
 export function Header({ children, logoUrl, logoAlt }: Props) {
   return (
-    <Container className="py-24 flex justify-between items-center">
-      <Link prefetch="intent" to="/" className="col-span-4">
+    <Container as="nav" className="py-24 flex justify-between items-center">
+      <Link prefetch="intent" to="/">
         <img className="w-16" src={logoUrl} alt={logoAlt} />
       </Link>
-      <div className="col-span-8">{children}</div>
+      <div>{children}</div>
     </Container>
   )
 }
