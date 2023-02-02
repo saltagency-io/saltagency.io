@@ -21,7 +21,9 @@ import {
   StoryblokComponent,
 } from '@storyblok/react'
 
+// import { GridLines } from '~/components/grid'
 import { getStoryBySlug } from '~/lib/api'
+import { SbButton } from '~/storyblok/button'
 import { SbHeader } from '~/storyblok/header'
 import { SbHero } from '~/storyblok/hero'
 import { SbPage } from '~/storyblok/page'
@@ -29,13 +31,15 @@ import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import { isPreview } from '~/utils/storyblok'
 
+// TODO: use .env
 storyblokInit({
-  accessToken: 'j54nLQ4da3xrIrJdKx0UQwtt',
+  accessToken: 'sLTVnkmM9ESiSUrZ6UJ9qgtt',
   use: [apiPlugin],
   components: {
-    header: SbHeader,
     page: SbPage,
+    header: SbHeader,
     hero: SbHero,
+    button: SbButton,
   },
 })
 
@@ -69,6 +73,7 @@ export const links: LinksFunction = () => {
 
 export async function loader({ request }: DataFunctionArgs) {
   const preview = isPreview(request)
+  console.log({preview})
   const initialStory = await getStoryBySlug('layout', preview)
 
   return json({
@@ -95,6 +100,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        {/*<GridLines />*/}
       </body>
     </html>
   )

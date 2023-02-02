@@ -6,9 +6,10 @@ import { storyblokEditable } from '@storyblok/react'
 
 import { Header } from '~/components/header'
 import { Menu } from '~/components/menu'
+import type { HeaderBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
-export function SbHeader({ blok }: any) {
+export function SbHeader({ blok }: { blok: HeaderBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
       <Header logoUrl={blok.logo.filename} logoAlt={blok.logo.alt}>

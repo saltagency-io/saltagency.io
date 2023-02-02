@@ -7,6 +7,8 @@ export async function getStoryBySlug(
 ): Promise<StoryData> {
   const params = {
     version: preview ? 'draft' : 'published',
+    language: 'default',
+    fallback_lang: 'default'
   }
   const { data } = await getStoryblokApi().get(`cdn/stories/${slug}`, params)
   return data?.story

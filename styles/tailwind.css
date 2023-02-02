@@ -15,3 +15,45 @@
   font-style: normal;
   font-display: swap;
 }
+
+@layer utilities {
+  .focus-ring {
+    @apply focus:outline-none focus-within:outline-none ring-offset-4 ring-offset-white transition duration-300 focus-within:ring-2 hover:ring-2 focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2 dark:ring-offset-gray-900;
+  }
+
+  .bg-primary {
+    @apply bg-white dark:bg-gray-900;
+  }
+
+  .bg-secondary {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  .bg-alt {
+    @apply bg-gray-200 dark:bg-gray-700;
+  }
+
+  .bg-inverse {
+    @apply bg-black dark:bg-white;
+  }
+
+  .border-primary {
+    @apply border-gray-900 dark:border-white;
+  }
+
+  .border-secondary {
+    @apply border-gray-200 dark:border-gray-600;
+  }
+
+  .text-primary {
+    @apply text-black dark:text-white;
+  }
+
+  .text-secondary {
+    @apply dark:text-slate-500 text-gray-500;
+  }
+
+  .text-inverse {
+    @apply text-white dark:text-black;
+  }
+}

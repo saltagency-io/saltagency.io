@@ -53,9 +53,9 @@ function GridLines() {
         {Array.from({ length: 12 }).map((_, idx) => (
           <div
             key={idx}
-            className="flex h-screen items-start bg-black text-black opacity-10 dark:bg-white dark:text-white"
+            className="flex h-screen items-start bg-red-500 text-black opacity-10"
           >
-            <div className="w-full pt-4 text-center text-lg text-black dark:text-white">
+            <div className="w-full pt-4 text-center text-lg text-black">
               {idx + 1}
             </div>
           </div>

@@ -1,6 +1,6 @@
-import * as React from 'react'
+import type * as React from 'react'
 
-import { storyblokEditable } from '@storyblok/react'
+import { SbBlokData, storyblokEditable } from '@storyblok/react'
 
 export function isPreview(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -12,7 +12,7 @@ export function StoryBlokWrapper({
   blok,
 }: {
   children: React.ReactNode
-  blok: any
+  blok: SbBlokData
 }) {
   return (
     <div {...storyblokEditable(blok)} key={blok._uid}>

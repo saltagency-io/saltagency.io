@@ -6,6 +6,6 @@ module.exports = {
     project: './tsconfig.json',
   },
   rules: {
-    '@typescript-eslint/consistent-type-imports': 'warn',
+    '@typescript-eslint/consistent-type-imports': 'off',
   },
 }
