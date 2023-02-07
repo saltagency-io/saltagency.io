@@ -5,9 +5,10 @@ import { StoryblokComponent } from '@storyblok/react'
 import clsx from 'clsx'
 
 import { Grid } from '~/components/grid'
+import type { GridBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
-export function SbGrid({ blok }: { blok: any }) {
+export function SbGrid({ blok }: { blok: GridBlok }) {
   const cols = 12 / blok.columns
 
   return (

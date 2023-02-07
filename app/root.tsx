@@ -33,6 +33,7 @@ import { SbHeader } from '~/storyblok/header'
 import { SbHero } from '~/storyblok/hero'
 import { SbPage } from '~/storyblok/page'
 import { SbRichText } from '~/storyblok/rich-text'
+import { SbClients } from '~/storyblok/sections/clients'
 import { SbRichTextSection } from '~/storyblok/sections/rich-text'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
@@ -64,6 +65,7 @@ storyblokInit({
     grid: SbGrid,
     richText: SbRichText,
     richTextSection: SbRichTextSection,
+    clients: SbClients,
   },
 })
 
