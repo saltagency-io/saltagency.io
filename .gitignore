@@ -6,3 +6,5 @@ node_modules
 .env
 .idea/
 /app/styles/**/*.css
+localhost-key.pem
+localhost.pem

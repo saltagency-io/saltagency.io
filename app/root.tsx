@@ -143,12 +143,12 @@ export default function App() {
         <PreviewStateProvider value={{ preview }}>
           <StoryblokComponent blok={header} key={header._uid} />
           <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
           <StoryblokComponent blok={footer} key={footer._uid} />.
           {/*<GridLines />*/}
         </PreviewStateProvider>
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
       </body>
     </html>
   )

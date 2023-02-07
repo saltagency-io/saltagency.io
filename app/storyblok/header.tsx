@@ -10,6 +10,7 @@ import type { HeaderBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbHeader({ blok }: { blok: HeaderBlok }) {
+  console.log({blok})
   return (
     <StoryBlokWrapper blok={blok}>
       <Header logoUrl={blok.logo.filename} logoAlt={blok.logo.alt}>
@@ -18,7 +19,11 @@ export function SbHeader({ blok }: { blok: HeaderBlok }) {
             <Link
               key={link._uid}
               prefetch="intent"
-              to={link.target.cached_url}
+              to={
+                link.target.cached_url === 'home'
+                  ? '/'
+                  : link.target.cached_url
+              }
               {...storyblokEditable(link)}
             >
               {link.text}

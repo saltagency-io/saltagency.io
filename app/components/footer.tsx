@@ -21,10 +21,10 @@ export function Footer({
   disclaimer,
 }: Props) {
   return (
-    <Container as="footer" className="py-8">
-      <div className="flex flex-col items-end justify-between md:flex-row pb-8 border-b border-solid border-transparent">
+    <Container as="footer" className="pt-16 pb-8">
+      <div className="flex flex-col justify-between lg:flex-row pb-8 border-b border-solid border-transparent lg:items-end">
         <Link prefetch="intent" to="/">
-          <img className="w-[150]" src={logoUrl} alt={logoAlt} />
+          <img className="w-[65px] lg:w-[150px]" src={logoUrl} alt={logoAlt} />
         </Link>
         {children}
         <div className="flex gap-x-4">
