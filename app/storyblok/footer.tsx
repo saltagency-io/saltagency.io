@@ -16,9 +16,10 @@ export function SbFooter({ blok }: { blok: FooterBlok }) {
         logoUrl={blok.logo.filename}
         logoAlt={blok.logo.alt}
         disclaimer={blok.disclaimer}
-        legalLinks={blok.legalLinks.map(({ target, text }) => ({
-          url: target.cached_url,
-          text: text,
+        legalLinks={blok.legalLinks.map((link) => ({
+          id: link._uid,
+          url: link.target.cached_url,
+          text: link.text,
         }))}
       >
         <Menu>

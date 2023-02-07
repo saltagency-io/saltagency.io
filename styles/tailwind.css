@@ -22,7 +22,7 @@
   }
 
   .bg-primary {
-    @apply bg-white dark:bg-gray-900;
+    background: rgba(15, 14, 23, var(--tw-bg-opacity));
   }
 
   .bg-secondary {

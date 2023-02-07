@@ -4,6 +4,7 @@ export type Image = {
 }
 
 export type LinkType = {
+  id: string
   url: string
   text: string
 }

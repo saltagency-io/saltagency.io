@@ -1,14 +1,26 @@
 import * as React from 'react'
 
-export function Menu({ children }: any) {
+import clsx from 'clsx'
+
+export function Menu({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
   return (
-    <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
-      {React.Children.map(children, (child) =>
-        React.cloneElement(child, {
-          ...child.props,
-          className: 'text-white text-bold hover:underline',
-        }),
-      )}
+    <div
+      className={clsx('flex flex-col gap-2 lg:flex-row lg:gap-8', className)}
+    >
+      {React.Children.map(children, (child) => {
+        return React.isValidElement(child)
+          ? React.cloneElement(child, {
+              ...child.props,
+              className: 'text-white text-bold hover:underline',
+            })
+          : null
+      })}
     </div>
   )
 }

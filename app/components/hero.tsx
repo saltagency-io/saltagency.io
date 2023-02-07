@@ -12,21 +12,19 @@ type Props = {
 
 export function Hero({ children, title, body, imageUrl, imageAlt }: Props) {
   return (
-    <header className="h-auto pb-12 lg:h-[800px]">
-      <Grid>
-        <div className="relative z-10 col-span-4 pt-14 md:col-span-8 lg:col-span-6">
-          <h1 className="mb-8 text-5xl text-white">{title}</h1>
-          <p className="text-2xl text-white">{body}</p>
-          <div className="flex flex-col gap-4 pt-8 lg:flex-row lg:gap-8 lg:pt-16">
-            {children}
-          </div>
+    <Grid as="header" className="h-auto pb-12 lg:h-[800px]">
+      <div className="relative z-10 col-span-4 md:col-span-8 lg:col-span-6 lg:pt-16">
+        <h1 className="mb-8 text-5xl text-white">{title}</h1>
+        <p className="text-2xl text-white">{body}</p>
+        <div className="flex flex-col gap-4 pt-8 lg:flex-row lg:gap-8 lg:pt-16">
+          {children}
         </div>
-        <img
-          className="absolute left-[50%] hidden md:block"
-          src={imageUrl}
-          alt={imageAlt}
-        />
-      </Grid>
-    </header>
+      </div>
+      <img
+        className="absolute left-[50%] hidden md:block"
+        src={imageUrl}
+        alt={imageAlt}
+      />
+    </Grid>
   )
 }

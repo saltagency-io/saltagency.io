@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import type {
   DataFunctionArgs,
   LinksFunction,
@@ -34,6 +36,7 @@ import { SbRichText } from '~/storyblok/rich-text'
 import { SbRichTextSection } from '~/storyblok/sections/rich-text'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
+import vendorStyles from '~/styles/vendors.css'
 import type { StoryContent } from '~/types'
 import { getDomainUrl } from '~/utils/misc'
 import { PreviewStateProvider } from '~/utils/providers'
@@ -67,7 +70,7 @@ storyblokInit({
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
   title: 'Salt',
-  viewport: 'width=device-width,initial-scale=1',
+  viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
 })
 
 export const links: LinksFunction = () => {
@@ -106,6 +109,7 @@ export const links: LinksFunction = () => {
     { rel: 'manifest', href: '/site.webmanifest' },
     { rel: 'icon', href: '/favicon.ico' },
     { rel: 'icon', href: '/favicon.ico' },
+    { rel: 'stylesheet', href: vendorStyles },
     { rel: 'stylesheet', href: tailwindStyles },
     { rel: 'stylesheet', href: appStyles },
   ]
@@ -143,7 +147,7 @@ export default function App() {
         <PreviewStateProvider value={{ preview }}>
           <StoryblokComponent blok={header} key={header._uid} />
           <Outlet />
-          <StoryblokComponent blok={footer} key={footer._uid} />.
+          <StoryblokComponent blok={footer} key={footer._uid} />
           {/*<GridLines />*/}
         </PreviewStateProvider>
         <ScrollRestoration />

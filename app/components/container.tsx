@@ -12,5 +12,9 @@ export function Container({
   className?: string
   as?: React.ElementType
 }) {
-  return <Tag className={clsx('mx-auto max-w-7xl', className)}>{children}</Tag>
+  return (
+    <Tag className="max-w-7xl lg:mx-auto">
+      <div className={clsx('relative mx-10vw', className)}>{children}</div>
+    </Tag>
+  )
 }
