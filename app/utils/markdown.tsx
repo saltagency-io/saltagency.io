@@ -21,7 +21,7 @@ const components: Components = {
     </AnchorOrLink>
   ),
   strong: (props) => (
-    <strong className="text-white font-bold">{props.children}</strong>
+    <strong className="font-bold text-white">{props.children}</strong>
   ),
   ul: (props) =>
     props.ordered ? (

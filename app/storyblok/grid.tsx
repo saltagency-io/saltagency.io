@@ -12,7 +12,7 @@ export function SbGrid({ blok }: { blok: any }) {
 
   return (
     <StoryBlokWrapper blok={blok}>
-      <Grid className="py-8 gap-y-4 md:gap-y-6 lg:gap-y-8">
+      <Grid className="gap-y-4 py-8 md:gap-y-6 lg:gap-y-8">
         {blok.components.map((component: any) => (
           <div
             key={component._uid}

@@ -12,7 +12,7 @@ type Props = {
 
 export function Header({ children, logoUrl, logoAlt }: Props) {
   return (
-    <Container as="nav" className="py-24 flex justify-between items-center">
+    <Container as="nav" className="flex items-center justify-between py-24">
       <Link prefetch="intent" to="/">
         <img className="w-16" src={logoUrl} alt={logoAlt} />
       </Link>

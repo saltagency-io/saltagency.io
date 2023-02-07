@@ -10,7 +10,7 @@ export function getSocialMetas({
   title?: string
   description?: string
   keywords?: string
-})  {
+}) {
   return {
     title,
     description,

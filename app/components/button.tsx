@@ -22,16 +22,16 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
     <>
       <div
         className={clsx(
-          'focus-ring absolute inset-0 transform rounded-full opacity-100 transition disabled:opacity-50 bg-purple-500',
+          'focus-ring absolute inset-0 transform rounded-full bg-purple-500 opacity-100 transition disabled:opacity-50',
           {
-            'border-white bg-transparent border-2 group-hover:border-transparent group-focus:border-transparent':
+            'border-2 border-white bg-transparent group-hover:border-transparent group-focus:border-transparent':
               variant === 'secondary',
           },
         )}
       />
       <div
         className={clsx(
-          'relative text-white flex h-full w-full items-center justify-center whitespace-nowrap',
+          'relative flex h-full w-full items-center justify-center whitespace-nowrap text-white',
           {
             'space-x-5 px-11 py-3': size === 'large',
             'space-x-3 px-8 py-2': size === 'medium',
@@ -72,7 +72,7 @@ export function LinkButton({
       className={clsx(
         className,
         underlined
-          ? 'underlined focus:outline-none whitespace-nowrap'
+          ? 'underlined whitespace-nowrap focus:outline-none'
           : 'underline',
         'text-primary inline-block',
       )}
