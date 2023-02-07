@@ -36,6 +36,7 @@ import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import type { StoryContent } from '~/types'
 import { getDomainUrl } from '~/utils/misc'
+import { PreviewStateProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
 export type LoaderData = {
@@ -139,13 +140,15 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <StoryblokComponent blok={header} key={header._uid} />
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-        <StoryblokComponent blok={footer} key={footer._uid} />.
-        {/*<GridLines />*/}
+        <PreviewStateProvider value={{ preview }}>
+          <StoryblokComponent blok={header} key={header._uid} />
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+          <StoryblokComponent blok={footer} key={footer._uid} />.
+          {/*<GridLines />*/}
+        </PreviewStateProvider>
       </body>
     </html>
   )
