@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { Header } from '~/components/header'
 import type { HeaderBlok } from '~/types'
+import { mapLink } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbHeader({ blok }: { blok: HeaderBlok }) {
@@ -10,11 +11,7 @@ export function SbHeader({ blok }: { blok: HeaderBlok }) {
       <Header
         logoUrl={blok.logo.filename}
         logoAlt={blok.logo.alt}
-        menu={blok.menu.map((link) => ({
-          id: link._uid,
-          url: link.target.cached_url === 'home' ? '/' : link.target.cached_url,
-          text: link.text,
-        }))}
+        menu={blok.menu.map(mapLink)}
       />
     </StoryBlokWrapper>
   )

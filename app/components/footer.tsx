@@ -5,17 +5,17 @@ import { Link } from '@remix-run/react'
 import type { LinkType } from '~/types'
 
 type Props = {
-  children: React.ReactNode
   logoUrl: string
   logoAlt: string
+  menu: LinkType[]
   legalLinks: LinkType[]
   disclaimer: string
 }
 
 export function Footer({
-  children,
   logoUrl,
   logoAlt,
+  menu,
   legalLinks,
   disclaimer,
 }: Props) {
@@ -25,7 +25,18 @@ export function Footer({
         <Link prefetch="intent" to="/" className="mb-6 lg:mb-0">
           <img className="w-[65px] lg:w-[150px]" src={logoUrl} alt={logoAlt} />
         </Link>
-        {children}
+        <div className="flex flex-col gap-2 lg:flex-row lg:gap-8">
+          {menu.map((link) => (
+            <Link
+              className="text-bold text-white hover:underline"
+              key={link.id}
+              prefetch="intent"
+              to={link.url}
+            >
+              {link.text}
+            </Link>
+          ))}
+        </div>
         <div className="flex gap-x-4 pt-8">
           <Link to="/" className="text-white">
             Mail
