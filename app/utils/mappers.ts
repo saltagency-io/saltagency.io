@@ -3,7 +3,9 @@ import type { Asset, Image, LinkBlok, LinkType } from '~/types'
 export function mapLink(link: LinkBlok): LinkType {
   return {
     id: link._uid,
-    url: link.target.cached_url,
+    url: link.target.cached_url.startsWith('/')
+      ? link.target.cached_url
+      : `/${link.target.cached_url}`,
     text: link.text,
   }
 }

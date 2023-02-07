@@ -24,7 +24,7 @@ function NavLink({
   const location = useLocation()
   const isSelected =
     to === location.pathname || location.pathname.startsWith(`${to}/`)
-
+  
   return (
     <li>
       <Link
