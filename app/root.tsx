@@ -26,9 +26,12 @@ import {
 import { getStoryBySlug } from '~/lib/api'
 import { SbButton } from '~/storyblok/button'
 import { SbFooter } from '~/storyblok/footer'
+import { SbGrid } from '~/storyblok/grid'
 import { SbHeader } from '~/storyblok/header'
 import { SbHero } from '~/storyblok/hero'
 import { SbPage } from '~/storyblok/page'
+import { SbRichText } from '~/storyblok/rich-text'
+import { SbRichTextSection } from '~/storyblok/sections/rich-text'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import type { StoryContent } from '~/types'
@@ -54,6 +57,9 @@ storyblokInit({
     footer: SbFooter,
     hero: SbHero,
     button: SbButton,
+    grid: SbGrid,
+    richText: SbRichText,
+    richTextSection: SbRichTextSection,
   },
 })
 

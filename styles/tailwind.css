@@ -46,15 +46,15 @@
   }
 
   .text-primary {
-    @apply text-black dark:text-white;
+    @apply text-white;
   }
 
   .text-secondary {
-    @apply dark:text-slate-500 text-gray-500;
+    @apply text-white;
   }
 
   .text-inverse {
-    @apply text-white dark:text-black;
+    @apply text-white;
   }
 
   .text-transparent {
@@ -65,5 +65,23 @@
   .border-transparent {
     @apply border-opacity-50;
     border-color: rgba(255, 255, 255, var(--tw-border-opacity));
+  }
+
+  .text-list li {
+    @apply relative pl-8 mb-1 text-lg text-white;
+  }
+
+  .text-list li:before {
+    content: '';
+    display: inline-block;
+    height: 0.5rem;
+    width: 0.5rem;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0.5rem;
+    margin: auto;
+    background-color: var(--color-pink-500);
+    border-radius: 50%;
   }
 }

@@ -1,4 +1,4 @@
-import type { SbBlokData } from '@storyblok/react'
+import type { Richtext, SbBlokData } from '@storyblok/react'
 
 // Content that can be on a story of type Page
 export type StoryContent = {
@@ -13,6 +13,7 @@ export enum BlokTypes {
   Hero = 'hero',
   Button = 'button',
   Link = 'link',
+  RichTextSection = 'richTextSection',
 }
 
 export type HeaderBlok = SbBlokData & {
@@ -22,9 +23,9 @@ export type HeaderBlok = SbBlokData & {
 }
 
 export type FooterBlok = SbBlokData & {
-  component: BlokTypes.Footer,
-  logo: Asset,
-  menu: LinkBlok[],
+  component: BlokTypes.Footer
+  logo: Asset
+  menu: LinkBlok[]
   legalLinks: LinkBlok[]
   disclaimer: string
 }
@@ -49,6 +50,11 @@ export type HeroBlok = SbBlokData & {
   image: Asset
   primaryAction: ButtonBlok[]
   secondaryAction: ButtonBlok[]
+}
+
+export type RichTextSectionBlok = SbBlokData & {
+  component: BlokTypes.RichTextSection
+  body: string
 }
 
 export type BodyComponents = HeroBlok
