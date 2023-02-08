@@ -4,6 +4,7 @@ import type {
   DataFunctionArgs,
   LinksFunction,
   MetaFunction,
+  SerializeFrom,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import {
@@ -21,7 +22,6 @@ import {
   apiPlugin,
   useStoryblokState,
   StoryblokComponent,
-  StoryData,
 } from '@storyblok/react'
 
 // import { GridLines } from '~/components/grid'
@@ -38,23 +38,14 @@ import { SbRichTextSection } from '~/storyblok/sections/rich-text'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
-import type { StoryContent } from '~/types'
-import { getDomainUrl } from '~/utils/misc'
+import { getEnv } from '~/utils/env.server'
+import {getDomainUrl, getRequiredGlobalEnvVar} from '~/utils/misc'
 import { PreviewStateProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
-export type LoaderData = {
-  initialStory: StoryData<StoryContent>
-  preview: boolean
-  requestInfo: {
-    origin: string
-    path: string
-  }
-}
-
 // TODO: use .env
 storyblokInit({
-  accessToken: 'sLTVnkmM9ESiSUrZ6UJ9qgtt',
+  accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
   components: {
     page: SbPage,
@@ -117,13 +108,16 @@ export const links: LinksFunction = () => {
   ]
 }
 
+export type LoaderData = SerializeFrom<typeof loader>
+
 export async function loader({ request }: DataFunctionArgs) {
   const preview = isPreview(request)
   const initialStory = await getStoryBySlug('layout', preview)
 
-  const data: LoaderData = {
+  const data = {
     initialStory,
     preview,
+    ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
       path: new URL(request.url).pathname,
@@ -134,8 +128,8 @@ export async function loader({ request }: DataFunctionArgs) {
 }
 
 export default function App() {
-  const { initialStory, preview } = useLoaderData()
-  const story = useStoryblokState<any>(initialStory, {}, preview)
+  const data = useLoaderData()
+  const story = useStoryblokState<any>(data.initialStory, {}, data.preview)
   const header = story.content.header[0]
   const footer = story.content.footer[0]
 
@@ -146,7 +140,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <PreviewStateProvider value={{ preview }}>
+        <PreviewStateProvider value={{ preview: data.preview }}>
           <StoryblokComponent blok={header} key={header._uid} />
           <Outlet />
           <StoryblokComponent blok={footer} key={footer._uid} />
@@ -154,7 +148,13 @@ export default function App() {
         </PreviewStateProvider>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
+          }}
+        />
+        {ENV.NODE_ENV === 'development' ? <LiveReload /> : null}
       </body>
     </html>
   )

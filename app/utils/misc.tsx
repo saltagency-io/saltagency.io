@@ -3,6 +3,34 @@ import * as React from 'react'
 import type { LinkProps } from '@remix-run/react'
 import { Link } from '@remix-run/react'
 
+import type { getEnv } from '~/utils/env.server'
+
+export function getRequiredEnvVarFromObj(
+  obj: Record<string, string | undefined>,
+  key: string,
+  devValue: string = `${key}-dev-value`,
+) {
+  let value = devValue
+  const envVal = obj[key]
+  if (envVal) {
+    value = envVal
+  } else if (obj.NODE_ENV === 'production') {
+    throw new Error(`${key} is a required env variable`)
+  }
+  return value
+}
+
+export function getRequiredServerEnvVar(key: string, devValue?: string) {
+  return getRequiredEnvVarFromObj(process.env, key, devValue)
+}
+
+export function getRequiredGlobalEnvVar(
+  key: keyof ReturnType<typeof getEnv>,
+  devValue?: string,
+) {
+  return getRequiredEnvVarFromObj(ENV, key, devValue)
+}
+
 type AnchorProps = React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
   HTMLAnchorElement

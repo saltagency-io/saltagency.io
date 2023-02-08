@@ -19,10 +19,18 @@ export async function loader({ params, request }: DataFunctionArgs) {
   const preview = isPreview(request)
   const initialStory = await getStoryBySlug(params.slug ?? 'home', preview)
 
-  return json({
-    initialStory,
-    preview,
-  })
+  return json(
+    {
+      initialStory,
+      preview,
+    },
+    {
+      status: 200,
+      headers: {
+        'Cache-Control': 'private, max-age=3600',
+      },
+    },
+  )
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
