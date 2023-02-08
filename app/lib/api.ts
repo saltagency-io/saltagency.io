@@ -1,40 +1,72 @@
 import type { StoryData } from '@storyblok/react'
 import { getStoryblokApi } from '@storyblok/react'
 
-import type { DataSourceEntry, StoryContent } from '~/types'
+import type {
+  DataSourceEntry,
+  LayoutStoryContent,
+  PageStoryContent,
+  VacancyStoryContent,
+} from '~/types'
 
-export async function getDataSource(name: string): Promise<DataSourceEntry[]> {
-  const { data } = await getStoryblokApi().get(
-    `cdn/datasource_entries?datasource=${name}`,
-  )
-  return data.datasource_entries
+export async function getDataSource(
+  name: string,
+): Promise<DataSourceEntry[] | undefined> {
+  try {
+    const { data } = await getStoryblokApi().get(
+      `cdn/datasource_entries?datasource=${name}`,
+    )
+    return data.datasource_entries
+  } catch (error) {
+    console.error(`Failed to fetch data source with name: ${name}`, error)
+  }
 }
 
 export async function getStoryBySlug(
   slug: string,
   preview = false,
-): Promise<StoryData<StoryContent>> {
+): Promise<StoryData<PageStoryContent> | undefined> {
   const params = {
     version: preview ? 'draft' : 'published',
-    language: 'default',
-    fallback_lang: 'default',
   }
-  const { data } = await getStoryblokApi().get(`cdn/stories/${slug}`, params)
-  return data?.story
+
+  try {
+    const { data } = await getStoryblokApi().get(`cdn/stories/${slug}`, params)
+    return data?.story
+  } catch (error) {
+    console.error(`Failed to fetch story for slug ${slug}`, error)
+  }
 }
 
 export async function getVacancyBySlug(
   slug: string,
   preview = false,
-): Promise<StoryData<StoryContent>> {
+): Promise<StoryData<VacancyStoryContent> | undefined> {
   const params = {
     version: preview ? 'draft' : 'published',
-    language: 'default',
-    fallback_lang: 'default',
   }
-  const { data } = await getStoryblokApi().get(
-    `cdn/stories/jobs/${slug}`,
-    params,
-  )
-  return data?.story
+
+  try {
+    const { data } = await getStoryblokApi().get(
+      `cdn/stories/jobs/${slug}`,
+      params,
+    )
+    return data?.story
+  } catch (error) {
+    console.error(`Failed to fetch vacancy for slug: ${slug}`, error)
+  }
+}
+
+export async function getLayout(
+  preview = false,
+): Promise<StoryData<LayoutStoryContent> | undefined> {
+  const params = {
+    version: preview ? 'draft' : 'published',
+  }
+
+  try {
+    const { data } = await getStoryblokApi().get(`cdn/stories/layout`, params)
+    return data?.story
+  } catch (error) {
+    console.error(`Failed to fetch story for layout`, error)
+  }
 }

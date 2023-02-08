@@ -1,9 +1,19 @@
 import type { SbBlokData } from '@storyblok/react'
 
 // Content that can be on a story of type Page
-export type StoryContent = {
-  body: Array<BodyComponents>
+export type PageStoryContent = {
+  body: BodyComponents[]
   metatags: MetaTags
+}
+
+export type VacancyStoryContent = {
+  body: RichTextBlok[]
+  metatags: MetaTags
+}
+
+export type LayoutStoryContent = {
+  header: HeaderBlok[]
+  footer: FooterBlok[]
 }
 
 export enum BlokTypes {

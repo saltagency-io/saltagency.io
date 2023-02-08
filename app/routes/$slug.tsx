@@ -4,10 +4,10 @@ import type {
   SerializeFrom,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
 
-import type { SbBlokData } from '@storyblok/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
+
+import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import type { LoaderData as RootLoaderData } from '../root'
 import { getStoryBySlug } from '~/lib/api'
@@ -19,18 +19,20 @@ export async function loader({ params, request }: DataFunctionArgs) {
   const preview = isPreview(request)
   const initialStory = await getStoryBySlug(params.slug ?? 'home', preview)
 
-  return json(
-    {
-      initialStory,
-      preview,
-    },
-    {
-      status: 200,
-      headers: {
-        'Cache-Control': 'private, max-age=3600',
-      },
-    },
-  )
+  if (!initialStory) {
+    throw json({}, { status: 404 })
+  }
+
+  const data = {
+    initialStory,
+    preview,
+  }
+
+  const headers = {
+    'Cache-Control': 'private, max-age=3600',
+  }
+
+  return typedjson(data, { status: 200, headers })
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
@@ -53,8 +55,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 }
 
 export default function Page() {
-  const { initialStory, preview } = useLoaderData()
-  const story = useStoryblokState<SbBlokData>(initialStory, {}, preview)
+  const data = useTypedLoaderData<typeof loader>()
+  const story = useStoryblokState(data.initialStory, {}, data.preview)
 
   return <StoryblokComponent blok={story.content} />
 }

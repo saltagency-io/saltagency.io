@@ -13,11 +13,9 @@ export function LabelsProvider({
   data,
 }: {
   children: React.ReactNode
-  data: DataSourceEntry[]
+  data: DataSourceEntry[] | undefined
 }) {
-  console.log({ data })
-
-  const labels = data.reduce<Record<string, string>>(
+  const labels = (data || []).reduce<Record<string, string>>(
     (result, entry) => ({
       ...result,
       [entry.name]: entry.value,

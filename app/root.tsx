@@ -6,7 +6,6 @@ import type {
   MetaFunction,
   SerializeFrom,
 } from '@remix-run/node'
-import { json } from '@remix-run/node'
 import {
   Links,
   LiveReload,
@@ -14,7 +13,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
 } from '@remix-run/react'
 
 import {
@@ -24,8 +22,10 @@ import {
   StoryblokComponent,
 } from '@storyblok/react'
 
+import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+
 // import { GridLines } from '~/components/grid'
-import { getDataSource, getStoryBySlug } from '~/lib/api'
+import { getDataSource, getLayout } from '~/lib/api'
 import { SbButton } from '~/storyblok/button'
 import { SbFooter } from '~/storyblok/footer'
 import { SbGrid } from '~/storyblok/grid'
@@ -41,7 +41,11 @@ import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
 import { getEnv } from '~/utils/env.server'
 import { LabelsProvider } from '~/utils/labels-provider'
-import { getDomainUrl, getRequiredGlobalEnvVar } from '~/utils/misc'
+import {
+  getDomainUrl,
+  getRequiredGlobalEnvVar,
+  removeTrailingSlash,
+} from '~/utils/misc'
 import { PreviewStateProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
@@ -63,11 +67,16 @@ storyblokInit({
   },
 })
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'Salt',
-  viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
-})
+export const meta: MetaFunction = ({ data }) => {
+  const requestInfo = data?.requestInfo
+
+  return {
+    charset: 'utf-8',
+    title: 'Salt',
+    viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
+    canonical: removeTrailingSlash(`${requestInfo.origin}${requestInfo.path}`),
+  }
+}
 
 export const links: LinksFunction = () => {
   return [
@@ -115,10 +124,8 @@ export type LoaderData = SerializeFrom<typeof loader>
 
 export async function loader({ request }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const initialStory = await getStoryBySlug('layout', preview)
+  const initialStory = await getLayout()
   const labels = await getDataSource('labels')
-
-  console.log({ labels })
 
   const data = {
     initialStory,
@@ -131,14 +138,15 @@ export async function loader({ request }: DataFunctionArgs) {
     },
   }
 
-  return json(data)
+  return typedjson(data)
 }
 
 export default function App() {
-  const data = useLoaderData()
-  const story = useStoryblokState<any>(data.initialStory, {}, data.preview)
-  const header = story.content.header[0]
-  const footer = story.content.footer[0]
+  const data = useTypedLoaderData<typeof loader>()
+  const story = useStoryblokState(data.initialStory, {}, data.preview)
+
+  const [header] = story.content.header
+  const [footer] = story.content.footer
 
   return (
     <html lang="en">
