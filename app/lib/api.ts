@@ -8,6 +8,12 @@ import type {
   VacancyStoryContent,
 } from '~/types'
 
+function getDefaultParams({ preview }: { preview: boolean }) {
+  return {
+    version: preview ? 'draft' : 'published',
+  }
+}
+
 export async function getDataSource(
   name: string,
 ): Promise<DataSourceEntry[] | undefined> {
@@ -25,9 +31,7 @@ export async function getStoryBySlug(
   slug: string,
   preview = false,
 ): Promise<StoryData<PageStoryContent> | undefined> {
-  const params = {
-    version: preview ? 'draft' : 'published',
-  }
+  const params = getDefaultParams({ preview })
 
   try {
     const { data } = await getStoryblokApi().get(`cdn/stories/${slug}`, params)
@@ -41,9 +45,7 @@ export async function getVacancyBySlug(
   slug: string,
   preview = false,
 ): Promise<StoryData<VacancyStoryContent> | undefined> {
-  const params = {
-    version: preview ? 'draft' : 'published',
-  }
+  const params = getDefaultParams({ preview })
 
   try {
     const { data } = await getStoryblokApi().get(
@@ -56,12 +58,22 @@ export async function getVacancyBySlug(
   }
 }
 
+export async function getAllVacancies(
+  preview = false,
+): Promise<StoryData<VacancyStoryContent>[] | undefined> {
+  const params = { ...getDefaultParams({ preview }), starts_with: 'jobs' }
+
+  try {
+    return getStoryblokApi().getAll(`cdn/stories`, params)
+  } catch (error) {
+    console.error(`Failed to fetch all vacancies`, error)
+  }
+}
+
 export async function getLayout(
   preview = false,
 ): Promise<StoryData<LayoutStoryContent> | undefined> {
-  const params = {
-    version: preview ? 'draft' : 'published',
-  }
+  const params = getDefaultParams({ preview })
 
   try {
     const { data } = await getStoryblokApi().get(`cdn/stories/layout`, params)

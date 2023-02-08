@@ -171,7 +171,7 @@ export default function App() {
             __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
           }}
         />
-        {ENV.NODE_ENV === 'development' ? <LiveReload /> : null}
+        <LiveReload />
       </body>
     </html>
   )

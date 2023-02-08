@@ -7,5 +7,6 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/consistent-type-imports': 'off',
+    'react/jsx-no-undef': 'off',
   },
 }
