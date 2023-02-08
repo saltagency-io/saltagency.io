@@ -8,13 +8,13 @@ import { AnchorOrLink } from '~/utils/misc'
 type Components = React.ComponentProps<typeof ReactMarkdown>['components']
 
 const components: Components = {
-  p: (props) => <Paragraph className="mb-4">{props.children}</Paragraph>,
   h1: (props) => <H1 className="mb-4">{props.children}</H1>,
   h2: (props) => <H2 className="mb-4">{props.children}</H2>,
   h3: (props) => <H3 className="mb-4">{props.children}</H3>,
   h4: (props) => <H4 className="mb-4">{props.children}</H4>,
   h5: (props) => <H5 className="mb-4">{props.children}</H5>,
   h6: (props) => <H6 className="mb-4">{props.children}</H6>,
+  p: (props) => <Paragraph className="mb-6">{props.children}</Paragraph>,
   a: (props) => (
     <AnchorOrLink to={props.href} className="text-purple-500">
       {props.children}
@@ -25,9 +25,9 @@ const components: Components = {
   ),
   ul: (props) =>
     props.ordered ? (
-      <ol className="text-list">{props.children}</ol>
+      <ol className="text-list mb-6">{props.children}</ol>
     ) : (
-      <ul className="text-list">{props.children}</ul>
+      <ul className="text-list mb-6">{props.children}</ul>
     ),
 }
 

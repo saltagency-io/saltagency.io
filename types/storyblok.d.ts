@@ -109,3 +109,10 @@ type Asset = {
   fieldtype: string
   is_external_url: boolean
 }
+
+type DataSourceEntry = {
+  id: number
+  name: string
+  value: string
+  dimensions: any[] | null // TODO: type dimensions when we need them
+}

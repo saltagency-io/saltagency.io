@@ -26,6 +26,7 @@ module.exports = {
     '^(@storyblok)(/.*|$)',
     // External dependencies
     '^\\w',
+    '^@',
     // Every import starting with ./ or ~/
     '^[./|~/]',
   ],

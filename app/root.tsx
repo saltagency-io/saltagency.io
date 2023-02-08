@@ -25,7 +25,7 @@ import {
 } from '@storyblok/react'
 
 // import { GridLines } from '~/components/grid'
-import { getStoryBySlug } from '~/lib/api'
+import { getDataSource, getStoryBySlug } from '~/lib/api'
 import { SbButton } from '~/storyblok/button'
 import { SbFooter } from '~/storyblok/footer'
 import { SbGrid } from '~/storyblok/grid'
@@ -35,11 +35,13 @@ import { SbPage } from '~/storyblok/page'
 import { SbRichText } from '~/storyblok/rich-text'
 import { SbClients } from '~/storyblok/sections/clients'
 import { SbRichTextSection } from '~/storyblok/sections/rich-text'
+import { SbVacancy } from '~/storyblok/vacancy'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
 import { getEnv } from '~/utils/env.server'
-import {getDomainUrl, getRequiredGlobalEnvVar} from '~/utils/misc'
+import { LabelsProvider } from '~/utils/labels-provider'
+import { getDomainUrl, getRequiredGlobalEnvVar } from '~/utils/misc'
 import { PreviewStateProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
@@ -49,6 +51,7 @@ storyblokInit({
   use: [apiPlugin],
   components: {
     page: SbPage,
+    vacancy: SbVacancy,
     header: SbHeader,
     footer: SbFooter,
     hero: SbHero,
@@ -113,10 +116,14 @@ export type LoaderData = SerializeFrom<typeof loader>
 export async function loader({ request }: DataFunctionArgs) {
   const preview = isPreview(request)
   const initialStory = await getStoryBySlug('layout', preview)
+  const labels = await getDataSource('labels')
+
+  console.log({ labels })
 
   const data = {
     initialStory,
     preview,
+    labels,
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -141,10 +148,12 @@ export default function App() {
       </head>
       <body>
         <PreviewStateProvider value={{ preview: data.preview }}>
-          <StoryblokComponent blok={header} key={header._uid} />
-          <Outlet />
-          <StoryblokComponent blok={footer} key={footer._uid} />
-          {/*<GridLines />*/}
+          <LabelsProvider data={data.labels}>
+            <StoryblokComponent blok={header} key={header._uid} />
+            <Outlet />
+            <StoryblokComponent blok={footer} key={footer._uid} />
+            {/*<GridLines />*/}
+          </LabelsProvider>
         </PreviewStateProvider>
         <ScrollRestoration />
         <Scripts />

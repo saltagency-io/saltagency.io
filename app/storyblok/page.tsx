@@ -5,11 +5,7 @@ type Blok = SbBlokData & {
   body: SbBlokData[] | undefined
 }
 
-type Props = {
-  blok: Blok
-}
-
-export function SbPage({ blok }: Props) {
+export function SbPage({ blok }: { blok: Blok }) {
   return (
     <main {...storyblokEditable(blok)}>
       {blok.body?.map((nestedBlok) => (
