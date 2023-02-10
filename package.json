@@ -10,6 +10,7 @@
     "proxy": "local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem"
   },
   "dependencies": {
+    "@notionhq/client": "^2.2.3",
     "@reach/menu-button": "^0.18.0",
     "@remix-run/node": "^1.8.2",
     "@remix-run/react": "^1.8.2",
@@ -22,8 +23,10 @@
     "isbot": "^3.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-recaptcha": "^2.1.0",
     "react-markdown": "^8.0.5",
-    "remix-typedjson": "^0.1.7"
+    "remix-typedjson": "^0.1.7",
+    "remix-utils": "^6.0.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.8.2",
@@ -35,6 +38,7 @@
     "@types/clone-deep": "^4.0.1",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
+    "@types/react-google-recaptcha": "^2.1.5",
     "autoprefixer": "^10.4.13",
     "cssnano": "^5.1.14",
     "eslint": "^8.27.0",

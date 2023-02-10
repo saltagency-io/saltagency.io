@@ -3,6 +3,7 @@ import * as React from 'react'
 import type { LinkProps } from '@remix-run/react'
 import { Link } from '@remix-run/react'
 
+import type { NonNullProperties } from '../../types'
 import type { getEnv } from '~/utils/env.server'
 
 export function getRequiredEnvVarFromObj(
@@ -107,4 +108,26 @@ export function getDomainUrl(request: Request) {
   }
   const protocol = host.includes('localhost') ? 'http' : 'https'
   return `${protocol}://${host}`
+}
+
+export function getErrorMessage(error: unknown) {
+  if (typeof error === 'string') return error
+  if (error instanceof Error) return error.message
+  return 'Unknown Error'
+}
+
+export function getNonNull<
+  Type extends Record<string, null | undefined | unknown>,
+>(obj: Type): NonNullProperties<Type> {
+  for (const [key, val] of Object.entries(obj)) {
+    assertNonNull(val, `The value of ${key} is null but it should not be.`)
+  }
+  return obj as NonNullProperties<Type>
+}
+
+function assertNonNull<PossibleNullType>(
+  possibleNull: PossibleNullType,
+  errorMessage: string,
+): asserts possibleNull is Exclude<PossibleNullType, null | undefined> {
+  if (possibleNull == null) throw new Error(errorMessage)
 }

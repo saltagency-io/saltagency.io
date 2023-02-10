@@ -2,8 +2,12 @@ import * as React from 'react'
 
 import type { DataSourceEntry } from '../../types'
 
-const LabelsContext = React.createContext<{ t: (key: string) => string }>({
+const LabelsContext = React.createContext<{
+  t: (key: string) => string
+  to: (key: string | null | undefined) => string | undefined
+}>({
   t: (key) => '',
+  to: (key) => '',
 })
 
 LabelsContext.displayName = 'LabelsContext'
@@ -30,8 +34,16 @@ export function LabelsProvider({
     [labels],
   )
 
+  const translateOptional = React.useCallback(
+    (key: string | undefined | null) => {
+      if (!key) return
+      return labels[key]
+    },
+    [labels],
+  )
+
   return (
-    <LabelsContext.Provider value={{ t: translate }}>
+    <LabelsContext.Provider value={{ t: translate, to: translateOptional }}>
       {children}
     </LabelsContext.Provider>
   )

@@ -60,6 +60,10 @@ input:-webkit-autofill::first-line {
     'Noto Color Emoji';
 }
 
+select:invalid {
+  color: var(--color-gray-400) !important;
+}
+
 [hidden] {
   pointer-events: none;
 }

@@ -13,6 +13,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from '@remix-run/react'
 
 import {
@@ -24,7 +25,6 @@ import {
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-// import { GridLines } from '~/components/grid'
 import { getDataSource, getLayout } from '~/lib/api'
 import { SbButton } from '~/storyblok/button'
 import { SbFooter } from '~/storyblok/footer'
@@ -40,6 +40,7 @@ import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
 import { getEnv } from '~/utils/env.server'
+import * as gtag from '~/utils/ga.client'
 import { LabelsProvider } from '~/utils/labels-provider'
 import {
   getDomainUrl,
@@ -49,7 +50,6 @@ import {
 import { PreviewStateProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
-// TODO: use .env
 storyblokInit({
   accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
@@ -144,35 +144,58 @@ export async function loader({ request }: DataFunctionArgs) {
 export default function App() {
   const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.initialStory, {}, data.preview)
+  const location = useLocation()
 
   const [header] = story.content.header
   const [footer] = story.content.footer
 
+  React.useEffect(() => {
+    if (data.ENV.GOOGLE_ANALYTICS) {
+      gtag.pageView(location.pathname, data.ENV.GOOGLE_ANALYTICS)
+    }
+  }, [data.ENV.GOOGLE_ANALYTICS, location])
+
   return (
-    <html lang="en">
-      <head>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <PreviewStateProvider value={{ preview: data.preview }}>
-          <LabelsProvider data={data.labels}>
-            <StoryblokComponent blok={header} key={header._uid} />
-            <Outlet />
-            <StoryblokComponent blok={footer} key={footer._uid} />
-            {/*<GridLines />*/}
-          </LabelsProvider>
-        </PreviewStateProvider>
-        <ScrollRestoration />
-        <Scripts />
-        <script
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
-          }}
-        />
-        <LiveReload />
-      </body>
-    </html>
+    <React.StrictMode>
+      <html lang="en">
+        <head>
+          <Meta />
+          <Links />
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${ENV.GOOGLE_ANALYTICS}`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${ENV.GOOGLE_ANALYTICS}');
+              gtag('config', '${ENV.GOOGLE_AW_TAG}');
+          `,
+            }}
+          />
+        </head>
+        <body>
+          <PreviewStateProvider value={{ preview: data.preview }}>
+            <LabelsProvider data={data.labels}>
+              <StoryblokComponent blok={header} key={header._uid} />
+              <Outlet />
+              <StoryblokComponent blok={footer} key={footer._uid} />
+            </LabelsProvider>
+          </PreviewStateProvider>
+          <ScrollRestoration />
+          <Scripts />
+          <script
+            suppressHydrationWarning
+            dangerouslySetInnerHTML={{
+              __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
+            }}
+          />
+          <LiveReload />
+        </body>
+      </html>
+    </React.StrictMode>
   )
 }

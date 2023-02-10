@@ -1,13 +1,16 @@
 import * as React from 'react'
 
 import type { DataFunctionArgs } from '@remix-run/node'
-import { json } from '@remix-run/node'
+import { json, type MetaFunction, type SerializeFrom } from '@remix-run/node'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { getVacancyBySlug } from '~/lib/api'
+import type { LoaderData as RootLoaderData } from '~/root'
+import { getUrl } from '~/utils/misc'
+import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
 
 export async function loader({ params, request }: DataFunctionArgs) {
@@ -31,6 +34,25 @@ export async function loader({ params, request }: DataFunctionArgs) {
   }
 
   return typedjson(data, { status: 200, headers })
+}
+
+export const meta: MetaFunction = ({ data, parentsData }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData
+  const { initialStory } = data as SerializeFrom<typeof loader>
+  const meta = initialStory.content.metatags
+
+  if (!meta) {
+    return {}
+  }
+
+  return {
+    ...getSocialMetas({
+      title: meta.title,
+      description: meta.description,
+      url: getUrl(requestInfo),
+      image: meta.og_image,
+    }),
+  }
 }
 
 export default function VacancyPage() {

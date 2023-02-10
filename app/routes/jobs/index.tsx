@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import type { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
 import type { LoaderFunctionArgs } from '@remix-run/router'
 
@@ -8,8 +9,23 @@ import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 import { Grid } from '~/components/grid'
 import { H2 } from '~/components/typography'
 import { getAllVacancies } from '~/lib/api'
+import type { LoaderData as RootLoaderData } from '~/root'
 import { useLabels } from '~/utils/labels-provider'
+import { getUrl } from '~/utils/misc'
+import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
+
+export const meta: MetaFunction = ({ parentsData }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData
+  return {
+    ...getSocialMetas({
+      title: 'Jobs | Salt',
+      description: 'Come work with us!',
+      url: getUrl(requestInfo),
+      // TODO: add image
+    }),
+  }
+}
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const preview = isPreview(request)
@@ -33,7 +49,9 @@ export default function JobsIndex() {
   return (
     <Grid as="main">
       <div className="col-span-full">
-        <H2 as="h1" className="mb-8">{t('jobs.title')}</H2>
+        <H2 as="h1" className="mb-8">
+          {t('jobs.title')}
+        </H2>
       </div>
       <ul className="col-span-full">
         {(data.vacancies || []).map((vacancy) => (

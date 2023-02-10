@@ -22,7 +22,7 @@ export function Footer({
   return (
     <footer className="mx-10vw pt-8 pb-8 lg:pt-16">
       <div className="mx-auto max-w-7xl">
-        <div className="fex-col flex justify-between border-b border-solid border-transparent pb-8 lg:flex-row lg:items-end">
+        <div className="flex-col flex justify-between border-b border-solid border-transparent pb-8 lg:flex-row lg:items-end">
           <Link prefetch="intent" to="/" className="mb-6 lg:mb-0">
             <img
               className="w-[65px] lg:w-[150px]"

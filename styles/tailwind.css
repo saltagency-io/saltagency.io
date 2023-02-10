@@ -18,7 +18,7 @@
 
 @layer utilities {
   .focus-ring {
-    @apply ring-offset-4 ring-offset-white transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2 dark:ring-offset-gray-900;
+    @apply ring-white ring-offset-4 ring-offset-black transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
   }
 
   .bg-primary {
@@ -68,7 +68,7 @@
   }
 
   .text-list li {
-    @apply relative pl-8 mb-1 text-lg text-white;
+    @apply relative mb-1 pl-8 text-lg text-white;
   }
 
   .text-list li:before {
