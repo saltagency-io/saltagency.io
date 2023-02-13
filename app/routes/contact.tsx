@@ -180,7 +180,7 @@ export default function ContactPage() {
                 />
                 <Select
                   name="reason"
-                  className="mb-6 text-white"
+                  className="mb-6 text-primary"
                   label={t('form.reason.label')}
                   defaultValue={contactFetcher.data?.fields.reason ?? ''}
                   error={to(contactFetcher?.data?.errors.reason)}

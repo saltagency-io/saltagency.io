@@ -17,9 +17,29 @@ export function IconChevronDown() {
   )
 }
 
+export function IconChevronRight() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        fill="currentColor"
+        d="M8.29289 3.79289C8.68342 3.40237 9.31658 3.40237 9.70711 3.79289L17.2071 11.2929C17.5976 11.6834 17.5976 12.3166 17.2071 12.7071L9.70711 20.2071C9.31658 20.5976 8.68342 20.5976 8.29289 20.2071C7.90237 19.8166 7.90237 19.1834 8.29289 18.7929L15.0858 12L8.29289 5.20711C7.90237 4.81658 7.90237 4.18342 8.29289 3.79289Z"
+      />
+    </svg>
+  )
+}
+
 export function IconEmail() {
   return (
     <svg
+      aria-hidden="true"
       width="25"
       height="24"
       viewBox="0 0 24 24"
@@ -37,6 +57,7 @@ export function IconEmail() {
 export function IconLinkedIn() {
   return (
     <svg
+      aria-hidden="true"
       width="25"
       height="24"
       viewBox="0 0 24 24"

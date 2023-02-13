@@ -32,8 +32,23 @@ module.exports = {
         800: 'var(--color-gray-800)',
         900: 'var(--color-gray-900)',
       },
+      blue: {
+        200: 'var(--color-blue-200)',
+        300: 'var(--color-blue-300)',
+        400: 'var(--color-blue-400)',
+        500: 'var(--color-blue-500)',
+        600: 'var(--color-blue-600)',
+        700: 'var(--color-blue-700)',
+        800: 'var(--color-blue-800)',
+      },
       pink: {
+        200: 'var(--color-pink-200)',
+        300: 'var(--color-pink-300)',
+        400: 'var(--color-pink-400)',
         500: 'var(--color-pink-500)',
+        600: 'var(--color-pink-600)',
+        700: 'var(--color-pink-700)',
+        800: 'var(--color-pink-800)',
       },
       red: {
         500: 'var(--color-red-500)',
@@ -44,7 +59,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['Lexend', ...defaultTheme.fontFamily.sans],
+        sans: ['Satoshi', ...defaultTheme.fontFamily.sans],
       },
       gridTemplateRows: {
         'max-content': 'max-content',

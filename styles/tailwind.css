@@ -8,53 +8,46 @@
 
 /* tailwind is configured to prefer this font */
 @font-face {
-  font-family: 'Lexend';
-  src: url('/fonts/Lexend-Light.woff2') format('woff2'),
-    url('/fonts/Lexend-Light.woff') format('woff');
-  font-weight: normal;
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Medium.woff2') format('woff2'),
+    url('/fonts/Satoshi-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
+    url('/fonts/Satoshi-Bold.woff') format('woff');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @layer utilities {
   .focus-ring {
-    @apply ring-white ring-offset-4 ring-offset-black transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
+    @apply ring-black ring-offset-4 ring-offset-white transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
   }
 
   .bg-primary {
-    @apply bg-gray-900;
+    @apply bg-white;
   }
 
   .bg-secondary {
-    @apply bg-gray-100 dark:bg-gray-800;
+    @apply bg-gray-100;
   }
 
   .bg-alt {
-    @apply bg-gray-200 dark:bg-gray-700;
-  }
-
-  .bg-inverse {
-    @apply bg-black dark:bg-white;
-  }
-
-  .border-primary {
-    @apply border-gray-900 dark:border-white;
-  }
-
-  .border-secondary {
-    @apply border-gray-200 dark:border-gray-600;
+    @apply bg-gray-200;
   }
 
   .text-primary {
-    @apply text-white;
+    @apply text-black;
   }
 
   .text-secondary {
-    @apply text-white;
-  }
-
-  .text-inverse {
-    @apply text-white;
+    @apply text-gray-500;
   }
 
   .text-transparent {
@@ -68,7 +61,7 @@
   }
 
   .text-list li {
-    @apply relative mb-1 pl-8 text-lg text-white;
+    @apply relative mb-1 pl-8 text-lg text-black;
   }
 
   .text-list li:before {

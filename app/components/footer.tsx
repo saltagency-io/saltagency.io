@@ -34,7 +34,7 @@ export function Footer({
           <div className="flex flex-col gap-2 lg:flex-row lg:gap-8">
             {menu.map((link) => (
               <Link
-                className="text-bold text-white hover:underline"
+                className="text-bold text-primary hover:underline"
                 key={link.id}
                 prefetch="intent"
                 to={link.url}
@@ -46,7 +46,7 @@ export function Footer({
           <div className="flex gap-x-4 pt-8">
             <a
               href="mailto:dennis.weisscher@saltagency.io"
-              className="text-white"
+              className="text-primary"
             >
               <IconEmail />
             </a>
@@ -54,7 +54,7 @@ export function Footer({
               target="_blank"
               rel="noreferrer"
               to="https://www.linkedin.com/company/saltagency/"
-              className="text-white"
+              className="text-primary"
             >
               <IconLinkedIn />
             </Link>

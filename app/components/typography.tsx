@@ -7,6 +7,7 @@ type TitleProps = {
   as?: React.ElementType
   className?: string
   id?: string
+  bold?: boolean
 } & (
   | { children: React.ReactNode }
   | {
@@ -17,8 +18,8 @@ type TitleProps = {
 )
 
 const fontSize = {
-  h1: 'leading-tight text-4xl md:text-5xl',
-  h2: 'leading-tight text-3xl md:text-4xl',
+  h1: 'leading-tight font-medium text-4xl md:text-7xl',
+  h2: 'leading-tight font-medium text-3xl md:text-5xl',
   h3: 'text-2xl font-medium md:text-3xl',
   h4: 'text-xl font-medium md:text-2xl',
   h5: 'text-lg font-medium md:text-xl',
@@ -26,8 +27,8 @@ const fontSize = {
 }
 
 const titleColors = {
-  primary: 'text-white',
-  secondary: 'text-white',
+  primary: 'text-primary',
+  secondary: 'text-secondary',
 }
 
 export function Title({
@@ -35,12 +36,18 @@ export function Title({
   size,
   as,
   className,
+  bold = false,
   ...rest
 }: TitleProps & { size: keyof typeof fontSize }) {
   const Tag = as ?? size
   return (
     <Tag
-      className={clsx(fontSize[size], titleColors[variant], className)}
+      className={clsx(
+        fontSize[size],
+        titleColors[variant],
+        { 'font-bold': bold },
+        className,
+      )}
       {...rest}
     />
   )
@@ -75,6 +82,7 @@ type ParagraphProps = {
   prose?: boolean
   textColorClassName?: string
   as?: React.ElementType
+  size?: 'default' | 'lg'
 } & (
   | { children: React.ReactNode }
   | { dangerouslySetInnerHTML: { __html: string } }
@@ -84,13 +92,19 @@ export function Paragraph({
   className,
   prose = true,
   as = 'p',
-  textColorClassName = 'text-white',
+  size = 'default',
+  textColorClassName = 'text-primary',
   ...rest
 }: ParagraphProps) {
   return React.createElement(as, {
-    className: clsx('max-w-full text-lg', textColorClassName, className, {
-      'prose prose-light dark:prose-dark': prose,
-    }),
+    className: clsx(
+      'max-w-full font-medium text-2xl',
+      textColorClassName,
+      className,
+      {
+        'text-3xl': size === 'lg'
+      },
+    ),
     ...rest,
   })
 }

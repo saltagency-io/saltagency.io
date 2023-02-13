@@ -93,14 +93,14 @@ export const links: LinksFunction = () => {
     {
       rel: 'preload',
       as: 'font',
-      href: '/fonts/Lexend-Light.woff2',
+      href: '/fonts/Satoshi-Medium.woff2',
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
     {
       rel: 'preload',
       as: 'font',
-      href: '/fonts/Lexend-Light.woff2',
+      href: '/fonts/Satoshi-Bold.woff2',
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
@@ -187,7 +187,7 @@ export default function App() {
             }}
           />
         </head>
-        <body>
+        <body className="bg-white">
           <PreviewStateProvider value={{ preview: data.preview }}>
             <LabelsProvider data={data.labels}>
               <StoryblokComponent blok={header} key={header._uid} />

@@ -11,7 +11,7 @@ export function Label({
   return (
     <label
       {...labelProps}
-      className={clsx('inline-block text-lg text-white', className)}
+      className={clsx('inline-block text-lg text-primary', className)}
     />
   )
 }
@@ -24,7 +24,7 @@ const isTextarea = (props: InputProps): props is TextAreaProps =>
   props.type === 'textarea'
 
 export const inputClassName =
-  'placeholder-gray-400 focus-ring px-6 py-4 w-full text-white disabled:text-gray-400 text-lg font-medium bg-gray-500 rounded-lg'
+  'placeholder-gray-400 focus-ring px-6 py-4 w-full text-primary disabled:text-gray-400 text-lg font-medium bg-gray-500 rounded-lg'
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   function Input(props, ref) {

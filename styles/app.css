@@ -1,20 +1,36 @@
 :root {
-  --color-black: #000;
-  --color-white: #fff;
+  --color-black: #000000;
+  --color-white: #ffffff;
 
-  --color-gray-100: #f7f7f7;
-  --color-gray-200: #e6e9ee;
-  --color-gray-300: #dde0e4;
-  --color-gray-400: #818890;
-  --color-gray-500: #535661;
-  --color-gray-600: #535257;
-  --color-gray-700: #3a3d4a;
-  --color-gray-800: #2e3039;
-  --color-gray-900: #0f0e17;
+  --color-gray-100: #234a860d;
+  --color-gray-200: #05196b1a;
+  --color-gray-300: #04134838;
+  --color-gray-400: #04134869;
+  --color-gray-500: #010d3796;
+  --color-gray-600: #000a33b5;
+  --color-gray-700: #030a2bd1;
+  --color-gray-800: #030820e5;
+  --color-gray-900: #020109f2;
 
+  --color-blue-200: #e5e8ff;
+  --color-blue-300: #afb7ff;
+  --color-blue-400: #7985ff;
+  --color-blue-500: #4353ff;
+  --color-blue-600: #2c38b2;
+  --color-blue-700: #161d66;
+  --color-blue-800: #00021a;
+
+  --color-pink-200: #fce8eb;
+  --color-pink-300: #f7b9c2;
+  --color-pink-400: #f18998;
   --color-pink-500: #eb596e;
-  --color-red-500: #ff0000;
+  --color-pink-600: #a53d4c;
+  --color-pink-700: #5e2029;
+  --color-pink-800: #170306;
+
   --color-purple-500: #4353ff;
+
+  --color-red-500: #ff0000;
 }
 
 :focus:not(:focus-visible) {
@@ -23,7 +39,6 @@
 
 body {
   overflow-x: hidden;
-  background-color: var(--color-gray-900);
 }
 
 * {

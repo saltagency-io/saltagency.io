@@ -20,7 +20,7 @@ export function VacancySidebar({role}: {role: string}) {
         {t('vacancy.aside.text')}
       </Paragraph>
       <a
-        className="mb-8 block text-white hover:underline"
+        className="mb-8 block text-primary hover:underline"
         href="tel:+31634135161"
       >
         {t('vacancy.aside.phone')}
