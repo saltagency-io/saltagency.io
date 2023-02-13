@@ -15,7 +15,7 @@ export function Clients({ title, logos }: Props) {
       {logos.map((logo) => (
         <div key={logo.id} className="col-span-4 lg:col-span-3">
           <img
-            className="aspect-[3/2] w-[100%] object-contain grayscale"
+            className="aspect-[3/2] w-[100%] object-contain"
             src={logo.url}
             alt={logo.alt}
           />

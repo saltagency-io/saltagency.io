@@ -2,6 +2,7 @@ import type * as React from 'react'
 
 import { Link } from '@remix-run/react'
 
+import { IconEmail, IconLinkedIn } from '~/components/icons'
 import type { LinkType } from '~/types'
 
 type Props = {
@@ -22,7 +23,7 @@ export function Footer({
   return (
     <footer className="mx-10vw pt-8 pb-8 lg:pt-16">
       <div className="mx-auto max-w-7xl">
-        <div className="flex-col flex justify-between border-b border-solid border-transparent pb-8 lg:flex-row lg:items-end">
+        <div className="flex flex-col justify-between border-b border-solid border-transparent pb-8 lg:flex-row lg:items-end">
           <Link prefetch="intent" to="/" className="mb-6 lg:mb-0">
             <img
               className="w-[65px] lg:w-[150px]"
@@ -43,11 +44,19 @@ export function Footer({
             ))}
           </div>
           <div className="flex gap-x-4 pt-8">
-            <Link to="/" className="text-white">
-              Mail
-            </Link>
-            <Link to="/" className="text-white">
-              LinkedIn
+            <a
+              href="mailto:dennis.weisscher@saltagency.io"
+              className="text-white"
+            >
+              <IconEmail />
+            </a>
+            <Link
+              target="_blank"
+              rel="noreferrer"
+              to="https://www.linkedin.com/company/saltagency/"
+              className="text-white"
+            >
+              <IconLinkedIn />
             </Link>
           </div>
         </div>
