@@ -20,7 +20,7 @@ import {
 import { Grid } from '~/components/grid'
 import { H1, H2, H4, Paragraph } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha'
-import { sendToNotion } from '~/lib/notion'
+import { sendToContactFormNotion } from '~/lib/notion'
 import type { LoaderData as RootLoaderData } from '~/root'
 import { handleFormSubmission } from '~/utils/actions.server'
 import { useLabels } from '~/utils/labels-provider'
@@ -80,7 +80,7 @@ export const action: ActionFunction = async ({ request }) => {
         return json(actionData, { status: 400 })
       }
 
-      await sendToNotion(fields)
+      await sendToContactFormNotion(fields)
 
       const actionData: ActionData = { fields, status: 'success', errors: {} }
       return json(actionData)
@@ -115,7 +115,7 @@ export default function ContactPage() {
   return (
     <main>
       <Grid>
-        <div className="col-span-4 lg:col-span-6 lg:col-start-4">
+        <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-4">
           {messageSuccessfullySent ? (
             <div className="min-h-[60vh]">
               <H2>{t('form.contact.success')}</H2>
@@ -176,7 +176,7 @@ export default function ContactPage() {
                   error={to(contactFetcher?.data?.errors.reason)}
                 >
                   <option value="" disabled>
-                    {t('form.reason.placeholder')}
+                    {t('form.select.placeholder')}
                   </option>
                   <option value="consultancy">
                     {t('form.reason.option.consultancy')}
@@ -192,6 +192,7 @@ export default function ContactPage() {
                   defaultValue={contactFetcher.data?.fields.body ?? ''}
                   error={to(contactFetcher?.data?.errors.body)}
                 />
+
                 <div className="mb-10">
                   <ReCaptcha
                     theme="dark"

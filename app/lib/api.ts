@@ -20,6 +20,9 @@ export async function getDataSource(
   try {
     const { data } = await getStoryblokApi().get(
       `cdn/datasource_entries?datasource=${name}`,
+      {
+        per_page: 200,
+      },
     )
     return data.datasource_entries
   } catch (error) {

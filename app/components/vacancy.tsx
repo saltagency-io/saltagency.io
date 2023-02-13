@@ -7,8 +7,9 @@ import { Grid } from '~/components/grid'
 import { H1, H2, Paragraph } from '~/components/typography'
 import { useLabels } from '~/utils/labels-provider'
 
-export function VacancySidebar() {
+export function VacancySidebar({role}: {role: string}) {
   const { t } = useLabels()
+  const queryParam = encodeURIComponent(role)
 
   return (
     <>
@@ -24,7 +25,7 @@ export function VacancySidebar() {
       >
         {t('vacancy.aside.phone')}
       </a>
-      <ButtonLink to="/" className="w-full">
+      <ButtonLink to={`/jobs/apply?role=${queryParam}`} className="w-full">
         {t('cta.apply')}
       </ButtonLink>
     </>
@@ -51,7 +52,7 @@ export function Vacancy({ children, title, summary }: Props) {
           {children}
         </section>
         <aside className="col-span-4 my-8 md:col-span-8 lg:order-[-1] lg:col-span-3 lg:my-0 lg:pr-8">
-          <VacancySidebar />
+          <VacancySidebar role={title} />
         </aside>
       </Grid>
     </>

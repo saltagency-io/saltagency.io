@@ -6,8 +6,8 @@ const LabelsContext = React.createContext<{
   t: (key: string) => string
   to: (key: string | null | undefined) => string | undefined
 }>({
-  t: (key) => '',
-  to: (key) => '',
+  t: (key) => key,
+  to: (key) => `${key}`,
 })
 
 LabelsContext.displayName = 'LabelsContext'

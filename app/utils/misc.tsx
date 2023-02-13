@@ -131,3 +131,7 @@ function assertNonNull<PossibleNullType>(
 ): asserts possibleNull is Exclude<PossibleNullType, null | undefined> {
   if (possibleNull == null) throw new Error(errorMessage)
 }
+
+export function capitalizeFirstChar(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}

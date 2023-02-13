@@ -8,6 +8,7 @@ const PATTERNS = {
   TEXT: /^[a-zA-Z\u00C0-\u00ff .'-]*$/,
   EMAIL: /^[a-zA-Z0-9+._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   PHONE_NUMBER: /^(\+31)|(0)\d{9}$/,
+  URL: /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/,
 }
 
 const isMinLength = (length: number) => (val: string) => {
@@ -65,6 +66,10 @@ export const isValidBody: ValidateFn = (val) => {
 
 export const isValidPhoneNumber: ValidateFn = (val) => {
   return validate(val, { min: 5, pattern: PATTERNS.PHONE_NUMBER })
+}
+
+export const isValidUrl: ValidateFn = (val) => {
+  return validate(val, { min: 2, max: 100, pattern: PATTERNS.URL })
 }
 
 export const isValidString: ValidateFn = (val) => {
