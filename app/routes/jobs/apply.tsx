@@ -203,6 +203,7 @@ export default function ApplyPage() {
                   label={t('form.employment.label')}
                   defaultValue={applyFetcher.data?.fields.employment ?? ''}
                   error={to(applyFetcher?.data?.errors.employment)}
+                  required
                 >
                   <option value="" disabled>
                     {t('form.select.placeholder')}
@@ -223,6 +224,7 @@ export default function ApplyPage() {
                   label={t('form.citizenship.label')}
                   defaultValue={applyFetcher.data?.fields.citizenship ?? ''}
                   error={to(applyFetcher?.data?.errors.citizenship)}
+                  required
                 >
                   <option value="" disabled>
                     {t('form.select.placeholder')}
@@ -247,6 +249,7 @@ export default function ApplyPage() {
                     ''
                   }
                   error={to(applyFetcher?.data?.errors.role)}
+                  required
                 >
                   <option value="" disabled>
                     {t('form.select.placeholder')}

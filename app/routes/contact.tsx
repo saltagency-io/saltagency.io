@@ -174,6 +174,7 @@ export default function ContactPage() {
                   label={t('form.reason.label')}
                   defaultValue={contactFetcher.data?.fields.reason ?? ''}
                   error={to(contactFetcher?.data?.errors.reason)}
+                  required
                 >
                   <option value="" disabled>
                     {t('form.select.placeholder')}

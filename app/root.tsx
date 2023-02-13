@@ -27,6 +27,7 @@ import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { getDataSource, getLayout } from '~/lib/api'
 import { SbButton } from '~/storyblok/button'
+import { SbCalculator } from '~/storyblok/calculator'
 import { SbFooter } from '~/storyblok/footer'
 import { SbGrid } from '~/storyblok/grid'
 import { SbHeader } from '~/storyblok/header'
@@ -50,6 +51,20 @@ import {
 import { PreviewStateProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
+const components = {
+  page: SbPage,
+  vacancy: SbVacancy,
+  header: SbHeader,
+  footer: SbFooter,
+  hero: SbHero,
+  button: SbButton,
+  grid: SbGrid,
+  richText: SbRichText,
+  richTextSection: SbRichTextSection,
+  clients: SbClients,
+  calculator: SbCalculator,
+}
+
 storyblokInit({
   accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
@@ -59,18 +74,7 @@ storyblokInit({
       type: 'memory',
     },
   },
-  components: {
-    page: SbPage,
-    vacancy: SbVacancy,
-    header: SbHeader,
-    footer: SbFooter,
-    hero: SbHero,
-    button: SbButton,
-    grid: SbGrid,
-    richText: SbRichText,
-    richTextSection: SbRichTextSection,
-    clients: SbClients,
-  },
+  components,
 })
 
 export const meta: MetaFunction = ({ data }) => {

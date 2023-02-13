@@ -27,6 +27,7 @@ export enum BlokTypes {
   Grid = 'grid',
   Clients = 'clients',
   RichTextSection = 'richTextSection',
+  Calculator = 'calculator',
 }
 
 export type HeaderBlok = SbBlokData & {
@@ -87,7 +88,16 @@ export type ClientsBlok = SbBlokData & {
   logos: Asset[]
 }
 
-export type BodyComponents = HeroBlok | RichTextSectionBlok | GridBlok
+export type CalculatorBlok = SbBlokData & {
+  component: BlokTypes.Calculator
+  title?: string
+}
+
+export type BodyComponents =
+  | HeroBlok
+  | RichTextSectionBlok
+  | GridBlok
+  | CalculatorBlok
 
 export type MetaTags = {
   title?: string

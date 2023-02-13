@@ -187,7 +187,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             >
               {children}
             </select>
-            <div className="absolute top-0 right-6 bottom-0 m-auto h-6 w-6">
+            <div className="pointer-events-none absolute top-0 right-6 bottom-0 m-auto h-6 w-6">
               <IconChevronDown />
             </div>
           </div>
