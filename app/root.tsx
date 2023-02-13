@@ -53,6 +53,12 @@ import { isPreview } from '~/utils/storyblok'
 storyblokInit({
   accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
+  apiOptions: {
+    cache: {
+      clear: 'auto',
+      type: 'memory',
+    },
+  },
   components: {
     page: SbPage,
     vacancy: SbVacancy,
