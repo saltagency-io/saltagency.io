@@ -7,11 +7,22 @@ import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-import { getVacancyBySlug } from '~/lib/api'
+import { getAllVacancies, getVacancyBySlug } from '~/lib/api'
 import type { LoaderData as RootLoaderData } from '~/root'
+import type { Handle } from '~/types'
 import { getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
+
+export const handle: Handle = {
+  getSitemapEntries: async () => {
+    const pages = await getAllVacancies(false)
+    return (pages || []).map((page) => ({
+      route: `/${page.full_slug}`,
+      priority: 0.7,
+    }))
+  },
+}
 
 export async function loader({ params, request }: DataFunctionArgs) {
   if (!params.slug) {

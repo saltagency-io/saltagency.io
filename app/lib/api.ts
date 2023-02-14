@@ -64,7 +64,7 @@ export async function getVacancyBySlug(
 export async function getAllVacancies(
   preview = false,
 ): Promise<StoryData<VacancyStoryContent>[] | undefined> {
-  const params = { ...getDefaultParams({ preview }), starts_with: 'jobs' }
+  const params = { ...getDefaultParams({ preview }), starts_with: 'jobs/' }
 
   try {
     return getStoryblokApi().getAll(`cdn/stories`, params)
@@ -83,5 +83,21 @@ export async function getLayout(
     return data?.story
   } catch (error) {
     console.error(`Failed to fetch story for layout`, error)
+  }
+}
+
+const sitemapBlackList = ['home', 'layout', 'contact', 'jobs/*']
+
+export async function getStoriesForSitemap() {
+  const params = {
+    per_page: 100,
+    excluding_slugs: sitemapBlackList.join(','),
+  }
+
+  try {
+    return getStoryblokApi().getAll(`cdn/stories`, params)
+  } catch (error) {
+    console.error(`Failed to fetch all stories`, error)
+    return []
   }
 }

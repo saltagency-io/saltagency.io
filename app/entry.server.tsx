@@ -6,31 +6,43 @@ import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
 import { PassThrough } from 'stream'
 
+import { routes as otherRoutes } from '~/other-routes.server'
 import { getEnv } from '~/utils/env.server'
 
 global.ENV = getEnv()
 
 const ABORT_DELAY = 5000
 
-export default function handleRequest(
+export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  return isbot(request.headers.get('user-agent'))
-    ? handleBotRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext,
-      )
-    : handleBrowserRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext,
-      )
+  for (const handler of otherRoutes) {
+    const otherRouteResponse = await handler(request, remixContext)
+    if (otherRouteResponse) return otherRouteResponse
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    responseHeaders.set('Cache-Control', 'no-store')
+  }
+
+  if (isbot(request.headers.get('user-agent'))) {
+    return handleBotRequest(
+      request,
+      responseStatusCode,
+      responseHeaders,
+      remixContext,
+    )
+  }
+
+  return handleBrowserRequest(
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+  )
 }
 
 function handleBotRequest(

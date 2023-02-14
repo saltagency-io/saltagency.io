@@ -132,6 +132,12 @@ function assertNonNull<PossibleNullType>(
   if (possibleNull == null) throw new Error(errorMessage)
 }
 
+export function typedBoolean<T>(
+  value: T,
+): value is Exclude<T, '' | 0 | false | null | undefined> {
+  return Boolean(value)
+}
+
 export function capitalizeFirstChar(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
