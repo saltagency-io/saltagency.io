@@ -2,7 +2,6 @@ import type * as React from 'react'
 
 import ReactMarkdown from 'react-markdown'
 
-import { IconChevronRight } from '~/components/icons'
 import { H1, H2, H3, H4, H5, H6, Paragraph } from '~/components/typography'
 import { AnchorOrLink } from '~/utils/misc'
 
@@ -17,11 +16,7 @@ const components: Components = {
   h6: (props) => <H6 className="mb-4">{props.children}</H6>,
   p: (props) => <Paragraph className="mb-6">{props.children}</Paragraph>,
   a: (props) => (
-    <AnchorOrLink
-      to={props.href}
-      className="flex items-center gap-x-2 text-blue-500 hover:underline"
-    >
-      <IconChevronRight />
+    <AnchorOrLink to={props.href} className="text-blue-500 hover:underline">
       {props.children}
     </AnchorOrLink>
   ),

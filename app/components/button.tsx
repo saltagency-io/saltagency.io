@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { AnchorOrLink } from '~/utils/misc'
 
 type ButtonProps = {
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'outline'
   size?: 'small' | 'medium' | 'large'
   children: React.ReactNode | React.ReactNode[]
 }
@@ -22,18 +22,22 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
     <>
       <div
         className={clsx(
-          'focus-ring absolute inset-0 transform rounded-full bg-purple-500 opacity-100 transition disabled:opacity-50',
+          'focus-ring absolute inset-0 transform rounded-lg font-medium opacity-100 transition disabled:opacity-50',
           {
-            'border-2 border-white bg-transparent group-hover:border-transparent group-focus:border-transparent':
-              variant === 'secondary',
+            'bg-blue-500 focus-ring-primary': variant === 'primary',
+            'bg-gray-900': variant === 'secondary',
+            'border-2 border-black bg-transparent text-black group-hover:border-transparent group-focus:border-transparent':
+              variant === 'outline',
           },
         )}
       />
       <div
         className={clsx(
-          'relative flex h-full w-full items-center justify-center whitespace-nowrap text-primary',
+          'relative flex h-full w-full items-center justify-center whitespace-nowrap',
           {
-            'space-x-5 px-11 py-3': size === 'large',
+            'text-white': variant === 'primary' || variant === 'secondary',
+            'text-black': variant === 'outline',
+            'space-x-5 px-8 py-4': size === 'large',
             'space-x-3 px-8 py-2': size === 'medium',
             'space-x-1 px-5 py-1 text-sm': size === 'small',
           },

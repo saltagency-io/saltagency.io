@@ -47,7 +47,7 @@ export default function JobsIndex() {
 
   return (
     <div className="min-h-[60vh]">
-      <Grid as="main">
+      <Grid as="main" className="min-h-screen">
         <div className="col-span-full">
           <H2 as="h1" className="mb-8">
             {t('jobs.title')}

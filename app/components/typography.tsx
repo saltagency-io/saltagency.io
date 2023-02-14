@@ -98,7 +98,7 @@ export function Paragraph({
 }: ParagraphProps) {
   return React.createElement(as, {
     className: clsx(
-      'max-w-full font-medium text-2xl',
+      'max-w-full font-medium text-xl',
       textColorClassName,
       className,
       {
