@@ -22,7 +22,6 @@ export const meta: MetaFunction = ({ parentsData }) => {
       title: 'Jobs | Salt',
       description: 'Come work with us!',
       url: getUrl(requestInfo),
-      // TODO: add image
     }),
   }
 }
@@ -47,24 +46,26 @@ export default function JobsIndex() {
   const { t } = useLabels()
 
   return (
-    <Grid as="main">
-      <div className="col-span-full">
-        <H2 as="h1" className="mb-8">
-          {t('jobs.title')}
-        </H2>
-      </div>
-      <ul className="col-span-full">
-        {(data.vacancies || []).map((vacancy) => (
-          <li key={vacancy.uuid} className="mb-2">
-            <Link
-              to={vacancy.slug}
-              className="text-lg text-purple-500 hover:underline"
-            >
-              &rsaquo; {vacancy.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </Grid>
+    <div className="min-h-[60vh]">
+      <Grid as="main">
+        <div className="col-span-full">
+          <H2 as="h1" className="mb-8">
+            {t('jobs.title')}
+          </H2>
+        </div>
+        <ul className="col-span-full">
+          {(data.vacancies || []).map((vacancy) => (
+            <li key={vacancy.uuid} className="mb-2">
+              <Link
+                to={vacancy.slug}
+                className="text-lg text-purple-500 hover:underline"
+              >
+                &rsaquo; {vacancy.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Grid>
+    </div>
   )
 }
