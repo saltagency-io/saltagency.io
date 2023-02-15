@@ -60,6 +60,7 @@ const OptionalRow = ({
         className="pointer-events-none mr-2 align-middle"
         type="checkbox"
         checked={isChecked}
+        readOnly
       />
       <span
         className={clsx('align-middle', {
