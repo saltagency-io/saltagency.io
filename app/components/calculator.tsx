@@ -93,6 +93,7 @@ type CalculationResult = {
   bonus: {
     monthly: number
     remainder: number // monthly only
+    remainderGross: number // monthly only
     yearly: number // yearly only
   }
   expenses: {
@@ -152,9 +153,11 @@ function calculate({
   const bonusMonthly =
     (revenueRelative - (employerCharges + salaryBase + holiday)) / 2
 
+  const bonusRemainderGross =
+    revenueRelative - (employerCharges + salaryBase + holiday + bonusMonthly)
+
   const bonusRemainder =
-    revenueRelative -
-    (employerCharges + salaryBase + holiday + bonusMonthly) -
+    bonusRemainderGross -
     (expenses.training + expenses.travel + expenses.equipment)
 
   const taxBenefit =
@@ -178,6 +181,7 @@ function calculate({
     bonus: {
       monthly: bonusMonthly,
       remainder: isYearly ? 0 : bonusRemainder,
+      remainderGross: isYearly ? 0 : bonusRemainderGross,
       yearly: isYearly ? bonusYearly : 0,
     },
   }
@@ -261,6 +265,7 @@ export function Calculator() {
           <Divider />
           <Row label={t('calculator.salary.gross')} value={salaryGross} />
           <Divider />
+          <Row label="Remaining revenue" value={bonus.remainderGross} />
           <OptionalRow
             label={t('calculator.expenses.development')}
             value={expenses.training}
