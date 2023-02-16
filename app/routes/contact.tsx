@@ -23,6 +23,7 @@ import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import { handleFormSubmission } from '~/utils/actions.server'
+import * as ga from '~/utils/google-analytics.client'
 import { useLabels } from '~/utils/labels-provider'
 import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
@@ -111,6 +112,15 @@ export default function ContactPage() {
 
   const messageSuccessfullySent =
     contactFetcher.type === 'done' && contactFetcher.data.status === 'success'
+
+  React.useEffect(() => {
+    if (messageSuccessfullySent) {
+      ga.event({
+        action: 'conversion',
+        group: getRequiredGlobalEnvVar('GOOGLE_AW_CONVERSION_EVENT'),
+      })
+    }
+  }, [messageSuccessfullySent])
 
   return (
     <main>

@@ -41,7 +41,7 @@ import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
 import { getEnv } from '~/utils/env.server'
-import * as gtag from '~/utils/ga.client'
+import * as gtag from '~/utils/google-analytics.client'
 import { LabelsProvider } from '~/utils/labels-provider'
 import {
   getDomainUrl,

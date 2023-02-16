@@ -25,6 +25,7 @@ export function event({
   category,
   label,
   value,
+  group,
 }: Record<string, string>) {
   if (!window.gtag) {
     console.warn(
@@ -35,6 +36,7 @@ export function event({
   window.gtag('event', action, {
     event_category: category,
     event_label: label,
+    send_to: group,
     value: value,
   })
 }

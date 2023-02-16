@@ -21,11 +21,12 @@ import {
 } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
 import { H1, H2, Paragraph } from '~/components/typography'
-import { getAllVacancies } from '~/lib/storyblok.server'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendApplicationToNotion } from '~/lib/notion.server'
+import { getAllVacancies } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import { handleFormSubmission } from '~/utils/actions.server'
+import * as ga from '~/utils/google-analytics.client'
 import { useLabels } from '~/utils/labels-provider'
 import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
@@ -143,6 +144,15 @@ export default function ApplyPage() {
 
   const messageSuccessfullySent =
     applyFetcher.type === 'done' && applyFetcher.data.status === 'success'
+
+  React.useEffect(() => {
+    if (messageSuccessfullySent) {
+      ga.event({
+        action: 'conversion',
+        group: getRequiredGlobalEnvVar('GOOGLE_AW_CONVERSION_EVENT'),
+      })
+    }
+  }, [messageSuccessfullySent])
 
   return (
     <main>
