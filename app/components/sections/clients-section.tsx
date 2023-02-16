@@ -8,7 +8,7 @@ type Props = {
   title: string
   logos: Image[]
 }
-export function Clients({ title, logos }: Props) {
+export function ClientsSection({ title, logos }: Props) {
   return (
     <Grid as="section" className="py-8">
       <H2 className="col-span-full mb-8 text-center">{title}</H2>

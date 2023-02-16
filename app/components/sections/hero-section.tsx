@@ -10,7 +10,7 @@ type Props = {
   imageAlt: string
 }
 
-export function Hero({ children, title, body, imageUrl, imageAlt }: Props) {
+export function HeroSection({ children, title, body, imageUrl, imageAlt }: Props) {
   return (
     <Grid as="header" className="h-auto pb-12 lg:h-[800px]">
       <div className="relative z-10 col-span-4 md:col-span-8 lg:col-span-6 lg:pt-16">

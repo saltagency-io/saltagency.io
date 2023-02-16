@@ -93,7 +93,7 @@ type CalculationResult = {
   bonus: {
     monthly: number
     remainder: number // monthly only
-    remainderGross: number // monthly only
+    remainderGross: number
     yearly: number // yearly only
   }
   expenses: {
@@ -181,7 +181,7 @@ function calculate({
     bonus: {
       monthly: bonusMonthly,
       remainder: isYearly ? 0 : bonusRemainder,
-      remainderGross: isYearly ? 0 : bonusRemainderGross,
+      remainderGross: bonusRemainderGross,
       yearly: isYearly ? bonusYearly : 0,
     },
   }

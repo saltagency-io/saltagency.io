@@ -1,12 +1,12 @@
 import type { ClientsBlok } from '../../../types'
-import { Clients } from '~/components/sections/clients'
+import { ClientsSection } from '~/components/sections/clients-section'
 import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbClients({ blok }: { blok: ClientsBlok }) {
   return (
     <StoryBlokWrapper blok={blok} key={blok._uid}>
-      <Clients
+      <ClientsSection
         title={blok.title}
         logos={blok.logos.map((logo) => mapAsset(logo))}
       />

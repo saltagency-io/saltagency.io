@@ -25,17 +25,17 @@ import {
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-import { getDataSource, getLayout } from '~/lib/api'
+import { getDataSource, getLayout } from '~/lib/storyblok.server'
 import { SbButton } from '~/storyblok/button'
 import { SbCalculator } from '~/storyblok/calculator'
 import { SbFooter } from '~/storyblok/footer'
 import { SbGrid } from '~/storyblok/grid'
 import { SbHeader } from '~/storyblok/header'
-import { SbHero } from '~/storyblok/hero'
 import { SbPage } from '~/storyblok/page'
 import { SbRichText } from '~/storyblok/rich-text'
-import { SbClients } from '~/storyblok/sections/clients'
-import { SbRichTextSection } from '~/storyblok/sections/rich-text'
+import { SbClients } from '~/storyblok/sections/clients-section'
+import { SbHeroSection } from '~/storyblok/sections/hero-section'
+import { SbRichTextSection } from '~/storyblok/sections/richtext-section'
 import { SbVacancy } from '~/storyblok/vacancy'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
@@ -56,7 +56,7 @@ const components = {
   vacancy: SbVacancy,
   header: SbHeader,
   footer: SbFooter,
-  hero: SbHero,
+  hero: SbHeroSection,
   button: SbButton,
   grid: SbGrid,
   richText: SbRichText,

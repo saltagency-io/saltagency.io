@@ -3,15 +3,15 @@ import * as React from 'react'
 import { StoryblokComponent } from '@storyblok/react'
 
 import type { HeroBlok } from '../../types'
-import { Hero } from '~/components/hero'
+import { HeroSection } from '~/components/sections/hero-section'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
-export function SbHero({ blok }: { blok: HeroBlok }) {
+export function SbHeroSection({ blok }: { blok: HeroBlok }) {
   const actions = [...blok.primaryAction, ...blok.secondaryAction]
 
   return (
     <StoryBlokWrapper blok={blok}>
-      <Hero
+      <HeroSection
         title={blok.title}
         body={blok.body}
         imageUrl={blok.image.filename}
@@ -20,7 +20,7 @@ export function SbHero({ blok }: { blok: HeroBlok }) {
         {actions.map((actionBlok) => (
           <StoryblokComponent key={actionBlok._uid} blok={actionBlok} />
         ))}
-      </Hero>
+      </HeroSection>
     </StoryBlokWrapper>
   )
 }

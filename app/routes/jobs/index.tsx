@@ -8,7 +8,7 @@ import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { Grid } from '~/components/grid'
 import { H2 } from '~/components/typography'
-import { getAllVacancies } from '~/lib/api'
+import { getAllVacancies } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import { useLabels } from '~/utils/labels-provider'
 import { getUrl } from '~/utils/misc'

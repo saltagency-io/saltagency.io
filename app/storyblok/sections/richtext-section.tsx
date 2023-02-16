@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { RichTextSection } from '~/components/sections/rich-text'
+import { RichTextSection } from '~/components/sections/richtext-section'
 import type { RichTextSectionBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 

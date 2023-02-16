@@ -10,7 +10,7 @@ type NotionMessage = {
   body: string
 }
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY })
+const notionServer = new Client({ auth: process.env.NOTION_API_KEY })
 
 export async function sendToContactFormNotion({
   name,
@@ -19,7 +19,7 @@ export async function sendToContactFormNotion({
   reason,
   body,
 }: NotionMessage) {
-  return notion.pages.create({
+  return notionServer.pages.create({
     icon: {
       type: 'emoji',
       emoji: '✉️',
@@ -91,7 +91,7 @@ export async function sendApplicationToNotion({
   linkedin,
   motivation,
 }: NotionApplication) {
-  return notion.pages.create({
+  return notionServer.pages.create({
     icon: {
       type: 'emoji',
       emoji: '✉️',

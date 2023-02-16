@@ -7,7 +7,7 @@ import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-import { getAllVacancies, getVacancyBySlug } from '~/lib/api'
+import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { getUrl } from '~/utils/misc'

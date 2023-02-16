@@ -23,7 +23,7 @@
 
 body {
   overflow-x: hidden;
-  background-color: #0f0e17;
+  background-color: var(--color-gray-900);
 }
 
 * {
