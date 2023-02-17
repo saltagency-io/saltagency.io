@@ -68,12 +68,13 @@ const components = {
 storyblokInit({
   accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
-  apiOptions: {
-    cache: {
-      clear: 'auto',
-      type: 'memory',
-    },
-  },
+  // TODO: enable
+  // apiOptions: {
+  //   cache: {
+  //     clear: 'auto',
+  //     type: 'memory',
+  //   },
+  // },
   components,
 })
 
@@ -187,12 +188,12 @@ export default function App() {
             }}
           />
         </head>
-        <body className="bg-white">
+        <body>
           <PreviewStateProvider value={{ preview: data.preview }}>
             <LabelsProvider data={data.labels}>
               <StoryblokComponent blok={header} key={header._uid} />
               <Outlet />
-              <StoryblokComponent blok={footer} key={footer._uid} />
+              {/*<StoryblokComponent blok={footer} key={footer._uid} />*/}
             </LabelsProvider>
           </PreviewStateProvider>
           <ScrollRestoration />

@@ -1,31 +1,35 @@
 import type * as React from 'react'
 
+import { Gradient } from '~/components/gradient'
 import { Grid } from '~/components/grid'
-import { H1, Paragraph } from '~/components/typography'
+import { H1, H4 } from '~/components/typography'
 
 type Props = {
   children: React.ReactNode
   title: string
   body: string
-  imageUrl: string
-  imageAlt: string
 }
 
-export function HeroSection({ children, title, body, imageUrl, imageAlt }: Props) {
+export function HeroSection({ children, title, body }: Props) {
   return (
-    <Grid as="header" className="h-auto pb-12 lg:h-[800px]">
-      <div className="relative z-10 col-span-4 md:col-span-8 lg:col-span-6 lg:pt-16">
-        <H1 className="mb-8">{title}</H1>
-        <Paragraph className="text-3xl">{body}</Paragraph>
-        <div className="flex flex-col gap-4 pt-8 lg:flex-row lg:gap-8 lg:pt-16">
-          {children}
+    <div className="relative">
+      <Gradient className="top-[111px] -left-[410px]" />
+      <Grid as="header" className="pb-48 pt-24">
+        <div className="col-span-8 col-start-3">
+          <H1 className="mb-6 text-center">{title}</H1>
+          <H4
+            as="h2"
+            className="px-32 text-center text-3xl"
+            variant="secondary"
+          >
+            {body}
+          </H4>
+          <div className="mx-auto flex flex-col justify-center gap-4 pt-8 lg:flex-row lg:gap-6 lg:pt-6">
+            {children}
+          </div>
         </div>
-      </div>
-      <img
-        className="absolute left-[50%] hidden md:block"
-        src={imageUrl}
-        alt={imageAlt}
-      />
-    </Grid>
+      </Grid>
+      <Gradient className="top-[111px] -right-[545px]" />
+    </div>
   )
 }

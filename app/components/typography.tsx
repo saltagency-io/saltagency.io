@@ -19,11 +19,11 @@ type TitleProps = {
 
 const fontSize = {
   h1: 'tracking-tight font-medium leading-none text-4xl md:text-6xl',
-  h2: 'tracking-tight font-medium leading-none text-3xl md:text-5xl',
-  h3: 'tracking-tight font-medium text-2xl md:text-4xl',
-  h4: 'tracking-tight font-medium text-xl md:text-3xl',
-  h5: 'tracking-tight font-medium text-lg md:text-2xl',
-  h6: 'tracking-tight font-medium text-lg',
+  h2: 'tracking-tight font-medium leading-normal text-3xl md:text-5xl',
+  h3: 'tracking-tight font-medium leading-normal text-2xl md:text-4xl',
+  h4: 'tracking-tight font-medium leading-normal text-xl md:text-3xl',
+  h5: 'tracking-tight font-medium leading-normal text-lg md:text-2xl',
+  h6: 'tracking-tight font-medium leading-normal text-lg',
 }
 
 const titleColors = {
@@ -98,7 +98,7 @@ export function Paragraph({
 }: ParagraphProps) {
   return React.createElement(as, {
     className: clsx(
-      'max-w-full font-medium text-xl',
+      'max-w-full font-medium leading-normal',
       textColorClassName,
       className,
       {

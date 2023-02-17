@@ -67,6 +67,9 @@ module.exports = {
         '5xl': '3.375rem', // 54px
         '6xl': '4.375rem', // 70px
       },
+      lineHeight: {
+        normal: '120%',
+      },
       letterSpacing: {
         tight: '-0.02em',
       },
@@ -81,6 +84,13 @@ module.exports = {
       },
       spacing: {
         '8vw': '8vw', // page margin
+      },
+      backgroundImage: {
+        gradient:
+          'linear-gradient(143.15deg, #6100FF 8.37%, rgba(0, 255, 255, 0) 91.49%);',
+      },
+      blur: {
+        '4xl': '100px',
       },
     },
   },

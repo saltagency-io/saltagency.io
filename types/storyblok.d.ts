@@ -66,9 +66,7 @@ export type HeroBlok = SbBlokData & {
   component: BlokTypes.Hero
   title: string
   body: string
-  image: Asset
-  primaryAction: ButtonBlok[]
-  secondaryAction: ButtonBlok[]
+  actions: ButtonBlok[]
 }
 
 export type RichTextSectionBlok = SbBlokData & {
@@ -84,7 +82,6 @@ export type GridBlok = SbBlokData & {
 
 export type ClientsBlok = SbBlokData & {
   component: BlokTypes.Clients
-  title: string
   logos: Asset[]
 }
 

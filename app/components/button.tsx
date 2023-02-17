@@ -24,7 +24,7 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
         className={clsx(
           'focus-ring absolute inset-0 transform rounded-lg font-medium opacity-100 transition disabled:opacity-50',
           {
-            'bg-blue-500 focus-ring-primary': variant === 'primary',
+            'focus-ring-primary bg-blue-500': variant === 'primary',
             'bg-gray-900': variant === 'secondary',
             'border-2 border-black bg-transparent text-black group-hover:border-transparent group-focus:border-transparent':
               variant === 'outline',
@@ -33,13 +33,13 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
       />
       <div
         className={clsx(
-          'relative flex h-full w-full items-center justify-center whitespace-nowrap',
+          'relative flex items-center justify-center whitespace-nowrap font-medium leading-6',
           {
             'text-white': variant === 'primary' || variant === 'secondary',
             'text-black': variant === 'outline',
-            'space-x-5 px-8 py-4': size === 'large',
-            'space-x-3 px-8 py-2': size === 'medium',
-            'space-x-1 px-5 py-1 text-sm': size === 'small',
+            'space-x-5 px-6 py-4': size === 'large',
+            'space-x-3 px-6 py-2': size === 'medium',
+            'space-x-1 px-4 py-1 text-sm': size === 'small',
           },
         )}
       >
