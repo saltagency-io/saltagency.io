@@ -61,14 +61,26 @@ module.exports = {
       fontFamily: {
         sans: ['Satoshi', ...defaultTheme.fontFamily.sans],
       },
+      fontSize: {
+        '3xl': '1.9375rem', // 31px
+        '4xl': '2.5625rem', // 41px
+        '5xl': '3.375rem', // 54px
+        '6xl': '4.375rem', // 70px
+      },
+      letterSpacing: {
+        tight: '-0.02em',
+      },
+      textOpacity: {
+        60: '0.6',
+      },
       gridTemplateRows: {
         'max-content': 'max-content',
       },
       maxWidth: {
-        '8xl': '96rem',
+        '5xl': '65rem', // 1040px
       },
       spacing: {
-        '10vw': '10vw', // page margin
+        '8vw': '8vw', // page margin
       },
     },
   },

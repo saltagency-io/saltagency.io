@@ -38,12 +38,8 @@
     @apply bg-white;
   }
 
-  .bg-secondary {
-    @apply bg-gray-100;
-  }
-
-  .bg-alt {
-    @apply bg-gray-200;
+  .bg-inverse {
+    @apply bg-gray-900;
   }
 
   .text-primary {
@@ -54,8 +50,12 @@
     @apply text-gray-500;
   }
 
+  .text-inverse {
+    @apply text-white;
+  }
+
   .text-transparent {
-    @apply text-opacity-50;
+    @apply text-opacity-60;
     color: rgba(255, 255, 255, var(--tw-text-opacity));
   }
 

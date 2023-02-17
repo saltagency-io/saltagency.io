@@ -21,8 +21,8 @@ export function Footer({
   disclaimer,
 }: Props) {
   return (
-    <footer className="mx-10vw pt-8 pb-8 lg:pt-16">
-      <div className="mx-auto max-w-7xl">
+    <footer className="mx-8vw pt-8 pb-8 lg:pt-16">
+      <div className="mx-auto max-w-5xl">
         <div className="flex flex-col justify-between border-b border-solid border-transparent pb-8 lg:flex-row lg:items-end">
           <Link prefetch="intent" to="/" className="mb-6 lg:mb-0">
             <img
