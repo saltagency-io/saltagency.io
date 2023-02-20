@@ -8,6 +8,7 @@ type TitleProps = {
   className?: string
   id?: string
   bold?: boolean
+  inverse?: boolean
 } & (
   | { children: React.ReactNode }
   | {
@@ -18,11 +19,11 @@ type TitleProps = {
 )
 
 const fontSize = {
-  h1: 'tracking-tight font-medium leading-none text-4xl md:text-6xl',
-  h2: 'tracking-tight font-medium leading-normal text-3xl md:text-5xl',
-  h3: 'tracking-tight font-medium leading-normal text-2xl md:text-4xl',
-  h4: 'tracking-tight font-medium leading-normal text-xl md:text-3xl',
-  h5: 'tracking-tight font-medium leading-normal text-lg md:text-2xl',
+  h1: 'tracking-tight font-medium leading-none text-5xl md:text-6xl',
+  h2: 'tracking-tight font-medium leading-normal text-4xl md:text-5xl',
+  h3: 'tracking-tight font-medium leading-normal text-3xl md:text-4xl',
+  h4: 'tracking-tight font-medium leading-normal text-2xl md:text-3xl',
+  h5: 'tracking-tight font-medium leading-normal text-xl md:text-2xl',
   h6: 'tracking-tight font-medium leading-normal text-lg',
 }
 
@@ -31,12 +32,18 @@ const titleColors = {
   secondary: 'text-secondary',
 }
 
+const titleColorsInverse = {
+  primary: 'text-inverse',
+  secondary: 'text-inverse-secondary',
+}
+
 export function Title({
   variant = 'primary',
   size,
   as,
   className,
   bold = false,
+  inverse = false,
   ...rest
 }: TitleProps & { size: keyof typeof fontSize }) {
   const Tag = as ?? size
@@ -44,7 +51,7 @@ export function Title({
     <Tag
       className={clsx(
         fontSize[size],
-        titleColors[variant],
+        inverse ? titleColorsInverse[variant] : titleColors[variant],
         { 'font-bold': bold },
         className,
       )}
@@ -98,7 +105,7 @@ export function Paragraph({
 }: ParagraphProps) {
   return React.createElement(as, {
     className: clsx(
-      'max-w-full font-medium leading-normal',
+      'max-w-full font-medium leading-normal tracking-tight',
       textColorClassName,
       className,
       {
@@ -108,4 +115,32 @@ export function Paragraph({
     ),
     ...rest,
   })
+}
+
+type SubtitleProps = {
+  children: React.ReactNode
+  variant?: 'purple' | 'pink' | 'gray'
+  className?: string
+}
+
+export function Subtitle({
+  children,
+  variant = 'purple',
+  className,
+}: SubtitleProps) {
+  return (
+    <span
+      className={clsx(
+        'block text-lg font-bold leading-normal tracking-tight',
+        {
+          'text-purple-500': variant === 'purple',
+          'text-pink-500': variant === 'pink',
+          'text-gray-400': variant === 'gray',
+        },
+        className,
+      )}
+    >
+      {children}
+    </span>
+  )
 }

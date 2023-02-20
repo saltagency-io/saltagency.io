@@ -8,7 +8,7 @@ type Props = {
 }
 export function ClientsSection({ logos }: Props) {
   return (
-    <Grid as="section" className="py-12">
+    <Grid as="section" className="py-16">
       <div className="col-span-8 col-start-3 flex items-center justify-center gap-x-12">
         {logos.map((logo) => (
           <div key={logo.id}>

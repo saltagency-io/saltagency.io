@@ -25,17 +25,26 @@ import {
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-import { getDataSource, getLayout } from '~/lib/storyblok.server'
+import {
+  getAllVacancies,
+  getDataSource,
+  getLayout,
+} from '~/lib/storyblok.server'
 import { SbButton } from '~/storyblok/button'
 import { SbCalculator } from '~/storyblok/calculator'
 import { SbFooter } from '~/storyblok/footer'
 import { SbGrid } from '~/storyblok/grid'
 import { SbHeader } from '~/storyblok/header'
 import { SbPage } from '~/storyblok/page'
+import { SbQuote } from '~/storyblok/quote'
 import { SbRichText } from '~/storyblok/rich-text'
+import { SbBlockWithSections } from '~/storyblok/sections/blok-with-sections'
+import { SbCareersSection } from '~/storyblok/sections/careers-section'
 import { SbClients } from '~/storyblok/sections/clients-section'
 import { SbHeroSection } from '~/storyblok/sections/hero-section'
+import { SbPeopleSection } from '~/storyblok/sections/people-section'
 import { SbRichTextSection } from '~/storyblok/sections/richtext-section'
+import { SbTextSection } from '~/storyblok/sections/text-section'
 import { SbVacancy } from '~/storyblok/vacancy'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
@@ -48,9 +57,10 @@ import {
   getRequiredGlobalEnvVar,
   removeTrailingSlash,
 } from '~/utils/misc'
-import { PreviewStateProvider } from '~/utils/providers'
+import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
+// TODO: export from /storblok and use enum as keys
 const components = {
   page: SbPage,
   vacancy: SbVacancy,
@@ -63,6 +73,11 @@ const components = {
   richTextSection: SbRichTextSection,
   clients: SbClients,
   calculator: SbCalculator,
+  textSection: SbTextSection,
+  blockWithSections: SbBlockWithSections,
+  quote: SbQuote,
+  peopleSection: SbPeopleSection,
+  careersSection: SbCareersSection,
 }
 
 storyblokInit({
@@ -135,13 +150,17 @@ export type LoaderData = SerializeFrom<typeof loader>
 
 export async function loader({ request }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const initialStory = await getLayout()
-  const labels = await getDataSource('labels')
+  const [initialStory, labels, vacancies] = await Promise.all([
+    getLayout(),
+    getDataSource('labels'),
+    getAllVacancies(preview),
+  ])
 
   const data = {
     initialStory,
     preview,
     labels,
+    vacancies,
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -152,7 +171,7 @@ export async function loader({ request }: DataFunctionArgs) {
   return typedjson(data)
 }
 
-export default function App() {
+export function App() {
   const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.initialStory, {}, data.preview)
   const location = useLocation()
@@ -167,46 +186,54 @@ export default function App() {
   }, [data.ENV.GOOGLE_ANALYTICS, location])
 
   return (
-    <React.StrictMode>
-      <html lang="en">
-        <head>
-          <Meta />
-          <Links />
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${ENV.GOOGLE_ANALYTICS}`}
-          />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${ENV.GOOGLE_ANALYTICS}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${ENV.GOOGLE_ANALYTICS}');
               gtag('config', '${ENV.GOOGLE_AW_TAG}');
           `,
-            }}
-          />
-        </head>
-        <body>
-          <PreviewStateProvider value={{ preview: data.preview }}>
-            <LabelsProvider data={data.labels}>
-              <StoryblokComponent blok={header} key={header._uid} />
-              <Outlet />
-              {/*<StoryblokComponent blok={footer} key={footer._uid} />*/}
-            </LabelsProvider>
-          </PreviewStateProvider>
-          <ScrollRestoration />
-          <Scripts />
-          <script
-            suppressHydrationWarning
-            dangerouslySetInnerHTML={{
-              __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
-            }}
-          />
-          <LiveReload />
-        </body>
-      </html>
-    </React.StrictMode>
+          }}
+        />
+      </head>
+      <body>
+        <StoryblokComponent blok={header} key={header._uid} />
+        <Outlet />
+        <StoryblokComponent blok={footer} key={footer._uid} />
+        <ScrollRestoration />
+        <Scripts />
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
+          }}
+        />
+        <LiveReload />
+      </body>
+    </html>
+  )
+}
+
+export default function AppWithProviders() {
+  const data = useTypedLoaderData<typeof loader>()
+
+  return (
+    <PreviewStateProvider value={{ preview: data.preview }}>
+      <LabelsProvider data={data.labels}>
+        <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
+          <App />
+        </VacanciesProvider>
+      </LabelsProvider>
+    </PreviewStateProvider>
   )
 }

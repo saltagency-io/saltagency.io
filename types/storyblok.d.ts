@@ -28,6 +28,11 @@ export enum BlokTypes {
   Clients = 'clients',
   RichTextSection = 'richTextSection',
   Calculator = 'calculator',
+  TextSection = 'textSection',
+  BlockWithSections = 'blockWithSections',
+  Quote = 'quote',
+  PeopleSection = 'peopleSection',
+  CareersSection = 'careersSection',
 }
 
 export type HeaderBlok = SbBlokData & {
@@ -38,10 +43,8 @@ export type HeaderBlok = SbBlokData & {
 
 export type FooterBlok = SbBlokData & {
   component: BlokTypes.Footer
-  logo: Asset
-  menu: LinkBlok[]
-  legalLinks: LinkBlok[]
   disclaimer: string
+  socialText: string
 }
 
 export type ButtonBlok = SbBlokData & {
@@ -90,11 +93,60 @@ export type CalculatorBlok = SbBlokData & {
   title?: string
 }
 
+export type TextSectionBlok = SbBlokData & {
+  components: BlokTypes.TextSection
+  subtitle: string
+  title: string
+  body: string
+}
+
+export type SectionBlok = SbBlokData & {
+  component: BlokTypes.BlockWithSections
+  icon?: string
+  title: string
+  text: string
+}
+
+export type BlockWithSectionsBlok = SbBlokData & {
+  component: BlokTypes.BlockWithSections
+  subtitle: string
+  title: string
+  variant: 'proposition' | 'formula' | 'application-process'
+  sections: SectionBlok[]
+}
+
+export type QuoteBlok = SbBlokData & {
+  component: BlokTypes.Quote
+  subtitle?: string
+  text: string
+  author: string
+  avatar: Asset
+  variant: 'basic' | 'extended'
+  theme: 'light' | 'dark'
+}
+
+export type PeopleSectionBlok = SbBlokData & {
+  component: BlokTypes.PeopleSection
+  subtitle: string
+  title: string
+  people: Asset[]
+}
+
+export type CareersSectionBlok = SbBlokData & {
+  component: BlokTypes.CareersSection
+  subtitle: string
+  title: string
+  actions: ButtonBlok[]
+}
+
 export type BodyComponents =
   | HeroBlok
-  | RichTextSectionBlok
-  | GridBlok
   | CalculatorBlok
+  | TextSectionBlok
+  | BlockWithSectionsBlok
+  | QuoteBlok
+  | PeopleSectionBlok
+  | CareersSectionBlok
 
 export type MetaTags = {
   title?: string

@@ -26,6 +26,7 @@
 }
 
 @layer utilities {
+  /*TODO: figure out if we can reuse some stuff here*/
   .focus-ring {
     @apply ring-gray-900 ring-offset-4 ring-offset-white transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
   }
@@ -38,8 +39,23 @@
     @apply bg-white;
   }
 
+  .bg-secondary {
+    background: linear-gradient(0deg, #ffffff 0%, rgba(255, 255, 255, 0) 98.35%),
+      rgba(35, 74, 134, 0.05);
+  }
+
   .bg-inverse {
     @apply bg-gray-900;
+  }
+
+  .bg-gradient {
+    background: linear-gradient(
+        360deg,
+        #0f0e17 1.67%,
+        rgba(15, 14, 23, 0) 140.45%
+      ),
+      linear-gradient(0deg, rgba(1, 13, 55, 0.49), rgba(1, 13, 55, 0.49)),
+      linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
   }
 
   .text-primary {
@@ -54,18 +70,26 @@
     @apply text-white;
   }
 
-  .text-transparent {
+  .text-inverse-secondary {
     @apply text-opacity-60;
     color: rgba(255, 255, 255, var(--tw-text-opacity));
   }
 
-  .border-transparent {
-    @apply border-opacity-50;
+  .border-light {
+    @apply border-opacity-20;
     border-color: rgba(255, 255, 255, var(--tw-border-opacity));
   }
 
+  .border-avatar-light {
+    border: 8px solid rgba(35, 74, 134, 0.05);
+  }
+
+  .border-avatar-dark {
+    border: 8px solid rgba(255, 255, 255, 0.05);
+  }
+
   .text-list li {
-    @apply relative mb-1 pl-8 text-xl text-primary;
+    @apply text-primary relative mb-1 pl-8 text-xl;
   }
 
   .text-list li:before {

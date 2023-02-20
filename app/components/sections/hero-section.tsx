@@ -24,7 +24,7 @@ export function HeroSection({ children, title, body }: Props) {
           >
             {body}
           </H4>
-          <div className="mx-auto flex flex-col justify-center gap-4 pt-8 lg:flex-row lg:gap-6 lg:pt-6">
+          <div className="mx-auto flex flex-col justify-center gap-4 pt-8 lg:flex-row lg:gap-6 lg:pt-10">
             {children}
           </div>
         </div>

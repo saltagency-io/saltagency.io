@@ -1,4 +1,11 @@
-import type { Asset, Image, LinkBlok, LinkType } from '~/types'
+import type {
+  Asset,
+  Image,
+  LinkBlok,
+  LinkType,
+  Section,
+  SectionBlok,
+} from '~/types'
 
 function formatUrl(url: string) {
   let formatted = url
@@ -24,5 +31,14 @@ export function mapAsset(asset: Asset): Image {
     id: asset.id.toString(),
     url: asset.filename,
     alt: asset.alt,
+  }
+}
+
+export function mapSection(section: SectionBlok): Section {
+  return {
+    id: section._uid,
+    icon: section.icon,
+    title: section.title,
+    text: section.text,
   }
 }
