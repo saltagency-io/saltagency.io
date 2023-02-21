@@ -42,7 +42,8 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
-body {
+body,
+main {
   overflow-x: hidden;
 }
 

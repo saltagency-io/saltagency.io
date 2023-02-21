@@ -11,7 +11,7 @@ type Props = {
 
 export function TextSection({ subtitle, title, body }: Props) {
   return (
-    <Grid className="py-40">
+    <Grid className="py-24 lg:py-40">
       <div className="col-span-4 md:col-span-8 lg:col-span-10 lg:col-start-2">
         <Subtitle className="mb-4">{subtitle}</Subtitle>
         <H2 className="mb-6">{title}</H2>

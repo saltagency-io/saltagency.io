@@ -11,9 +11,9 @@ type Props = {
 
 export function Footer({ disclaimer, socialText }: Props) {
   return (
-    <footer className="bg-gray-900 py-16">
+    <footer className="bg-gray-900 py-10 lg:py-16">
       <Grid>
-        <div className="col-span-full flex items-center justify-between">
+        <div className="col-span-full flex flex-col-reverse lg:items-center justify-between lg:flex-row">
           <Paragraph
             className="opacity-40"
             textColorClassName="text-white"
@@ -21,9 +21,11 @@ export function Footer({ disclaimer, socialText }: Props) {
           >
             {disclaimer}
           </Paragraph>
-          <Markdown theme="light" margins={false}>
-            {socialText}
-          </Markdown>
+          <div className="mb-6 lg:mb-0">
+            <Markdown theme="light" margins={false}>
+              {socialText}
+            </Markdown>
+          </div>
         </div>
       </Grid>
     </footer>

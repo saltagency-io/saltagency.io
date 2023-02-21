@@ -12,13 +12,13 @@ type Props = {
 
 export function PropositionSection({ subtitle, title, sections }: Props) {
   return (
-    <div className="bg-inverse py-40">
+    <div className="bg-inverse py-20 lg:py-40">
       <Grid>
         <div className="col-span-full">
           <Subtitle variant="pink" className="mb-4">
             {subtitle}
           </Subtitle>
-          <H3 as="h2" className="text-inverse mb-14">
+          <H3 as="h2" className="text-inverse mb-8 lg:mb-14">
             {title}
           </H3>
         </div>
@@ -27,10 +27,10 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
             <Grid
               nested
               key={section.id}
-              className="border-light border-b py-14"
+              className="border-light border-b py-8 lg:py-14"
             >
               <div className="col-span-6">
-                <H4 as="h3" className="text-inverse">
+                <H4 as="h3" className="text-inverse pb-2 lg:pb-0">
                   {section.title}
                 </H4>
               </div>

@@ -2,18 +2,14 @@ import * as React from 'react'
 
 import type { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
-import type { LoaderFunctionArgs } from '@remix-run/router'
-
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { Grid } from '~/components/grid'
 import { H2 } from '~/components/typography'
-import { getAllVacancies } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import { useLabels } from '~/utils/labels-provider'
 import { getUrl } from '~/utils/misc'
+import { useVacancies } from '~/utils/providers'
 import { getSocialMetas } from '~/utils/seo'
-import { isPreview } from '~/utils/storyblok'
 
 export const meta: MetaFunction = ({ parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
@@ -26,23 +22,8 @@ export const meta: MetaFunction = ({ parentsData }) => {
   }
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const preview = isPreview(request)
-  const vacancies = await getAllVacancies(preview)
-
-  const data = {
-    vacancies,
-  }
-
-  const headers = {
-    'Cache-Control': 'private, max-age=3600',
-  }
-
-  return typedjson(data, { status: 200, headers })
-}
-
 export default function JobsIndex() {
-  const data = useTypedLoaderData<typeof loader>()
+  const { vacancies } = useVacancies()
   const { t } = useLabels()
 
   return (
@@ -54,7 +35,7 @@ export default function JobsIndex() {
           </H2>
         </div>
         <ul className="col-span-full">
-          {(data.vacancies || []).map((vacancy) => (
+          {vacancies.map((vacancy) => (
             <li key={vacancy.uuid} className="mb-2">
               <Link
                 to={vacancy.slug}

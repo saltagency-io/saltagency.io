@@ -1,0 +1,46 @@
+import * as React from 'react'
+
+import clsx from 'clsx'
+
+type Props = {
+  height?: number
+  width?: number
+  top?: number
+  right?: number
+  bottom?: number
+  left?: number
+  rotate?: number
+  opacity?: number
+  className?: string
+}
+
+export function GradientCircle({
+  height = 900,
+  width = 900,
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0,
+  rotate = 0,
+  opacity = 40,
+  className,
+}: Props) {
+  return (
+    <div
+      className={clsx(
+        'bg-gradient-radial absolute rounded-full blur-4xl',
+        className,
+      )}
+      style={{
+        transform: `rotate(${rotate}deg)`,
+        opacity: opacity / 100,
+        height: `${height}px`,
+        width: `${width}px`,
+        top: top !== 0 ? `${top}px` : undefined,
+        right: right !== 0 ? `${right}px` : undefined,
+        bottom: bottom !== 0 ? `${bottom}px` : undefined,
+        left: left !== 0 ? `${left}px` : undefined,
+      }}
+    />
+  )
+}

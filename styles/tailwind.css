@@ -58,6 +58,16 @@
       linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
   }
 
+  .bg-gradient-radial {
+    background: linear-gradient(
+      143.15deg,
+      #6100ff 8.37%,
+      rgba(0, 255, 255, 0.25) 40%,
+      rgba(0, 255, 255, 0.1) 60%,
+      rgba(0, 255, 255, 0) 91.49%
+    );
+  }
+
   .text-primary {
     @apply text-gray-900;
   }

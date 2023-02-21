@@ -14,9 +14,9 @@ type Props = {
 
 export function PeopleSection({ subtitle, title, people }: Props) {
   return (
-    <div className="bg-secondary py-40">
+    <div className="bg-secondary py-20 lg:py-40">
       <Grid>
-        <div className="col-span-5">
+        <div className="col-span-4 md:col-span-8 lg:col-span-5">
           <Subtitle variant="gray" className="mb-4">
             {subtitle}
           </Subtitle>
@@ -24,8 +24,11 @@ export function PeopleSection({ subtitle, title, people }: Props) {
             {title}
           </H3>
         </div>
-        <div className="col-span-6 col-start-7">
-          <Grid nested className="grid-rows-12 h-[754px] gap-y-6 pt-8">
+        <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
+          <Grid
+            nested
+            className="grid-rows-12 h-[472px] gap-y-6 pt-10 lg:h-[754px]"
+          >
             {people.map((person, i) => (
               <div
                 key={person.id}
@@ -33,8 +36,8 @@ export function PeopleSection({ subtitle, title, people }: Props) {
                   backgroundImage: `url(${person.url})`,
                 }}
                 className={clsx(
-                  'col-span-6 row-span-6 overflow-hidden rounded-lg',
-                  'bg-cover bg-bottom',
+                  'col-span-2 row-span-6 md:col-span-4 lg:col-span-6',
+                  'overflow-hidden rounded-lg bg-cover bg-bottom',
                   {
                     'row-start-1': i === 0,
                     'row-start-2': i === 1,

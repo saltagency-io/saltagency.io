@@ -14,6 +14,7 @@ import {
   useMenuButtonContext,
 } from '@reach/menu-button'
 
+import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
 
 function NavLink({
@@ -61,6 +62,12 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
     }
   }, [isExpanded])
 
+  const linkClassName = clsx(
+    'text-primary text-2xl leading-normal tracking-tight',
+    'mx-8vw border-b border-gray-200 py-6 px-0',
+    'hover:bg-primary focus:bg-primary',
+  )
+
   return (
     <AnimatePresence>
       {isExpanded ? (
@@ -75,27 +82,40 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
           className="z-50"
         >
           <motion.div
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -50, opacity: 0 }}
+            initial={{ y: -50, opacity: 0, overflowY: 'hidden' }}
+            animate={{ y: 0, opacity: 1, overflowY: 'scroll' }}
+            exit={{ y: -50, opacity: 0, overflowY: 'hidden' }}
             transition={{
-              duration: shouldReduceMotion ? 0 : 0.15,
+              duration: shouldReduceMotion ? 0 : 0.2,
               ease: 'linear',
             }}
-            className="bg-primary flex h-full flex-col overflow-y-scroll border-t border-gray-200 pb-12"
+            className="bg-primary flex h-full flex-col overflow-x-hidden py-12"
           >
             <MenuItems className="border-none bg-transparent p-0">
-              {menu.map((link) => (
-                <MenuLink
-                  className="text-primary border-b border-gray-200 px-10vw py-9 hover:bg-gray-700 focus:bg-gray-700"
-                  key={link.id}
-                  as={Link}
-                  to={link.url}
-                >
-                  {link.text}
+              <>
+                <MenuLink className={linkClassName} as={Link} to="/">
+                  Home
                 </MenuLink>
-              ))}
+                {menu.map((link) => (
+                  <MenuLink
+                    className={linkClassName}
+                    key={link.id}
+                    as={Link}
+                    to={link.url}
+                  >
+                    {link.text}
+                  </MenuLink>
+                ))}
+              </>
             </MenuItems>
+            <GradientCircle
+              className="transition"
+              rotate={-75}
+              height={758}
+              width={758}
+              bottom={-370}
+              right={-540}
+            />
           </motion.div>
         </MenuPopover>
       ) : null}
@@ -128,7 +148,14 @@ function MobileMenu({ menu }: { menu: LinkType[] }) {
         const state = isExpanded ? 'open' : 'closed'
         return (
           <>
-            <MenuButton className="text-primary inline-flex h-14 w-14 items-center justify-center rounded-full p-1 transition focus:outline-none">
+            <MenuButton
+              className={clsx(
+                '-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-lg p-1 text-gray-700 transition focus:outline-none',
+                {
+                  'bg-gray-100': state === 'open',
+                },
+              )}
+            >
               <svg
                 width="32"
                 height="32"
@@ -226,8 +253,8 @@ type Props = {
 
 export function Header({ menu }: Props) {
   return (
-    <nav className="mx-8vw">
-      <div className="mx-auto flex max-w-5xl items-center justify-between py-8 lg:mt-12 lg:py-8">
+    <div className="relative bg-primary mx-8vw py-8 lg:mt-12 lg:py-8 z-10">
+      <nav className="mx-auto flex max-w-5xl items-center justify-between">
         <Link prefetch="intent" to="/">
           <Logo className="w-[58px] lg:w-[107px]" />
         </Link>
@@ -243,7 +270,7 @@ export function Header({ menu }: Props) {
         <div className="block lg:hidden">
           <MobileMenu menu={menu} />
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   )
 }

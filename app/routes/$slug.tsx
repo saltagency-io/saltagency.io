@@ -12,7 +12,7 @@ import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import type { LoaderData as RootLoaderData } from '../root'
-import { Gradient } from '~/components/gradient'
+import { Gradient } from '~/components/gradient-circle'
 import { getStoriesForSitemap, getStoryBySlug } from '~/lib/storyblok.server'
 import { pathedRoutes } from '~/other-routes.server'
 import type { Handle } from '~/types'
