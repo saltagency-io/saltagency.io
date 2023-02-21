@@ -67,7 +67,7 @@ export function Quote({
             “{text}”
           </H3>
           {variant === 'basic' ? (
-            <div className="flex items-center gap-x-4">
+            <div className="flex justify-center lg:justify-start items-center gap-x-4">
               <Avatar
                 className="hidden lg:block"
                 url={avatar.url}

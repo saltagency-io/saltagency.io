@@ -41,6 +41,7 @@ import { SbRichText } from '~/storyblok/rich-text'
 import { SbBlockWithSections } from '~/storyblok/sections/blok-with-sections'
 import { SbCareersSection } from '~/storyblok/sections/careers-section'
 import { SbClients } from '~/storyblok/sections/clients-section'
+import { SbHeaderSection } from '~/storyblok/sections/header-section'
 import { SbHeroSection } from '~/storyblok/sections/hero-section'
 import { SbPeopleSection } from '~/storyblok/sections/people-section'
 import { SbRichTextSection } from '~/storyblok/sections/richtext-section'
@@ -78,6 +79,7 @@ const components = {
   quote: SbQuote,
   peopleSection: SbPeopleSection,
   careersSection: SbCareersSection,
+  headerSection: SbHeaderSection,
 }
 
 storyblokInit({

@@ -2,6 +2,13 @@ import type * as React from 'react'
 
 import { SbBlokData, storyblokEditable } from '@storyblok/react'
 
+import {
+  IconBankNotes,
+  IconEye,
+  IconHeart,
+  IconShield,
+  IconUsers,
+} from '~/components/icons'
 import { usePreviewState } from '~/utils/providers'
 
 export function isPreview(request: Request) {
@@ -27,4 +34,13 @@ export function StoryBlokWrapper({
   }
 
   return <>{children}</>
+}
+
+// Maps names in Storyblok to our icon components
+export const sbIconMap: Record<string, React.ComponentType<any>> = {
+  eye: IconEye,
+  users: IconUsers,
+  heart: IconHeart,
+  banknotes: IconBankNotes,
+  shield: IconShield,
 }

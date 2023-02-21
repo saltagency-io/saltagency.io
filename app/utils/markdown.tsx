@@ -9,75 +9,72 @@ import { AnchorOrLink } from '~/utils/misc'
 type Components = React.ComponentProps<typeof ReactMarkdown>['components']
 
 function getComponents({
-  theme,
+  textAlign,
+  textColor,
   margins,
 }: {
-  theme: 'dark' | 'light'
+  textAlign: Props['textAlign']
+  textColor: Props['textColor']
   margins: boolean
 }): Components {
-  const headingClasses = clsx({
-    'mb-4': margins,
-    'text-primary': theme === 'dark',
-    'text-inverse': theme === 'light',
-  })
+  const alignClassName = `text-${textAlign}`
+  const colorClassName = `text-${textColor}`
 
-  const otherTextClasses = clsx({
-    'mb-6': margins,
-    'text-primary': theme === 'dark',
-    'text-inverse': theme === 'light',
+  const headingClassName = clsx(alignClassName, colorClassName, {
+    'mb-4': margins,
   })
 
   return {
-    h1: (props) => <H1 className={headingClasses}>{props.children}</H1>,
-    h2: (props) => <H2 className={headingClasses}>{props.children}</H2>,
-    h3: (props) => <H3 className={headingClasses}>{props.children}</H3>,
-    h4: (props) => <H4 className={headingClasses}>{props.children}</H4>,
-    h5: (props) => <H5 className={headingClasses}>{props.children}</H5>,
-    h6: (props) => <H6 className={headingClasses}>{props.children}</H6>,
+    h1: (props) => <H1 className={headingClassName}>{props.children}</H1>,
+    h2: (props) => <H2 className={headingClassName}>{props.children}</H2>,
+    h3: (props) => <H3 className={headingClassName}>{props.children}</H3>,
+    h4: (props) => <H4 className={headingClassName}>{props.children}</H4>,
+    h5: (props) => <H5 className={headingClassName}>{props.children}</H5>,
+    h6: (props) => <H6 className={headingClassName}>{props.children}</H6>,
     p: (props) => (
-      <Paragraph className={otherTextClasses}>{props.children}</Paragraph>
+      <Paragraph
+        className={clsx(alignClassName, colorClassName, {
+          'mb-6': margins,
+        })}
+      >
+        {props.children}
+      </Paragraph>
     ),
     a: (props) => (
       <AnchorOrLink
         to={props.href}
-        className={clsx('underline', {
-          'text-primary': theme === 'dark',
-          'text-inverse': theme === 'light',
-        })}
+        className={clsx('underline', colorClassName)}
       >
         {props.children}
       </AnchorOrLink>
     ),
     strong: (props) => (
-      <strong
-        className={clsx('font-bold', {
-          'text-primary': theme === 'dark',
-          'text-inverse': theme === 'light',
-        })}
-      >
+      <strong className={clsx('font-bold', colorClassName)}>
         {props.children}
       </strong>
     ),
     ul: (props) =>
       props.ordered ? (
-        <ol className={clsx(otherTextClasses, 'text-list')}>
-          {props.children}
-        </ol>
+        <ol className={clsx('text-list', colorClassName)}>{props.children}</ol>
       ) : (
-        <ul className={clsx(otherTextClasses, 'text-list')}>
-          {props.children}
-        </ul>
+        <ul className={clsx('text-list', colorClassName)}>{props.children}</ul>
       ),
   }
 }
 
 type Props = {
   children: string
-  theme?: 'dark' | 'light'
+  textAlign?: 'left' | 'right' | 'center'
+  textColor?: 'primary' | 'secondary' | 'inverse'
   margins?: boolean
 }
 
-export function Markdown({ children, margins = true, theme = 'dark' }: Props) {
-  const components = getComponents({ margins, theme })
+export function Markdown({
+  children,
+  margins = true,
+  textAlign = 'left',
+  textColor = 'primary',
+}: Props) {
+  const components = getComponents({ textAlign, textColor, margins })
   return <ReactMarkdown children={children} components={components} />
 }

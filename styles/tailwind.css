@@ -58,6 +58,17 @@
       linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
   }
 
+  .bg-gradient-dark {
+    background: linear-gradient(
+        148.67deg,
+        #0f0e17 28.61%,
+        rgba(15, 14, 23, 0) 156.76%
+      ),
+      linear-gradient(360deg, #0f0e17 1.67%, rgba(15, 14, 23, 0) 140.45%),
+      linear-gradient(0deg, rgba(1, 13, 55, 0.29), rgba(1, 13, 55, 0.29)),
+      linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
+  }
+
   .bg-gradient-radial {
     background: linear-gradient(
       143.15deg,
@@ -85,6 +96,11 @@
     color: rgba(255, 255, 255, var(--tw-text-opacity));
   }
 
+  .border-secondary {
+    @apply border-opacity-10;
+    border-color: rgba(5, 25, 107, var(--tw-border-opacity));
+  }
+
   .border-light {
     @apply border-opacity-20;
     border-color: rgba(255, 255, 255, var(--tw-border-opacity));
@@ -99,7 +115,7 @@
   }
 
   .text-list li {
-    @apply text-primary relative mb-1 pl-8 text-xl;
+    @apply relative mb-1 pl-8 text-xl;
   }
 
   .text-list li:before {

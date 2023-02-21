@@ -33,6 +33,7 @@ export enum BlokTypes {
   Quote = 'quote',
   PeopleSection = 'peopleSection',
   CareersSection = 'careersSection',
+  HeaderSection = 'headerSection',
 }
 
 export type HeaderBlok = SbBlokData & {
@@ -136,7 +137,14 @@ export type CareersSectionBlok = SbBlokData & {
   component: BlokTypes.CareersSection
   subtitle: string
   title: string
+  theme: 'dark' | 'light'
   actions: ButtonBlok[]
+}
+
+export type HeaderSectionBlok = SbBlokData & {
+  component: BlokTypes.HeaderSection
+  title: string
+  body: string
 }
 
 export type BodyComponents =
@@ -147,6 +155,7 @@ export type BodyComponents =
   | QuoteBlok
   | PeopleSectionBlok
   | CareersSectionBlok
+  | HeaderSectionBlok
 
 export type MetaTags = {
   title?: string

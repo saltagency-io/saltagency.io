@@ -4,6 +4,7 @@ import { PropositionSection } from '~/components/sections/proposition-section'
 import type { BlockWithSectionsBlok, Section } from '~/types'
 import { mapSection } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
+import {FormulaSection} from "~/components/sections/formula-section";
 
 enum Variant {
   Proposition = 'proposition',
@@ -19,7 +20,7 @@ type SectionComponent = React.ComponentType<{
 
 const sections: Record<Variant, SectionComponent> = {
   [Variant.Proposition]: PropositionSection,
-  [Variant.Formula]: () => null,
+  [Variant.Formula]: FormulaSection,
   [Variant.ApplicationProcess]: () => null,
 }
 

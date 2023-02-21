@@ -89,7 +89,7 @@ type ParagraphProps = {
   prose?: boolean
   textColorClassName?: string
   as?: React.ElementType
-  size?: 'sm' | 'lg'
+  size?: 'sm' | 'lg' | 'xl'
 } & (
   | { children: React.ReactNode }
   | { dangerouslySetInnerHTML: { __html: string } }
@@ -105,12 +105,13 @@ export function Paragraph({
 }: ParagraphProps) {
   return React.createElement(as, {
     className: clsx(
-      'max-w-full font-medium leading-normal tracking-tight',
+      'max-w-full font-medium tracking-tight',
       textColorClassName,
       className,
       {
-        'text-sm': size === 'sm',
-        'text-lg': size === 'lg',
+        'text-sm leading-6': size === 'sm',
+        'text-lg leading-6': size === 'lg',
+        'text-lg leading-6 md:text-2xl md:leading-9': size === 'xl',
       },
     ),
     ...rest,

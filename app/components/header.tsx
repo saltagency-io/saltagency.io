@@ -253,7 +253,7 @@ type Props = {
 
 export function Header({ menu }: Props) {
   return (
-    <div className="relative bg-primary mx-8vw py-8 lg:mt-12 lg:py-8 z-10">
+    <div className="mx-8vw py-8 lg:mt-12 lg:py-8">
       <nav className="mx-auto flex max-w-5xl items-center justify-between">
         <Link prefetch="intent" to="/">
           <Logo className="w-[58px] lg:w-[107px]" />

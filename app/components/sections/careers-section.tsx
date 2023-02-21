@@ -2,6 +2,8 @@ import type * as React from 'react'
 
 import { Link } from '@remix-run/react'
 
+import clsx from 'clsx'
+
 import { Grid } from '~/components/grid'
 import { H3, H4, Subtitle } from '~/components/typography'
 import { useVacancies } from '~/utils/providers'
@@ -10,13 +12,24 @@ type Props = {
   children: React.ReactNode
   subtitle: string
   title: string
+  theme?: 'dark' | 'light'
 }
 
-export function CareersSection({ children, subtitle, title }: Props) {
+export function CareersSection({
+  children,
+  subtitle,
+  title,
+  theme = 'light',
+}: Props) {
   const { vacancies } = useVacancies()
 
   return (
-    <div className="bg-gradient py-20 lg:py-40">
+    <div
+      className={clsx('py-20 lg:py-40', {
+        'bg-gradient': theme === 'light',
+        'bg-gradient-dark': theme === 'dark',
+      })}
+    >
       <Grid>
         <div className="col-span-4 md:col-span-8 lg:col-span-5">
           <Subtitle variant="pink" className="mb-4">
@@ -40,7 +53,9 @@ export function CareersSection({ children, subtitle, title }: Props) {
             </Link>
           ))}
         </div>
-        <div className="block pt-14 lg:hidden">{children}</div>
+        {children || (Array.isArray(children) && children.length !== 0) ? (
+          <div className="block pt-14 lg:hidden">{children}</div>
+        ) : null}
       </Grid>
     </div>
   )

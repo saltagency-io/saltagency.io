@@ -21,13 +21,13 @@ export function HeroSection({ children, title, body }: Props) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative py-12 lg:pb-48 lg:pt-32">
       {/*Mobile*/}
       <GradientCircle
         className="block lg:hidden"
         height={520}
         width={520}
-        top={70}
+        top={100}
         left={-400}
       />
       {/*Desktop*/}
@@ -35,12 +35,12 @@ export function HeroSection({ children, title, body }: Props) {
         className="hidden lg:block"
         height={1000}
         width={1000}
-        top={120}
+        top={140}
         left={-400}
         opacity={20}
       />
 
-      <Grid as="header" className="py-12 lg:pb-48 lg:pt-24">
+      <Grid as="header">
         <motion.div
           className="col-span-4 md:col-span-8 lg:col-start-3"
           initial="initial"
