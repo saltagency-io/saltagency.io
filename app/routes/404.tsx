@@ -1,5 +1,8 @@
-import type { Handle } from '../../types'
-import { HeroSection } from '~/components/sections/hero-section'
+// this is just here to test the 404 page
+import * as React from 'react'
+
+import { ErrorSection } from '~/components/errors'
+import type { Handle } from '~/types'
 
 export const handle: Handle = {
   getSitemapEntries: () => null,
@@ -12,10 +15,7 @@ export function meta() {
 export default function NotFoundPage() {
   return (
     <main>
-      <HeroSection
-        title="404 - Oh no, you found a page that's missing stuff."
-        body="This is not a page on saltagency.io. So sorry."
-      />
+      <ErrorSection title="404 - We searched everywhere but we couldn't find it" />
     </main>
   )
 }

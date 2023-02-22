@@ -13,6 +13,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
   useLocation,
 } from '@remix-run/react'
 
@@ -25,6 +26,7 @@ import {
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
+import { ErrorPage } from '~/components/errors'
 import {
   getAllVacancies,
   getDataSource,
@@ -214,13 +216,6 @@ export function App() {
         <StoryblokComponent blok={footer} key={footer._uid} />
         <ScrollRestoration />
         <Scripts />
-        {/*<script*/}
-        {/*  type="text/javascript"*/}
-        {/*  id="hs-script-loader"*/}
-        {/*  async*/}
-        {/*  defer*/}
-        {/*  src="//js-na1.hs-scripts.com/20177448.js"*/}
-        {/*/>*/}
         <script
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
@@ -245,4 +240,68 @@ export default function AppWithProviders() {
       </LabelsProvider>
     </PreviewStateProvider>
   )
+}
+
+function ErrorDoc({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <title>Oh no...</title>
+        <Links />
+      </head>
+      <body className="bg-gradient">
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  )
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  const location = useLocation()
+  console.error(error)
+  return (
+    <ErrorDoc>
+      <ErrorPage
+        errorSectionProps={{
+          title: '500',
+          subtitle: `Oops, something went terribly wrong on "${location.pathname}". Sorry about that!`,
+        }}
+      />
+    </ErrorDoc>
+  )
+}
+
+export function CatchBoundary() {
+  const caught = useCatch()
+  const location = useLocation()
+  console.error('CatchBoundary', caught)
+
+  if (caught.status === 404) {
+    return (
+      <ErrorDoc>
+        <ErrorPage
+          errorSectionProps={{
+            title: '404',
+            subtitle: `We searched everywhere but we couldn't find "${location.pathname}"`,
+          }}
+        />
+      </ErrorDoc>
+    )
+  }
+
+  if (caught.status !== 500) {
+    return (
+      <ErrorDoc>
+        <ErrorPage
+          errorSectionProps={{
+            title: '500',
+            subtitle: `Oops, something went terribly wrong on "${location.pathname}". Sorry about that!`,
+          }}
+        />
+      </ErrorDoc>
+    )
+  }
+
+  throw new Error(`Unhandled error: ${caught.status}`)
 }
