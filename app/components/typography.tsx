@@ -20,8 +20,8 @@ type TitleProps = {
 
 const fontSize = {
   h1: 'tracking-tight font-medium leading-normal md:leading-none text-4xl md:text-6xl',
-  h2: 'tracking-tight font-medium leading-normal text-3xl md:text-5xl',
-  h3: 'tracking-tight font-medium leading-normal text-2xl md:text-4xl',
+  h2: 'tracking-tight font-medium leading-normal text-4xl md:text-5xl',
+  h3: 'tracking-tight font-medium leading-normal text-3xl md:text-4xl',
   h4: 'tracking-tight font-medium leading-normal text-2xl md:text-3xl',
   h5: 'tracking-tight font-medium leading-normal text-xl md:text-2xl',
   h6: 'tracking-tight font-medium leading-normal text-lg',
@@ -132,7 +132,7 @@ export function Subtitle({
   return (
     <span
       className={clsx(
-        'block text-2xl font-bold leading-normal tracking-tight',
+        'block text-xl lg:text-2xl font-bold leading-normal tracking-tight',
         {
           'text-purple-500': variant === 'purple',
           'text-pink-500': variant === 'pink',

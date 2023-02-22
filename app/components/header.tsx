@@ -16,6 +16,7 @@ import {
 
 import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
+import { useLabels } from '~/utils/labels-provider'
 
 function NavLink({
   to,
@@ -48,6 +49,7 @@ function NavLink({
 
 function MobileMenuList({ menu }: { menu: LinkType[] }) {
   const { isExpanded } = useMenuButtonContext()
+  const { t } = useLabels()
   const shouldReduceMotion = useReducedMotion()
 
   React.useEffect(() => {
@@ -94,7 +96,7 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
             <MenuItems className="border-none bg-transparent p-0">
               <>
                 <MenuLink className={linkClassName} as={Link} to="/">
-                  Home
+                  {t('home')}
                 </MenuLink>
                 {menu.map((link) => (
                   <MenuLink
@@ -113,8 +115,9 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
               rotate={-75}
               height={758}
               width={758}
-              bottom={-370}
+              bottom={-280}
               right={-540}
+              opacity={20}
             />
           </motion.div>
         </MenuPopover>

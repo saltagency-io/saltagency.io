@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import clsx from 'clsx'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
 import { H3, Subtitle } from '~/components/typography'
@@ -13,6 +14,14 @@ type Props = {
 }
 
 export function PeopleSection({ subtitle, title, people }: Props) {
+  const { scrollY, scrollYProgress } = useScroll()
+  const translateY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, 120])
+  const translateYNegative = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [0, 0, -120],
+  )
+
   return (
     <div className="bg-secondary py-20 lg:py-40">
       <Grid>
@@ -30,9 +39,10 @@ export function PeopleSection({ subtitle, title, people }: Props) {
             className="grid-rows-12 h-[472px] gap-y-6 pt-10 lg:h-[754px]"
           >
             {people.map((person, i) => (
-              <div
+              <motion.div
                 key={person.id}
                 style={{
+                  y: (i + 1) % 2 === 0 ? translateYNegative : translateY,
                   backgroundImage: `url(${person.url})`,
                 }}
                 className={clsx(

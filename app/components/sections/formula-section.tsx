@@ -40,7 +40,7 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
                 },
               )}
             >
-              <div className="py-6 lg:px-6 lg:pt-12 lg:pb-14">
+              <div className="py-6 lg:px-6 lg:py-12">
                 <div className="mb-4 text-gray-600">
                   <Icon />
                 </div>

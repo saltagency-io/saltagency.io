@@ -214,6 +214,13 @@ export function App() {
         <StoryblokComponent blok={footer} key={footer._uid} />
         <ScrollRestoration />
         <Scripts />
+        {/*<script*/}
+        {/*  type="text/javascript"*/}
+        {/*  id="hs-script-loader"*/}
+        {/*  async*/}
+        {/*  defer*/}
+        {/*  src="//js-na1.hs-scripts.com/20177448.js"*/}
+        {/*/>*/}
         <script
           suppressHydrationWarning
           dangerouslySetInnerHTML={{

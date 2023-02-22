@@ -21,21 +21,21 @@ export function HeroSection({ children, title, body }: Props) {
   }
 
   return (
-    <div className="relative py-12 lg:pb-48 lg:pt-32">
+    <div className="relative py-12 lg:py-48">
       {/*Mobile*/}
       <GradientCircle
         className="block lg:hidden"
-        height={520}
-        width={520}
-        top={100}
+        height={521}
+        width={521}
+        top={120}
         left={-400}
       />
       {/*Desktop*/}
       <GradientCircle
         className="hidden lg:block"
-        height={1000}
-        width={1000}
-        top={140}
+        height={1013}
+        width={1013}
+        top={30}
         left={-400}
         opacity={20}
       />
@@ -54,8 +54,8 @@ export function HeroSection({ children, title, body }: Props) {
             <H1 className="mb-6 text-center">{title}</H1>
           </motion.div>
 
-          <motion.div variants={childVariants}>
-            <H4 as="h2" className="text-center lg:px-32" variant="secondary">
+          <motion.div className="lg:px-32" variants={childVariants}>
+            <H4 as="h2" className="text-center" variant="secondary">
               {body}
             </H4>
           </motion.div>
@@ -82,8 +82,8 @@ export function HeroSection({ children, title, body }: Props) {
         className="hidden lg:block"
         height={1100}
         width={1100}
-        right={-620}
-        top={160}
+        right={-600}
+        top={10}
         opacity={20}
       />
     </div>

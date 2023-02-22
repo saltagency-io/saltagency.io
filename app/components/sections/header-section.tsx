@@ -25,25 +25,25 @@ export function HeaderSection({ title, body }: Props) {
   }
 
   return (
-    <div className="relative pt-8 pb-10 lg:pb-40 lg:pt-32">
+    <div className="relative pt-8 pb-10 lg:pb-24 lg:pt-48">
       {/*Mobile*/}
       <GradientCircle
         className="mx-auto block lg:hidden"
-        opacity={20}
-        height={500}
-        width={500}
-        top={120}
+        opacity={15}
+        height={666}
+        width={666}
+        top={170}
         left={1}
         right={1}
       />
       {/*Desktop*/}
       <GradientCircle
-        className="mx-auto hidden lg:block"
-        opacity={20}
-        height={860}
-        width={860}
-        top={130}
-        left={1}
+        className="mx-auto hidden border border-red-500 lg:block"
+        opacity={15}
+        height={920}
+        width={920}
+        top={-60}
+        left={-40}
         right={1}
       />
       <Grid as="header">
@@ -59,22 +59,36 @@ export function HeaderSection({ title, body }: Props) {
           <motion.div variants={childVariants}>
             <H1 className="mb-4 lg:mb-10 lg:text-center">{title}</H1>
           </motion.div>
-          <motion.div variants={childVariants}>
+          <motion.div className="lg:px-32" variants={childVariants}>
             <H4 as="p" variant="secondary" className="lg:text-center">
               {body}
             </H4>
           </motion.div>
           <motion.div
-            className="pt-28 text-center lg:pt-52"
-            variants={childVariants}
+            className="pt-28 text-center lg:pt-72"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2 }}
           >
             <Link className="inline-block" to="#formula">
               <Paragraph
                 className="hover:text-primary flex flex-col items-center gap-2 text-lg transition lg:flex-row lg:text-2xl"
                 as="span"
-                textColorClassName="text-secondary"
+                textColorClassName="text-gray-400"
               >
-                {t('indicator.scroll')} <IconArrowDown />
+                {t('indicator.scroll')}
+                <motion.div
+                  animate={{
+                    y: [0, -5, 5, 0],
+                  }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                  }}
+                >
+                  <IconArrowDown />
+                </motion.div>
               </Paragraph>
             </Link>
           </motion.div>
