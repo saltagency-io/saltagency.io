@@ -1,3 +1,5 @@
+import type { StoryData } from '@storyblok/react'
+
 import type {
   Asset,
   Image,
@@ -5,6 +7,8 @@ import type {
   LinkType,
   Section,
   SectionBlok,
+  Vacancy,
+  VacancyStoryContent,
 } from '~/types'
 
 function formatUrl(url: string) {
@@ -40,5 +44,13 @@ export function mapSection(section: SectionBlok): Section {
     icon: section.icon,
     title: section.title,
     text: section.text,
+  }
+}
+
+export function mapVacancy(vacancy: StoryData<VacancyStoryContent>): Vacancy {
+  return {
+    id: vacancy.id.toString(),
+    name: vacancy.name,
+    slug: vacancy.full_slug,
   }
 }

@@ -36,7 +36,7 @@ function NavLink({
           'underlined hover:text-primary block whitespace-nowrap text-2xl font-medium tracking-tight focus:outline-none',
           {
             'active text-primary': isSelected,
-            'text-gray-500': !isSelected,
+            'text-gray-600': !isSelected,
           },
         )}
         {...rest}

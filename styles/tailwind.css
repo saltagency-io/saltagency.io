@@ -108,12 +108,12 @@
     color: rgba(255, 255, 255, var(--tw-text-opacity));
   }
 
-  .border-secondary {
+  .border-primary {
     @apply border-opacity-10;
     border-color: rgba(5, 25, 107, var(--tw-border-opacity));
   }
 
-  .border-light {
+  .border-secondary {
     @apply border-opacity-20;
     border-color: rgba(255, 255, 255, var(--tw-border-opacity));
   }

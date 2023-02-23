@@ -6,6 +6,8 @@ import clsx from 'clsx'
 
 import { Grid } from '~/components/grid'
 import { H3, H4, Subtitle } from '~/components/typography'
+import { VacancyList } from '~/components/vacancy-list'
+import { mapVacancy } from '~/utils/mappers'
 import { useVacancies } from '~/utils/providers'
 
 type Props = {
@@ -41,17 +43,7 @@ export function CareersSection({
           <div className="hidden lg:block">{children}</div>
         </div>
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
-          {vacancies.map((vacancy) => (
-            <Link
-              key={vacancy.id}
-              to={`/${vacancy.full_slug}`}
-              className="border-light block border-b py-6 first:pt-0 hover:border-white focus:border-white"
-            >
-              <H4 as="span" inverse>
-                {vacancy.name}
-              </H4>
-            </Link>
-          ))}
+          <VacancyList theme="light" vacancies={vacancies.map(mapVacancy)} />
         </div>
         {children || (Array.isArray(children) && children.length !== 0) ? (
           <div className="block pt-14 lg:hidden">{children}</div>

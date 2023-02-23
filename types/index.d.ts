@@ -45,4 +45,10 @@ export type Section = {
   text: string
 }
 
+export type Vacancy = {
+  id: string
+  name: string
+  slug: string
+}
+
 export * from './storyblok'

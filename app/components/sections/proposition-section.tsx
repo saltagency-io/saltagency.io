@@ -44,7 +44,7 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
         <div className="col-span-full">
           {sections.map((section) => (
             <motion.div key={section.id} variants={childVariants}>
-              <Grid nested className="border-light border-b py-8 lg:py-14">
+              <Grid nested className="border-secondary border-b py-8 lg:py-14">
                 <div className="col-span-6">
                   <H4 as="h3" className="text-inverse pb-2 lg:pb-0">
                     {section.title}

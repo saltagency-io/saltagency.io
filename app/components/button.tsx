@@ -29,7 +29,7 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
             'border-2 bg-transparent group-hover:border-transparent group-focus:border-transparent':
               variant === 'outline' || variant === 'outline-inverse',
             'border-black': variant === 'outline',
-            'border-light': variant === 'outline-inverse',
+            'border-secondary': variant === 'outline-inverse',
           },
         )}
       />
