@@ -6,7 +6,6 @@ type NotionMessage = {
   name: string
   email: string
   phone: string
-  reason: string
   body: string
 }
 
@@ -16,7 +15,6 @@ export async function sendToContactFormNotion({
   name,
   email,
   phone,
-  reason,
   body,
 }: NotionMessage) {
   return notionServer.pages.create({
@@ -40,11 +38,6 @@ export async function sendToContactFormNotion({
       },
       Phone: { phone_number: phone },
       Email: { email: email },
-      'Reason for contact': {
-        select: {
-          name: reason,
-        },
-      },
       Question: {
         rich_text: [
           {

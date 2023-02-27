@@ -11,10 +11,12 @@ type Components = React.ComponentProps<typeof ReactMarkdown>['components']
 function getComponents({
   textAlign,
   textColor,
+  textSize,
   margins,
 }: {
   textAlign: Props['textAlign']
   textColor: Props['textColor']
+  textSize: Props['bodyTextSize']
   margins: boolean
 }): Components {
   const alignClassName = `text-${textAlign}`
@@ -33,6 +35,7 @@ function getComponents({
     h6: (props) => <H6 className={headingClassName}>{props.children}</H6>,
     p: (props) => (
       <Paragraph
+        size={textSize}
         className={clsx(alignClassName, colorClassName, {
           'mb-6': margins,
         })}
@@ -66,6 +69,7 @@ type Props = {
   children: string
   textAlign?: 'left' | 'right' | 'center'
   textColor?: 'primary' | 'secondary' | 'inverse'
+  bodyTextSize?: 'sm' | 'lg' | 'xl'
   margins?: boolean
 }
 
@@ -74,7 +78,13 @@ export function Markdown({
   margins = true,
   textAlign = 'left',
   textColor = 'primary',
+  bodyTextSize = 'lg',
 }: Props) {
-  const components = getComponents({ textAlign, textColor, margins })
+  const components = getComponents({
+    textAlign,
+    textColor,
+    textSize: bodyTextSize,
+    margins,
+  })
   return <ReactMarkdown children={children} components={components} />
 }

@@ -34,6 +34,7 @@ export enum BlokTypes {
   PeopleSection = 'peopleSection',
   CareersSection = 'careersSection',
   HeaderSection = 'headerSection',
+  LocationSection = 'locationSection',
 }
 
 export type HeaderBlok = SbBlokData & {
@@ -147,6 +148,16 @@ export type HeaderSectionBlok = SbBlokData & {
   body: string
 }
 
+export type LocationSectionBlok = SbBlokData & {
+  component: BlokTypes.LocationSection
+  subtitle: string
+  title: string
+  address: string
+  image: Asset
+  imageMobile: Asset
+  links: LinkBlok[]
+}
+
 export type BodyComponents =
   | HeroBlok
   | CalculatorBlok
@@ -156,6 +167,7 @@ export type BodyComponents =
   | PeopleSectionBlok
   | CareersSectionBlok
   | HeaderSectionBlok
+  | LocationSectionBlok
 
 export type MetaTags = {
   title?: string

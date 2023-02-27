@@ -35,7 +35,7 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
       />
       <div
         className={clsx(
-          'relative flex items-center justify-center whitespace-nowrap leading-6 text-white',
+          'relative flex w-full items-center justify-center whitespace-nowrap text-center text-xl leading-6 text-white',
           {
             'text-black': variant === 'outline',
             'space-x-5 px-6 py-4': size === 'large',

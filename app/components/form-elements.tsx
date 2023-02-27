@@ -11,7 +11,7 @@ export function Label({
   return (
     <label
       {...labelProps}
-      className={clsx('inline-block text-lg text-primary', className)}
+      className={clsx('text-primary inline-block text-lg', className)}
     />
   )
 }
@@ -23,8 +23,10 @@ type InputProps = TextAreaProps | JSX.IntrinsicElements['input']
 const isTextarea = (props: InputProps): props is TextAreaProps =>
   props.type === 'textarea'
 
-export const inputClassName =
-  'placeholder-gray-400 focus-ring px-6 py-4 w-full text-primary disabled:text-gray-400 text-lg font-medium bg-gray-500 rounded-lg'
+export const inputClassName = clsx(
+  'p-4 w-full rounded-lg border-input focus:border-input-focus focus:outline-none transition',
+  'placeholder-gray-500 text-primary disabled:text-gray-400 text-lg font-medium',
+)
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   function Input(props, ref) {
@@ -122,9 +124,11 @@ export function FieldContainer({
   const descriptionId = `${inputId}-description`
 
   return (
-    <div className={clsx('mb-8', className)}>
-      <div className="mb-2 flex items-baseline justify-between gap-2">
-        <Label htmlFor={inputId}>{label}</Label>
+    <div className={clsx('mb-4', className)}>
+      <div className="flex items-baseline justify-between gap-2">
+        <Label htmlFor={inputId} className="sr-only">
+          {label}
+        </Label>
         {error ? (
           <InputError id={errorId}>{error}</InputError>
         ) : description ? (

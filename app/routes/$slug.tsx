@@ -48,11 +48,12 @@ export async function loader({ params, request }: DataFunctionArgs) {
     preview,
   }
 
-  const headers = {
-    'Cache-Control': 'private, max-age=3600',
-  }
-
-  return typedjson(data, { status: 200, headers })
+  return typedjson(data, {
+    status: 200,
+    headers: {
+      'Cache-Control': 'private, max-age=3600',
+    },
+  })
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {

@@ -118,12 +118,20 @@
     border-color: rgba(255, 255, 255, var(--tw-border-opacity));
   }
 
+  .border-input {
+    border: 2px solid rgba(4, 19, 72, 0.22);
+  }
+
+  .border-input-focus {
+    border: 2px solid rgba(4, 19, 72, 0.41);
+  }
+
   .border-avatar-light {
-    border: 8px solid rgba(35, 74, 134, 0.05);
+    border-color: rgba(35, 74, 134, 0.05);
   }
 
   .border-avatar-dark {
-    border: 8px solid rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.05);
   }
 
   .text-list li {

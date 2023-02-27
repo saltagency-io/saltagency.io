@@ -31,7 +31,7 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
             <div
               key={section.id}
               className={clsx(
-                'border-secondary col-span-full border-b lg:col-span-4 lg:border-r lg:px-4',
+                'border-primary col-span-full border-b lg:col-span-4 lg:border-r lg:px-4',
                 {
                   'lg:pl-0': i === 0 || i === 3,
                   'lg:pr-0': i === 2 || i === 5,

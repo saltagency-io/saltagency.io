@@ -45,6 +45,7 @@ import { SbCareersSection } from '~/storyblok/sections/careers-section'
 import { SbClients } from '~/storyblok/sections/clients-section'
 import { SbHeaderSection } from '~/storyblok/sections/header-section'
 import { SbHeroSection } from '~/storyblok/sections/hero-section'
+import { SbLocationSection } from '~/storyblok/sections/location-section'
 import { SbPeopleSection } from '~/storyblok/sections/people-section'
 import { SbRichTextSection } from '~/storyblok/sections/richtext-section'
 import { SbTextSection } from '~/storyblok/sections/text-section'
@@ -82,6 +83,7 @@ const components = {
   peopleSection: SbPeopleSection,
   careersSection: SbCareersSection,
   headerSection: SbHeaderSection,
+  locationSection: SbLocationSection,
 }
 
 storyblokInit({

@@ -2,31 +2,33 @@ import * as React from 'react'
 
 import type {
   ActionFunction,
+  DataFunctionArgs,
   HeadersFunction,
   MetaFunction,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useFetcher } from '@remix-run/react'
 
-import ReCaptcha from 'react-google-recaptcha'
+import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
+import ReCaptcha from 'react-google-recaptcha'
+import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+
+import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
-import {
-  ErrorPanel,
-  Field,
-  InputError,
-  Select,
-} from '~/components/form-elements'
+import { ErrorPanel, Field, InputError } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
-import { H1, H2, H4, Paragraph } from '~/components/typography'
+import { H1, H2, H3, H4, Paragraph } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
+import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import { handleFormSubmission } from '~/utils/actions.server'
 import * as ga from '~/utils/google-analytics.client'
 import { useLabels } from '~/utils/labels-provider'
 import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
+import { isPreview } from '~/utils/storyblok'
 import type { ValidateFn } from '~/utils/validators'
 import {
   isValidBody,
@@ -36,25 +38,60 @@ import {
   isValidString,
 } from '~/utils/validators'
 
+export async function loader({ request }: DataFunctionArgs) {
+  const preview = isPreview(request)
+  const initialStory = await getStoryBySlug('contact', preview)
+
+  if (!initialStory) {
+    throw json({}, { status: 404 })
+  }
+
+  const data = {
+    initialStory,
+    preview,
+  }
+
+  return typedjson(data, {
+    status: 200,
+    headers: {
+      'Cache-Control': 'private, max-age=3600',
+    },
+  })
+}
+
+export const meta: MetaFunction = ({ data, parentsData }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData
+
+  if (data?.initialStory) {
+    const meta = data.initialStory.content.metatags
+    return {
+      ...getSocialMetas({
+        title: meta.title,
+        description: meta.description,
+        url: getUrl(requestInfo),
+        image: meta.og_image,
+      }),
+    }
+  } else {
+    return {
+      title: 'Not found',
+      description: 'You landed on a page that we could not find 😢',
+    }
+  }
+}
+
+type Fields = {
+  name?: string | null
+  email?: string | null
+  phone?: string | null
+  body?: string | null
+  captcha?: string | null
+}
+
 type ActionData = {
   status: 'success' | 'error'
-  fields: {
-    name?: string | null
-    email?: string | null
-    phone?: string | null
-    reason?: string | null
-    body?: string | null
-    captcha?: string | null
-  }
-  errors: {
-    generalError?: string
-    name?: string | null
-    email?: string | null
-    phone?: string | null
-    reason?: string | null
-    body?: string | null
-    captcha?: string | null
-  }
+  fields: Fields
+  errors: Fields & { generalError?: string }
 }
 
 const getLabelKeyForError =
@@ -70,7 +107,6 @@ export const action: ActionFunction = async ({ request }) => {
       name: getLabelKeyForError(isValidName, 'form.name.error'),
       email: getLabelKeyForError(isValidEmail, 'form.email.error'),
       phone: getLabelKeyForError(isValidPhoneNumber, 'form.phone.error'),
-      reason: getLabelKeyForError(isValidString, 'form.reason.error'),
       body: getLabelKeyForError(isValidBody, 'form.message.error'),
       captcha: getLabelKeyForError(isValidString, 'form.captcha.error'),
     },
@@ -89,24 +125,11 @@ export const action: ActionFunction = async ({ request }) => {
   })
 }
 
-export const meta: MetaFunction = ({ parentsData }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData
-  return {
-    ...getSocialMetas({
-      title: 'Contact | Salt',
-      description: 'Get in touch. We would love to hear from you',
-      url: getUrl(requestInfo),
-    }),
-  }
-}
-
-export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'private, max-age=3600',
-})
-
 export default function ContactPage() {
-  const contactFetcher = useFetcher<ActionData>()
   const { t, to } = useLabels()
+  const contactFetcher = useFetcher<ActionData>()
+  const data = useTypedLoaderData<typeof loader>()
+  const story = useStoryblokState(data.initialStory, {}, data.preview)
 
   const [captchaValue, setCaptchaValue] = React.useState<string | null>(null)
 
@@ -124,24 +147,23 @@ export default function ContactPage() {
 
   return (
     <main>
-      <Grid>
-        <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-4">
+      <Grid className="pt-12 pb-20 lg:pt-24 lg:pb-56">
+        <div className="col-span-full lg:col-span-5">
+          <H1 className="mb-4 lg:mb-8">{t('contact.title')}</H1>
+          <H4 as="h2" variant="secondary">
+            {t('contact.subtitle')}
+          </H4>
+        </div>
+        <div className="col-span-full py-10 lg:col-span-7 lg:py-3 lg:px-8">
           {messageSuccessfullySent ? (
-            <div className="min-h-[60vh]">
-              <H2>{t('form.contact.success')}</H2>
+            <div className="min-h-[50vh]">
+              <H3 as="span">{t('form.contact.success')}</H3>
             </div>
           ) : (
             <>
-              <H1 className="mb-10">{t('contact.title')}</H1>
-              <H4 as="h2" className="mb-4">
-                {t('contact.subtitle')}
-              </H4>
-              <Paragraph>{t('contact.text')}</Paragraph>
-
               <contactFetcher.Form
                 method="post"
                 aria-describedby="contact-form-error"
-                className="py-12"
               >
                 <input
                   type="hidden"
@@ -150,7 +172,6 @@ export default function ContactPage() {
                 />
                 <Field
                   name="name"
-                  className="mb-6"
                   label={t('form.name.label')}
                   placeholder={t('form.name.placeholder')}
                   autoComplete="name"
@@ -160,7 +181,6 @@ export default function ContactPage() {
                 />
                 <Field
                   name="email"
-                  className="mb-6"
                   label={t('form.email.label')}
                   placeholder={t('form.email.placeholder')}
                   type="email"
@@ -170,7 +190,6 @@ export default function ContactPage() {
                 />
                 <Field
                   name="phone"
-                  className="mb-6"
                   label={t('form.phone.label')}
                   placeholder={t('form.phone.placeholder')}
                   type="tel"
@@ -178,38 +197,38 @@ export default function ContactPage() {
                   defaultValue={contactFetcher.data?.fields.phone ?? ''}
                   error={to(contactFetcher?.data?.errors.phone)}
                 />
-                <Select
-                  name="reason"
-                  className="mb-6 text-primary"
-                  label={t('form.reason.label')}
-                  defaultValue={contactFetcher.data?.fields.reason ?? ''}
-                  error={to(contactFetcher?.data?.errors.reason)}
-                  required
-                >
-                  <option value="" disabled>
-                    {t('form.select.placeholder')}
-                  </option>
-                  <option value="consultancy">
-                    {t('form.reason.option.consultancy')}
-                  </option>
-                  <option value="jobs">{t('form.reason.option.jobs')}</option>
-                </Select>
                 <Field
                   name="body"
                   className="mb-6"
                   label={t('form.message.label')}
+                  placeholder={t('form.message.placeholder')}
                   type="textarea"
                   rows={8}
                   defaultValue={contactFetcher.data?.fields.body ?? ''}
                   error={to(contactFetcher?.data?.errors.body)}
                 />
 
-                <div className="mb-10">
-                  <ReCaptcha
-                    theme="dark"
-                    sitekey={getRequiredGlobalEnvVar('GOOGLE_CAPTCHA_KEY')}
-                    onChange={setCaptchaValue}
+                <div className="mb-8 flex items-center gap-x-4 rounded-lg bg-gray-100 py-4 px-6">
+                  <Avatar
+                    url="https://a.storyblok.com/f/198542/236x236/9a05e3ee75/dennis-round.png"
+                    alt="Dennis"
+                    theme="white"
+                    size="small"
                   />
+                  <Paragraph textColorClassName="text-gray-700" size="lg">
+                    <strong className="text-gray-900">Dennis</strong> will
+                    answer your email
+                  </Paragraph>
+                </div>
+
+                <div className="mb-8">
+                  <div className="h-[78px]">
+                    <ReCaptcha
+                      theme="light"
+                      sitekey={getRequiredGlobalEnvVar('GOOGLE_CAPTCHA_KEY')}
+                      onChange={setCaptchaValue}
+                    />
+                  </div>
                   {contactFetcher.data?.errors.captcha ? (
                     <InputError id="captcha-error">
                       {t(contactFetcher.data?.errors.captcha)}
@@ -222,7 +241,7 @@ export default function ContactPage() {
                     {t('form.contact.error')}
                   </ErrorPanel>
                 ) : null}
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" variant="secondary">
                   {t('form.contact.submit')}
                 </Button>
               </contactFetcher.Form>
@@ -230,6 +249,7 @@ export default function ContactPage() {
           )}
         </div>
       </Grid>
+      <StoryblokComponent blok={story.content} />
     </main>
   )
 }

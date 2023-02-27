@@ -16,7 +16,7 @@ function formatUrl(url: string) {
   if (url === 'home') {
     formatted = `/`
   }
-  if (!formatted.startsWith('/')) {
+  if (!formatted.startsWith('/') && !formatted.startsWith('http')) {
     formatted = `/${formatted}`
   }
   return formatted
