@@ -1,5 +1,9 @@
 import * as React from 'react'
 
+import type { StoryData } from '@storyblok/react'
+
+import type { VacancyStoryContent } from '../../types'
+
 export function createSimpleContext<ContextType>(name: string) {
   const defaultValue = Symbol(`Default ${name} context value`)
   const Context = React.createContext<ContextType | null | typeof defaultValue>(
@@ -36,6 +40,15 @@ type PreviewState = {
 }
 
 const { Provider: PreviewStateProvider, useValue: usePreviewState } =
-  createSimpleContext<PreviewState>('PreviewState')
+  createSimpleContext<PreviewState>('PreviewContext')
 
 export { PreviewStateProvider, usePreviewState }
+
+type VacanciesState = {
+  vacancies: StoryData<VacancyStoryContent>[]
+}
+
+const { Provider: VacanciesProvider, useValue: useVacancies } =
+  createSimpleContext<VacanciesState>('VacanciesContext')
+
+export { VacanciesProvider, useVacancies }

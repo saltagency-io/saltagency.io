@@ -8,79 +8,129 @@
 
 /* tailwind is configured to prefer this font */
 @font-face {
-  font-family: 'Lexend';
-  src: url('/fonts/Lexend-Light.woff2') format('woff2'),
-    url('/fonts/Lexend-Light.woff') format('woff');
-  font-weight: normal;
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Medium.woff2') format('woff2'),
+    url('/fonts/Satoshi-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
+    url('/fonts/Satoshi-Bold.woff') format('woff');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @layer utilities {
+  /*TODO: figure out if we can reuse some stuff here*/
   .focus-ring {
-    @apply ring-white ring-offset-4 ring-offset-black transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
+    @apply ring-gray-900 ring-offset-4 ring-offset-white transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
+  }
+
+  .focus-ring-primary {
+    @apply ring-blue-500 ring-offset-4 ring-offset-white transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
   }
 
   .bg-primary {
-    @apply bg-gray-900;
+    @apply bg-white;
   }
 
   .bg-secondary {
-    @apply bg-gray-100 dark:bg-gray-800;
-  }
-
-  .bg-alt {
-    @apply bg-gray-200 dark:bg-gray-700;
+    background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0) 100.98%
+      ),
+      rgba(35, 74, 134, 0.05);
   }
 
   .bg-inverse {
-    @apply bg-black dark:bg-white;
+    @apply bg-gray-900;
   }
 
-  .border-primary {
-    @apply border-gray-900 dark:border-white;
+  .bg-gradient {
+    background-image: linear-gradient(
+        360deg,
+        #0f0e17 1.67%,
+        rgba(15, 14, 23, 0) 140.45%
+      ),
+      linear-gradient(0deg, rgba(1, 13, 55, 0.49), rgba(1, 13, 55, 0.49)),
+      linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
   }
 
-  .border-secondary {
-    @apply border-gray-200 dark:border-gray-600;
+  .bg-gradient-dark {
+    background-image: linear-gradient(
+        148.67deg,
+        #0f0e17 28.61%,
+        rgba(15, 14, 23, 0) 156.76%
+      ),
+      linear-gradient(360deg, #0f0e17 1.67%, rgba(15, 14, 23, 0) 140.45%),
+      linear-gradient(0deg, rgba(1, 13, 55, 0.29), rgba(1, 13, 55, 0.29)),
+      linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
+  }
+
+  .bg-gradient-radial {
+    background-image: linear-gradient(
+      143.15deg,
+      hsl(263deg 100% 50% / 100%) 3%,
+      hsl(255deg 100% 60% / 100%) 13%,
+      hsl(250deg 100% 66% / 100%) 21%,
+      hsl(244deg 100% 70% / 90%) 28%,
+      hsl(236deg 100% 72% / 90%) 35%,
+      hsl(228deg 100% 72% / 85%) 43%,
+      hsl(219deg 100% 72% / 75%) 50%,
+      hsl(210deg 100% 71% / 70%) 58%,
+      hsl(201deg 100% 69% / 50%) 67%,
+      hsl(193deg 100% 66% / 25%) 76%,
+      hsl(186deg 100% 62% / 0%) 87%,
+      hsl(180deg 100% 50% / 0%) 100%
+    );
   }
 
   .text-primary {
-    @apply text-white;
+    @apply text-gray-900;
   }
 
   .text-secondary {
-    @apply text-white;
+    @apply text-gray-500;
   }
 
   .text-inverse {
     @apply text-white;
   }
 
-  .text-transparent {
-    @apply text-opacity-50;
+  .text-inverse-secondary {
+    @apply text-opacity-60;
     color: rgba(255, 255, 255, var(--tw-text-opacity));
   }
 
-  .border-transparent {
-    @apply border-opacity-50;
+  .border-primary {
+    @apply border-opacity-10;
+    border-color: rgba(5, 25, 107, var(--tw-border-opacity));
+  }
+
+  .border-secondary {
+    @apply border-opacity-20;
     border-color: rgba(255, 255, 255, var(--tw-border-opacity));
   }
 
-  .text-list li {
-    @apply relative mb-1 pl-8 text-lg text-white;
+  .border-input {
+    border: 2px solid rgba(4, 19, 72, 0.22);
   }
 
-  .text-list li:before {
-    content: '';
-    display: inline-block;
-    height: 0.5rem;
-    width: 0.5rem;
-    position: absolute;
-    top: 10px;
-    left: 0.5rem;
-    margin: auto;
-    background-color: var(--color-pink-500);
-    border-radius: 50%;
+  .border-input-focus {
+    border: 2px solid rgba(4, 19, 72, 0.41);
+  }
+
+  .border-avatar-light {
+    border-color: rgba(35, 74, 134, 0.05);
+  }
+
+  .border-avatar-dark {
+    border-color: rgba(255, 255, 255, 0.05);
   }
 }

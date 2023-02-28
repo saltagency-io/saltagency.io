@@ -52,7 +52,7 @@ export async function getVacancyBySlug(
 
   try {
     const { data } = await getStoryblokApi().get(
-      `cdn/stories/jobs/${slug}`,
+      `cdn/stories/careers/${slug}`,
       params,
     )
     return data?.story
@@ -64,7 +64,7 @@ export async function getVacancyBySlug(
 export async function getAllVacancies(
   preview = false,
 ): Promise<StoryData<VacancyStoryContent>[] | undefined> {
-  const params = { ...getDefaultParams({ preview }), starts_with: 'jobs/' }
+  const params = { ...getDefaultParams({ preview }), starts_with: 'careers/' }
 
   try {
     return getStoryblokApi().getAll(`cdn/stories`, params)

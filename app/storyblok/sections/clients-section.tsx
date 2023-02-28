@@ -6,10 +6,7 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 export function SbClients({ blok }: { blok: ClientsBlok }) {
   return (
     <StoryBlokWrapper blok={blok} key={blok._uid}>
-      <ClientsSection
-        title={blok.title}
-        logos={blok.logos.map((logo) => mapAsset(logo))}
-      />
+      <ClientsSection logos={blok.logos.map(mapAsset)} />
     </StoryBlokWrapper>
   )
 }

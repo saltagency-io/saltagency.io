@@ -5,14 +5,14 @@ import clsx from 'clsx'
 import { AnchorOrLink } from '~/utils/misc'
 
 type ButtonProps = {
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'outline' | 'outline-inverse'
   size?: 'small' | 'medium' | 'large'
   children: React.ReactNode | React.ReactNode[]
 }
 
 function getClassName({ className }: { className?: string }) {
   return clsx(
-    'group relative inline-flex text-lg font-medium focus:outline-none opacity-100 disabled:opacity:50 transition',
+    'group relative inline-flex text-lg font-bold focus:outline-none opacity-100 disabled:opacity:50 transition',
     className,
   )
 }
@@ -22,20 +22,25 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
     <>
       <div
         className={clsx(
-          'focus-ring absolute inset-0 transform rounded-full bg-purple-500 opacity-100 transition disabled:opacity-50',
+          'focus-ring absolute inset-0 transform rounded-lg font-bold opacity-100 transition disabled:opacity-50',
           {
-            'border-2 border-white bg-transparent group-hover:border-transparent group-focus:border-transparent':
-              variant === 'secondary',
+            'focus-ring-primary bg-blue-500': variant === 'primary',
+            'bg-gray-900': variant === 'secondary',
+            'border-2 bg-transparent group-hover:border-transparent group-focus:border-transparent':
+              variant === 'outline' || variant === 'outline-inverse',
+            'border-black': variant === 'outline',
+            'border-secondary': variant === 'outline-inverse',
           },
         )}
       />
       <div
         className={clsx(
-          'relative flex h-full w-full items-center justify-center whitespace-nowrap text-white',
+          'relative flex w-full items-center justify-center whitespace-nowrap text-center text-xl leading-6 text-white',
           {
-            'space-x-5 px-11 py-3': size === 'large',
-            'space-x-3 px-8 py-2': size === 'medium',
-            'space-x-1 px-5 py-1 text-sm': size === 'small',
+            'text-black': variant === 'outline',
+            'space-x-5 px-6 py-4': size === 'large',
+            'space-x-3 px-6 py-2': size === 'medium',
+            'space-x-1 px-4 py-1 text-sm': size === 'small',
           },
         )}
       >

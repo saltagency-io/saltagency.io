@@ -38,4 +38,17 @@ export type LinkType = {
   text: string
 }
 
+export type Section = {
+  id: string
+  icon?: string
+  title: string
+  text: string
+}
+
+export type Vacancy = {
+  id: string
+  name: string
+  slug: string
+}
+
 export * from './storyblok'

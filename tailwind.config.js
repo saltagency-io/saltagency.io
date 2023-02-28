@@ -32,8 +32,23 @@ module.exports = {
         800: 'var(--color-gray-800)',
         900: 'var(--color-gray-900)',
       },
+      blue: {
+        200: 'var(--color-blue-200)',
+        300: 'var(--color-blue-300)',
+        400: 'var(--color-blue-400)',
+        500: 'var(--color-blue-500)',
+        600: 'var(--color-blue-600)',
+        700: 'var(--color-blue-700)',
+        800: 'var(--color-blue-800)',
+      },
       pink: {
+        200: 'var(--color-pink-200)',
+        300: 'var(--color-pink-300)',
+        400: 'var(--color-pink-400)',
         500: 'var(--color-pink-500)',
+        600: 'var(--color-pink-600)',
+        700: 'var(--color-pink-700)',
+        800: 'var(--color-pink-800)',
       },
       red: {
         500: 'var(--color-red-500)',
@@ -44,16 +59,38 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['Lexend', ...defaultTheme.fontFamily.sans],
+        sans: ['Satoshi', ...defaultTheme.fontFamily.sans],
+      },
+      fontSize: {
+        '3xl': '1.9375rem', // 31px
+        '4xl': '2.5625rem', // 41px
+        '5xl': '3.375rem', // 54px
+        '6xl': '4.375rem', // 70px
+      },
+      lineHeight: {
+        normal: '120%',
+      },
+      letterSpacing: {
+        tight: '-0.02em',
+      },
+      textOpacity: {
+        60: '0.6',
       },
       gridTemplateRows: {
         'max-content': 'max-content',
       },
       maxWidth: {
-        '8xl': '96rem',
+        '5xl': '65rem', // 1040px
       },
       spacing: {
-        '10vw': '10vw', // page margin
+        '8vw': '8vw', // page margin
+      },
+      backgroundImage: {
+        gradient:
+          'linear-gradient(143.15deg, #6100FF 8.37%, rgba(0, 255, 255, 0) 91.49%);',
+      },
+      blur: {
+        '4xl': '100px',
       },
     },
   },

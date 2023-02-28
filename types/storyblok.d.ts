@@ -1,5 +1,7 @@
 import type { SbBlokData } from '@storyblok/react'
 
+import { BlokTypes } from '~/storyblok'
+
 // Content that can be on a story of type Page
 export type PageStoryContent = {
   body: BodyComponents[]
@@ -16,20 +18,6 @@ export type LayoutStoryContent = {
   footer: FooterBlok[]
 }
 
-export enum BlokTypes {
-  Page = 'page',
-  Header = 'header',
-  Footer = 'footer',
-  Hero = 'hero',
-  Button = 'button',
-  Link = 'link',
-  RichText = 'richText',
-  Grid = 'grid',
-  Clients = 'clients',
-  RichTextSection = 'richTextSection',
-  Calculator = 'calculator',
-}
-
 export type HeaderBlok = SbBlokData & {
   component: BlokTypes.Header
   logo: Asset
@@ -38,10 +26,8 @@ export type HeaderBlok = SbBlokData & {
 
 export type FooterBlok = SbBlokData & {
   component: BlokTypes.Footer
-  logo: Asset
-  menu: LinkBlok[]
-  legalLinks: LinkBlok[]
   disclaimer: string
+  socialText: string
 }
 
 export type ButtonBlok = SbBlokData & {
@@ -66,9 +52,7 @@ export type HeroBlok = SbBlokData & {
   component: BlokTypes.Hero
   title: string
   body: string
-  image: Asset
-  primaryAction: ButtonBlok[]
-  secondaryAction: ButtonBlok[]
+  actions: ButtonBlok[]
 }
 
 export type RichTextSectionBlok = SbBlokData & {
@@ -84,7 +68,6 @@ export type GridBlok = SbBlokData & {
 
 export type ClientsBlok = SbBlokData & {
   component: BlokTypes.Clients
-  title: string
   logos: Asset[]
 }
 
@@ -93,11 +76,85 @@ export type CalculatorBlok = SbBlokData & {
   title?: string
 }
 
+export type TextSectionBlok = SbBlokData & {
+  components: BlokTypes.TextSection
+  subtitle: string
+  title: string
+  body: string
+}
+
+export type SectionBlok = SbBlokData & {
+  component: BlokTypes.BlockWithSections
+  icon?: string
+  title: string
+  text: string
+}
+
+export type BlockWithSectionsBlok = SbBlokData & {
+  component: BlokTypes.BlockWithSections
+  subtitle: string
+  title: string
+  variant: 'proposition' | 'formula' | 'application-process'
+  sections: SectionBlok[]
+}
+
+export type QuoteBlok = SbBlokData & {
+  component: BlokTypes.Quote
+  subtitle?: string
+  text: string
+  author: string
+  avatar: Asset
+  variant: 'basic' | 'extended'
+  theme: 'light' | 'dark'
+}
+
+export type PeopleSectionBlok = SbBlokData & {
+  component: BlokTypes.PeopleSection
+  subtitle: string
+  title: string
+  people: Asset[]
+}
+
+export type CareersSectionBlok = SbBlokData & {
+  component: BlokTypes.CareersSection
+  subtitle: string
+  title: string
+  theme: 'dark' | 'light'
+  actions: ButtonBlok[]
+}
+
+export type HeaderSectionBlok = SbBlokData & {
+  component: BlokTypes.HeaderSection
+  title: string
+  body: string
+}
+
+export type LocationSectionBlok = SbBlokData & {
+  component: BlokTypes.LocationSection
+  subtitle: string
+  title: string
+  address: string
+  image: Asset
+  imageMobile: Asset
+  links: LinkBlok[]
+}
+
+export type JobDescriptionBlok = SbBlokData & {
+  component: BlokTypes.JobDescription
+  description: string
+  requirements: string
+}
+
 export type BodyComponents =
   | HeroBlok
-  | RichTextSectionBlok
-  | GridBlok
   | CalculatorBlok
+  | TextSectionBlok
+  | BlockWithSectionsBlok
+  | QuoteBlok
+  | PeopleSectionBlok
+  | CareersSectionBlok
+  | HeaderSectionBlok
+  | LocationSectionBlok
 
 export type MetaTags = {
   title?: string

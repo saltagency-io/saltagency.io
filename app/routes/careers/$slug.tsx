@@ -2,11 +2,13 @@ import * as React from 'react'
 
 import type { DataFunctionArgs } from '@remix-run/node'
 import { json, type MetaFunction, type SerializeFrom } from '@remix-run/node'
+import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
+import { NotFoundError } from '~/components/errors'
 import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
@@ -49,20 +51,22 @@ export async function loader({ params, request }: DataFunctionArgs) {
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
-  const { initialStory } = data as SerializeFrom<typeof loader>
-  const meta = initialStory.content.metatags
 
-  if (!meta) {
-    return {}
-  }
-
-  return {
-    ...getSocialMetas({
-      title: meta.title,
-      description: meta.description,
-      url: getUrl(requestInfo),
-      image: meta.og_image,
-    }),
+  if (data?.initialStory) {
+    const meta = data.initialStory.content.metatags
+    return {
+      ...getSocialMetas({
+        title: meta.title,
+        description: meta.description,
+        url: getUrl(requestInfo),
+        image: meta.og_image,
+      }),
+    }
+  } else {
+    return {
+      title: 'Not found',
+      description: 'You landed on a career page that we could not find 😢',
+    }
   }
 }
 
@@ -71,4 +75,12 @@ export default function VacancyPage() {
   const story = useStoryblokState(data.initialStory, {}, data.preview)
 
   return <StoryblokComponent blok={story.content} />
+}
+
+// TODO: add jobs
+export function CatchBoundary() {
+  const caught = useCatch()
+  console.error('CatchBoundary', caught)
+  return <NotFoundError />
+  // throw new Error(`Unhandled error: ${caught.status}`)
 }

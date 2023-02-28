@@ -12,7 +12,6 @@ type Blok = SbBlokData & {
   body: RichTextBlok[] | undefined
 }
 
-// TODO: figure out why this is not working in storyblok
 export function SbVacancy({ blok }: { blok: Blok }) {
   return (
     <main {...storyblokEditable(blok)}>
