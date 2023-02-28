@@ -149,7 +149,7 @@ export default function ContactPage() {
     <main>
       <Grid className="pt-12 pb-20 lg:pt-24 lg:pb-56">
         <div className="col-span-full lg:col-span-5">
-          <H1 className="mb-4 lg:mb-8">{t('contact.title')}</H1>
+          <H1 className="mb-4 lg:mb-8">{t('cont]act.title')}</H1>
           <H4 as="h2" variant="secondary">
             {t('contact.subtitle')}
           </H4>
@@ -160,94 +160,88 @@ export default function ContactPage() {
               <H3 as="span">{t('form.contact.success')}</H3>
             </div>
           ) : (
-            <>
-              <contactFetcher.Form
-                method="post"
-                aria-describedby="contact-form-error"
-              >
-                <input
-                  type="hidden"
-                  name="captcha"
-                  value={captchaValue ?? ''}
-                />
-                <Field
-                  name="name"
-                  label={t('form.name.label')}
-                  placeholder={t('form.name.placeholder')}
-                  autoComplete="name"
-                  autoFocus
-                  defaultValue={contactFetcher.data?.fields.name ?? ''}
-                  error={to(contactFetcher?.data?.errors.name)}
-                />
-                <Field
-                  name="email"
-                  label={t('form.email.label')}
-                  placeholder={t('form.email.placeholder')}
-                  type="email"
-                  autoComplete="email"
-                  defaultValue={contactFetcher.data?.fields.email ?? ''}
-                  error={to(contactFetcher?.data?.errors.email)}
-                />
-                <Field
-                  name="phone"
-                  label={t('form.phone.label')}
-                  placeholder={t('form.phone.placeholder')}
-                  type="tel"
-                  autoComplete="tel"
-                  defaultValue={contactFetcher.data?.fields.phone ?? ''}
-                  error={to(contactFetcher?.data?.errors.phone)}
-                />
-                <Field
-                  name="body"
-                  className="mb-6"
-                  label={t('form.message.label')}
-                  placeholder={t('form.message.placeholder')}
-                  type="textarea"
-                  rows={8}
-                  defaultValue={contactFetcher.data?.fields.body ?? ''}
-                  error={to(contactFetcher?.data?.errors.body)}
-                />
+            <contactFetcher.Form
+              method="post"
+              aria-describedby="contact-form-error"
+            >
+              <input type="hidden" name="captcha" value={captchaValue ?? ''} />
+              <Field
+                name="name"
+                label={t('form.name.label')}
+                placeholder={t('form.name.placeholder')}
+                autoComplete="name"
+                autoFocus
+                defaultValue={contactFetcher.data?.fields.name ?? ''}
+                error={to(contactFetcher?.data?.errors.name)}
+              />
+              <Field
+                name="email"
+                label={t('form.email.label')}
+                placeholder={t('form.email.placeholder')}
+                type="email"
+                autoComplete="email"
+                defaultValue={contactFetcher.data?.fields.email ?? ''}
+                error={to(contactFetcher?.data?.errors.email)}
+              />
+              <Field
+                name="phone"
+                label={t('form.phone.label')}
+                placeholder={t('form.phone.placeholder')}
+                type="tel"
+                autoComplete="tel"
+                defaultValue={contactFetcher.data?.fields.phone ?? ''}
+                error={to(contactFetcher?.data?.errors.phone)}
+              />
+              <Field
+                name="body"
+                className="mb-6"
+                label={t('form.message.label')}
+                placeholder={t('form.message.placeholder')}
+                type="textarea"
+                rows={8}
+                defaultValue={contactFetcher.data?.fields.body ?? ''}
+                error={to(contactFetcher?.data?.errors.body)}
+              />
 
-                <div className="mb-8 flex items-center gap-x-4 rounded-lg bg-gray-100 py-4 px-6">
-                  <Avatar
-                    url="https://a.storyblok.com/f/198542/236x236/9a05e3ee75/dennis-round.png"
-                    alt="Dennis"
-                    theme="white"
-                    size="small"
+              <div className="mb-8 flex items-center gap-x-4 rounded-lg bg-gray-100 py-4 px-6">
+                <Avatar
+                  url="https://a.storyblok.com/f/198542/236x236/9a05e3ee75/dennis-round.png"
+                  alt="Dennis"
+                  theme="white"
+                  size="small"
+                />
+                <Paragraph textColorClassName="text-gray-700" size="lg">
+                  <strong className="text-gray-900">
+                    {t('contact.response.name')}
+                  </strong>{' '}
+                  {t('contact.response')}
+                </Paragraph>
+              </div>
+
+              <div className="mb-8">
+                <div className="h-[78px]">
+                  <ReCaptcha
+                    theme="light"
+                    sitekey={getRequiredGlobalEnvVar('GOOGLE_CAPTCHA_KEY')}
+                    onChange={setCaptchaValue}
                   />
-                  <Paragraph textColorClassName="text-gray-700" size="lg">
-                    <strong className="text-gray-900">
-                      {t('contact.response.name')}
-                    </strong>{' '}
-                    {t('contact.response')}
-                  </Paragraph>
                 </div>
-
-                <div className="mb-8">
-                  <div className="h-[78px]">
-                    <ReCaptcha
-                      theme="light"
-                      sitekey={getRequiredGlobalEnvVar('GOOGLE_CAPTCHA_KEY')}
-                      onChange={setCaptchaValue}
-                    />
-                  </div>
-                  {contactFetcher.data?.errors.captcha ? (
-                    <InputError id="captcha-error">
-                      {t(contactFetcher.data?.errors.captcha)}
-                    </InputError>
-                  ) : null}
-                </div>
-
-                {contactFetcher.data?.errors.generalError ? (
-                  <ErrorPanel className="mb-8">
-                    {t('form.contact.error')}
-                  </ErrorPanel>
+                {contactFetcher.data?.errors.captcha ? (
+                  <InputError id="captcha-error">
+                    {t(contactFetcher.data?.errors.captcha)}
+                  </InputError>
                 ) : null}
-                <Button type="submit" className="w-full" variant="secondary">
-                  {t('form.contact.submit')}
-                </Button>
-              </contactFetcher.Form>
-            </>
+              </div>
+
+              {contactFetcher.data?.errors.generalError ? (
+                <ErrorPanel className="mb-8" id="contact-form-error">
+                  {t('form.contact.error')}
+                </ErrorPanel>
+              ) : null}
+              <Button type="submit" className="w-full" variant="secondary">
+                {t('form.contact.submit')}
+              </Button>
+            </contactFetcher.Form>
           )}
         </div>
       </Grid>

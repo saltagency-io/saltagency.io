@@ -5,6 +5,7 @@ import { Link } from '@remix-run/react'
 
 import type { NonNullProperties } from '../../types'
 import type { getEnv } from '~/utils/env.server'
+import type { ValidateFn } from '~/utils/validators'
 
 export function getRequiredEnvVarFromObj(
   obj: Record<string, string | undefined>,
@@ -163,4 +164,11 @@ export function typedBoolean<T>(
 
 export function capitalizeFirstChar(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+export function getLabelKeyForError(validator: ValidateFn, errorKey: string) {
+  return (val: string | null) => {
+    const valid = validator(val)
+    return valid ? null : errorKey
+  }
 }

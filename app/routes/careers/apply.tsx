@@ -7,10 +7,8 @@ import type {
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useFetcher, useSearchParams } from '@remix-run/react'
-import type { LoaderFunctionArgs } from '@remix-run/router'
 
 import ReCaptcha from 'react-google-recaptcha'
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { Button } from '~/components/button'
 import {
@@ -20,17 +18,16 @@ import {
   Select,
 } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
-import { H1, H2, Paragraph } from '~/components/typography'
+import { H1, H3, H4 } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendApplicationToNotion } from '~/lib/notion.server'
-import { getAllVacancies } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import { handleFormSubmission } from '~/utils/actions.server'
 import * as ga from '~/utils/google-analytics.client'
 import { useLabels } from '~/utils/labels-provider'
 import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
+import { useVacancies } from '~/utils/providers'
 import { getSocialMetas } from '~/utils/seo'
-import { isPreview } from '~/utils/storyblok'
 import type { ValidateFn } from '~/utils/validators'
 import {
   isValidBody,
@@ -41,47 +38,22 @@ import {
   isValidUrl,
 } from '~/utils/validators'
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const preview = isPreview(request)
-  const vacancies = await getAllVacancies(preview)
-
-  const data = {
-    vacancies,
-  }
-
-  const headers = {
-    'Cache-Control': 'private, max-age=3600',
-  }
-
-  return typedjson(data, { status: 200, headers })
+type Fields = {
+  name?: string | null
+  email?: string | null
+  phone?: string | null
+  employment?: string | null
+  citizenship?: string | null
+  role?: string | null
+  linkedin?: string | null
+  motivation?: string | null
+  captcha?: string | null
 }
 
 type ActionData = {
   status: 'success' | 'error'
-  fields: {
-    generalError?: string
-    name?: string | null
-    email?: string | null
-    phone?: string | null
-    employment?: string | null
-    citizenship?: string | null
-    role?: string | null
-    linkedin?: string | null
-    motivation?: string | null
-    captcha?: string | null
-  }
-  errors: {
-    generalError?: string
-    name?: string | null
-    email?: string | null
-    phone?: string | null
-    employment?: string | null
-    citizenship?: string | null
-    role?: string | null
-    linkedin?: string | null
-    motivation?: string | null
-    captcha?: string | null
-  }
+  fields: Fields
+  errors: Fields & { generalError?: string }
 }
 
 const getLabelKeyForError =
@@ -112,19 +84,21 @@ export const action: ActionFunction = async ({ request }) => {
       }
 
       await sendApplicationToNotion(fields)
-
       const actionData: ActionData = { fields, status: 'success', errors: {} }
       return json(actionData)
     },
   })
 }
 
-export const meta: MetaFunction = ({ parentsData }) => {
+export const meta: MetaFunction = ({ parentsData, location }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
+  const params = new URLSearchParams(location.search)
+  const role = params.get('role')
+
   return {
     ...getSocialMetas({
-      title: 'Apply for this job | Salt',
-      description: 'Apply for this job.',
+      title: `Apply for ${role} | Salt`,
+      description: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
       url: getUrl(requestInfo),
     }),
   }
@@ -135,10 +109,10 @@ export const headers: HeadersFunction = () => ({
 })
 
 export default function ApplyPage() {
-  const data = useTypedLoaderData<typeof loader>()
   const applyFetcher = useFetcher<ActionData>()
   const [searchParams] = useSearchParams()
   const { t, to } = useLabels()
+  const { vacancies } = useVacancies()
 
   const [captchaValue, setCaptchaValue] = React.useState<string | null>(null)
 
@@ -156,162 +130,158 @@ export default function ApplyPage() {
 
   return (
     <main>
-      <Grid>
-        <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-4">
+      <Grid className="pt-12 pb-20 lg:pt-24 lg:pb-56">
+        <div className="col-span-full lg:col-span-5">
+          <H1 className="mb-4 lg:mb-8">{t('apply.title')}</H1>
+          <H4 as="h2" variant="secondary">
+            {t('apply.text')}
+          </H4>
+        </div>
+        <div className="col-span-full py-10 lg:col-span-7 lg:py-3 lg:px-8">
           {messageSuccessfullySent ? (
             <div className="min-h-[60vh]">
-              <H2>{t('form.apply.success')}</H2>
+              <H3 as="span">{t('form.apply.success')}</H3>
             </div>
           ) : (
-            <>
-              <H1 className="mb-10">{t('apply.title')}</H1>
-              <Paragraph>{t('apply.text')}</Paragraph>
-
-              <applyFetcher.Form
-                method="post"
-                aria-describedby="apply-form-error"
-                className="py-12"
+            <applyFetcher.Form
+              method="post"
+              aria-describedby="apply-form-error"
+            >
+              <input type="hidden" name="captcha" value={captchaValue ?? ''} />
+              <Field
+                name="name"
+                className="mb-6"
+                label={t('form.name.label')}
+                placeholder={t('form.name.placeholder')}
+                autoComplete="name"
+                autoFocus
+                defaultValue={applyFetcher.data?.fields.name ?? ''}
+                error={to(applyFetcher?.data?.errors.name)}
+              />
+              <Field
+                name="email"
+                className="mb-6"
+                label={t('form.email.label')}
+                placeholder={t('form.email.placeholder')}
+                type="email"
+                autoComplete="email"
+                defaultValue={applyFetcher.data?.fields.email ?? ''}
+                error={to(applyFetcher?.data?.errors.email)}
+              />
+              <Field
+                name="phone"
+                className="mb-6"
+                label={t('form.phone.label')}
+                placeholder={t('form.phone.placeholder')}
+                type="tel"
+                autoComplete="tel"
+                defaultValue={applyFetcher.data?.fields.phone ?? ''}
+                error={to(applyFetcher?.data?.errors.phone)}
+              />
+              <Select
+                name="employment"
+                className="text-primary mb-6"
+                label={t('form.employment.label')}
+                defaultValue={applyFetcher.data?.fields.employment ?? ''}
+                error={to(applyFetcher?.data?.errors.employment)}
+                required
               >
-                <input
-                  type="hidden"
-                  name="captcha"
-                  value={captchaValue ?? ''}
-                />
-                <Field
-                  name="name"
-                  className="mb-6"
-                  label={t('form.name.label')}
-                  placeholder={t('form.name.placeholder')}
-                  autoComplete="name"
-                  autoFocus
-                  defaultValue={applyFetcher.data?.fields.name ?? ''}
-                  error={to(applyFetcher?.data?.errors.name)}
-                />
-                <Field
-                  name="email"
-                  className="mb-6"
-                  label={t('form.email.label')}
-                  placeholder={t('form.email.placeholder')}
-                  type="email"
-                  autoComplete="email"
-                  defaultValue={applyFetcher.data?.fields.email ?? ''}
-                  error={to(applyFetcher?.data?.errors.email)}
-                />
-                <Field
-                  name="phone"
-                  className="mb-6"
-                  label={t('form.phone.label')}
-                  placeholder={t('form.phone.placeholder')}
-                  type="tel"
-                  autoComplete="tel"
-                  defaultValue={applyFetcher.data?.fields.phone ?? ''}
-                  error={to(applyFetcher?.data?.errors.phone)}
-                />
-                <Select
-                  name="employment"
-                  className="text-primary mb-6"
-                  label={t('form.employment.label')}
-                  defaultValue={applyFetcher.data?.fields.employment ?? ''}
-                  error={to(applyFetcher?.data?.errors.employment)}
-                  required
-                >
-                  <option value="" disabled>
-                    {t('form.select.placeholder')}
+                <option value="" disabled>
+                  {t('form.employment.placeholder')}
+                </option>
+                <option value="employed">
+                  {t('form.employment.option.employed')}
+                </option>
+                <option value="searching">
+                  {t('form.employment.option.searching')}
+                </option>
+                <option value="freelance">
+                  {t('form.employment.option.freelance')}
+                </option>
+              </Select>
+              <Select
+                name="citizenship"
+                className="text-primary mb-6"
+                label={t('form.citizenship.label')}
+                defaultValue={applyFetcher.data?.fields.citizenship ?? ''}
+                error={to(applyFetcher?.data?.errors.citizenship)}
+                required
+              >
+                <option value="" disabled>
+                  {t('form.citizenship.placeholder')}
+                </option>
+                <option value="dutch">
+                  {t('form.citizenship.option.dutch')}
+                </option>
+                <option value="expat">
+                  {t('form.citizenship.option.expat')}
+                </option>
+                <option value="relocation">
+                  {t('form.citizenship.option.relocation')}
+                </option>
+              </Select>
+              <Select
+                name="role"
+                className="text-primary mb-6"
+                label={t('form.role.label')}
+                defaultValue={
+                  applyFetcher.data?.fields.role ??
+                  searchParams.get('role') ??
+                  ''
+                }
+                error={to(applyFetcher?.data?.errors.role)}
+                required
+              >
+                {vacancies.map((vacancy) => (
+                  <option key={vacancy.uuid} value={vacancy.name}>
+                    {vacancy.name}
                   </option>
-                  <option value="employed">
-                    {t('form.employment.option.employed')}
-                  </option>
-                  <option value="searching">
-                    {t('form.employment.option.searching')}
-                  </option>
-                  <option value="freelance">
-                    {t('form.employment.option.freelance')}
-                  </option>
-                </Select>
-                <Select
-                  name="citizenship"
-                  className="text-primary mb-6"
-                  label={t('form.citizenship.label')}
-                  defaultValue={applyFetcher.data?.fields.citizenship ?? ''}
-                  error={to(applyFetcher?.data?.errors.citizenship)}
-                  required
-                >
-                  <option value="" disabled>
-                    {t('form.select.placeholder')}
-                  </option>
-                  <option value="dutch">
-                    {t('form.citizenship.option.dutch')}
-                  </option>
-                  <option value="expat">
-                    {t('form.citizenship.option.expat')}
-                  </option>
-                  <option value="relocation">
-                    {t('form.citizenship.option.relocation')}
-                  </option>
-                </Select>
-                <Select
-                  name="role"
-                  className="text-primary mb-6"
-                  label={t('form.role.label')}
-                  defaultValue={
-                    applyFetcher.data?.fields.role ??
-                    searchParams.get('role') ??
-                    ''
-                  }
-                  error={to(applyFetcher?.data?.errors.role)}
-                  required
-                >
-                  <option value="" disabled>
-                    {t('form.select.placeholder')}
-                  </option>
-                  {data.vacancies?.map((vacancy) => (
-                    <option key={vacancy.uuid} value={vacancy.name}>
-                      {vacancy.name}
-                    </option>
-                  ))}
-                </Select>
-                <Field
-                  name="linkedin"
-                  className="mb-6"
-                  label={t('form.linkedin.label')}
-                  placeholder={t('form.linkedin.placeholder')}
-                  type="url"
-                  defaultValue={applyFetcher.data?.fields.linkedin ?? ''}
-                  error={to(applyFetcher?.data?.errors.linkedin)}
-                />
-                <Field
-                  name="motivation"
-                  className="mb-6"
-                  label={t('form.motivation.label')}
-                  type="textarea"
-                  rows={10}
-                  defaultValue={applyFetcher.data?.fields.motivation ?? ''}
-                  error={to(applyFetcher?.data?.errors.motivation)}
-                />
+                ))}
+              </Select>
+              <Field
+                name="linkedin"
+                className="mb-6"
+                label={t('form.linkedin.label')}
+                placeholder={t('form.linkedin.placeholder')}
+                type="url"
+                defaultValue={applyFetcher.data?.fields.linkedin ?? ''}
+                error={to(applyFetcher?.data?.errors.linkedin)}
+              />
+              <Field
+                name="motivation"
+                className="mb-6"
+                label={t('form.motivation.label')}
+                placeholder={t('form.motivation.placeholder')}
+                type="textarea"
+                rows={10}
+                defaultValue={applyFetcher.data?.fields.motivation ?? ''}
+                error={to(applyFetcher?.data?.errors.motivation)}
+              />
 
-                <div className="mb-10">
+              <div className="mb-8">
+                <div className="h-[78px]">
                   <ReCaptcha
-                    theme="dark"
+                    theme="light"
                     sitekey={getRequiredGlobalEnvVar('GOOGLE_CAPTCHA_KEY')}
                     onChange={setCaptchaValue}
                   />
-                  {applyFetcher.data?.errors.captcha ? (
-                    <InputError id="captcha-error">
-                      {t(applyFetcher.data?.errors.captcha)}
-                    </InputError>
-                  ) : null}
                 </div>
-
-                {applyFetcher.data?.errors.generalError ? (
-                  <ErrorPanel className="mb-8">
-                    {t('form.apply.error')}
-                  </ErrorPanel>
+                {applyFetcher.data?.errors.captcha ? (
+                  <InputError id="captcha-error">
+                    {t(applyFetcher.data?.errors.captcha)}
+                  </InputError>
                 ) : null}
-                <Button type="submit" className="w-full">
-                  {t('form.apply.submit')}
-                </Button>
-              </applyFetcher.Form>
-            </>
+              </div>
+
+              {applyFetcher.data?.errors.generalError ? (
+                <ErrorPanel className="mb-8" id="apply-form-error">
+                  {t('form.apply.error')}
+                </ErrorPanel>
+              ) : null}
+              <Button type="submit" className="w-full" variant="secondary">
+                {t('form.apply.submit')}
+              </Button>
+            </applyFetcher.Form>
           )}
         </div>
       </Grid>

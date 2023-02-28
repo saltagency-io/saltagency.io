@@ -51,7 +51,7 @@ export function InputError({ children, id }: InputErrorProps) {
   }
 
   return (
-    <p role="alert" id={id} className="text-sm text-red-500">
+    <p role="alert" id={id} className="text-sm text-red-500 block mb-2 font-medium">
       {children}
     </p>
   )
@@ -191,7 +191,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             >
               {children}
             </select>
-            <div className="pointer-events-none absolute top-0 right-6 bottom-0 m-auto h-6 w-6">
+            <div className="text-gray-500 pointer-events-none absolute top-0 right-6 bottom-0 m-auto h-6 w-6">
               <IconChevronDown />
             </div>
           </div>
