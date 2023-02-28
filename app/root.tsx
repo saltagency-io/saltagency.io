@@ -32,25 +32,7 @@ import {
   getDataSource,
   getLayout,
 } from '~/lib/storyblok.server'
-import { SbButton } from '~/storyblok/button'
-import { SbCalculator } from '~/storyblok/calculator'
-import { SbFooter } from '~/storyblok/footer'
-import { SbGrid } from '~/storyblok/grid'
-import { SbHeader } from '~/storyblok/header'
-import { SbJobDescription } from '~/storyblok/job-description'
-import { SbPage } from '~/storyblok/page'
-import { SbQuote } from '~/storyblok/quote'
-import { SbRichText } from '~/storyblok/rich-text'
-import { SbBlockWithSections } from '~/storyblok/sections/blok-with-sections'
-import { SbCareersSection } from '~/storyblok/sections/careers-section'
-import { SbClients } from '~/storyblok/sections/clients-section'
-import { SbHeaderSection } from '~/storyblok/sections/header-section'
-import { SbHeroSection } from '~/storyblok/sections/hero-section'
-import { SbLocationSection } from '~/storyblok/sections/location-section'
-import { SbPeopleSection } from '~/storyblok/sections/people-section'
-import { SbRichTextSection } from '~/storyblok/sections/richtext-section'
-import { SbTextSection } from '~/storyblok/sections/text-section'
-import { SbVacancy } from '~/storyblok/vacancy'
+import { components } from '~/storyblok'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
@@ -65,40 +47,16 @@ import {
 import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 
-// TODO: export from /storblok and use enum as keys
-const components = {
-  page: SbPage,
-  vacancy: SbVacancy,
-  header: SbHeader,
-  footer: SbFooter,
-  hero: SbHeroSection,
-  button: SbButton,
-  grid: SbGrid,
-  richText: SbRichText,
-  richTextSection: SbRichTextSection,
-  clients: SbClients,
-  calculator: SbCalculator,
-  textSection: SbTextSection,
-  blockWithSections: SbBlockWithSections,
-  quote: SbQuote,
-  peopleSection: SbPeopleSection,
-  careersSection: SbCareersSection,
-  headerSection: SbHeaderSection,
-  locationSection: SbLocationSection,
-  jobDescription: SbJobDescription,
-}
-
 storyblokInit({
+  components,
   accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
-  // TODO: enable
-  // apiOptions: {
-  //   cache: {
-  //     clear: 'auto',
-  //     type: 'memory',
-  //   },
-  // },
-  components,
+  apiOptions: {
+    cache: {
+      clear: 'auto',
+      type: 'memory',
+    },
+  },
 })
 
 export const meta: MetaFunction = ({ data }) => {

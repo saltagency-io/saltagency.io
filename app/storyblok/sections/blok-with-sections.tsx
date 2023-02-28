@@ -23,7 +23,7 @@ type SectionComponent = React.ComponentType<{
 const sections: Record<Variant, SectionComponent> = {
   [Variant.Proposition]: PropositionSection,
   [Variant.Formula]: FormulaSection,
-  [Variant.OurOffer]: FormulaSection, // Re-use formula section as they're identical currently
+  [Variant.OurOffer]: FormulaSection, // Re-use formula section as they're identical in terms of design
   [Variant.ApplicationProcess]: ApplicationProcessSection,
 }
 

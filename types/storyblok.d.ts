@@ -1,5 +1,7 @@
 import type { SbBlokData } from '@storyblok/react'
 
+import { BlokTypes } from '~/storyblok'
+
 // Content that can be on a story of type Page
 export type PageStoryContent = {
   body: BodyComponents[]
@@ -14,28 +16,6 @@ export type VacancyStoryContent = {
 export type LayoutStoryContent = {
   header: HeaderBlok[]
   footer: FooterBlok[]
-}
-
-export enum BlokTypes {
-  Page = 'page',
-  Header = 'header',
-  Footer = 'footer',
-  Hero = 'hero',
-  Button = 'button',
-  Link = 'link',
-  RichText = 'richText',
-  Grid = 'grid',
-  Clients = 'clients',
-  RichTextSection = 'richTextSection',
-  Calculator = 'calculator',
-  TextSection = 'textSection',
-  BlockWithSections = 'blockWithSections',
-  Quote = 'quote',
-  PeopleSection = 'peopleSection',
-  CareersSection = 'careersSection',
-  HeaderSection = 'headerSection',
-  LocationSection = 'locationSection',
-  JobDescription = 'jobDescription',
 }
 
 export type HeaderBlok = SbBlokData & {
