@@ -149,7 +149,7 @@ export default function ContactPage() {
     <main>
       <Grid className="pt-12 pb-20 lg:pt-24 lg:pb-56">
         <div className="col-span-full lg:col-span-5">
-          <H1 className="mb-4 lg:mb-8">{t('cont]act.title')}</H1>
+          <H1 className="mb-4 lg:mb-8">{t('contact.title')}</H1>
           <H4 as="h2" variant="secondary">
             {t('contact.subtitle')}
           </H4>

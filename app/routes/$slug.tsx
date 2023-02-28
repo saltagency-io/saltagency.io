@@ -63,10 +63,10 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
     const meta = data.initialStory.content.metatags
     return {
       ...getSocialMetas({
-        title: meta.title,
-        description: meta.description,
+        title: meta?.title,
+        description: meta?.description,
+        image: meta?.og_image,
         url: getUrl(requestInfo),
-        image: meta.og_image,
       }),
     }
   } else {

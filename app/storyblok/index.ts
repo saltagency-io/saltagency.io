@@ -1,20 +1,17 @@
 import { SbButton } from './button'
 import { SbCalculator } from './calculator'
 import { SbFooter } from './footer'
-import { SbGrid } from './grid'
 import { SbHeader } from './header'
 import { SbJobDescription } from './job-description'
 import { SbPage } from './page'
 import { SbQuote } from './quote'
-import { SbRichText } from './rich-text'
-import { SbBlockWithSections } from './sections/blok-with-sections'
+import { SbBlockWithSections } from './sections/block-with-sections'
 import { SbCareersSection } from './sections/careers-section'
 import { SbClients } from './sections/clients-section'
 import { SbHeaderSection } from './sections/header-section'
 import { SbHeroSection } from './sections/hero-section'
 import { SbLocationSection } from './sections/location-section'
 import { SbPeopleSection } from './sections/people-section'
-import { SbRichTextSection } from './sections/richtext-section'
 import { SbTextSection } from './sections/text-section'
 import { SbVacancy } from './vacancy'
 
@@ -26,11 +23,8 @@ export enum BlokTypes {
   Hero = 'hero',
   Button = 'button',
   Link = 'link',
-  RichText = 'richText',
-  Grid = 'grid',
   Vacancy = 'vacancy',
   Clients = 'clients',
-  RichTextSection = 'richTextSection',
   Calculator = 'calculator',
   TextSection = 'textSection',
   BlockWithSections = 'blockWithSections',
@@ -49,9 +43,6 @@ export const components = {
   [BlokTypes.Footer]: SbFooter,
   [BlokTypes.Hero]: SbHeroSection,
   [BlokTypes.Button]: SbButton,
-  [BlokTypes.Grid]: SbGrid,
-  [BlokTypes.RichText]: SbRichText,
-  [BlokTypes.RichTextSection]: SbRichTextSection,
   [BlokTypes.Clients]: SbClients,
   [BlokTypes.Calculator]: SbCalculator,
   [BlokTypes.TextSection]: SbTextSection,

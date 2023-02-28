@@ -8,11 +8,7 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 export function SbHeader({ blok }: { blok: HeaderBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      <Header
-        logoUrl={blok.logo.filename}
-        logoAlt={blok.logo.alt}
-        menu={blok.menu.map(mapLink)}
-      />
+      <Header menu={blok.menu.map(mapLink)} />
     </StoryBlokWrapper>
   )
 }

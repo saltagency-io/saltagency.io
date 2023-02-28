@@ -9,7 +9,7 @@ export type PageStoryContent = {
 }
 
 export type VacancyStoryContent = {
-  body: RichTextBlok[]
+  body: JobDescriptionBlok | BlockWithSectionsBlok
   metatags: MetaTags
 }
 
@@ -43,27 +43,11 @@ export type LinkBlok = SbBlokData & {
   text: string
 }
 
-export type RichTextBlok = SbBlokData & {
-  component: BlokTypes.RichText
-  body: string
-}
-
 export type HeroBlok = SbBlokData & {
   component: BlokTypes.Hero
   title: string
   body: string
   actions: ButtonBlok[]
-}
-
-export type RichTextSectionBlok = SbBlokData & {
-  component: BlokTypes.RichTextSection
-  body: string
-}
-
-export type GridBlok = SbBlokData & {
-  component: BlokTypes.Grid
-  columns: number
-  components: RichTextBlok[]
 }
 
 export type ClientsBlok = SbBlokData & {

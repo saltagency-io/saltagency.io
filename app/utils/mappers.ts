@@ -24,15 +24,15 @@ function formatUrl(url: string) {
 
 export function mapLink(link: LinkBlok): LinkType {
   return {
-    id: link._uid,
-    url: formatUrl(link.target.cached_url),
-    text: link.text,
+    id: link?._uid,
+    url: formatUrl(link?.target.cached_url ?? ''),
+    text: link?.text,
   }
 }
 
 export function mapAsset(asset: Asset): Image {
   return {
-    id: asset.id.toString(),
+    id: asset.id?.toString() ?? '',
     url: asset.filename,
     alt: asset.alt,
   }
@@ -49,7 +49,7 @@ export function mapSection(section: SectionBlok): Section {
 
 export function mapVacancy(vacancy: StoryData<VacancyStoryContent>): Vacancy {
   return {
-    id: vacancy.id.toString(),
+    id: vacancy.id?.toString() ?? '',
     name: vacancy.name,
     slug: vacancy.full_slug,
   }

@@ -10,7 +10,7 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 enum Variant {
   Proposition = 'proposition',
   Formula = 'formula',
-  OurOffer = 'offer',
+  OurOffer = 'our-offer',
   ApplicationProcess = 'application-process',
 }
 

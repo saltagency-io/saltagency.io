@@ -9,7 +9,7 @@ import { H1, H4 } from '~/components/typography'
 type Props = {
   title: string
   body: string
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 export function HeroSection({ children, title, body }: Props) {

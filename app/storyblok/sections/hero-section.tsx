@@ -10,7 +10,7 @@ export function SbHeroSection({ blok }: { blok: HeroBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
       <HeroSection title={blok.title} body={blok.body}>
-        {blok.actions.map((action) => (
+        {blok.actions?.map((action) => (
           <StoryblokComponent key={action._uid} blok={action} />
         ))}
       </HeroSection>
