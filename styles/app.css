@@ -103,7 +103,8 @@ address {
 }
 
 a {
-  color: var(--color-white);
+  letter-spacing: -0.02em;
+  line-height: 120%;
 }
 
 .underlined {
@@ -148,4 +149,23 @@ a {
   .active.underlined:after {
     opacity: 1;
   }
+}
+
+.text-list li {
+  position: relative;
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.text-list li:before {
+  content: '';
+  display: inline-block;
+  height: 0.3em;
+  width: 0.3em;
+  position: absolute;
+  top: 13px;
+  left: 0.5rem;
+  margin: auto;
+  background-color: currentColor;
+  border-radius: 50%;
 }

@@ -37,6 +37,7 @@ import { SbCalculator } from '~/storyblok/calculator'
 import { SbFooter } from '~/storyblok/footer'
 import { SbGrid } from '~/storyblok/grid'
 import { SbHeader } from '~/storyblok/header'
+import { SbJobDescription } from '~/storyblok/job-description'
 import { SbPage } from '~/storyblok/page'
 import { SbQuote } from '~/storyblok/quote'
 import { SbRichText } from '~/storyblok/rich-text'
@@ -84,6 +85,7 @@ const components = {
   careersSection: SbCareersSection,
   headerSection: SbHeaderSection,
   locationSection: SbLocationSection,
+  jobDescription: SbJobDescription,
 }
 
 storyblokInit({

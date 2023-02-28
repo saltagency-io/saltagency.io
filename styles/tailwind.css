@@ -133,21 +133,4 @@
   .border-avatar-dark {
     border-color: rgba(255, 255, 255, 0.05);
   }
-
-  .text-list li {
-    @apply relative mb-1 pl-8 text-xl;
-  }
-
-  .text-list li:before {
-    content: '';
-    display: inline-block;
-    height: 0.5rem;
-    width: 0.5rem;
-    position: absolute;
-    top: 10px;
-    left: 0.5rem;
-    margin: auto;
-    background-color: var(--color-pink-500);
-    border-radius: 50%;
-  }
 }

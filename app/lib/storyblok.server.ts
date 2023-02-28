@@ -52,7 +52,7 @@ export async function getVacancyBySlug(
 
   try {
     const { data } = await getStoryblokApi().get(
-      `cdn/stories/jobs/${slug}`,
+      `cdn/stories/careers/${slug}`,
       params,
     )
     return data?.story

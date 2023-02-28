@@ -56,12 +56,18 @@ function getComponents({
         {props.children}
       </strong>
     ),
-    ul: (props) =>
-      props.ordered ? (
-        <ol className={clsx('text-list', colorClassName)}>{props.children}</ol>
+    ul: (props) => {
+      const className = clsx('text-list tracking-tight', colorClassName, {
+        'text-sm leading-6': textSize === 'sm',
+        'text-lg leading-6': textSize === 'lg',
+        'text-lg leading-7 md:text-2xl md:leading-9': textSize === 'xl',
+      })
+      return props.ordered ? (
+        <ol className={className}>{props.children}</ol>
       ) : (
-        <ul className={clsx('text-list', colorClassName)}>{props.children}</ul>
-      ),
+        <ul className={className}>{props.children}</ul>
+      )
+    },
   }
 }
 

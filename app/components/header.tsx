@@ -209,12 +209,18 @@ function MobileMenu({ menu }: { menu: LinkType[] }) {
   )
 }
 
-function Logo({ className }: { className?: string }) {
+function Logo({
+  className,
+  size = 'large',
+}: {
+  className?: string
+  size?: 'small' | 'large'
+}) {
   return (
     <svg
-      className={clsx('h-auto', className)}
-      width="107"
-      height="45"
+      className={className}
+      width={size === 'large' ? 107 : 58}
+      height={size === 'large' ? 45 : 24}
       viewBox="0 0 107 45"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -258,8 +264,12 @@ export function Header({ menu }: Props) {
   return (
     <div className="mx-8vw py-8 lg:mt-12 lg:py-8">
       <nav className="mx-auto flex max-w-5xl items-center justify-between">
-        <Link prefetch="intent" to="/">
-          <Logo className="w-[58px] lg:w-[107px]" />
+        <Link prefetch="intent" to="/" title="home">
+          <span className="sr-only">Salt Agency</span>
+          {/*Mobile*/}
+          <Logo size="small" className="block lg:hidden" />
+          {/*Desktop*/}
+          <Logo size="large" className="hidden lg:block" />
         </Link>
 
         <ul className="hidden gap-x-10 lg:flex">

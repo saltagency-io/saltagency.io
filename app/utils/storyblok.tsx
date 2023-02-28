@@ -4,9 +4,16 @@ import { SbBlokData, storyblokEditable } from '@storyblok/react'
 
 import {
   IconBankNotes,
+  IconChatBubble,
+  IconChatBubbleLeftRight,
+  IconCode,
+  IconDocument,
   IconEye,
+  IconFingerPrint,
   IconHeart,
+  IconScale,
   IconShield,
+  IconUserGroup,
   IconUsers,
 } from '~/components/icons'
 import { usePreviewState } from '~/utils/providers'
@@ -43,4 +50,11 @@ export const sbIconMap: Record<string, React.ComponentType<any>> = {
   heart: IconHeart,
   banknotes: IconBankNotes,
   shield: IconShield,
+  'finger-print': IconFingerPrint,
+  document: IconDocument,
+  scale: IconScale,
+  'user-group': IconUserGroup,
+  'chat-bubble': IconChatBubble,
+  'chat-bubble-left-right': IconChatBubbleLeftRight,
+  code: IconCode,
 }

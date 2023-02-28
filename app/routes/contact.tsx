@@ -216,8 +216,10 @@ export default function ContactPage() {
                     size="small"
                   />
                   <Paragraph textColorClassName="text-gray-700" size="lg">
-                    <strong className="text-gray-900">Dennis</strong> will
-                    answer your email
+                    <strong className="text-gray-900">
+                      {t('contact.response.name')}
+                    </strong>{' '}
+                    {t('contact.response')}
                   </Paragraph>
                 </div>
 

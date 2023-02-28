@@ -35,6 +35,7 @@ export enum BlokTypes {
   CareersSection = 'careersSection',
   HeaderSection = 'headerSection',
   LocationSection = 'locationSection',
+  JobDescription = 'jobDescription',
 }
 
 export type HeaderBlok = SbBlokData & {
@@ -156,6 +157,12 @@ export type LocationSectionBlok = SbBlokData & {
   image: Asset
   imageMobile: Asset
   links: LinkBlok[]
+}
+
+export type JobDescriptionBlok = SbBlokData & {
+  component: BlokTypes.JobDescription
+  description: string
+  requirements: string
 }
 
 export type BodyComponents =

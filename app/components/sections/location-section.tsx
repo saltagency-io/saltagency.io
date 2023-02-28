@@ -44,7 +44,7 @@ export function LocationSection({
               to={link?.url}
               target="_blank"
               rel="noopener"
-              className="text-xl leading-normal tracking-tight underline lg:text-2xl"
+              className="text-xl leading-normal tracking-tight text-white underline lg:text-2xl"
             >
               {link.text}
             </Link>

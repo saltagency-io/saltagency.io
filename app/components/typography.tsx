@@ -111,7 +111,7 @@ export function Paragraph({
       {
         'text-sm leading-6': size === 'sm',
         'text-lg leading-6': size === 'lg',
-        'text-lg leading-6 md:text-2xl md:leading-9': size === 'xl',
+        'text-lg leading-7 md:text-2xl md:leading-9': size === 'xl',
       },
     ),
     ...rest,
@@ -132,7 +132,7 @@ export function Subtitle({
   return (
     <span
       className={clsx(
-        'block text-xl lg:text-2xl font-bold leading-normal tracking-tight',
+        'block text-xl font-bold leading-normal tracking-tight lg:text-2xl',
         {
           'text-purple-500': variant === 'purple',
           'text-pink-500': variant === 'pink',

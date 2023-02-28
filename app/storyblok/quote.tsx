@@ -1,4 +1,4 @@
-import { Quote } from '~/components/sections/quote'
+import { Quote } from '~/components/quote'
 import type { QuoteBlok } from '~/types'
 import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'

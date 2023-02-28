@@ -26,12 +26,12 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
           </H3>
         </div>
         {sections.map((section, i) => {
-          const Icon = sbIconMap[section.icon ?? ''] ?? ''
+          const Icon = sbIconMap[section.icon ?? '']
           return (
             <div
               key={section.id}
               className={clsx(
-                'border-primary col-span-full border-b lg:col-span-4 lg:border-r lg:px-4',
+                'border-primary col-span-full border-b last:border-b-0 lg:col-span-4 lg:border-r lg:px-4',
                 {
                   'lg:pl-0': i === 0 || i === 3,
                   'lg:pr-0': i === 2 || i === 5,
@@ -42,7 +42,11 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
             >
               <div className="py-6 lg:px-6 lg:py-12">
                 <div className="mb-4 text-gray-600">
-                  <Icon />
+                  {Icon ? (
+                    <Icon height={32} width={32} />
+                  ) : (
+                    `Unknown icon: ${section.icon}`
+                  )}
                 </div>
                 <H4 as="h3" className="mb-4">
                   {section.title}
