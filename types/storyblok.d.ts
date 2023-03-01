@@ -14,13 +14,12 @@ export type VacancyStoryContent = {
 }
 
 export type LayoutStoryContent = {
-  header: HeaderBlok[]
+  navigation: NavigationBlok[]
   footer: FooterBlok[]
 }
 
-export type HeaderBlok = SbBlokData & {
-  component: BlokTypes.Header
-  logo: Asset
+export type NavigationBlok = SbBlokData & {
+  component: BlokTypes.Navigation
   menu: LinkBlok[]
 }
 

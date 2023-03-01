@@ -5,11 +5,11 @@ import { useMatches } from '@remix-run/react'
 import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
 
-import type { Vacancy } from '~/types'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
 import { H2, H3, H4, H6 } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
+import type { Vacancy } from '~/types'
 import { mapVacancy } from '~/utils/mappers'
 import { useVacancies } from '~/utils/providers'
 
@@ -105,7 +105,7 @@ export function ErrorPage({
         </div>
       </noscript>
       <main className="relative">
-        <div className="fixed top-0 bottom-0 left-0 right-0 z-0 bg-gradient" />
+        <div className="bg-gradient fixed top-0 bottom-0 left-0 right-0 z-0" />
 
         {error && process.env.NODE_ENV === 'development' ? (
           <RedBox error={error} />
@@ -122,7 +122,11 @@ export function ErrorPage({
               <H4 className="mb-12" variant="secondary" inverse>
                 Check out our recent openings
               </H4>
-              <VacancyList vacancies={vacancies ?? []} theme="light" />
+              <VacancyList
+                vacancies={vacancies}
+                theme="light"
+                transition={false}
+              />
             </div>
           </Grid>
         ) : null}

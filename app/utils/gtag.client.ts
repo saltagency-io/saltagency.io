@@ -8,11 +8,17 @@ declare global {
   }
 }
 
-export function pageView(url: string, trackingId: string) {
-  if (!window.gtag) {
+function warn() {
+  if (ENV.NODE_ENV !== 'development') {
     console.warn(
       'window.gtag is not defined. This could mean your google analytics script has not loaded on the page yet.',
     )
+  }
+}
+
+export function pageView(url: string, trackingId: string) {
+  if (!window.gtag) {
+    warn()
     return
   }
   window.gtag('config', trackingId, {
@@ -28,9 +34,7 @@ export function event({
   group,
 }: Record<string, string>) {
   if (!window.gtag) {
-    console.warn(
-      'window.gtag is not defined. This could mean your google analytics script has not loaded on the page yet.',
-    )
+    warn()
     return
   }
   window.gtag('event', action, {

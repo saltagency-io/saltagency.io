@@ -1,8 +1,8 @@
 import { SbButton } from './button'
 import { SbCalculator } from './calculator'
 import { SbFooter } from './footer'
-import { SbHeader } from './header'
 import { SbJobDescription } from './job-description'
+import { SbNavigation } from './navigation'
 import { SbPage } from './page'
 import { SbQuote } from './quote'
 import { SbBlockWithSections } from './sections/block-with-sections'
@@ -18,7 +18,7 @@ import { SbVacancy } from './vacancy'
 // Would prefer to put this in types/storyblok.d.ts but that breaks the build for some reason 🤷
 export enum BlokTypes {
   Page = 'page',
-  Header = 'header',
+  Navigation = 'navigation',
   Footer = 'footer',
   Hero = 'hero',
   Button = 'button',
@@ -39,7 +39,7 @@ export enum BlokTypes {
 export const components = {
   [BlokTypes.Page]: SbPage,
   [BlokTypes.Vacancy]: SbVacancy,
-  [BlokTypes.Header]: SbHeader,
+  [BlokTypes.Navigation]: SbNavigation,
   [BlokTypes.Footer]: SbFooter,
   [BlokTypes.Hero]: SbHeroSection,
   [BlokTypes.Button]: SbButton,

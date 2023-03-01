@@ -37,7 +37,7 @@ import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
 import { getEnv } from '~/utils/env.server'
-import * as gtag from '~/utils/google-analytics.client'
+import * as gtag from '~/utils/gtag.client'
 import { LabelsProvider } from '~/utils/labels-provider'
 import {
   getDomainUrl,
@@ -142,11 +142,11 @@ export function App() {
   const story = useStoryblokState(data.initialStory, {}, data.preview)
   const location = useLocation()
 
-  const [header] = story.content.header
+  const [navigation] = story.content.navigation
   const [footer] = story.content.footer
 
   React.useEffect(() => {
-    if (data.ENV.GOOGLE_ANALYTICS) {
+    if (data.ENV.GOOGLE_ANALYTICS?.length) {
       gtag.pageView(location.pathname, data.ENV.GOOGLE_ANALYTICS)
     }
   }, [data.ENV.GOOGLE_ANALYTICS, location])
@@ -156,24 +156,39 @@ export function App() {
       <head>
         <Meta />
         <Links />
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${ENV.GOOGLE_ANALYTICS}`}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+        {process.env.NODE_ENV === 'development' ||
+        !data.ENV.GOOGLE_ANALYTICS ? null : (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${data.ENV.GOOGLE_ANALYTICS}`}
+            />
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${data.ENV.GOOGLE_AW_TAG}`}
+            />
+            <script
+              async
+              id="gtag-init"
+              dangerouslySetInnerHTML={{
+                __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${ENV.GOOGLE_ANALYTICS}');
-              gtag('config', '${ENV.GOOGLE_AW_TAG}');
-          `,
-          }}
-        />
+              gtag('config', '${data.ENV.GOOGLE_ANALYTICS}', {
+                page_path: window.location.pathname
+              });
+              gtag('config', '${data.ENV.GOOGLE_AW_TAG}', {
+                page_path: window.location.pathname
+              });
+              `,
+              }}
+            />
+          </>
+        )}
       </head>
       <body>
-        <StoryblokComponent blok={header} key={header._uid} />
+        <StoryblokComponent blok={navigation} key={navigation._uid} />
         <Outlet />
         <StoryblokComponent blok={footer} key={footer._uid} />
         <ScrollRestoration />

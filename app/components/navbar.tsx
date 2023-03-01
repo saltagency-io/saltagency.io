@@ -260,7 +260,7 @@ type Props = {
   menu: LinkType[]
 }
 
-export function Header({ menu }: Props) {
+export function Navbar({ menu }: Props) {
   return (
     <div className="mx-8vw py-8 lg:mt-12 lg:py-8">
       <nav className="mx-auto flex max-w-5xl items-center justify-between">
