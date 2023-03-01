@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import type { MetaFunction } from '@remix-run/node'
-import { Link } from '@remix-run/react'
 
 import { ButtonLink } from '~/components/button'
 import { GradientCircle } from '~/components/gradient-circle'

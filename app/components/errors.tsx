@@ -5,9 +5,13 @@ import { useMatches } from '@remix-run/react'
 import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
 
+import type { Vacancy } from '../../types'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
 import { H2, H3, H4, H6 } from '~/components/typography'
+import { VacancyList } from '~/components/vacancy-list'
+import { mapVacancy } from '~/utils/mappers'
+import { useVacancies } from '~/utils/providers'
 
 function RedBox({ error }: { error: Error }) {
   const [isVisible, setIsVisible] = React.useState(true)
@@ -57,8 +61,7 @@ type ErrorSectionProps = {
 
 export function ErrorSection({ title, subtitle }: ErrorSectionProps) {
   return (
-    <div className="py-40">
-      <div className="fixed top-0 bottom-0 left-0 right-0 z-0 bg-gradient" />
+    <div className="pt-40 pb-20">
       <Grid>
         <div className="col-span-full text-center lg:col-span-8 lg:col-start-3">
           <H3 className="mb-4" variant="primary" inverse>
@@ -79,9 +82,11 @@ export function ErrorSection({ title, subtitle }: ErrorSectionProps) {
 export function ErrorPage({
   error,
   errorSectionProps,
+  vacancies,
 }: {
   error?: Error
   errorSectionProps: ErrorSectionProps
+  vacancies?: Vacancy[]
 }) {
   return (
     <>
@@ -100,24 +105,41 @@ export function ErrorPage({
         </div>
       </noscript>
       <main className="relative">
+        <div className="fixed top-0 bottom-0 left-0 right-0 z-0 bg-gradient" />
+
         {error && process.env.NODE_ENV === 'development' ? (
           <RedBox error={error} />
         ) : null}
 
         <ErrorSection {...errorSectionProps} />
+
+        {vacancies ? (
+          <Grid className="py-20">
+            <div className="col-span-8 col-start-3">
+              <H3 className="mb-2" inverse>
+                We're you searching for a job?
+              </H3>
+              <H4 className="mb-12" variant="secondary" inverse>
+                Check out our recent openings
+              </H4>
+              <VacancyList vacancies={vacancies ?? []} theme="light" />
+            </div>
+          </Grid>
+        ) : null}
       </main>
     </>
   )
 }
 
-// TODO: add jobs
 export function NotFoundError() {
   const matches = useMatches()
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
+  const { vacancies } = useVacancies()
 
   return (
     <ErrorPage
+      vacancies={vacancies.map(mapVacancy)}
       errorSectionProps={{
         title: '404',
         subtitle: `We searched everywhere but we couldn't find "${pathname}"`,

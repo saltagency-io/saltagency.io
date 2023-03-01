@@ -1,10 +1,6 @@
 import * as React from 'react'
 
-import type {
-  DataFunctionArgs,
-  MetaFunction,
-  SerializeFrom,
-} from '@remix-run/node'
+import type { DataFunctionArgs, MetaFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 
@@ -84,10 +80,8 @@ export default function Page() {
   return <StoryblokComponent blok={story.content} />
 }
 
-// TODO: add jobs
 export function CatchBoundary() {
   const caught = useCatch()
   console.error('CatchBoundary', caught)
   return <NotFoundError />
-  // throw new Error(`Unhandled error: ${caught.status}`)
 }

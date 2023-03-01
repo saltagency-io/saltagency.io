@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import type { DataFunctionArgs } from '@remix-run/node'
-import { json, type MetaFunction, type SerializeFrom } from '@remix-run/node'
+import { json, type MetaFunction } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
@@ -42,11 +42,12 @@ export async function loader({ params, request }: DataFunctionArgs) {
     preview,
   }
 
-  const headers = {
-    'Cache-Control': 'private, max-age=3600',
-  }
-
-  return typedjson(data, { status: 200, headers })
+  return typedjson(data, {
+    status: 200,
+    headers: {
+      'Cache-Control': 'private, max-age=3600',
+    },
+  })
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
@@ -77,10 +78,8 @@ export default function VacancyPage() {
   return <StoryblokComponent blok={story.content} />
 }
 
-// TODO: add jobs
 export function CatchBoundary() {
   const caught = useCatch()
   console.error('CatchBoundary', caught)
   return <NotFoundError />
-  // throw new Error(`Unhandled error: ${caught.status}`)
 }
