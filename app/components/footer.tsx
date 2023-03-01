@@ -15,7 +15,7 @@ export function Footer({ disclaimer, socialText }: Props) {
       <Grid>
         <div className="col-span-full flex flex-col-reverse justify-between lg:flex-row lg:items-center">
           <Paragraph
-            className="opacity-40"
+            className="opacity-60"
             textColorClassName="text-white"
             size="sm"
           >
