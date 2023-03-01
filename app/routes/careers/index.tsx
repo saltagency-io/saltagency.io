@@ -38,7 +38,11 @@ export default function CareersIndex() {
             {t('careers.subtitle')}
           </H4>
           <div className="py-16 lg:py-24">
-            <VacancyList theme="dark" vacancies={vacancies.map(mapVacancy)} />
+            <VacancyList
+              theme="dark"
+              transition={false}
+              vacancies={vacancies.map(mapVacancy)}
+            />
           </div>
           <div className="mb-12">
             <H4 as="p" variant="secondary" className="mb-8">

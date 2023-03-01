@@ -3,13 +3,13 @@ import * as React from 'react'
 import type { SbBlokData } from '@storyblok/react'
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
 
-import type { RichTextBlok } from '../../types'
+import type { BodyComponents } from '~/types'
 import { Vacancy } from '~/components/vacancy'
 
 type Blok = SbBlokData & {
   title: string
   summary: string
-  body: RichTextBlok[] | undefined
+  body: BodyComponents[]
 }
 
 export function SbVacancy({ blok }: { blok: Blok }) {

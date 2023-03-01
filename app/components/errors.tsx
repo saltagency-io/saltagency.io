@@ -5,7 +5,7 @@ import { useMatches } from '@remix-run/react'
 import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
 
-import type { Vacancy } from '../../types'
+import type { Vacancy } from '~/types'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
 import { H2, H3, H4, H6 } from '~/components/typography'

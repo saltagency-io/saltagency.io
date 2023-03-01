@@ -3,7 +3,7 @@ import * as React from 'react'
 import type { LinkProps } from '@remix-run/react'
 import { Link } from '@remix-run/react'
 
-import type { NonNullProperties } from '../../types'
+import type { NonNullProperties } from '~/types'
 import type { getEnv } from '~/utils/env.server'
 import type { ValidateFn } from '~/utils/validators'
 

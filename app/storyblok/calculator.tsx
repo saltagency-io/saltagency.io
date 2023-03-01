@@ -1,4 +1,4 @@
-import type { CalculatorBlok } from '../../types'
+import type { CalculatorBlok } from '~/types'
 import { Calculator } from '~/components/calculator'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 

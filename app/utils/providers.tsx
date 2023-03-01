@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import type { StoryData } from '@storyblok/react'
 
-import type { VacancyStoryContent } from '../../types'
+import type { VacancyStoryContent } from '~/types'
 
 export function createSimpleContext<ContextType>(name: string) {
   const defaultValue = Symbol(`Default ${name} context value`)

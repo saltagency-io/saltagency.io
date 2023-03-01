@@ -1,4 +1,4 @@
-import type { ClientsBlok } from '../../../types'
+import type { ClientsBlok } from '~/types'
 import { ClientsSection } from '~/components/sections/clients-section'
 import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'

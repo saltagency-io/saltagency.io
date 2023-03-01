@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { StoryblokComponent } from '@storyblok/react'
 
-import type { HeroBlok } from '../../types'
+import type { HeroBlok } from '~/types'
 import { HeroSection } from '~/components/sections/hero-section'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 

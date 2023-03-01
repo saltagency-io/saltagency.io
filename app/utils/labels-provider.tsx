@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import type { DataSourceEntry } from '../../types'
+import type { DataSourceEntry } from '~/types'
 
 const LabelsContext = React.createContext<{
   t: (key: string) => string

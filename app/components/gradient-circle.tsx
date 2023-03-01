@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import clsx from 'clsx'
+import { motion, useReducedMotion } from 'framer-motion'
 
 type Props = {
   height?: number
@@ -25,8 +26,10 @@ export function GradientCircle({
   opacity = 40,
   className,
 }: Props) {
+  const shouldReduceMotion = useReducedMotion()
+
   return (
-    <div
+    <motion.div
       className={clsx(
         'bg-gradient-radial absolute rounded-full blur-4xl',
         className,
@@ -41,6 +44,9 @@ export function GradientCircle({
         bottom: bottom !== 0 ? `${bottom}px` : undefined,
         left: left !== 0 ? `${left}px` : undefined,
       }}
+      initial={{ scale: shouldReduceMotion ? 1 : 0.55 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.5 }}
     />
   )
 }

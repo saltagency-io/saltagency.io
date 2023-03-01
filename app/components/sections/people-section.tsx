@@ -14,7 +14,7 @@ type Props = {
 }
 
 export function PeopleSection({ subtitle, title, people }: Props) {
-  const { scrollY, scrollYProgress } = useScroll()
+  const { scrollYProgress } = useScroll()
   const translateY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, 120])
   const translateYNegative = useTransform(
     scrollYProgress,
@@ -25,14 +25,23 @@ export function PeopleSection({ subtitle, title, people }: Props) {
   return (
     <div className="bg-secondary py-20 lg:py-40">
       <Grid>
-        <div className="col-span-4 md:col-span-8 lg:col-span-5">
+        <motion.div
+          className="col-span-4 md:col-span-8 lg:col-span-5"
+          initial="initial"
+          whileInView="visible"
+          viewport={{ once: true, margin: '100px' }}
+          variants={{
+            initial: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.25, delay: 0.1 } },
+          }}
+        >
           <Subtitle variant="gray" className="mb-4">
             {subtitle}
           </Subtitle>
           <H3 as="h2" className="opacity-80">
             {title}
           </H3>
-        </div>
+        </motion.div>
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Grid
             nested

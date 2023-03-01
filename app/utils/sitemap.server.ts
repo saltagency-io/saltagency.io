@@ -2,7 +2,7 @@ import type { EntryContext } from '@remix-run/node'
 
 import { isEqual } from 'lodash'
 
-import type { Handle, SitemapEntry } from '../../types'
+import type { Handle, SitemapEntry } from '~/types'
 import { getDomainUrl, removeTrailingSlash, typedBoolean } from '~/utils/misc'
 
 export async function getSitemapXml(

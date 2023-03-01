@@ -16,7 +16,7 @@ export function TextSection({ subtitle, title, body }: Props) {
 
   const childVariants = {
     initial: { opacity: 0, y: shouldReduceMotion ? 0 : 25 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   }
 
   return (
@@ -25,12 +25,12 @@ export function TextSection({ subtitle, title, body }: Props) {
         className="col-span-4 md:col-span-8 lg:col-span-10 lg:col-start-2"
         initial="initial"
         whileInView="visible"
-        viewport={{ once: true }}
+        viewport={{ once: true, margin: '100px' }}
         variants={{
           initial: { opacity: 0 },
           visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.2, delay: 0.15 },
+            transition: { staggerChildren: 0.1, delay: 0.1 },
           },
         }}
       >

@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import clsx from 'clsx'
+import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
 import { H3, H4, Paragraph, Subtitle } from '~/components/typography'
@@ -14,8 +15,23 @@ type Props = {
 }
 
 export function FormulaSection({ subtitle, title, sections }: Props) {
+  const shouldReduceMotion = useReducedMotion()
+
   return (
-    <div className="bg-secondary py-20 lg:py-40" id="formula">
+    <motion.div
+      className="bg-secondary py-20 lg:py-40"
+      id="formula"
+      initial="initial"
+      whileInView="visible"
+      viewport={{ once: true, margin: '100px' }}
+      variants={{
+        initial: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.15, delay: 0.2 },
+        },
+      }}
+    >
       <Grid className="gap-x-0 md:gap-x-0 lg:gap-x-0">
         <div className="col-span-full">
           <Subtitle className="mb-4" variant="purple">
@@ -28,8 +44,12 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
         {sections.map((section, i) => {
           const Icon = sbIconMap[section.icon ?? '']
           return (
-            <div
+            <motion.div
               key={section.id}
+              variants={{
+                initial: { opacity: 0, x: shouldReduceMotion ? 0 : 25 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.25 } },
+              }}
               className={clsx(
                 'border-primary col-span-full border-b last:border-b-0 lg:col-span-4 lg:border-r lg:px-4',
                 {
@@ -55,10 +75,10 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
                   {section.text}
                 </Paragraph>
               </div>
-            </div>
+            </motion.div>
           )
         })}
       </Grid>
-    </div>
+    </motion.div>
   )
 }

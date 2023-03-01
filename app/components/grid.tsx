@@ -11,7 +11,7 @@ interface GridProps {
   rowGap?: boolean
 }
 
-const Grid = React.forwardRef<HTMLElement, GridProps>(function Grid(
+export const Grid = React.forwardRef<HTMLElement, GridProps>(function Grid(
   { children, className, as: Tag = 'div', nested, rowGap },
   ref,
 ) {
@@ -42,7 +42,7 @@ const Grid = React.forwardRef<HTMLElement, GridProps>(function Grid(
 /**
  * Use for development only! It renders the grid columns and gaps as page overlay
  */
-function GridLines() {
+export function GridLines() {
   // if (ENV.NODE_ENV !== 'development') {
   //   throw new Error('<GridLines />  should only be used during development')
   // }
@@ -64,5 +64,3 @@ function GridLines() {
     </div>
   )
 }
-
-export { Grid, GridLines }
