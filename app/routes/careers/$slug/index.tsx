@@ -75,7 +75,7 @@ export default function VacancyPage() {
   const data = useTypedLoaderData()
   const story = useStoryblokState(data.initialStory, {}, data.preview)
 
-  return <StoryblokComponent blok={story.content} />
+  return <StoryblokComponent blok={story.content} slug={story.slug} />
 }
 
 export function CatchBoundary() {

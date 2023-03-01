@@ -5,6 +5,27 @@ type SizeProps = {
   width?: number
 }
 
+export function IconChevronRight({ height = 24, width = 24 }: SizeProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      height={height}
+      width={width}
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+      />
+    </svg>
+  )
+}
+
 export function IconChevronDown({ height = 24, width = 24 }: SizeProps) {
   return (
     <svg
@@ -15,6 +36,7 @@ export function IconChevronDown({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -35,6 +57,7 @@ export function IconChevronLeft({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -55,6 +78,7 @@ export function IconArrowDown({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -75,6 +99,7 @@ export function IconEye({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -100,6 +125,7 @@ export function IconUsers({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -120,6 +146,7 @@ export function IconHeart({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -140,6 +167,7 @@ export function IconBankNotes({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -160,6 +188,7 @@ export function IconShield({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -180,6 +209,7 @@ export function IconDocument({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -200,6 +230,7 @@ export function IconUserGroup({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -220,6 +251,7 @@ export function IconScale({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -240,6 +272,7 @@ export function IconFingerPrint({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -260,6 +293,7 @@ export function IconChatBubble({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -283,6 +317,7 @@ export function IconChatBubbleLeftRight({
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -303,6 +338,7 @@ export function IconCode({ height = 24, width = 24 }: SizeProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"

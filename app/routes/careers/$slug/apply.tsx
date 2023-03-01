@@ -6,10 +6,11 @@ import type {
   MetaFunction,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { useFetcher, useSearchParams } from '@remix-run/react'
+import { useFetcher, useLocation, useSearchParams } from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
 
+import { Breadcrumbs } from '~/components/breadcrumbs'
 import { Button } from '~/components/button'
 import {
   ErrorPanel,
@@ -130,7 +131,10 @@ export default function ApplyPage() {
 
   return (
     <main>
-      <Grid className="pt-12 pb-20 lg:pt-24 lg:pb-56">
+      <Grid className="pt-12 pb-20 lg:pt-14 lg:pb-56">
+        <div className="col-span-full mb-12">
+          <Breadcrumbs />
+        </div>
         <div className="col-span-full lg:col-span-5">
           <H1 className="mb-4 lg:mb-8">{t('apply.title')}</H1>
           <H4 as="h2" variant="secondary">

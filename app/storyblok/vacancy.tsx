@@ -3,8 +3,8 @@ import * as React from 'react'
 import type { SbBlokData } from '@storyblok/react'
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
 
-import type { BodyComponents } from '~/types'
 import { Vacancy } from '~/components/vacancy'
+import type { BodyComponents } from '~/types'
 
 type Blok = SbBlokData & {
   title: string
@@ -12,10 +12,10 @@ type Blok = SbBlokData & {
   body: BodyComponents[]
 }
 
-export function SbVacancy({ blok }: { blok: Blok }) {
+export function SbVacancy({ blok, slug }: { blok: Blok; slug: string }) {
   return (
     <main {...storyblokEditable(blok)}>
-      <Vacancy title={blok.title} summary={blok.summary}>
+      <Vacancy title={blok.title} summary={blok.summary} slug={slug}>
         {blok.body?.map((nestedBlok) => (
           <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
         ))}

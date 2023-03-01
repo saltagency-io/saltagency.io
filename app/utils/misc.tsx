@@ -172,3 +172,8 @@ export function getLabelKeyForError(validator: ValidateFn, errorKey: string) {
     return valid ? null : errorKey
   }
 }
+
+export function unslugify(slug: string) {
+  const words = slug.split('-')
+  return words.map(capitalizeFirstChar).join(' ')
+}

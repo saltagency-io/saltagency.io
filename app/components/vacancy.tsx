@@ -11,13 +11,14 @@ type Props = {
   children: React.ReactNode
   title: string
   summary: string
+  slug: string
 }
 
-export function Vacancy({ children, title, summary }: Props) {
+export function Vacancy({ children, title, summary, slug }: Props) {
   return (
     <>
       <Grid as="header" className="pt-12 lg:pt-14">
-        <div className="col-span-full lg:col-span-9">
+        <div className="col-span-full lg:col-span-10">
           <Link
             to="/careers"
             className="mb-4 flex items-center gap-x-2 text-gray-600 lg:mb-6"
@@ -29,7 +30,9 @@ export function Vacancy({ children, title, summary }: Props) {
           <H4 as="h2" variant="secondary" className="mb-8">
             {summary}
           </H4>
-          <ButtonLink to={`/careers/apply?role=${encodeURIComponent(title)}`}>
+          <ButtonLink
+            to={`/careers/${slug}/apply?role=${encodeURIComponent(title)}`}
+          >
             Apply now
           </ButtonLink>
         </div>
