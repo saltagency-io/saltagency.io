@@ -25,7 +25,7 @@ const isTextarea = (props: InputProps): props is TextAreaProps =>
 
 export const inputClassName = clsx(
   'p-4 w-full rounded-lg border-input focus:border-input-focus focus:outline-none transition',
-  'placeholder-gray-500 text-primary disabled:text-gray-400 text-lg font-medium',
+  'bg-white placeholder-gray-500 text-primary disabled:text-gray-400 text-lg font-medium',
 )
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -51,7 +51,11 @@ export function InputError({ children, id }: InputErrorProps) {
   }
 
   return (
-    <p role="alert" id={id} className="text-sm text-red-500 block mb-2 font-medium">
+    <p
+      role="alert"
+      id={id}
+      className="mb-2 block text-sm font-medium text-red-500"
+    >
       {children}
     </p>
   )
@@ -182,7 +186,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {({ inputProps }) => (
           <div className="relative">
             <select
-              className={`${inputClassName} appearance-none`}
+              className={`${inputClassName} pr-10 appearance-none`}
               ref={ref}
               {...props}
               {...inputProps}
@@ -191,7 +195,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             >
               {children}
             </select>
-            <div className="text-gray-500 pointer-events-none absolute top-0 right-6 bottom-0 m-auto h-6 w-6">
+            <div className="pointer-events-none absolute top-0 right-4 bottom-0 m-auto h-6 w-6 text-gray-500">
               <IconChevronDown />
             </div>
           </div>

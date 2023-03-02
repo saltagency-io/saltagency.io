@@ -23,7 +23,7 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
       id="formula"
       initial="initial"
       whileInView="visible"
-      viewport={{ once: true, margin: '100px' }}
+      viewport={{ once: true, margin: '-150px 0px' }}
       variants={{
         initial: { opacity: 0 },
         visible: {

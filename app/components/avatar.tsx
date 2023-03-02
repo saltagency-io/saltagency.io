@@ -2,6 +2,8 @@ import * as React from 'react'
 
 import clsx from 'clsx'
 
+import { getImgProps } from '~/utils/images'
+
 type Props = {
   url: string
   alt: string
@@ -20,7 +22,7 @@ export function Avatar({
   return (
     <div
       className={clsx(
-        'overflow-hidden rounded-full border-8',
+        'flex items-center justify-center overflow-hidden rounded-full border-8',
         {
           'h-10 w-10 border-4': size === 'small',
           'h-16 w-16 border-8': size === 'large',
@@ -31,7 +33,16 @@ export function Avatar({
         className,
       )}
     >
-      <img className="rounded-full" src={url} alt={alt} />
+      <img
+        className="rounded-full"
+        {...getImgProps(url, alt, {
+          widths: [96],
+          sizes: ['96px'],
+          transformations: {
+            quality: 100,
+          },
+        })}
+      />
     </div>
   )
 }

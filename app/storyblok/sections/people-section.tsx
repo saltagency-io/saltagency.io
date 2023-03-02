@@ -1,5 +1,5 @@
-import type { PeopleSectionBlok } from '~/types'
 import { PeopleSection } from '~/components/sections/people-section'
+import type { PeopleSectionBlok } from '~/types'
 import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 

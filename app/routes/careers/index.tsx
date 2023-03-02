@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import type { MetaFunction } from '@remix-run/node'
+import type { HeadersFunction } from '@remix-run/node'
 
 import { ButtonLink } from '~/components/button'
 import { GradientCircle } from '~/components/gradient-circle'
@@ -24,6 +25,10 @@ export const meta: MetaFunction = ({ parentsData }) => {
     }),
   }
 }
+
+export const headers: HeadersFunction = () => ({
+  'Cache-Control': 'private, max-age=3600',
+})
 
 export default function CareersIndex() {
   const { t } = useLabels()

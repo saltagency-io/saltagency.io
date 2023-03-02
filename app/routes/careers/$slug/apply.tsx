@@ -131,8 +131,8 @@ export default function ApplyPage() {
 
   return (
     <main>
-      <Grid className="pt-12 pb-20 lg:pt-14 lg:pb-56">
-        <div className="col-span-full mb-12">
+      <Grid className="pt-8 pb-16 lg:pt-14 lg:pb-56">
+        <div className="col-span-full mb-4 lg:mb-8">
           <Breadcrumbs />
         </div>
         <div className="col-span-full lg:col-span-5">

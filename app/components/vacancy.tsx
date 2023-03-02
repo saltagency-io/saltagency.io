@@ -1,11 +1,10 @@
 import type * as React from 'react'
 
-import { Link } from '@remix-run/react'
-
+import { Breadcrumbs } from '~/components/breadcrumbs'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
-import { IconChevronLeft } from '~/components/icons'
 import { H1, H4 } from '~/components/typography'
+import { useLabels } from '~/utils/labels-provider'
 
 type Props = {
   children: React.ReactNode
@@ -15,17 +14,15 @@ type Props = {
 }
 
 export function Vacancy({ children, title, summary, slug }: Props) {
+  const { t } = useLabels()
+
   return (
     <>
-      <Grid as="header" className="pt-12 lg:pt-14">
+      <Grid as="header" className="pt-8 lg:pt-14">
+        <div className="col-span-full mb-4 lg:mb-8">
+          <Breadcrumbs />
+        </div>
         <div className="col-span-full lg:col-span-10">
-          <Link
-            to="/careers"
-            className="mb-4 flex items-center gap-x-2 text-gray-600 lg:mb-6"
-          >
-            <IconChevronLeft height={16} width={16} />
-            <span className="text-lg font-bold lg:text-2xl">Careers</span>
-          </Link>
           <H1 className="mb-4 lg:mb-6">{title}</H1>
           <H4 as="h2" variant="secondary" className="mb-8">
             {summary}
@@ -33,7 +30,7 @@ export function Vacancy({ children, title, summary, slug }: Props) {
           <ButtonLink
             to={`/careers/${slug}/apply?role=${encodeURIComponent(title)}`}
           >
-            Apply now
+            {t('cta.apply')}
           </ButtonLink>
         </div>
       </Grid>

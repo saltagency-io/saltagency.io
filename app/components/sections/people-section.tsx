@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { Grid } from '~/components/grid'
 import { H3, Subtitle } from '~/components/typography'
 import type { Image } from '~/types'
+import { getImgProps } from '~/utils/images'
 
 type Props = {
   subtitle: string
@@ -29,7 +30,7 @@ export function PeopleSection({ subtitle, title, people }: Props) {
           className="col-span-4 md:col-span-8 lg:col-span-5"
           initial="initial"
           whileInView="visible"
-          viewport={{ once: true, margin: '100px' }}
+          viewport={{ once: true, margin: '-150px 0px' }}
           variants={{
             initial: { opacity: 0 },
             visible: { opacity: 1, transition: { duration: 0.25, delay: 0.1 } },
@@ -45,24 +46,36 @@ export function PeopleSection({ subtitle, title, people }: Props) {
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Grid
             nested
-            className="grid-rows-12 h-[472px] gap-y-6 pt-10 lg:h-[754px]"
+            className="grid-rows-12 h-[554px] gap-y-6 pt-10 md:h-[734px]"
           >
             {people.map((person, i) => (
               <motion.div
                 key={person.id}
                 style={{
                   y: (i + 1) % 2 === 0 ? translateYNegative : translateY,
-                  backgroundImage: `url(${person.url})`,
                 }}
                 className={clsx(
                   'col-span-2 row-span-6 md:col-span-4 lg:col-span-6',
-                  'overflow-hidden rounded-lg bg-cover bg-bottom',
+                  'overflow-hidden rounded-lg',
                   {
                     'row-start-1': i === 0,
                     'row-start-2': i === 1,
                   },
                 )}
-              />
+              >
+                <img
+                  className="rounded-lg object-contain"
+                  {...getImgProps(person.url, person.alt, {
+                    widths: [160, 200, 320],
+                    sizes: [
+                      '(max-width:639px) 10rem',
+                      '(min-width:640px) and (max-width:1023px) 12.5rem',
+                      '(min-width:1024px) 20rem',
+                      '160px',
+                    ],
+                  })}
+                />
+              </motion.div>
             ))}
           </Grid>
         </div>

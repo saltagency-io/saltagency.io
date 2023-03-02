@@ -25,7 +25,7 @@ export function TextSection({ subtitle, title, body }: Props) {
         className="col-span-4 md:col-span-8 lg:col-span-10 lg:col-start-2"
         initial="initial"
         whileInView="visible"
-        viewport={{ once: true, margin: '100px' }}
+        viewport={{ once: true, margin: '-150px 0px' }}
         variants={{
           initial: { opacity: 0 },
           visible: {

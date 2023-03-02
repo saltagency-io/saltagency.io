@@ -5,7 +5,24 @@ import { Link } from '@remix-run/react'
 import { Grid } from '~/components/grid'
 import { H3, Subtitle } from '~/components/typography'
 import type { Image, LinkType } from '~/types'
+import { getImgProps } from '~/utils/images'
 import { Markdown } from '~/utils/markdown'
+
+function LocationImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <img
+      className="h-full w-full"
+      {...getImgProps(src, alt, {
+        widths: [390, 600, 975, 1200],
+        sizes: [
+          '(max-width: 1023px) 100vw',
+          '(min-width: 1024px) 58vw',
+          '390px',
+        ],
+      })}
+    />
+  )
+}
 
 type Props = {
   subtitle: string
@@ -25,9 +42,9 @@ export function LocationSection({
   link,
 }: Props) {
   return (
-    <div className="relative bg-gray-900">
+    <div className="relative overflow-hidden bg-gray-900">
       <Grid>
-        <div className="col-span-full py-20 lg:col-span-5 lg:pt-36 lg:pb-8">
+        <div className="relative z-10 col-span-full py-20 lg:col-span-5 lg:pt-36 lg:pb-8">
           <Subtitle variant="pink" className="mb-4">
             {subtitle}
           </Subtitle>
@@ -53,11 +70,11 @@ export function LocationSection({
       </Grid>
       {/*Mobile*/}
       <div className="block lg:hidden">
-        <img src={imageMobile.url} alt={imageMobile.alt} />
+        <LocationImage src={imageMobile.url} alt={imageMobile.alt} />
       </div>
       {/*Desktop*/}
-      <div className="b-0 absolute right-0 top-0 m-auto hidden h-full w-[55%] lg:block">
-        <img src={image.url} alt={image.alt} />
+      <div className="b-0 absolute right-0 top-0 z-0 m-auto hidden h-[103%] lg:block">
+        <LocationImage src={image.url} alt={image.alt} />
       </div>
     </div>
   )

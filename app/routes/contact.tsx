@@ -3,7 +3,6 @@ import * as React from 'react'
 import type {
   ActionFunction,
   DataFunctionArgs,
-  HeadersFunction,
   MetaFunction,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
@@ -18,7 +17,7 @@ import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
 import { ErrorPanel, Field, InputError } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
-import { H1, H2, H3, H4, Paragraph } from '~/components/typography'
+import { H1, H3, H4, Paragraph } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
 import { getStoryBySlug } from '~/lib/storyblok.server'
@@ -147,7 +146,7 @@ export default function ContactPage() {
 
   return (
     <main>
-      <Grid className="pt-12 pb-20 lg:pt-24 lg:pb-56">
+      <Grid className="pt-8 pb-16 lg:pt-24 lg:pb-56">
         <div className="col-span-full lg:col-span-5">
           <H1 className="mb-4 lg:mb-8">{t('contact.title')}</H1>
           <H4 as="h2" variant="secondary">

@@ -25,7 +25,7 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
       className="bg-inverse py-20 lg:py-40"
       initial="initial"
       whileInView="visible"
-      viewport={{ once: true, margin: '100px' }}
+      viewport={{ once: true, margin: '-150px 0px' }}
       variants={{
         visible: {
           transition: { staggerChildren: 0.3, delay: 0.2 },
