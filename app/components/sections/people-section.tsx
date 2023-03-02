@@ -16,11 +16,11 @@ type Props = {
 
 export function PeopleSection({ subtitle, title, people }: Props) {
   const { scrollYProgress } = useScroll()
-  const translateY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, 120])
+  const translateY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, 100])
   const translateYNegative = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    [0, 0, -120],
+    [0, 0, -200],
   )
 
   return (
@@ -46,7 +46,7 @@ export function PeopleSection({ subtitle, title, people }: Props) {
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Grid
             nested
-            className="grid-rows-12 h-[554px] gap-y-6 pt-10 md:h-[734px]"
+            className="grid-rows-12 h-[554px] gap-y-6 pt-10 md:h-[855px]"
           >
             {people.map((person, i) => (
               <motion.div

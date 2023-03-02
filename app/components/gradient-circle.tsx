@@ -31,7 +31,7 @@ export function GradientCircle({
   return (
     <motion.div
       className={clsx(
-        'bg-gradient-radial absolute rounded-full blur-4xl',
+        'bg-gradient-radial pointer-events-none absolute rounded-full blur-4xl',
         className,
       )}
       style={{

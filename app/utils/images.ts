@@ -52,5 +52,6 @@ export function getImgProps(
       )
       .join(', '),
     sizes: sizes.join(', '),
-  }
+    // crossOrigin: 'anonymous',
+  } as const
 }
