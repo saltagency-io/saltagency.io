@@ -46,7 +46,7 @@ export function HeaderSection({ title, body }: Props) {
         left={-40}
         right={1}
       />
-      <Grid as="header">
+      <Grid as="header" className="relative z-10">
         <motion.div
           className="col-span-full lg:col-span-10 lg:col-start-2"
           initial="initial"

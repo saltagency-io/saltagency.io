@@ -20,8 +20,4 @@ module.exports = {
     /^react-markdown$/,
     /^vfile.*/,
   ],
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // serverBuildPath: "build/index.js",
-  // publicPath: "/build/",
 }

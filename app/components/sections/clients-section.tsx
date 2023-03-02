@@ -19,9 +19,8 @@ export function ClientsSection({ logos }: Props) {
         transition={{ delay: 1 }}
       >
         {logos.map((logo) => (
-          <div key={logo.id}>
+          <div key={logo.id} className="h-[60px]">
             <img
-              className="object-cover"
               {...getImgProps(logo.url, logo.alt, {
                 widths: [250],
                 sizes: ['250px'],

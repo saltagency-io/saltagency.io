@@ -31,11 +31,11 @@ export function GradientCircle({
   return (
     <motion.div
       className={clsx(
-        'bg-gradient-radial pointer-events-none absolute rounded-full blur-4xl',
+        'bg-gradient-radial pointer-events-none absolute z-0 rounded-full blur-4xl',
         className,
       )}
       style={{
-        transform: `rotate(${rotate}deg)`,
+        // transform: `rotate(${rotate}deg)`,
         opacity: opacity / 100,
         height: `${height}px`,
         width: `${width}px`,
@@ -44,8 +44,8 @@ export function GradientCircle({
         bottom: bottom !== 0 ? `${bottom}px` : undefined,
         left: left !== 0 ? `${left}px` : undefined,
       }}
-      initial={{ scale: shouldReduceMotion ? 1 : 0.55 }}
-      animate={{ scale: 1 }}
+      initial={{ scale: shouldReduceMotion ? 1 : 0.5 }}
+      animate={{ scale: 1.01, rotate }} // If we scale to 1 safari dies
       transition={{ duration: 0.5 }}
     />
   )

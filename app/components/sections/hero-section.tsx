@@ -40,7 +40,7 @@ export function HeroSection({ children, title, body }: Props) {
         opacity={20}
       />
 
-      <Grid as="header">
+      <Grid as="header" className="relative z-10">
         <motion.div
           className="col-span-4 md:col-span-8 lg:col-start-3"
           initial="initial"

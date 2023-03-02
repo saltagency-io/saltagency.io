@@ -20,14 +20,14 @@ export function PeopleSection({ subtitle, title, people }: Props) {
   const translateYNegative = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    [0, 0, -200],
+    [0, 0, -190],
   )
 
   return (
     <div className="bg-secondary py-20 lg:py-40">
       <Grid>
         <motion.div
-          className="col-span-4 md:col-span-8 lg:col-span-5"
+          className="col-span-4 mb-8 md:col-span-8 lg:col-span-5 lg:mb-0"
           initial="initial"
           whileInView="visible"
           viewport={{ once: true, margin: '-150px 0px' }}

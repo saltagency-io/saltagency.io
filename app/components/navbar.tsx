@@ -100,7 +100,7 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
                 </MenuLink>
                 {menu.map((link) => (
                   <MenuLink
-                    className={linkClassName}
+                    className={`${linkClassName} hover:text-gray-600 focus:text-gray-600`}
                     key={link.id}
                     as={Link}
                     to={link.url}
@@ -111,11 +111,10 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
               </>
             </MenuItems>
             <GradientCircle
-              className="transition"
               rotate={-75}
               height={758}
               width={758}
-              bottom={-280}
+              top={140}
               right={-540}
               opacity={20}
             />
