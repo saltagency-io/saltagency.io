@@ -52,6 +52,5 @@ export function getImgProps(
       )
       .join(', '),
     sizes: sizes.join(', '),
-    crossOrigin: ENV.NODE_ENV !== 'development' ? 'anonymous' : undefined,
   } as const
 }
