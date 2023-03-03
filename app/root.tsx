@@ -139,11 +139,11 @@ export async function loader({ request }: DataFunctionArgs) {
 
 export function App() {
   const data = useTypedLoaderData<typeof loader>()
-  const story = useStoryblokState(data.initialStory, {}, data.preview)
+  // const story = useStoryblokState(data.initialStory, {}, data.preview)
   const location = useLocation()
 
-  const [navigation] = story.content.navigation
-  const [footer] = story.content.footer
+  const [navigation] = data.initialStory?.content.navigation ?? []
+  const [footer] = data.initialStory?.content.footer ?? []
 
   React.useEffect(() => {
     if (data.ENV.GOOGLE_ANALYTICS?.length) {
