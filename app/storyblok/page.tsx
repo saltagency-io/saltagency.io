@@ -7,10 +7,7 @@ type Blok = SbBlokData & {
 
 export function SbPage({ blok }: { blok: Blok }) {
   return (
-    <main
-      {...storyblokEditable(blok)}
-      className="overflow-x-hidden lg:overflow-x-visible"
-    >
+    <main {...storyblokEditable(blok)}>
       {blok.body?.map((nestedBlok) => (
         <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
       ))}
