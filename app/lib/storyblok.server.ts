@@ -64,7 +64,10 @@ export async function getVacancyBySlug(
 export async function getAllVacancies(
   preview = false,
 ): Promise<StoryData<VacancyStoryContent>[] | undefined> {
-  const params = { ...getDefaultParams({ preview }), starts_with: 'careers/' }
+  const params = {
+    ...getDefaultParams({ preview }),
+    starts_with: 'careers/',
+  }
 
   try {
     return getStoryblokApi().getAll(`cdn/stories`, params)

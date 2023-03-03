@@ -18,6 +18,11 @@ export type LayoutStoryContent = {
   footer: FooterBlok[]
 }
 
+export type LayoutBlok = SbBlokData & {
+  navigation: NavigationBlok[]
+  footer: FooterBlok[]
+}
+
 export type NavigationBlok = SbBlokData & {
   component: BlokTypes.Navigation
   menu: LinkBlok[]

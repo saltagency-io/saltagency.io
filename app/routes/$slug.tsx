@@ -28,11 +28,14 @@ export const handle: Handle = {
 }
 
 export async function loader({ params, request }: DataFunctionArgs) {
-  if (pathedRoutes[new URL(request.url).pathname]) {
+  const preview = isPreview(request)
+  const { pathname } = new URL(request.url)
+
+  // Block the layout path when not in preview mode
+  if (pathedRoutes[pathname] || (!preview && pathname === '/layout')) {
     throw new Response('Use other route', { status: 404 })
   }
 
-  const preview = isPreview(request)
   const initialStory = await getStoryBySlug(params.slug ?? 'home', preview)
 
   if (!initialStory) {

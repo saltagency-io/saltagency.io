@@ -14,21 +14,30 @@ import { SbLocationSection } from './sections/location-section'
 import { SbPeopleSection } from './sections/people-section'
 import { SbTextSection } from './sections/text-section'
 import { SbVacancy } from './vacancy'
+import { SbLayout } from '~/storyblok/layout'
 
 // Would prefer to put this in types/storyblok.d.ts but that breaks the build for some reason 🤷
 export enum BlokTypes {
+  // Content types
   Page = 'page',
+  Vacancy = 'vacancy',
+
+  // Global components
+  Layout = 'layout',
   Navigation = 'navigation',
   Footer = 'footer',
-  Hero = 'hero',
+
+  // Nested Components
   Button = 'button',
   Link = 'link',
-  Vacancy = 'vacancy',
+
+  // Components
+  Hero = 'hero',
+  Quote = 'quote',
   Clients = 'clients',
   Calculator = 'calculator',
-  TextSection = 'textSection',
   BlockWithSections = 'blockWithSections',
-  Quote = 'quote',
+  TextSection = 'textSection',
   PeopleSection = 'peopleSection',
   CareersSection = 'careersSection',
   HeaderSection = 'headerSection',
@@ -39,6 +48,7 @@ export enum BlokTypes {
 export const components = {
   [BlokTypes.Page]: SbPage,
   [BlokTypes.Vacancy]: SbVacancy,
+  [BlokTypes.Layout]: SbLayout,
   [BlokTypes.Navigation]: SbNavigation,
   [BlokTypes.Footer]: SbFooter,
   [BlokTypes.Hero]: SbHeroSection,
