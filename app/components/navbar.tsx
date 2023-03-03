@@ -158,6 +158,9 @@ function MobileMenu({ menu }: { menu: LinkType[] }) {
                 },
               )}
             >
+              <span className="sr-only">
+                {state === 'open' ? 'Close menu' : 'Open menu'}
+              </span>
               <svg
                 width="32"
                 height="32"
