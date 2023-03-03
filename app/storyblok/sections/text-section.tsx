@@ -11,6 +11,7 @@ export function SbTextSection({ blok }: { blok: TextSectionBlok }) {
         subtitle={blok.subtitle}
         title={blok.title}
         body={blok.body}
+        theme={blok.theme}
       />
     </StoryBlokWrapper>
   )

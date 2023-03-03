@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
@@ -9,9 +10,10 @@ type Props = {
   subtitle: string
   title: string
   body: string
+  theme?: 'dark' | 'light'
 }
 
-export function TextSection({ subtitle, title, body }: Props) {
+export function TextSection({ subtitle, title, body, theme = 'light' }: Props) {
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -20,34 +22,46 @@ export function TextSection({ subtitle, title, body }: Props) {
   }
 
   return (
-    <Grid className="py-24 lg:py-40">
-      <motion.div
-        className="col-span-4 md:col-span-8 lg:col-span-10 lg:col-start-2"
-        initial="initial"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-115px 0px' }}
-        variants={{
-          initial: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1, delay: 0.1 },
-          },
-        }}
-      >
-        <motion.div variants={childVariants}>
-          <Subtitle className="mb-4">{subtitle}</Subtitle>
+    <div
+      className={clsx('py-24 lg:py-40', {
+        'bg-primary': theme === 'light',
+        'bg-inverse': theme === 'dark',
+      })}
+    >
+      <Grid>
+        <motion.div
+          className="col-span-4 md:col-span-8 lg:col-span-10 lg:col-start-2"
+          initial="initial"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-115px 0px' }}
+          variants={{
+            initial: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.1, delay: 0.1 },
+            },
+          }}
+        >
+          <motion.div variants={childVariants}>
+            <Subtitle
+              className="mb-4"
+              variant={theme === 'dark' ? 'pink' : 'purple'}
+            >
+              {subtitle}
+            </Subtitle>
+          </motion.div>
+          <motion.div variants={childVariants}>
+            <H3 as="h2" className="mb-6" inverse={theme === 'dark'}>
+              {title}
+            </H3>
+          </motion.div>
+          <motion.div variants={childVariants}>
+            <H4 as="p" variant="secondary" inverse={theme === 'dark'}>
+              {body}
+            </H4>
+          </motion.div>
         </motion.div>
-        <motion.div variants={childVariants}>
-          <H3 as="h2" className="mb-6">
-            {title}
-          </H3>
-        </motion.div>
-        <motion.div variants={childVariants}>
-          <H4 as="p" variant="secondary">
-            {body}
-          </H4>
-        </motion.div>
-      </motion.div>
-    </Grid>
+      </Grid>
+    </div>
   )
 }
