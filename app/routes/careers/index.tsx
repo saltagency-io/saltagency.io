@@ -35,49 +35,51 @@ export default function CareersIndex() {
   const { vacancies } = useVacancies()
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden py-12 lg:overflow-x-visible lg:py-14">
-      <Grid>
-        <div className="col-span-full lg:col-span-6">
-          <H1 className="mb-6">{t('careers.title')}</H1>
-          <H4 as="h2" variant="secondary" className="lg:mb-7">
-            {t('careers.subtitle')}
-          </H4>
-          <div className="py-16 lg:py-24">
-            <VacancyList
-              theme="dark"
-              transition={false}
-              vacancies={vacancies.map(mapVacancy)}
-            />
-          </div>
-          <div className="mb-12">
-            <H4 as="p" variant="secondary" className="mb-8">
-              {t('careers.text')}
+    <main>
+      <div className="relative min-h-screen overflow-x-hidden py-12 lg:overflow-x-visible lg:py-14">
+        <Grid>
+          <div className="col-span-full lg:col-span-6">
+            <H1 className="mb-6">{t('careers.title')}</H1>
+            <H4 as="h2" variant="secondary" className="lg:mb-7">
+              {t('careers.subtitle')}
             </H4>
-            <ButtonLink to="/contact" variant="secondary">
-              {t('careers.cta')}
-            </ButtonLink>
+            <div className="py-16 lg:py-24">
+              <VacancyList
+                theme="dark"
+                transition={false}
+                vacancies={vacancies.map(mapVacancy)}
+              />
+            </div>
+            <div className="mb-12">
+              <H4 as="p" variant="secondary" className="mb-8">
+                {t('careers.text')}
+              </H4>
+              <ButtonLink to="/contact" variant="secondary">
+                {t('careers.cta')}
+              </ButtonLink>
+            </div>
           </div>
-        </div>
-      </Grid>
-      {/*Mobile*/}
-      <GradientCircle
-        className="block lg:hidden"
-        height={758}
-        width={758}
-        top={60}
-        right={-520}
-        opacity={15}
-        rotate={-75}
-      />
-      {/*Desktop*/}
-      <GradientCircle
-        className="hidden lg:block"
-        height={1100}
-        width={1100}
-        top={1}
-        right={-545}
-        opacity={22}
-      />
+        </Grid>
+        {/*Mobile*/}
+        <GradientCircle
+          className="block lg:hidden"
+          height={758}
+          width={758}
+          top={60}
+          right={-520}
+          opacity={15}
+          rotate={-75}
+        />
+        {/*Desktop*/}
+        <GradientCircle
+          className="hidden lg:block"
+          height={1100}
+          width={1100}
+          top={1}
+          right={-545}
+          opacity={22}
+        />
+      </div>
     </main>
   )
 }
