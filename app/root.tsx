@@ -10,19 +10,13 @@ import {
   Links,
   LiveReload,
   Meta,
-  Outlet,
   Scripts,
   ScrollRestoration,
   useCatch,
   useLocation,
 } from '@remix-run/react'
 
-import {
-  storyblokInit,
-  apiPlugin,
-  useStoryblokState,
-  StoryblokComponent,
-} from '@storyblok/react'
+import { storyblokInit, apiPlugin, StoryblokComponent } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
@@ -58,17 +52,6 @@ storyblokInit({
     },
   },
 })
-
-export const meta: MetaFunction = ({ data }) => {
-  const requestInfo = data?.requestInfo
-
-  return {
-    charset: 'utf-8',
-    title: 'Salt',
-    viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
-    canonical: removeTrailingSlash(`${requestInfo.origin}${requestInfo.path}`),
-  }
-}
 
 export const links: LinksFunction = () => {
   return [
@@ -116,14 +99,14 @@ export type LoaderData = SerializeFrom<typeof loader>
 
 export async function loader({ request }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const [initialStory, labels, vacancies] = await Promise.all([
+  const [layoutStory, labels, vacancies] = await Promise.all([
     getLayout(),
     getDataSource('labels'),
     getAllVacancies(preview),
   ])
 
   const data = {
-    initialStory,
+    layoutStory,
     preview,
     labels,
     vacancies,
@@ -137,13 +120,20 @@ export async function loader({ request }: DataFunctionArgs) {
   return typedjson(data)
 }
 
+export const meta: MetaFunction = ({ data }) => {
+  const requestInfo = data?.requestInfo
+
+  return {
+    charset: 'utf-8',
+    title: 'Salt',
+    viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
+    canonical: removeTrailingSlash(`${requestInfo.origin}${requestInfo.path}`),
+  }
+}
+
 export function App() {
   const data = useTypedLoaderData<typeof loader>()
-  const story = useStoryblokState(data.initialStory, {}, data.preview)
   const location = useLocation()
-
-  const [navigation] = story.content.navigation
-  const [footer] = story.content.footer
 
   React.useEffect(() => {
     if (data.ENV.GOOGLE_ANALYTICS?.length) {
@@ -188,9 +178,7 @@ export function App() {
         )}
       </head>
       <body>
-        <StoryblokComponent blok={navigation} key={navigation._uid} />
-        <Outlet />
-        <StoryblokComponent blok={footer} key={footer._uid} />
+        <StoryblokComponent blok={data.layoutStory?.content} />
         <ScrollRestoration />
         <Scripts />
         <script
