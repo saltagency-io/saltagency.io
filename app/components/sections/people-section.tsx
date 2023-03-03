@@ -30,7 +30,7 @@ export function PeopleSection({ subtitle, title, people }: Props) {
           className="col-span-4 mb-8 md:col-span-8 lg:col-span-5 lg:mb-0"
           initial="initial"
           whileInView="visible"
-          viewport={{ once: true, margin: '-150px 0px' }}
+          viewport={{ once: true, margin: '-115px 0px' }}
           variants={{
             initial: { opacity: 0 },
             visible: { opacity: 1, transition: { duration: 0.25, delay: 0.1 } },

@@ -30,7 +30,7 @@ export function ApplicationProcessSection({
       <motion.div
         initial="initial"
         whileInView="visible"
-        viewport={{ once: true, margin: '-150px 0px' }}
+        viewport={{ once: true, margin: '-115px 0px' }}
         variants={{
           initial: { opacity: 0 },
           visible: {
