@@ -46,7 +46,7 @@ export function PeopleSection({ subtitle, title, people }: Props) {
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Grid
             nested
-            className="grid-rows-12 h-[554px] gap-y-6 pt-10 md:h-[855px]"
+            className="grid-rows-12 h-[554px] gap-y-6 pt-10 md:h-[762px]"
           >
             {people.map((person, i) => (
               <motion.div
@@ -66,13 +66,16 @@ export function PeopleSection({ subtitle, title, people }: Props) {
                 <img
                   className="rounded-lg object-contain"
                   {...getImgProps(person.url, person.alt, {
-                    widths: [160, 200, 320],
+                    widths: [160, 200, 484],
                     sizes: [
                       '(max-width:639px) 10rem',
                       '(min-width:640px) and (max-width:1023px) 12.5rem',
                       '(min-width:1024px) 20rem',
                       '160px',
                     ],
+                    transformations: {
+                      quality: 80,
+                    },
                   })}
                 />
               </motion.div>
