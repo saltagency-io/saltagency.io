@@ -26,19 +26,19 @@ function ButtonInner({ children, variant, size = 'large' }: ButtonProps) {
           {
             'focus-ring-primary bg-blue-500': variant === 'primary',
             'bg-gray-900': variant === 'secondary',
-            'border-2 bg-transparent group-hover:border-transparent group-focus:border-transparent':
-              variant === 'outline' || variant === 'outline-inverse',
             'border-black': variant === 'outline',
             'border-secondary': variant === 'outline-inverse',
+            'border-2 bg-transparent group-hover:border-transparent group-focus:border-transparent':
+              variant === 'outline' || variant === 'outline-inverse',
           },
         )}
       />
       <div
         className={clsx(
-          'relative flex w-full items-center justify-center whitespace-nowrap text-center text-xl leading-6 text-white',
+          'relative flex w-full items-center justify-center whitespace-nowrap text-center text-lg leading-6 text-white',
           {
             'text-black': variant === 'outline',
-            'space-x-5 px-6 py-4': size === 'large',
+            'space-x-5 px-6 py-3': size === 'large',
             'space-x-3 px-6 py-2': size === 'medium',
             'space-x-1 px-4 py-1 text-sm': size === 'small',
           },
