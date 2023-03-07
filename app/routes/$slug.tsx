@@ -80,7 +80,11 @@ export default function Page() {
   const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.initialStory, {}, data.preview)
 
-  return <StoryblokComponent blok={story.content} />
+  return (
+    <main>
+      <StoryblokComponent blok={story.content} />
+    </main>
+  )
 }
 
 export function CatchBoundary() {

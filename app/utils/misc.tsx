@@ -7,6 +7,9 @@ import type { NonNullProperties } from '~/types'
 import type { getEnv } from '~/utils/env.server'
 import type { ValidateFn } from '~/utils/validators'
 
+export const LOGO_URL =
+  'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg'
+
 export function getRequiredEnvVarFromObj(
   obj: Record<string, string | undefined>,
   key: string,

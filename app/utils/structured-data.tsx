@@ -8,6 +8,7 @@ import type {
 } from 'schema-dts'
 
 import type { Breadcrumb } from '~/types'
+import { LOGO_URL } from '~/utils/misc'
 
 const address: Place = {
   '@type': 'Place',
@@ -66,7 +67,7 @@ export function SdLogo({ origin }: { origin: string }) {
   const data: Organization = {
     '@type': 'Organization',
     url: origin,
-    logo: 'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg',
+    logo: LOGO_URL,
     location: address,
   }
 
@@ -96,7 +97,7 @@ export function SdJobPosting({
       '@type': 'Organization',
       name: 'Salty Agency',
       sameAs: origin,
-      logo: 'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg',
+      logo: LOGO_URL,
     },
   }
 

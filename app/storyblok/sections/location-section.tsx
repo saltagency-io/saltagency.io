@@ -4,15 +4,17 @@ import { mapAsset, mapLink } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbLocationSection({ blok }: { blok: LocationSectionBlok }) {
+  const [location] = blok.location
+
   return (
     <StoryBlokWrapper blok={blok}>
       <LocationSection
         subtitle={blok.subtitle}
         title={blok.title}
-        address={blok.address}
+        address={location?.address}
         image={mapAsset(blok.image)}
         imageMobile={mapAsset(blok.imageMobile)}
-        link={mapLink(blok.links[0])}
+        link={mapLink(location?.directionsLink[0])}
       />
     </StoryBlokWrapper>
   )

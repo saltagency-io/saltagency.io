@@ -32,6 +32,9 @@ export type NavigationBlok = SbBlokData & {
 
 export type FooterBlok = SbBlokData & {
   component: BlokTypes.Footer
+  menu: LinkBlok[]
+  additionalLinks: LinkBlok[]
+  location: LocationBlok[]
   disclaimer: string
   socialText: string
 }
@@ -53,6 +56,12 @@ export type LinkBlok = SbBlokData & {
   component: BlokTypes.Link
   target: Link
   text: string
+}
+
+export type LocationBlok = SbBlokData & {
+  component: BlokTypes.Location
+  address: string
+  directionsLink: LinkBlok[]
 }
 
 export type HeroBlok = SbBlokData & {
@@ -131,7 +140,7 @@ export type LocationSectionBlok = SbBlokData & {
   component: BlokTypes.LocationSection
   subtitle: string
   title: string
-  address: string
+  location: LocationBlok[]
   image: Asset
   imageMobile: Asset
   links: LinkBlok[]

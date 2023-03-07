@@ -79,11 +79,13 @@ export default function VacancyPage() {
   const story = useStoryblokState(data.initialStory, {}, data.preview)
 
   return (
-    <StoryblokComponent
-      blok={story.content}
-      slug={story.slug}
-      publishDate={story.first_published_at}
-    />
+    <main>
+      <StoryblokComponent
+        blok={story.content}
+        slug={story.slug}
+        publishDate={story.first_published_at}
+      />
+    </main>
   )
 }
 

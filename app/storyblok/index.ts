@@ -30,6 +30,7 @@ export enum BlokTypes {
   // Nested Components
   Button = 'button',
   Link = 'link',
+  Location = 'location',
 
   // Components
   Hero = 'hero',

@@ -58,10 +58,10 @@ export function LocationSection({
           </address>
           {link ? (
             <Link
-              to={link?.url}
+              to={link.url}
               target="_blank"
               rel="noopener"
-              className="text-xl leading-normal tracking-tight text-white underline lg:text-2xl"
+              className="underlined active text-xl leading-normal tracking-tight text-white underline lg:text-2xl"
             >
               {link.text}
             </Link>

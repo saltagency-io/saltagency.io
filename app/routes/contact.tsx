@@ -17,6 +17,7 @@ import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
 import { ErrorPanel, Field, InputError } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
+import { Spacer } from '~/components/spacer'
 import { H1, H3, H4, Paragraph } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
@@ -163,7 +164,12 @@ export default function ContactPage() {
               method="post"
               aria-describedby="contact-form-error"
             >
-              <input type="hidden" name="captcha" value={captchaValue ?? ''} />
+              <input
+                type="hidden"
+                name="captcha"
+                value={captchaValue ?? ''}
+                readOnly
+              />
               <Field
                 name="name"
                 label={t('form.name.label')}
@@ -245,6 +251,7 @@ export default function ContactPage() {
         </div>
       </Grid>
       <StoryblokComponent blok={story.content} />
+      <Spacer className="hidden bg-gray-900 lg:block" size="sm" />
     </main>
   )
 }

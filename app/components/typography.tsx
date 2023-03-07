@@ -90,6 +90,7 @@ type ParagraphProps = {
   textColorClassName?: string
   as?: React.ElementType
   size?: 'sm' | 'lg' | 'xl'
+  responsive?: boolean
 } & (
   | { children: React.ReactNode }
   | { dangerouslySetInnerHTML: { __html: string } }
@@ -101,6 +102,7 @@ export function Paragraph({
   as = 'p',
   size = 'lg',
   textColorClassName = 'text-primary',
+  responsive = true,
   ...rest
 }: ParagraphProps) {
   return React.createElement(as, {
@@ -111,7 +113,9 @@ export function Paragraph({
       {
         'text-sm leading-6': size === 'sm',
         'text-lg leading-6': size === 'lg',
-        'text-lg leading-7 md:text-2xl md:leading-9': size === 'xl',
+        'text-2xl leading-9': size === 'xl' && !responsive,
+        'text-lg leading-7 md:text-2xl md:leading-9':
+          size === 'xl' && responsive,
       },
     ),
     ...rest,

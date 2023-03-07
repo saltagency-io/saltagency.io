@@ -13,10 +13,12 @@ function getComponents({
   textColor,
   textSize,
   margins,
+  responsive,
 }: {
   textAlign: Props['textAlign']
   textColor: Props['textColor']
   textSize: Props['bodyTextSize']
+  responsive: boolean
   margins: boolean
 }): Components {
   const alignClassName = `text-${textAlign}`
@@ -36,6 +38,7 @@ function getComponents({
     p: (props) => (
       <Paragraph
         size={textSize}
+        responsive={responsive}
         className={clsx(alignClassName, colorClassName, {
           'mb-6': margins,
         })}
@@ -46,7 +49,10 @@ function getComponents({
     a: (props) => (
       <AnchorOrLink
         to={props.href}
-        className={clsx('underline', colorClassName)}
+        className={clsx('underlined active', colorClassName, {
+          'transition hover:text-white focus:text-white':
+            textColor === 'inverse-secondary',
+        })}
       >
         {props.children}
       </AnchorOrLink>
@@ -60,7 +66,9 @@ function getComponents({
       const className = clsx('text-list tracking-tight', colorClassName, {
         'text-sm leading-6': textSize === 'sm',
         'text-lg leading-6': textSize === 'lg',
-        'text-lg leading-7 md:text-2xl md:leading-9': textSize === 'xl',
+        'text-2xl leading-9': textSize === 'xl' && !responsive,
+        'text-lg leading-7 md:text-2xl md:leading-9':
+          textSize === 'xl' && responsive,
       })
       return props.ordered ? (
         <ol className={className}>{props.children}</ol>
@@ -74,9 +82,10 @@ function getComponents({
 type Props = {
   children: string
   textAlign?: 'left' | 'right' | 'center'
-  textColor?: 'primary' | 'secondary' | 'inverse'
+  textColor?: 'primary' | 'secondary' | 'inverse' | 'inverse-secondary'
   bodyTextSize?: 'sm' | 'lg' | 'xl'
   margins?: boolean
+  responsive?: boolean
 }
 
 export function Markdown({
@@ -85,12 +94,14 @@ export function Markdown({
   textAlign = 'left',
   textColor = 'primary',
   bodyTextSize = 'lg',
+  responsive = true,
 }: Props) {
   const components = getComponents({
     textAlign,
     textColor,
     textSize: bodyTextSize,
     margins,
+    responsive,
   })
   return <ReactMarkdown children={children} components={components} />
 }

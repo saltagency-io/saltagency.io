@@ -11,8 +11,8 @@ import { unslugify } from '~/utils/misc'
 import { SdBreadCrumbs } from '~/utils/structured-data'
 
 export function Breadcrumbs() {
-  const { requestInfo }: RootLoaderData = useRouteLoaderData('root')
   const location = useLocation()
+  const { requestInfo }: RootLoaderData = useRouteLoaderData('root')
 
   const parts = location.pathname.slice(1).split('/')
 

@@ -163,7 +163,12 @@ export default function ApplyPage() {
               method="post"
               aria-describedby="apply-form-error"
             >
-              <input type="hidden" name="captcha" value={captchaValue ?? ''} />
+              <input
+                type="hidden"
+                name="captcha"
+                value={captchaValue ?? ''}
+                readOnly
+              />
               <Field
                 name="name"
                 className="mb-6"

@@ -1,8 +1,10 @@
+import { LOGO_URL } from '~/utils/misc'
+
 export function getSocialMetas({
   url,
   title = 'Salt Agency',
   description = 'We provide lead consultants',
-  image = 'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg',
+  image = LOGO_URL,
   keywords,
 }: {
   image?: string
