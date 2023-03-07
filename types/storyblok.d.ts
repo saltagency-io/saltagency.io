@@ -69,6 +69,7 @@ export type TextSectionBlok = SbBlokData & {
   subtitle: string
   title: string
   body: string
+  image?: Asset
   theme: 'dark' | 'light'
 }
 
