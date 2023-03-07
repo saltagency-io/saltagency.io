@@ -6,21 +6,30 @@ import ReactMarkdown from 'react-markdown'
 import { H1, H2, H3, H4, H5, H6, Paragraph } from '~/components/typography'
 import { AnchorOrLink } from '~/utils/misc'
 
+type Props = {
+  children: string
+  textAlign?: 'left' | 'right' | 'center'
+  textColor?: 'primary' | 'secondary' | 'inverse' | 'inverse-secondary'
+  bodyTextSize?: 'sm' | 'lg' | 'xl'
+  margins?: boolean
+  responsive?: boolean
+  linksInNewTab?: boolean
+}
+
+export function Markdown({ children, ...props }: Props) {
+  return <ReactMarkdown children={children} components={getComponents(props)} />
+}
+
 type Components = React.ComponentProps<typeof ReactMarkdown>['components']
 
 function getComponents({
-  textAlign,
-  textColor,
-  textSize,
-  margins,
-  responsive,
-}: {
-  textAlign: Props['textAlign']
-  textColor: Props['textColor']
-  textSize: Props['bodyTextSize']
-  responsive: boolean
-  margins: boolean
-}): Components {
+  textAlign = 'left',
+  textColor = 'primary',
+  bodyTextSize = 'lg',
+  margins = true,
+  responsive = true,
+  linksInNewTab = false,
+}: Omit<Props, 'children'>): Components {
   const alignClassName = `text-${textAlign}`
   const colorClassName = `text-${textColor}`
 
@@ -37,7 +46,7 @@ function getComponents({
     h6: (props) => <H6 className={headingClassName}>{props.children}</H6>,
     p: (props) => (
       <Paragraph
-        size={textSize}
+        size={bodyTextSize}
         responsive={responsive}
         className={clsx(alignClassName, colorClassName, {
           'mb-6': margins,
@@ -49,6 +58,8 @@ function getComponents({
     a: (props) => (
       <AnchorOrLink
         to={props.href}
+        target={linksInNewTab ? '_blank' : undefined}
+        rel={linksInNewTab ? 'noopener' : undefined}
         className={clsx('underlined active', colorClassName, {
           'transition hover:text-white focus:text-white':
             textColor === 'inverse-secondary',
@@ -64,11 +75,11 @@ function getComponents({
     ),
     ul: (props) => {
       const className = clsx('text-list tracking-tight', colorClassName, {
-        'text-sm leading-6': textSize === 'sm',
-        'text-lg leading-6': textSize === 'lg',
-        'text-2xl leading-9': textSize === 'xl' && !responsive,
+        'text-sm leading-6': bodyTextSize === 'sm',
+        'text-lg leading-6': bodyTextSize === 'lg',
+        'text-2xl leading-9': bodyTextSize === 'xl' && !responsive,
         'text-lg leading-7 md:text-2xl md:leading-9':
-          textSize === 'xl' && responsive,
+          bodyTextSize === 'xl' && responsive,
       })
       return props.ordered ? (
         <ol className={className}>{props.children}</ol>
@@ -77,31 +88,4 @@ function getComponents({
       )
     },
   }
-}
-
-type Props = {
-  children: string
-  textAlign?: 'left' | 'right' | 'center'
-  textColor?: 'primary' | 'secondary' | 'inverse' | 'inverse-secondary'
-  bodyTextSize?: 'sm' | 'lg' | 'xl'
-  margins?: boolean
-  responsive?: boolean
-}
-
-export function Markdown({
-  children,
-  margins = true,
-  textAlign = 'left',
-  textColor = 'primary',
-  bodyTextSize = 'lg',
-  responsive = true,
-}: Props) {
-  const components = getComponents({
-    textAlign,
-    textColor,
-    textSize: bodyTextSize,
-    margins,
-    responsive,
-  })
-  return <ReactMarkdown children={children} components={components} />
 }

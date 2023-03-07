@@ -23,7 +23,7 @@ export function SbVacancy({ blok, slug, publishDate }: Props) {
   const datePosted = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
 
   return (
-    <main {...storyblokEditable(blok)}>
+    <div {...storyblokEditable(blok)}>
       <SdJobPosting
         title={blok.title}
         origin={requestInfo.origin}
@@ -36,6 +36,6 @@ export function SbVacancy({ blok, slug, publishDate }: Props) {
           <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
         ))}
       </Vacancy>
-    </main>
+    </div>
   )
 }

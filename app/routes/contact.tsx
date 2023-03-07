@@ -149,9 +149,9 @@ export default function ContactPage() {
     <main>
       <Grid className="pt-8 pb-16 lg:pt-24 lg:pb-56">
         <div className="col-span-full lg:col-span-5">
-          <H1 className="mb-4 lg:mb-8">{t('contact.title')}</H1>
+          <H1 className="mb-4 lg:mb-8">{story.content.title}</H1>
           <H4 as="h2" variant="secondary">
-            {t('contact.subtitle')}
+            {story.content.subtitle}
           </H4>
         </div>
         <div className="col-span-full py-10 lg:col-span-7 lg:py-3 lg:px-8">

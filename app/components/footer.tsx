@@ -106,8 +106,9 @@ export function Footer({
         </div>
         <div className="col-span-full py-8 lg:col-span-4 lg:py-0">
           <Markdown
-            textColor="inverse-secondary"
             bodyTextSize="xl"
+            textColor="inverse-secondary"
+            linksInNewTab
             margins={false}
             responsive={false}
           >

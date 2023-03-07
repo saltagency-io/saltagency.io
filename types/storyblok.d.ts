@@ -4,6 +4,8 @@ import { BlokTypes } from '~/storyblok'
 
 // Content that can be on a story of type Page
 export type PageStoryContent = {
+  title?: string
+  subtitle?: string
   body: BodyComponents[]
   metatags: MetaTags
 }
