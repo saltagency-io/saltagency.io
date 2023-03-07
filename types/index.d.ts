@@ -57,4 +57,3 @@ export type Breadcrumb = {
 }
 
 export * from './storyblok'
-export * from './json-ld'

@@ -1,8 +1,27 @@
 import * as React from 'react'
 
-import type { Breadcrumb, LdData } from '~/types'
+import type {
+  BreadcrumbList,
+  JobPosting,
+  Organization,
+  Place,
+} from 'schema-dts'
 
-function JsonLd({ data }: { data: LdData }) {
+import type { Breadcrumb } from '~/types'
+
+const address: Place = {
+  '@type': 'Place',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Evert van de Beekstraat 354',
+    addressLocality: ', Amsterdam',
+    addressRegion: 'Noord-Holland',
+    postalCode: '1118 CZ',
+    addressCountry: 'NL',
+  },
+}
+
+function JsonLd({ data }: { data: any }) {
   return (
     <script
       type="application/ld+json"
@@ -27,7 +46,7 @@ export function SdBreadCrumbs({
   origin: string
   breadcrumbs: Breadcrumb[]
 }) {
-  const data: LdData = {
+  const data: BreadcrumbList = {
     '@type': 'BreadcrumbList',
     itemListElement: breadcrumbs.map((breadcrumb, i) => ({
       '@type': 'ListItem',
@@ -44,10 +63,41 @@ export function SdBreadCrumbs({
 }
 
 export function SdLogo({ origin }: { origin: string }) {
-  const data: LdData = {
+  const data: Organization = {
     '@type': 'Organization',
     url: origin,
     logo: 'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg',
+    location: address,
+  }
+
+  return <JsonLd data={data} />
+}
+
+export function SdJobPosting({
+  title,
+  description,
+  origin,
+  datePosted,
+}: {
+  title: string
+  description: string
+  origin: string
+  datePosted: string
+}) {
+  const data: JobPosting = {
+    '@type': 'JobPosting',
+    title: title,
+    description: `<p>${description}</p>`,
+    datePosted: datePosted,
+    employmentType: ['FULL_TIME', 'PART_TIME'],
+    jobLocationType: 'TELECOMMUTE',
+    jobLocation: address,
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: 'Salty Agency',
+      sameAs: origin,
+      logo: 'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg',
+    },
   }
 
   return <JsonLd data={data} />
