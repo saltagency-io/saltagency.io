@@ -43,22 +43,12 @@ export function SdBreadCrumbs({
   return <JsonLd data={data} />
 }
 
-// {
-//   "@context": "https://schema.org",
-//   "@type": "BreadcrumbList",
-//   "itemListElement": [{
-//   "@type": "ListItem",
-//   "position": 1,
-//   "name": "Books",
-//   "item": "https://example.com/books"
-// },{
-//   "@type": "ListItem",
-//   "position": 2,
-//   "name": "Science Fiction",
-//   "item": "https://example.com/books/sciencefiction"
-// },{
-//   "@type": "ListItem",
-//   "position": 3,
-//   "name": "Award Winners"
-// }]
-// }
+export function SdLogo({ origin }: { origin: string }) {
+  const data: LdData = {
+    '@type': 'Organization',
+    url: origin,
+    logo: 'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg',
+  }
+
+  return <JsonLd data={data} />
+}
