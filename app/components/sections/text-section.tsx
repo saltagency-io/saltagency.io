@@ -5,15 +5,24 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
 import { H3, H4, Subtitle } from '~/components/typography'
+import type { Image } from '~/types'
+import { getImgProps } from '~/utils/images'
 
 type Props = {
   subtitle: string
   title: string
   body: string
+  image?: Image
   theme?: 'dark' | 'light'
 }
 
-export function TextSection({ subtitle, title, body, theme = 'light' }: Props) {
+export function TextSection({
+  subtitle,
+  title,
+  body,
+  image,
+  theme = 'light',
+}: Props) {
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -30,7 +39,7 @@ export function TextSection({ subtitle, title, body, theme = 'light' }: Props) {
     >
       <Grid>
         <motion.div
-          className="col-span-4 md:col-span-8 lg:col-span-10 lg:col-start-2"
+          className="col-span-full lg:col-span-10 lg:col-start-2"
           initial="initial"
           whileInView="visible"
           viewport={{ once: true, margin: '-115px 0px' }}
@@ -60,6 +69,20 @@ export function TextSection({ subtitle, title, body, theme = 'light' }: Props) {
               {body}
             </H4>
           </motion.div>
+          {image ? (
+            <motion.div className="-ml-8vw -mr-8vw pt-12 lg:m-0">
+              <img
+                className="w-full lg:rounded-lg"
+                {...getImgProps(image.url, image.alt, {
+                  widths: [431, 862, 1724],
+                  sizes: [
+                    '(max-width: 1023px) 100vw',
+                    '(min-width: 1024px) 60vw',
+                  ],
+                })}
+              />
+            </motion.div>
+          ) : null}
         </motion.div>
       </Grid>
     </div>

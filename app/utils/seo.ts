@@ -2,7 +2,7 @@ export function getSocialMetas({
   url,
   title = 'Salt Agency',
   description = 'We provide lead consultants',
-  image = 'https://a.storyblok.com/f/180005/x/b54e9e47ed/logo.svg',
+  image = 'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg',
   keywords,
 }: {
   image?: string

@@ -22,7 +22,9 @@ import { Grid } from '~/components/grid'
 import { H1, H3, H4 } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendApplicationToNotion } from '~/lib/notion.server'
+import { getAllVacancies } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
+import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import * as ga from '~/utils/gtag.client'
 import { useLabels } from '~/utils/labels-provider'
@@ -38,6 +40,16 @@ import {
   isValidString,
   isValidUrl,
 } from '~/utils/validators'
+
+export const handle: Handle = {
+  getSitemapEntries: async () => {
+    const pages = await getAllVacancies(false)
+    return (pages || []).map((page) => ({
+      route: `/${page.full_slug}/apply`,
+      priority: 0.6,
+    }))
+  },
+}
 
 type Fields = {
   name?: string | null

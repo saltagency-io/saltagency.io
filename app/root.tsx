@@ -40,6 +40,7 @@ import {
 } from '~/utils/misc'
 import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
+import { SdLogo } from '~/utils/structured-data'
 
 storyblokInit({
   components,
@@ -176,6 +177,7 @@ export function App() {
             />
           </>
         )}
+        <SdLogo origin={data.requestInfo.origin} />
       </head>
       <body>
         <StoryblokComponent blok={data.layoutStory?.content} />

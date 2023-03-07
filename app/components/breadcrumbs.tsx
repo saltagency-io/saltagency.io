@@ -1,15 +1,29 @@
 import * as React from 'react'
 
-import { Link, useLocation } from '@remix-run/react'
+import { Link, useLocation, useRouteLoaderData } from '@remix-run/react'
 
 import clsx from 'clsx'
 
+import type { Breadcrumb } from '../../types'
 import { IconChevronLeft, IconChevronRight } from '~/components/icons'
+import type { LoaderData as RootLoaderData } from '~/root'
 import { unslugify } from '~/utils/misc'
+import { SdBreadCrumbs } from '~/utils/structured-data'
 
 export function Breadcrumbs() {
+  const { requestInfo }: RootLoaderData = useRouteLoaderData('root')
   const location = useLocation()
+
   const parts = location.pathname.slice(1).split('/')
+
+  const breadcrumbs = parts.map<Breadcrumb>((part, i) => {
+    const base = parts.slice(0, i).join('/')
+
+    return {
+      path: `${i !== 0 ? `/${base}` : ''}/${part}`,
+      name: unslugify(part),
+    }
+  })
 
   const BackLink = () => (
     <Link
@@ -24,53 +38,56 @@ export function Breadcrumbs() {
   )
 
   return (
-    <nav>
-      {/*Mobile*/}
-      <div className="block lg:hidden">
-        <BackLink />
-      </div>
-      {/*Desktop*/}
-      <div className="hidden lg:block">
-        {parts.length <= 2 ? (
-          // If we 2 or less url parts, we can only navigate one level back,
-          // so show a back link instead of the full breadcrumbs
-          <BackLink />
-        ) : (
-          <ol className="hidden items-center gap-x-2 lg:flex">
-            {parts.map((part, i) => {
-              const isLastItem = i + 1 === parts.length
-              const base = parts.slice(0, i).join('/')
+    <>
+      <SdBreadCrumbs origin={requestInfo.origin} breadcrumbs={breadcrumbs} />
 
-              return (
-                <li
-                  key={part}
-                  className="flex items-center gap-x-2 text-gray-600"
-                >
-                  <Link
-                    to={`${i !== 0 ? `/${base}` : ''}/${part}`}
-                    prefetch="intent"
-                    aria-current={isLastItem ? 'page' : undefined}
-                    className={clsx('underlined hover:active focus:active', {
-                      'pointer-events-none': isLastItem,
-                    })}
+      <nav>
+        {/*Mobile*/}
+        <div className="block lg:hidden">
+          <BackLink />
+        </div>
+
+        {/*Desktop*/}
+        <div className="hidden lg:block">
+          {breadcrumbs.length <= 2 ? (
+            // If we 2 or less url parts, we can only navigate one level back,
+            // so show a back link instead of the full breadcrumbs
+            <BackLink />
+          ) : (
+            <ol className="hidden items-center gap-x-2 lg:flex">
+              {breadcrumbs.map((breadcrumb, i) => {
+                const isLastItem = i + 1 === parts.length
+                return (
+                  <li
+                    key={breadcrumb.path}
+                    className="flex items-center gap-x-2 text-gray-600"
                   >
-                    <span
-                      className={clsx('text-lg font-bold lg:text-2xl', {
-                        'font-medium text-gray-500': isLastItem,
+                    <Link
+                      to={breadcrumb.path}
+                      prefetch="intent"
+                      aria-current={isLastItem ? 'page' : undefined}
+                      className={clsx('underlined hover:active focus:active', {
+                        'pointer-events-none': isLastItem,
                       })}
                     >
-                      {unslugify(part)}
-                    </span>
-                  </Link>
-                  {!isLastItem ? (
-                    <IconChevronRight height={16} width={16} />
-                  ) : null}
-                </li>
-              )
-            })}
-          </ol>
-        )}
-      </div>
-    </nav>
+                      <span
+                        className={clsx('text-lg font-bold lg:text-2xl', {
+                          'font-medium text-gray-500': isLastItem,
+                        })}
+                      >
+                        {breadcrumb.name}
+                      </span>
+                    </Link>
+                    {!isLastItem ? (
+                      <IconChevronRight height={16} width={16} />
+                    ) : null}
+                  </li>
+                )
+              })}
+            </ol>
+          )}
+        </div>
+      </nav>
+    </>
   )
 }

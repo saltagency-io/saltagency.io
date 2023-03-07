@@ -37,9 +37,12 @@ export async function loader({ params, request }: DataFunctionArgs) {
     throw json({}, { status: 404 })
   }
 
+  const { origin } = new URL(request.url)
+
   const data = {
     initialStory,
     preview,
+    origin,
   }
 
   return typedjson(data, {
@@ -75,7 +78,13 @@ export default function VacancyPage() {
   const data = useTypedLoaderData()
   const story = useStoryblokState(data.initialStory, {}, data.preview)
 
-  return <StoryblokComponent blok={story.content} slug={story.slug} />
+  return (
+    <StoryblokComponent
+      blok={story.content}
+      slug={story.slug}
+      publishDate={story.first_published_at}
+    />
+  )
 }
 
 export function CatchBoundary() {

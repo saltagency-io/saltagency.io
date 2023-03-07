@@ -51,4 +51,9 @@ export type Vacancy = {
   slug: string
 }
 
+export type Breadcrumb = {
+  path: string
+  name: string
+}
+
 export * from './storyblok'
