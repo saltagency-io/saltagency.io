@@ -9,7 +9,9 @@ export type PageStoryContent = {
 }
 
 export type VacancyStoryContent = {
-  body: JobDescriptionBlok | BlockWithSectionsBlok
+  title: string
+  summary: string
+  body: Array<JobDescriptionBlok | BlockWithSectionsBlok>
   metatags: MetaTags
 }
 
@@ -32,6 +34,12 @@ export type FooterBlok = SbBlokData & {
   component: BlokTypes.Footer
   disclaimer: string
   socialText: string
+}
+
+export type VacancyBlok = SbBlokData & {
+  title: string
+  summary: string
+  body: Array<JobDescriptionBlok | BlockWithSectionsBlok>
 }
 
 export type ButtonBlok = SbBlokData & {

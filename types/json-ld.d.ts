@@ -4,8 +4,8 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 /**
  * Base types
  */
-type URL = string // unsure
-type Text = string // unsure
+type URL = string
+type Text = string
 type Integer = number
 
 // https://schema.org/Duration
@@ -47,7 +47,6 @@ export type Article = $TODO
 export type Audience = $TODO
 export type AudioObject = $TODO
 export type Brand = $TODO
-export type BreadcrumbList = $TODO
 export type Comment = $TODO
 export type CorrectionComment = $TODO
 export type Demand = $TODO
@@ -449,7 +448,7 @@ export type ItemListOrderType = Enumeration<'ItemListOrderType'>
 
 // https://schema.org/ListItem
 export interface ListItem<T = 'ListItem'> extends Thing<T> {
-  item?: Product | Store
+  item?: Product | Store | Text
   position?: Integer | Text
   nextItem?: ListItem
   previousItem?: ListItem
@@ -473,4 +472,16 @@ export interface Offer<T = 'Offer'> extends Thing<T> {
   priceSpecification?: any
 }
 
-export type Data = Product | Organization | WebPage | ItemList | Offer | Store
+// https://schema.org/BreadcrumbList
+export interface BreadcrumbList extends Thing<'BreadcrumbList'> {
+  itemListElement?: ListItem[]
+}
+
+export type LdData =
+  | Product
+  | Organization
+  | WebPage
+  | ItemList
+  | Offer
+  | Store
+  | BreadcrumbList

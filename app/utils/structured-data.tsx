@@ -1,6 +1,8 @@
 import * as React from 'react'
 
-function JsonLd(thing: any) {
+import type { Breadcrumb, LdData } from '~/types'
+
+function JsonLd({ data }: { data: LdData }) {
   return (
     <script
       type="application/ld+json"
@@ -8,7 +10,7 @@ function JsonLd(thing: any) {
         __html: JSON.stringify(
           {
             '@context': 'https://schema.org',
-            ...thing
+            ...data,
           },
           null,
           2,
@@ -18,32 +20,45 @@ function JsonLd(thing: any) {
   )
 }
 
-export function SdBreadCrumbs({breadcrumbs}: {breadcrumbs: any}) {
-  return (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [{
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Books",
-          "item": "https://example.com/books"
-        },{
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Science Fiction",
-          "item": "https://example.com/books/sciencefiction"
-        },{
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Award Winners"
-        }]
-      }
-    `,
-      }}
-    />
-  )
+export function SdBreadCrumbs({
+  origin,
+  breadcrumbs,
+}: {
+  origin: string
+  breadcrumbs: Breadcrumb[]
+}) {
+  const data: LdData = {
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((breadcrumb, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: breadcrumb.name,
+      item:
+        i + 1 !== breadcrumbs.length
+          ? `${origin}${breadcrumb.path}`
+          : undefined,
+    })),
+  }
+
+  return <JsonLd data={data} />
 }
+
+// {
+//   "@context": "https://schema.org",
+//   "@type": "BreadcrumbList",
+//   "itemListElement": [{
+//   "@type": "ListItem",
+//   "position": 1,
+//   "name": "Books",
+//   "item": "https://example.com/books"
+// },{
+//   "@type": "ListItem",
+//   "position": 2,
+//   "name": "Science Fiction",
+//   "item": "https://example.com/books/sciencefiction"
+// },{
+//   "@type": "ListItem",
+//   "position": 3,
+//   "name": "Award Winners"
+// }]
+// }

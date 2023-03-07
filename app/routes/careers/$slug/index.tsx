@@ -37,9 +37,12 @@ export async function loader({ params, request }: DataFunctionArgs) {
     throw json({}, { status: 404 })
   }
 
+  const { origin } = new URL(request.url)
+
   const data = {
     initialStory,
     preview,
+    origin,
   }
 
   return typedjson(data, {
