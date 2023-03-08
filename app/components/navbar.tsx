@@ -264,7 +264,7 @@ type Props = {
 
 export function Navbar({ menu }: Props) {
   return (
-    <div className="absolute top-0 left-0 right-0 mx-8vw py-8 lg:mt-12 lg:py-8">
+    <div className="absolute top-0 left-0 right-0 z-10 mx-8vw py-8 lg:mt-12 lg:py-8">
       <nav className="mx-auto flex max-w-5xl items-center justify-between">
         <Link prefetch="intent" to="/" title="home">
           <span className="sr-only">Salt Agency</span>

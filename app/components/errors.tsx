@@ -4,10 +4,12 @@ import { useMatches } from '@remix-run/react'
 
 import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
+import { motion } from 'framer-motion'
 
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
-import { H2, H3, H4, H6 } from '~/components/typography'
+import { IconArrowDown } from '~/components/icons'
+import { H1, H2, H3, H4, H5, H6, Subtitle } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
 import type { Vacancy } from '~/types'
 import { mapVacancy } from '~/utils/mappers'
@@ -61,12 +63,12 @@ type ErrorSectionProps = {
 
 export function ErrorSection({ title, subtitle }: ErrorSectionProps) {
   return (
-    <div className="pt-40 pb-20">
+    <div className="py-40">
       <Grid>
         <div className="col-span-full text-center lg:col-span-8 lg:col-start-3">
-          <H3 className="mb-4" variant="primary" inverse>
+          <H1 className="mb-16" variant="primary" inverse>
             {title}
-          </H3>
+          </H1>
           <H4 className="mb-10" variant="secondary" inverse>
             {subtitle}
           </H4>
@@ -88,6 +90,14 @@ export function ErrorPage({
   errorSectionProps: ErrorSectionProps
   vacancies?: Vacancy[]
 }) {
+  React.useEffect(() => {
+    document.body.classList.add('header-light')
+
+    return () => {
+      document.body.classList.remove('header-light')
+    }
+  }, [])
+
   return (
     <>
       <noscript>
@@ -114,21 +124,58 @@ export function ErrorPage({
         <ErrorSection {...errorSectionProps} />
 
         {vacancies ? (
-          <Grid className="py-20">
-            <div className="col-span-8 col-start-3">
-              <H3 className="mb-2" inverse>
-                We're you searching for a job?
-              </H3>
-              <H4 className="mb-12" variant="secondary" inverse>
-                Check out our recent openings
-              </H4>
-              <VacancyList
-                vacancies={vacancies}
-                theme="light"
-                transition={false}
-              />
-            </div>
-          </Grid>
+          <div className="pb-20 lg:pb-40">
+            <Grid>
+              <div className="col-span-full flex pb-56">
+                <H5
+                  as="div"
+                  className="mx-auto inline-flex items-center gap-x-2"
+                  variant="secondary"
+                  inverse
+                >
+                  But wait! We're you searching for a job opening perhaps?
+                  <motion.div
+                    animate={{
+                      y: [0, -5, 5, 0],
+                    }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      repeatDelay: 1,
+                    }}
+                  >
+                    <IconArrowDown />
+                  </motion.div>
+                </H5>
+              </div>
+
+              <div className="col-span-4 md:col-span-8 lg:col-span-5">
+                <Subtitle variant="pink" className="mb-4">
+                  We're hiring
+                </Subtitle>
+                <H3 as="h2" inverse className="mb-14 lg:mb-12">
+                  We are looking for a broad spectrum of expertise to join Salt
+                </H3>
+                <div className="hidden lg:block">
+                  <ButtonLink to="/careers" variant="outline-inverse">
+                    Careers
+                  </ButtonLink>
+                </div>
+              </div>
+              <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
+                <VacancyList
+                  theme="light"
+                  vacancies={vacancies}
+                  transition={false}
+                />
+              </div>
+              <div className="block pt-14 lg:hidden">
+                <ButtonLink to="/careers" variant="outline-inverse">
+                  Careers
+                </ButtonLink>
+              </div>
+            </Grid>
+          </div>
         ) : null}
       </main>
     </>
@@ -145,7 +192,7 @@ export function NotFoundError() {
     <ErrorPage
       vacancies={vacancies.map(mapVacancy)}
       errorSectionProps={{
-        title: '404',
+        title: `Oh no.. it seems we've lost this page`,
         subtitle: `We searched everywhere but we couldn't find "${pathname}"`,
       }}
     />

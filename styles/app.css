@@ -52,9 +52,9 @@ main {
 }
 
 @media screen and (min-width: 1024px) {
-   main {
-     padding-top: 157px; /* header height */
-   }
+  main {
+    padding-top: 157px; /* header height */
+  }
 }
 
 * {
@@ -179,4 +179,12 @@ a {
   margin: auto;
   background-color: currentColor;
   border-radius: 50%;
+}
+
+.header-light nav a {
+  color: var(--color-white) !important;
+}
+
+.header-light svg path {
+  fill: var(--color-white) !important;
 }

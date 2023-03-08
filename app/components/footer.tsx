@@ -73,7 +73,7 @@ export function Footer({
         </div>
         <ul className="border-secondary col-span-full border-b py-8 lg:col-span-3 lg:mb-3 lg:border-0 lg:py-0">
           {menu.map((link) => (
-            <li key={link.id} className="mb-6 last:mb-0">
+            <li key={link.id} className="mb-6 last:mb-0 lg:mb-3">
               <Link
                 to={link.url}
                 prefetch="intent"

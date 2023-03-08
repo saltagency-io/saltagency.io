@@ -86,14 +86,12 @@ function AccordionItemContent({
 
 export function Accordion({ items }: { items: Section[] }) {
   return (
-    <div>
-      <ReachAccordion>
-        {items.map((item) => (
-          <AccordionItem key={item.id} className="border-secondary border-b">
-            <AccordionItemContent title={item.title} text={item.text} />
-          </AccordionItem>
-        ))}
-      </ReachAccordion>
-    </div>
+    <ReachAccordion collapsible>
+      {items.map((item) => (
+        <AccordionItem key={item.id} className="border-secondary border-b">
+          <AccordionItemContent title={item.title} text={item.text} />
+        </AccordionItem>
+      ))}
+    </ReachAccordion>
   )
 }
