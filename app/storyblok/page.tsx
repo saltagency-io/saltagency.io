@@ -1,16 +1,14 @@
-import type { SbBlokData } from '@storyblok/react'
-import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
+import { StoryblokComponent } from '@storyblok/react'
 
-type Blok = SbBlokData & {
-  body: SbBlokData[] | undefined
-}
+import type { PageBlok } from '~/types'
+import { StoryBlokWrapper } from '~/utils/storyblok'
 
-export function SbPage({ blok }: { blok: Blok }) {
+export function SbPage({ blok }: { blok: PageBlok }) {
   return (
-    <div {...storyblokEditable(blok)}>
+    <StoryBlokWrapper blok={blok}>
       {blok.body?.map((nestedBlok) => (
         <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
       ))}
-    </div>
+    </StoryBlokWrapper>
   )
 }

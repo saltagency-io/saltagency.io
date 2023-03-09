@@ -69,7 +69,7 @@ export function TextSection({
               {body}
             </H4>
           </motion.div>
-          {image ? (
+          {image?.url ? (
             <motion.div className="-ml-8vw -mr-8vw pt-12 lg:m-0">
               <img
                 className="w-full lg:rounded-lg"

@@ -67,6 +67,7 @@ export async function getAllVacancies(
   const params = {
     ...getDefaultParams({ preview }),
     starts_with: 'careers/',
+    is_startpage: 0,
   }
 
   try {

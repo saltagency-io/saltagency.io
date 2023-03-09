@@ -2,18 +2,41 @@ import * as React from 'react'
 
 import type { MetaFunction } from '@remix-run/node'
 import type { HeadersFunction } from '@remix-run/node'
+import { DataFunctionArgs, json } from '@remix-run/node'
 
-import { ButtonLink } from '~/components/button'
-import { GradientCircle } from '~/components/gradient-circle'
-import { Grid } from '~/components/grid'
-import { H1, H4 } from '~/components/typography'
-import { VacancyList } from '~/components/vacancy-list'
+import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
+
+import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+
+import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
-import { useLabels } from '~/utils/labels-provider'
-import { mapVacancy } from '~/utils/mappers'
 import { getUrl } from '~/utils/misc'
-import { useVacancies } from '~/utils/providers'
 import { getSocialMetas } from '~/utils/seo'
+import { isPreview } from '~/utils/storyblok'
+
+export async function loader({ request }: DataFunctionArgs) {
+  const preview = isPreview(request)
+  const initialStory = await getStoryBySlug('careers/', preview)
+
+  if (!initialStory) {
+    throw json({}, { status: 404 })
+  }
+
+  const { origin } = new URL(request.url)
+
+  const data = {
+    initialStory,
+    preview,
+    origin,
+  }
+
+  return typedjson(data, {
+    status: 200,
+    headers: {
+      'Cache-Control': 'private, max-age=3600',
+    },
+  })
+}
 
 export const meta: MetaFunction = ({ parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
@@ -31,55 +54,12 @@ export const headers: HeadersFunction = () => ({
 })
 
 export default function CareersIndex() {
-  const { t } = useLabels()
-  const { vacancies } = useVacancies()
+  const data = useTypedLoaderData<typeof loader>()
+  const story = useStoryblokState(data.initialStory, {}, data.preview)
 
   return (
     <main>
-      <div className="relative min-h-screen overflow-x-hidden py-12 lg:overflow-x-visible lg:py-14">
-        <Grid>
-          <div className="col-span-full lg:col-span-6">
-            <H1 className="mb-6">{t('careers.title')}</H1>
-            <H4 as="h2" variant="secondary" className="lg:mb-7">
-              {t('careers.subtitle')}
-            </H4>
-            <div className="py-16 lg:py-24">
-              <VacancyList
-                theme="dark"
-                transition={false}
-                vacancies={vacancies.map(mapVacancy)}
-              />
-            </div>
-            <div className="mb-12">
-              <H4 as="p" variant="secondary" className="mb-8">
-                {t('careers.text')}
-              </H4>
-              <ButtonLink to="/contact" variant="secondary">
-                {t('careers.cta')}
-              </ButtonLink>
-            </div>
-          </div>
-        </Grid>
-        {/*Mobile*/}
-        <GradientCircle
-          className="block lg:hidden"
-          height={758}
-          width={758}
-          top={60}
-          right={-520}
-          opacity={15}
-          rotate={-75}
-        />
-        {/*Desktop*/}
-        <GradientCircle
-          className="hidden lg:block"
-          height={1100}
-          width={1100}
-          top={1}
-          right={-545}
-          opacity={22}
-        />
-      </div>
+      <StoryblokComponent blok={story.content} />
     </main>
   )
 }

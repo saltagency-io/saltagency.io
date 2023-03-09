@@ -6,7 +6,7 @@ import { BlokTypes } from '~/storyblok'
 export type PageStoryContent = {
   title?: string
   subtitle?: string
-  body: BodyComponents[]
+  body: BodyComponent[]
   metatags: MetaTags
 }
 
@@ -20,6 +20,15 @@ export type VacancyStoryContent = {
 export type LayoutStoryContent = {
   navigation: NavigationBlok[]
   footer: FooterBlok[]
+}
+
+export type PageBlok = SbBlokData & {
+  body: BodyComponent[]
+}
+
+export type PageWithChildBlok = SbBlokData & {
+  topBody: BodyComponent[]
+  bottomBody: BodyComponent[]
 }
 
 export type LayoutBlok = SbBlokData & {
@@ -154,7 +163,12 @@ export type JobDescriptionBlok = SbBlokData & {
   requirements: string
 }
 
-export type BodyComponents =
+export type ImageSectionBlok = SbBlokData & {
+  component: BlokTypes.ImageSection
+  image: Asset
+}
+
+export type BodyComponent =
   | HeroBlok
   | CalculatorBlok
   | TextSectionBlok

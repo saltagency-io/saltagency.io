@@ -13,7 +13,7 @@ type Props = {
   children: React.ReactNode
   subtitle: string
   title: string
-  theme?: 'dark' | 'light'
+  theme?: 'dark' | 'dark-alt' | 'light'
 }
 
 export function CareersSection({
@@ -27,7 +27,8 @@ export function CareersSection({
   return (
     <div
       className={clsx('py-20 lg:py-40', {
-        'bg-gradient': theme === 'light',
+        'bg-white': theme === 'light',
+        'bg-gradient': theme === 'dark-alt',
         'bg-gradient-dark': theme === 'dark',
       })}
     >
@@ -45,13 +46,16 @@ export function CareersSection({
           <Subtitle variant="pink" className="mb-4">
             {subtitle}
           </Subtitle>
-          <H3 as="h2" inverse className="mb-14 lg:mb-12">
+          <H3 as="h2" inverse={theme !== 'light'} className="mb-14 lg:mb-12">
             {title}
           </H3>
           <div className="hidden lg:block">{children}</div>
         </motion.div>
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
-          <VacancyList theme="light" vacancies={vacancies.map(mapVacancy)} />
+          <VacancyList
+            theme={theme === 'light' ? 'dark' : 'light'}
+            vacancies={vacancies.map(mapVacancy)}
+          />
         </div>
         {children || (Array.isArray(children) && children.length !== 0) ? (
           <div className="block pt-14 lg:hidden">{children}</div>

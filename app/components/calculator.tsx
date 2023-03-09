@@ -219,85 +219,90 @@ export function Calculator() {
   })
 
   return (
-    <Grid className="mb-8">
-      <div className="col-span-full">
-        <div className="flex max-w-[500px] flex-col items-start justify-between lg:flex-row lg:items-center">
-          <Select
-            className="w-[170px] text-white"
-            label={t('calculator.rate')}
-            name="rate"
-            defaultValue={String(rate)}
-            onChange={(event) => setRate(Number(event.target.value))}
-          >
-            {rates.map((rate) => (
-              <option key={rate} value={String(rate)}>
-                {numberFormatter.format(rate)}
-              </option>
-            ))}
-          </Select>
-          <SwitchToggle
-            className="mb-8 lg:mb-0"
-            labelActive={t('calculator.yearly')}
-            labelInactive={t('calculator.monthly')}
-            active={period === 'year'}
-            onClick={(active) => setPeriod(active ? 'month' : 'year')}
-          />
-        </div>
-      </div>
-      <table className="col-span-full max-w-[500px]">
-        <tbody>
-          <Row label={t('calculator.revenue.average')} value={revenue} />
-          <Row
-            label={t('calculator.revenue.relative')}
-            value={revenueRelative}
-          />
-          <Divider />
-          <Row
-            label={t('calculator.charges.employer')}
-            value={employerCharges}
-            negativeValue
-          />
-          <Divider />
-          <Row label={t('calculator.salary.base')} value={salaryBase} />
-          <Row label={t('calculator.holiday')} value={holiday} />
-          <Row label={t('calculator.pension')} value={pension} />
-          <Row label={t('calculator.bonus')} value={bonus.monthly} />
-          <Divider />
-          <Row label={t('calculator.salary.gross')} value={salaryGross} />
-          <Divider />
-          <Row label="Remaining revenue" value={bonus.remainderGross} />
-          <OptionalRow
-            label={t('calculator.expenses.development')}
-            value={expenses.training}
-            isChecked={usesTraining}
-            onClick={() => setUsesTraining(!usesTraining)}
-          />
-          <OptionalRow
-            label={t('calculator.expenses.equipment')}
-            value={expenses.equipment}
-            isChecked={usesEquipment}
-            onClick={() => setUsesEquipment(!usesEquipment)}
-          />
-          <OptionalRow
-            label={t('calculator.expenses.travel')}
-            value={expenses.travel}
-            isChecked={usesTravel}
-            onClick={() => setUsesTravel(!usesTravel)}
-          />
-          <Divider />
-          {period === 'year' ? (
-            <>
-              <Row label={t('calculator.bonus.yearly')} value={bonus.yearly} />
-              <Row label={t('calculator.total')} value={total} />
-            </>
-          ) : (
-            <Row
-              label={t('calculator.bonus.remainder')}
-              value={bonus.remainder}
+    <div className="bg-gray-900 py-20">
+      <Grid>
+        <div className="col-span-full">
+          <div className="flex max-w-[500px] flex-col items-start justify-between lg:flex-row lg:items-center">
+            <Select
+              className="w-[170px] text-white"
+              label={t('calculator.rate')}
+              name="rate"
+              defaultValue={String(rate)}
+              onChange={(event) => setRate(Number(event.target.value))}
+            >
+              {rates.map((rate) => (
+                <option key={rate} value={String(rate)}>
+                  {numberFormatter.format(rate)}
+                </option>
+              ))}
+            </Select>
+            <SwitchToggle
+              className="mb-8 lg:mb-0"
+              labelActive={t('calculator.yearly')}
+              labelInactive={t('calculator.monthly')}
+              active={period === 'year'}
+              onClick={(active) => setPeriod(active ? 'month' : 'year')}
             />
-          )}
-        </tbody>
-      </table>
-    </Grid>
+          </div>
+        </div>
+        <table className="col-span-full max-w-[500px]">
+          <tbody>
+            <Row label={t('calculator.revenue.average')} value={revenue} />
+            <Row
+              label={t('calculator.revenue.relative')}
+              value={revenueRelative}
+            />
+            <Divider />
+            <Row
+              label={t('calculator.charges.employer')}
+              value={employerCharges}
+              negativeValue
+            />
+            <Divider />
+            <Row label={t('calculator.salary.base')} value={salaryBase} />
+            <Row label={t('calculator.holiday')} value={holiday} />
+            <Row label={t('calculator.pension')} value={pension} />
+            <Row label={t('calculator.bonus')} value={bonus.monthly} />
+            <Divider />
+            <Row label={t('calculator.salary.gross')} value={salaryGross} />
+            <Divider />
+            <Row label="Remaining revenue" value={bonus.remainderGross} />
+            <OptionalRow
+              label={t('calculator.expenses.development')}
+              value={expenses.training}
+              isChecked={usesTraining}
+              onClick={() => setUsesTraining(!usesTraining)}
+            />
+            <OptionalRow
+              label={t('calculator.expenses.equipment')}
+              value={expenses.equipment}
+              isChecked={usesEquipment}
+              onClick={() => setUsesEquipment(!usesEquipment)}
+            />
+            <OptionalRow
+              label={t('calculator.expenses.travel')}
+              value={expenses.travel}
+              isChecked={usesTravel}
+              onClick={() => setUsesTravel(!usesTravel)}
+            />
+            <Divider />
+            {period === 'year' ? (
+              <>
+                <Row
+                  label={t('calculator.bonus.yearly')}
+                  value={bonus.yearly}
+                />
+                <Row label={t('calculator.total')} value={total} />
+              </>
+            ) : (
+              <Row
+                label={t('calculator.bonus.remainder')}
+                value={bonus.remainder}
+              />
+            )}
+          </tbody>
+        </table>
+      </Grid>
+    </div>
   )
 }
