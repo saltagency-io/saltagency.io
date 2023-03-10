@@ -28,8 +28,6 @@
   --color-pink-700: #5e2029;
   --color-pink-800: #170306;
 
-  --color-purple-500: #4353ff;
-
   --color-red-500: #ff0000;
 }
 
@@ -96,6 +94,11 @@ select:invalid {
 
 address {
   font-style: normal;
+}
+
+::selection {
+  color: var(--color-gray-900);
+  background-color: var(--color-blue-400);
 }
 
 [hidden] {

@@ -59,7 +59,7 @@ export function Quote({
             {variant === 'extended' && subtitle ? (
               <Subtitle
                 className="mb-6 text-center"
-                variant={theme === 'dark' ? 'pink' : 'purple'}
+                variant={theme === 'dark' ? 'pink' : 'blue'}
               >
                 {subtitle}
               </Subtitle>

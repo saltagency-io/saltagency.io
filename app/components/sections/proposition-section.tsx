@@ -1,9 +1,13 @@
 import * as React from 'react'
 
+import { Link } from '@remix-run/react'
+
+import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, H4, Subtitle } from '~/components/typography'
+import { IconArrowRight } from '~/components/icons'
+import { H3, H4, Paragraph, Subtitle } from '~/components/typography'
 import type { Section } from '~/types'
 
 type Props = {
@@ -44,18 +48,40 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
         <div className="col-span-full">
           {sections.map((section) => (
             <motion.div key={section.id} variants={childVariants}>
-              <Grid nested className="border-secondary border-b py-8 lg:py-14">
-                <div className="col-span-6">
-                  <H4 as="h3" className="text-inverse pb-2 lg:pb-0">
-                    {section.title}
-                  </H4>
-                </div>
-                <div className="col-span-6">
-                  <H4 as="p" className="text-inverse-secondary">
-                    {section.text}
-                  </H4>
-                </div>
-              </Grid>
+              <Link
+                to={section.link?.url ?? '#'}
+                className="group"
+                prefetch="intent"
+              >
+                <Grid
+                  nested
+                  className="border-secondary border-b py-8 transition hover:border-white focus:border-white lg:py-14"
+                >
+                  <div className="col-span-6">
+                    <H4 as="h3" className="text-inverse mb-14 pb-2 lg:pb-0">
+                      {section.title}
+                    </H4>
+                    <Paragraph
+                      as="div"
+                      className={clsx(
+                        'absolute left-0 bottom-14 flex items-center gap-x-2',
+                        'translate-y-4 opacity-0 transition',
+                        'group-hover:translate-y-0 group-hover:opacity-70',
+                        'group-focus:translate-y-0 group-focus:opacity-70',
+                      )}
+                      textColorClassName="text-white"
+                    >
+                      <span>{section.link?.text}</span>
+                      <IconArrowRight height={18} width={18} />
+                    </Paragraph>
+                  </div>
+                  <div className="col-span-6">
+                    <H4 as="p" className="text-inverse-secondary">
+                      {section.text}
+                    </H4>
+                  </div>
+                </Grid>
+              </Link>
             </motion.div>
           ))}
         </div>

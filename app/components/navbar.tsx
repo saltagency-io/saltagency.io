@@ -33,7 +33,8 @@ function NavLink({
         to={to}
         prefetch="intent"
         className={clsx(
-          'underlined hover:text-primary block whitespace-nowrap text-2xl font-medium tracking-tight focus:outline-none',
+          'underlined hover:text-primary focus:text-primary block focus:outline-none',
+          'select-none whitespace-nowrap text-2xl font-medium tracking-tight',
           {
             'active text-primary': isSelected,
             'text-gray-600': !isSelected,

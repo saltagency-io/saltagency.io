@@ -1,4 +1,4 @@
-import * as React from 'react'
+import type * as React from 'react'
 
 import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
@@ -9,12 +9,13 @@ import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 
 type Props = {
+  children: React.ReactNode
   subtitle: string
   title: string
   people: Image[]
 }
 
-export function PeopleSection({ subtitle, title, people }: Props) {
+export function PeopleSection({ children, subtitle, title, people }: Props) {
   const { scrollYProgress } = useScroll()
   const translateY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, 100])
   const translateYNegative = useTransform(
@@ -39,9 +40,10 @@ export function PeopleSection({ subtitle, title, people }: Props) {
           <Subtitle variant="gray" className="mb-4">
             {subtitle}
           </Subtitle>
-          <H3 as="h2" className="opacity-80">
+          <H3 as="h2" className="mb-12 opacity-80">
             {title}
           </H3>
+          <div className="hidden lg:block">{children}</div>
         </motion.div>
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Grid

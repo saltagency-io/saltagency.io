@@ -61,12 +61,14 @@ export type ButtonBlok = SbBlokData & {
   variant: 'primary' | 'secondary'
   text: string
   link: Link
+  anchor?: string
 }
 
 export type LinkBlok = SbBlokData & {
   component: BlokTypes.Link
   target: Link
   text: string
+  anchor?: string
 }
 
 export type LocationBlok = SbBlokData & {
@@ -106,6 +108,7 @@ export type SectionBlok = SbBlokData & {
   icon?: string
   title: string
   text: string
+  link?: LinkBlok[]
 }
 
 export type BlockWithSectionsBlok = SbBlokData & {
@@ -131,6 +134,7 @@ export type PeopleSectionBlok = SbBlokData & {
   subtitle: string
   title: string
   people: Asset[]
+  actions: ButtonBlok[]
 }
 
 export type CareersSectionBlok = SbBlokData & {
@@ -168,6 +172,21 @@ export type ImageSectionBlok = SbBlokData & {
   image: Asset
 }
 
+export type TeamMemberBlok = SbBlokData & {
+  component: BlokTypes.TeamMember
+  name: string
+  role: string
+  image: Asset
+  skills: string
+}
+
+export type TeamSectionBlok = SbBlokData & {
+  component: BlokTypes.TeamSection
+  subtitle: string
+  title: string
+  members: TeamMemberBlok[]
+}
+
 export type BodyComponent =
   | HeroBlok
   | CalculatorBlok
@@ -178,6 +197,8 @@ export type BodyComponent =
   | CareersSectionBlok
   | HeaderSectionBlok
   | LocationSectionBlok
+  | ImageSectionBlok
+  | TeamSectionBlok
 
 export type MetaTags = {
   title?: string

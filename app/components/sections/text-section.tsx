@@ -54,7 +54,7 @@ export function TextSection({
           <motion.div variants={childVariants}>
             <Subtitle
               className="mb-4"
-              variant={theme === 'dark' ? 'pink' : 'purple'}
+              variant={theme === 'dark' ? 'pink' : 'blue'}
             >
               {subtitle}
             </Subtitle>

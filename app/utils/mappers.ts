@@ -10,8 +10,9 @@ import type {
   Vacancy,
   VacancyStoryContent,
 } from '~/types'
+import { removeTrailingSlash } from '~/utils/misc'
 
-function formatUrl(url: string) {
+function formatUrl(url: string, anchor?: string) {
   let formatted = url
   if (url === 'home') {
     formatted = `/`
@@ -19,13 +20,16 @@ function formatUrl(url: string) {
   if (!formatted.startsWith('/') && !formatted.startsWith('http')) {
     formatted = `/${formatted}`
   }
-  return formatted
+  if (anchor) {
+    formatted = `${formatted}${anchor.startsWith('#') ? anchor : `#${anchor}`}`
+  }
+  return removeTrailingSlash(formatted)
 }
 
 export function mapLink(link: LinkBlok): LinkType {
   return {
     id: link?._uid,
-    url: formatUrl(link?.target.cached_url ?? ''),
+    url: formatUrl(link?.target.cached_url ?? '', link.anchor),
     text: link?.text,
   }
 }
@@ -44,6 +48,10 @@ export function mapSection(section: SectionBlok): Section {
     icon: section.icon,
     title: section.title,
     text: section.text,
+    link:
+      Array.isArray(section.link) && section.link.length
+        ? mapLink(section.link[0])
+        : undefined,
   }
 }
 

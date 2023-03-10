@@ -17,6 +17,7 @@ import { SbVacancy } from './vacancy'
 import { SbLayout } from '~/storyblok/layout'
 import { SbPageWithChild } from '~/storyblok/page-with-child'
 import { SbImageSection } from '~/storyblok/sections/image-section'
+import { SbTeamSection } from '~/storyblok/sections/team-section'
 
 // Would prefer to put this in types/storyblok.d.ts but that breaks the build for some reason 🤷
 export enum BlokTypes {
@@ -34,12 +35,16 @@ export enum BlokTypes {
   Button = 'button',
   Link = 'link',
   Location = 'location',
+  TeamMember = 'teamMember',
 
   // Components
   Hero = 'hero',
   Quote = 'quote',
   Clients = 'clients',
   Calculator = 'calculator',
+  JobDescription = 'jobDescription',
+
+  // Sections
   BlockWithSections = 'blockWithSections',
   TextSection = 'textSection',
   PeopleSection = 'peopleSection',
@@ -47,7 +52,7 @@ export enum BlokTypes {
   HeaderSection = 'headerSection',
   LocationSection = 'locationSection',
   ImageSection = 'imageSection',
-  JobDescription = 'jobDescription',
+  TeamSection = 'teamSection',
 }
 
 export const components = {
@@ -64,10 +69,11 @@ export const components = {
   [BlokTypes.TextSection]: SbTextSection,
   [BlokTypes.BlockWithSections]: SbBlockWithSections,
   [BlokTypes.Quote]: SbQuote,
+  [BlokTypes.JobDescription]: SbJobDescription,
   [BlokTypes.PeopleSection]: SbPeopleSection,
   [BlokTypes.CareersSection]: SbCareersSection,
   [BlokTypes.HeaderSection]: SbHeaderSection,
   [BlokTypes.LocationSection]: SbLocationSection,
   [BlokTypes.ImageSection]: SbImageSection,
-  [BlokTypes.JobDescription]: SbJobDescription,
+  [BlokTypes.TeamSection]: SbTeamSection,
 }

@@ -35,7 +35,7 @@ export function GradientCircle({
         className,
       )}
       style={{
-        // transform: `rotate(${rotate}deg)`,
+        transform: `rotate(${rotate}deg)`,
         opacity: opacity / 100,
         height: `${height}px`,
         width: `${width}px`,

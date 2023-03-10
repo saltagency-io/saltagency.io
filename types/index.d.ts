@@ -43,6 +43,7 @@ export type Section = {
   icon?: string
   title: string
   text: string
+  link?: LinkType
 }
 
 export type Vacancy = {

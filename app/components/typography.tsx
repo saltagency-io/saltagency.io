@@ -124,13 +124,13 @@ export function Paragraph({
 
 type SubtitleProps = {
   children: React.ReactNode
-  variant?: 'purple' | 'pink' | 'gray'
+  variant?: 'blue' | 'pink' | 'gray'
   className?: string
 }
 
 export function Subtitle({
   children,
-  variant = 'purple',
+  variant = 'blue',
   className,
 }: SubtitleProps) {
   return (
@@ -138,7 +138,7 @@ export function Subtitle({
       className={clsx(
         'block text-xl font-bold leading-normal tracking-tight lg:text-2xl',
         {
-          'text-purple-500': variant === 'purple',
+          'text-blue-500': variant === 'blue',
           'text-pink-500': variant === 'pink',
           'text-gray-400': variant === 'gray',
         },
