@@ -75,9 +75,6 @@ export function PeopleSection({ children, subtitle, title, people }: Props) {
                       '(min-width:1024px) 20rem',
                       '160px',
                     ],
-                    transformations: {
-                      quality: 80,
-                    },
                   })}
                 />
               </motion.div>

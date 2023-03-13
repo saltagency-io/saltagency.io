@@ -177,7 +177,6 @@ export default function ContactPage() {
                   label={t('form.name.label')}
                   placeholder={t('form.name.placeholder')}
                   autoComplete="name"
-                  autoFocus
                   defaultValue={contactFetcher.data?.fields.name ?? ''}
                   error={to(contactFetcher?.data?.errors.name)}
                 />

@@ -1,3 +1,7 @@
+import type * as React from 'react'
+
+import type { SbBlokData } from '@storyblok/react'
+
 import { SbButton } from './button'
 import { SbCalculator } from './calculator'
 import { SbFooter } from './footer'
@@ -14,6 +18,7 @@ import { SbLocationSection } from './sections/location-section'
 import { SbPeopleSection } from './sections/people-section'
 import { SbTextSection } from './sections/text-section'
 import { SbVacancy } from './vacancy'
+import { SbBanner } from '~/storyblok/banner'
 import { SbLayout } from '~/storyblok/layout'
 import { SbPageWithChild } from '~/storyblok/page-with-child'
 import { SbImageSection } from '~/storyblok/sections/image-section'
@@ -43,6 +48,7 @@ export enum BlokTypes {
   Clients = 'clients',
   Calculator = 'calculator',
   JobDescription = 'jobDescription',
+  Banner = 'banner',
 
   // Sections
   BlockWithSections = 'blockWithSections',
@@ -68,6 +74,7 @@ export const components = {
   [BlokTypes.Calculator]: SbCalculator,
   [BlokTypes.TextSection]: SbTextSection,
   [BlokTypes.BlockWithSections]: SbBlockWithSections,
+  [BlokTypes.Banner]: SbBanner,
   [BlokTypes.Quote]: SbQuote,
   [BlokTypes.JobDescription]: SbJobDescription,
   [BlokTypes.PeopleSection]: SbPeopleSection,

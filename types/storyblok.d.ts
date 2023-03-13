@@ -187,6 +187,14 @@ export type TeamSectionBlok = SbBlokData & {
   members: TeamMemberBlok[]
 }
 
+export type BannerBlok = SbBlokData & {
+  subtitle: string
+  text: string
+  image: Asset
+  imagePosition: 'left' | 'right'
+  theme: 'dark' | 'light'
+}
+
 export type BodyComponent =
   | HeroBlok
   | CalculatorBlok
