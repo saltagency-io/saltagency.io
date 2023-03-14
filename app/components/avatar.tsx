@@ -34,7 +34,7 @@ export function Avatar({
       )}
     >
       <img
-        className="rounded-full"
+        className="aspect-square h-full w-full rounded-full object-cover"
         {...getImgProps(url, alt, {
           widths: [96],
           sizes: ['96px'],

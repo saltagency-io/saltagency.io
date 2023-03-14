@@ -43,9 +43,9 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(function Grid(
  * Use for development only! It renders the grid columns and gaps as page overlay
  */
 export function GridLines() {
-  // if (ENV.NODE_ENV !== 'development') {
-  //   throw new Error('<GridLines />  should only be used during development')
-  // }
+  if (ENV.NODE_ENV !== 'development') {
+    throw new Error('<GridLines />  should only be used during development')
+  }
 
   return (
     <div className="pointer-events-none fixed inset-0 z-10 select-none">

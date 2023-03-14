@@ -96,6 +96,11 @@ address {
   font-style: normal;
 }
 
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 ::selection {
   color: var(--color-gray-900);
   background-color: var(--color-blue-400);

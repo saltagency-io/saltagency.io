@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { Grid } from '~/components/grid'
 import { H3, H4, Paragraph, Subtitle } from '~/components/typography'
 import type { Image } from '~/types'
+import { getImgProps } from '~/utils/images'
 
 type Member = {
   name: string
@@ -55,7 +56,20 @@ export function TeamSection({ subtitle, title, members }: Props) {
             variants={childVariants}
             className="bg-transparent-light col-span-full overflow-hidden rounded-lg lg:col-span-6"
           >
-            <img src={member.image.url} alt={member.image.alt} />
+            <img
+              className="aspect-[5/4] w-full object-cover"
+              {...getImgProps(member.image.url, member.image.alt, {
+                widths: [375, 425, 506],
+                sizes: [
+                  '(max-width: 1023px) 84vw',
+                  '(min-width: 1024px) 35vw',
+                  '375px',
+                ],
+                transformations: {
+                  quality: 100,
+                },
+              })}
+            />
 
             <div className="relative flex min-h-[260px] flex-col px-4 py-6 lg:px-10 lg:pt-12 lg:pb-8">
               <H4 className="mb-2" as="h3" inverse>

@@ -4,13 +4,14 @@ import { motion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
 import type { Image } from '~/types'
+import { getImgProps } from '~/utils/images'
 
 export function ImageSection({ image }: { image: Image }) {
   return (
     <div className="py-24">
       <Grid>
         <motion.div
-          className="col-span-full -mx-12 overflow-hidden rounded-lg"
+          className="col-span-full -mx-8vw overflow-hidden lg:-mx-12 lg:rounded-lg"
           initial="initial"
           whileInView="visible"
           viewport={{ once: true, margin: '-115px 0px' }}
@@ -19,7 +20,20 @@ export function ImageSection({ image }: { image: Image }) {
             visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
           }}
         >
-          <img className="w-full" src={image.url} alt={image.alt} />
+          <img
+            className="aspect-video w-full object-cover"
+            {...getImgProps(image.url, image.alt, {
+              widths: [375, 724, 1136],
+              sizes: [
+                '(max-width: 1023px) 100vw',
+                '(min-width: 1024px) 78vw',
+                '375px',
+              ],
+              transformations: {
+                quality: 95,
+              },
+            })}
+          />
         </motion.div>
       </Grid>
     </div>
