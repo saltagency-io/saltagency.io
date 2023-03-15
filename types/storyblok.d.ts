@@ -1,5 +1,6 @@
 import type { SbBlokData } from '@storyblok/react'
 
+import { SpacerSizes } from '~/components/spacer'
 import { BlokTypes } from '~/storyblok'
 
 // Content that can be on a story of type Page
@@ -205,6 +206,12 @@ export type ContactSectionBlok = SbBlokData & {
   theme: 'dark' | 'light'
   actions: ButtonBlok[]
   phoneNumber?: string
+}
+
+export type SpacerBlok = SbBlokData & {
+  component: BlokTypes.Spacer
+  size: SpacerSizes
+  color: 'black' | 'white'
 }
 
 export type BodyComponent =

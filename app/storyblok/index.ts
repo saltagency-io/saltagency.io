@@ -24,6 +24,7 @@ import { SbPageWithChild } from '~/storyblok/page-with-child'
 import { SbContactSection } from '~/storyblok/sections/contact-section'
 import { SbImageSection } from '~/storyblok/sections/image-section'
 import { SbTeamSection } from '~/storyblok/sections/team-section'
+import { SbSpacer } from '~/storyblok/spacer'
 
 // Would prefer to put this in types/storyblok.d.ts but that breaks the build for some reason 🤷
 export enum BlokTypes {
@@ -51,6 +52,7 @@ export enum BlokTypes {
   Calculator = 'calculator',
   JobDescription = 'jobDescription',
   Banner = 'banner',
+  Spacer = 'spacer',
 
   // Sections
   BlockWithSections = 'blockWithSections',
@@ -77,9 +79,10 @@ export const components = {
   [BlokTypes.Calculator]: SbCalculator,
   [BlokTypes.TextSection]: SbTextSection,
   [BlokTypes.BlockWithSections]: SbBlockWithSections,
-  [BlokTypes.Banner]: SbBanner,
-  [BlokTypes.Quote]: SbQuote,
   [BlokTypes.JobDescription]: SbJobDescription,
+  [BlokTypes.Quote]: SbQuote,
+  [BlokTypes.Banner]: SbBanner,
+  [BlokTypes.Spacer]: SbSpacer,
   [BlokTypes.PeopleSection]: SbPeopleSection,
   [BlokTypes.CareersSection]: SbCareersSection,
   [BlokTypes.HeaderSection]: SbHeaderSection,

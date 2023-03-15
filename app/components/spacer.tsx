@@ -7,6 +7,8 @@ const spacerSizes = {
   lg: 'h-56 lg:h-64',
 }
 
+export type SpacerSizes = keyof typeof spacerSizes
+
 export function Spacer({
   size,
   className = '',
