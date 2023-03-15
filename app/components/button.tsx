@@ -129,7 +129,7 @@ export function PhoneButton({
 
   const onCopy = async () => {
     if (hasCopied) return
-    
+
     await navigator.clipboard.writeText(children)
     setHasCopied(true)
   }

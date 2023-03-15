@@ -66,7 +66,7 @@ export function PeopleSection({ children, subtitle, title, people }: Props) {
                 )}
               >
                 <img
-                  className="rounded-lg object-contain"
+                  className="w-full rounded-lg object-contain aspect-[12/16]"
                   {...getImgProps(person.url, person.alt, {
                     widths: [160, 200, 484],
                     sizes: [

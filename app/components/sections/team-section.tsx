@@ -71,7 +71,7 @@ export function TeamSection({ subtitle, title, members }: Props) {
               })}
             />
 
-            <div className="relative flex min-h-[260px] flex-col px-4 py-6 lg:px-10 lg:pt-12 lg:pb-8">
+            <div className="relative flex min-h-[260px] flex-col px-4 py-6 lg:px-10 lg:py-12">
               <H4 className="mb-2" as="h3" inverse>
                 {member.name}
               </H4>

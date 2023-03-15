@@ -44,7 +44,7 @@ function LogoGroup({ group, index }: { group: Image[]; index: number }) {
           }}
         >
           <img
-            className="w-full object-cover"
+            className="w-full object-cover aspect-[3/1]"
             {...getImgProps(logo.url, logo.alt, {
               widths: [156, 312],
               sizes: ['156px 1x', '312px 2x'],
