@@ -148,7 +148,7 @@ export default function ContactPage() {
   return (
     <main>
       <StoryblokComponent blok={story.content}>
-        <Grid className="pt-8 pb-16 lg:pt-24 lg:pb-56">
+        <Grid className="pt-8 pb-16 lg:pt-24 lg:pb-42">
           <div className="col-span-full lg:col-span-5">
             <H5 as="p" variant="secondary">
               We're just one form away from working together. Fill out your

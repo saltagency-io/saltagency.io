@@ -21,6 +21,7 @@ import { SbVacancy } from './vacancy'
 import { SbBanner } from '~/storyblok/banner'
 import { SbLayout } from '~/storyblok/layout'
 import { SbPageWithChild } from '~/storyblok/page-with-child'
+import { SbContactSection } from '~/storyblok/sections/contact-section'
 import { SbImageSection } from '~/storyblok/sections/image-section'
 import { SbTeamSection } from '~/storyblok/sections/team-section'
 
@@ -41,6 +42,7 @@ export enum BlokTypes {
   Link = 'link',
   Location = 'location',
   TeamMember = 'teamMember',
+  Section = 'section',
 
   // Components
   Hero = 'hero',
@@ -59,6 +61,7 @@ export enum BlokTypes {
   LocationSection = 'locationSection',
   ImageSection = 'imageSection',
   TeamSection = 'teamSection',
+  ContactSection = 'contactSection',
 }
 
 export const components = {
@@ -83,4 +86,5 @@ export const components = {
   [BlokTypes.LocationSection]: SbLocationSection,
   [BlokTypes.ImageSection]: SbImageSection,
   [BlokTypes.TeamSection]: SbTeamSection,
+  [BlokTypes.ContactSection]: SbContactSection,
 }

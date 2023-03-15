@@ -2,8 +2,8 @@ import * as React from 'react'
 
 import { StoryblokComponent } from '@storyblok/react'
 
-import type { CareersSectionBlok } from '~/types'
 import { CareersSection } from '~/components/sections/careers-section'
+import type { CareersSectionBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbCareersSection({ blok }: { blok: CareersSectionBlok }) {
@@ -15,7 +15,11 @@ export function SbCareersSection({ blok }: { blok: CareersSectionBlok }) {
         theme={blok.theme}
       >
         {blok.actions.map((action) => (
-          <StoryblokComponent key={action._uid} blok={action} />
+          <StoryblokComponent
+            key={action._uid}
+            blok={action}
+            ringOffsetColor={blok.theme === 'light' ? 'white' : 'black'}
+          />
         ))}
       </CareersSection>
     </StoryBlokWrapper>

@@ -6,7 +6,7 @@ import type {
   MetaFunction,
 } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { useFetcher, useLocation, useSearchParams } from '@remix-run/react'
+import { useFetcher, useSearchParams } from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
 

@@ -62,6 +62,7 @@ export type ButtonBlok = SbBlokData & {
   text: string
   link: Link
   anchor?: string
+  icon?: string
 }
 
 export type LinkBlok = SbBlokData & {
@@ -94,6 +95,15 @@ export type CalculatorBlok = SbBlokData & {
   title?: string
 }
 
+export type BannerBlok = SbBlokData & {
+  component: BlokTypes.Banner
+  subtitle: string
+  text: string
+  image: Asset
+  imagePosition: 'left' | 'right'
+  theme: 'dark' | 'light'
+}
+
 export type TextSectionBlok = SbBlokData & {
   components: BlokTypes.TextSection
   subtitle: string
@@ -104,7 +114,7 @@ export type TextSectionBlok = SbBlokData & {
 }
 
 export type SectionBlok = SbBlokData & {
-  component: BlokTypes.BlockWithSections
+  component: BlokTypes.Section
   icon?: string
   title: string
   text: string
@@ -141,7 +151,7 @@ export type CareersSectionBlok = SbBlokData & {
   component: BlokTypes.CareersSection
   subtitle: string
   title: string
-  theme: 'dark' | 'light'
+  theme: 'dark' | 'dark-alt' | 'light'
   actions: ButtonBlok[]
 }
 
@@ -187,12 +197,14 @@ export type TeamSectionBlok = SbBlokData & {
   members: TeamMemberBlok[]
 }
 
-export type BannerBlok = SbBlokData & {
-  subtitle: string
+export type ContactSectionBlok = SbBlokData & {
+  component: BlokTypes.ContactSection
+  title: string
   text: string
-  image: Asset
-  imagePosition: 'left' | 'right'
+  image?: Asset
   theme: 'dark' | 'light'
+  actions: ButtonBlok[]
+  phoneNumber?: string
 }
 
 export type BodyComponent =
@@ -201,12 +213,14 @@ export type BodyComponent =
   | TextSectionBlok
   | BlockWithSectionsBlok
   | QuoteBlok
+  | BannerBlok
   | PeopleSectionBlok
   | CareersSectionBlok
   | HeaderSectionBlok
   | LocationSectionBlok
   | ImageSectionBlok
   | TeamSectionBlok
+  | ContactSectionBlok
 
 export type MetaTags = {
   title?: string

@@ -53,8 +53,8 @@ module.exports = {
       red: {
         500: 'var(--color-red-500)',
       },
-      purple: {
-        500: 'var(--color-purple-500)',
+      yellow: {
+        500: 'var(--color-yellow-500)',
       },
     },
     extend: {

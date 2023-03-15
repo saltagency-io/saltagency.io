@@ -8,6 +8,7 @@ import {
   IconChatBubbleLeftRight,
   IconCode,
   IconDocument,
+  IconEnvelope,
   IconEye,
   IconFingerPrint,
   IconHeart,
@@ -57,4 +58,5 @@ export const sbIconMap: Record<string, React.ComponentType<any>> = {
   'chat-bubble': IconChatBubble,
   'chat-bubble-left-right': IconChatBubbleLeftRight,
   code: IconCode,
+  envelope: IconEnvelope,
 }

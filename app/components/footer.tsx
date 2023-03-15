@@ -55,7 +55,7 @@ function Logo() {
 }
 
 const textClassName =
-  'text-inverse-secondary font-medium tracking-tight leading-normal hover:text-white focus-text:white transition'
+  'text-inverse-secondary font-medium tracking-tight leading-normal hover:text-white focus:text-white transition'
 
 export function Footer({
   menu,
