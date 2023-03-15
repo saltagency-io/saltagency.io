@@ -123,7 +123,7 @@ export function Footer({
           )}
         >
           <Paragraph
-            className="mt-8 opacity-40 lg:mt-0"
+            className="mt-8 opacity-60 lg:mt-0"
             textColorClassName="text-white"
             size="lg"
           >
