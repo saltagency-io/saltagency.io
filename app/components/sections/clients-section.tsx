@@ -11,7 +11,7 @@ function LogoGroup({ group, index }: { group: Image[]; index: number }) {
 
   const [activeIndex, setActiveIndex] = React.useState(0)
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (group.length === 1) return
 
     const intervalDuration =
@@ -44,7 +44,7 @@ function LogoGroup({ group, index }: { group: Image[]; index: number }) {
           }}
         >
           <img
-            className="w-full object-cover aspect-[3/1]"
+            className="w-full object-cover aspect-[3.1/1]"
             {...getImgProps(logo.url, logo.alt, {
               widths: [156, 312],
               sizes: ['156px 1x', '312px 2x'],
@@ -76,7 +76,7 @@ export function ClientsSection({ logos }: { logos: Image[] }) {
   return (
     <Grid as="section" className="hidden py-16 lg:grid">
       <motion.div
-        className="col-span-full grid grid-cols-5 gap-x-14"
+        className="col-span-full grid grid-cols-5"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
