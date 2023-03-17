@@ -45,8 +45,6 @@ export default async function handleRequest(
   )
 }
 
-
-
 function handleBotRequest(
   request: Request,
   responseStatusCode: number,
@@ -63,7 +61,6 @@ function handleBotRequest(
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
-          responseHeaders.set("X-Powered-By", "Salt Agency");
 
           resolve(
             new Response(body, {
