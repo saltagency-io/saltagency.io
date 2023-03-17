@@ -1,4 +1,7 @@
-import type { EntryContext } from '@remix-run/node'
+import type {
+  EntryContext,
+  HandleDocumentRequestFunction,
+} from '@remix-run/node'
 import { Response } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 
@@ -13,12 +16,18 @@ global.ENV = getEnv()
 
 const ABORT_DELAY = 5000
 
-export default async function handleRequest(
-  request: Request,
-  responseStatusCode: number,
-  responseHeaders: Headers,
-  remixContext: EntryContext,
-) {
+// https://github.com/remix-run/remix/discussions/4603
+type DocRequestArgs = Parameters<HandleDocumentRequestFunction>
+
+export default async function handleRequest(...args: DocRequestArgs) {
+  const [
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+    loadContext,
+  ] = args
+
   for (const handler of otherRoutes) {
     const otherRouteResponse = await handler(request, remixContext)
     if (otherRouteResponse) return otherRouteResponse
@@ -28,12 +37,20 @@ export default async function handleRequest(
     responseHeaders.set('Cache-Control', 'no-store')
   }
 
+  // Preconnect to storyblok domains (image and script locations)
+  responseHeaders.append('Link', '<https://a.storyblok.com>; rel="preconnect"')
+  responseHeaders.append(
+    'Link',
+    '<https://app.storyblok.com>; rel="preconnect"',
+  )
+
   if (isbot(request.headers.get('user-agent'))) {
     return handleBotRequest(
       request,
       responseStatusCode,
       responseHeaders,
       remixContext,
+      loadContext,
     )
   }
 
@@ -42,15 +59,19 @@ export default async function handleRequest(
     responseStatusCode,
     responseHeaders,
     remixContext,
+    loadContext,
   )
 }
 
-function handleBotRequest(
-  request: Request,
-  responseStatusCode: number,
-  responseHeaders: Headers,
-  remixContext: EntryContext,
-) {
+function handleBotRequest(...args: DocRequestArgs) {
+  const [
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+    loadContext,
+  ] = args
+
   return new Promise((resolve, reject) => {
     let didError = false
 

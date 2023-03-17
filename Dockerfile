@@ -1,5 +1,5 @@
 # base node image
-FROM node:16-bullseye-slim as base
+FROM node:18-bullseye-slim as base
 
 # Install all node_modules, including dev dependencies
 FROM base as deps
@@ -36,15 +36,17 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
+ENV FLY="true"
 ENV NODE_ENV=production
 
 RUN mkdir /app
 WORKDIR /app
 
 COPY --from=production-deps /app/node_modules /app/node_modules
-
 COPY --from=build /app/build /app/build
 COPY --from=build /app/public /app/public
+COPY --from=build /app/server-build /app/server-build
+
 ADD . .
 
 CMD ["npm", "run", "start"]

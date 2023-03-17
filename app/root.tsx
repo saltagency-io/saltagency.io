@@ -150,6 +150,7 @@ export function App() {
         {process.env.NODE_ENV === 'development' ||
         !data.ENV.GOOGLE_ANALYTICS ? null : (
           <>
+            <link rel="preconnect" href="https://www.googletagmanager.com" />
             <script
               async
               src={`https://www.googletagmanager.com/gtag/js?id=${data.ENV.GOOGLE_ANALYTICS}`}

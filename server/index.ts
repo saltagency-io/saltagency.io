@@ -1,6 +1,7 @@
 import { createRequestHandler } from '@remix-run/express'
 
 import compression from 'compression'
+import crypto from 'crypto'
 import express from 'express'
 import 'express-async-errors'
 import helmet from 'helmet'
@@ -99,26 +100,62 @@ app.use(
   }),
 )
 
+app.use((req, res, next) => {
+  res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
+  next()
+})
+
 app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
-    contentSecurityPolicy: false, // TODO
+    contentSecurityPolicy: {
+      directives: {
+        'connect-src': MODE === 'development' ? ['ws:', "'self'"] : null,
+        'font-src': "'self'",
+        'frame-src': [
+          "'self'",
+          'youtube.com',
+          'www.youtube.com',
+          'youtu.be',
+          'youtube-nocookie.com',
+          'www.youtube-nocookie.com',
+        ],
+        'img-src': ["'self'", 'data:', 'a.storyblok.com'],
+        'media-src': ["'self'", 'a.storyblok.com', 'data:', 'blob:'],
+        'script-src': [
+          "'strict-dynamic'",
+          "'unsafe-eval'",
+          "'self'",
+          'app.storyblok.com',
+          'google.com',
+          'gstatic.com',
+          'googletagmanager.com',
+          // @ts-expect-error locals doesn't exist on helmet's Response type
+          (req, res) => `nonce-${res.locals.cspNonce}`,
+        ],
+        'script-src-attr': ["'unsafe-inline'"],
+        'upgrade-insecure-requests': null,
+      },
+    },
   }),
 )
 
+function getRequestHandlerOptions(): Parameters<
+  typeof createRequestHandler
+>[0] {
+  const build = require('../build')
+  function getLoadContext(req: any, res: any) {
+    return { cspNonce: res.locals.cspNonce }
+  }
+  return { build, getLoadContext }
+}
+
 if (MODE === 'production') {
-  app.all(
-    '*',
-    createRequestHandler({
-      build: require('../build'),
-    }),
-  )
+  app.all('*', createRequestHandler(getRequestHandlerOptions()))
 } else {
   purgeRequireCache()
   app.all('*', (req, res, next) =>
-    createRequestHandler({
-      build: require('../build'),
-    })(req, res, next),
+    createRequestHandler(getRequestHandlerOptions())(req, res, next),
   )
 }
 
