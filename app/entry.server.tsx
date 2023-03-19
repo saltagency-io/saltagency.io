@@ -11,6 +11,7 @@ import { PassThrough } from 'stream'
 
 import { routes as otherRoutes } from '~/other-routes.server'
 import { getEnv } from '~/utils/env.server'
+import { NonceProvider } from '~/utils/nonce-provider'
 
 global.ENV = getEnv()
 
@@ -72,12 +73,17 @@ function handleBotRequest(...args: DocRequestArgs) {
     loadContext,
   ] = args
 
+  const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
+
   return new Promise((resolve, reject) => {
     let didError = false
 
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} />,
+      <NonceProvider value={nonce}>
+        <RemixServer context={remixContext} url={request.url} />
+      </NonceProvider>,
       {
+        nonce,
         onAllReady() {
           const body = new PassThrough()
 
@@ -107,18 +113,30 @@ function handleBotRequest(...args: DocRequestArgs) {
   })
 }
 
-function handleBrowserRequest(
-  request: Request,
-  responseStatusCode: number,
-  responseHeaders: Headers,
-  remixContext: EntryContext,
-) {
+function handleBrowserRequest(...args: DocRequestArgs) {
+  const [
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+    loadContext,
+  ] = args
+
+  const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
+
   return new Promise((resolve, reject) => {
     let didError = false
 
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} />,
+      <NonceProvider value={nonce}>
+        <RemixServer
+          context={remixContext}
+          url={request.url}
+          abortDelay={ABORT_DELAY}
+        />
+      </NonceProvider>,
       {
+        nonce,
         onShellReady() {
           const body = new PassThrough()
 

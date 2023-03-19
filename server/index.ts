@@ -34,7 +34,10 @@ app.use((req, res, next) => {
   }
 
   res.set('Access-Control-Allow-Origin', `https://${host}`)
-  res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
+
+  if (MODE === 'production') {
+    res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
+  }
 
   next()
 })
@@ -119,6 +122,8 @@ app.use(
           'youtu.be',
           'youtube-nocookie.com',
           'www.youtube-nocookie.com',
+          'google.com',
+          'www.google.com',
         ],
         'img-src': ["'self'", 'data:', 'a.storyblok.com'],
         'media-src': ["'self'", 'a.storyblok.com', 'data:', 'blob:'],
@@ -131,7 +136,7 @@ app.use(
           'gstatic.com',
           'googletagmanager.com',
           // @ts-expect-error locals doesn't exist on helmet's Response type
-          (req, res) => `nonce-${res.locals.cspNonce}`,
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
         ],
         'script-src-attr': ["'unsafe-inline'"],
         'upgrade-insecure-requests': null,
@@ -147,7 +152,7 @@ function getRequestHandlerOptions(): Parameters<
   function getLoadContext(req: any, res: any) {
     return { cspNonce: res.locals.cspNonce }
   }
-  return { build, getLoadContext }
+  return { build, mode: MODE, getLoadContext }
 }
 
 if (MODE === 'production') {

@@ -23,6 +23,7 @@ module.exports = {
       script:
         'local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem',
       autorestart: false,
+      ignore_watch: ['.'],
       env: {
         FORCE_COLOR: '1',
       },
