@@ -38,6 +38,7 @@ import {
   getRequiredGlobalEnvVar,
   removeTrailingSlash,
 } from '~/utils/misc'
+import { useNonce } from '~/utils/nonce-provider'
 import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
 import { isPreview } from '~/utils/storyblok'
 import { SdLogo } from '~/utils/structured-data'
@@ -134,6 +135,7 @@ export const meta: MetaFunction = ({ data }) => {
 
 export function App() {
   const data = useTypedLoaderData<typeof loader>()
+  const nonce = useNonce()
   const location = useLocation()
 
   React.useEffect(() => {
@@ -150,17 +152,21 @@ export function App() {
         {process.env.NODE_ENV === 'development' ||
         !data.ENV.GOOGLE_ANALYTICS ? null : (
           <>
+            <link rel="preconnect" href="https://www.googletagmanager.com" />
             <script
               async
+              nonce={nonce}
               src={`https://www.googletagmanager.com/gtag/js?id=${data.ENV.GOOGLE_ANALYTICS}`}
             />
             <script
               async
+              nonce={nonce}
               src={`https://www.googletagmanager.com/gtag/js?id=${data.ENV.GOOGLE_AW_TAG}`}
             />
             <script
               async
               id="gtag-init"
+              nonce={nonce}
               dangerouslySetInnerHTML={{
                 __html: `
               window.dataLayer = window.dataLayer || [];
@@ -181,15 +187,16 @@ export function App() {
       </head>
       <body>
         <StoryblokComponent blok={data.layoutStory?.content} />
-        <ScrollRestoration />
-        <Scripts />
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
         <script
+          nonce={nonce}
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
           }}
         />
-        <LiveReload />
+        <LiveReload nonce={nonce} />
       </body>
     </html>
   )
@@ -210,6 +217,7 @@ export default function AppWithProviders() {
 }
 
 function ErrorDoc({ children }: { children: React.ReactNode }) {
+  const nonce = useNonce()
   return (
     <html lang="en">
       <head>
@@ -218,7 +226,7 @@ function ErrorDoc({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-gradient">
         {children}
-        <Scripts />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   )

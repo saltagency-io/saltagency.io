@@ -1,8 +1,17 @@
 module.exports = {
   apps: [
     {
+      name: 'Server',
+      script: 'tsx --inspect ./index.js',
+      watch: ['./index.js', './server/**/*.ts', './.env'],
+      env: {
+        NODE_ENV: process.env.NODE_ENV ?? 'development',
+        FORCE_COLOR: 1,
+      },
+    },
+    {
       name: 'Remix',
-      script: 'remix dev',
+      script: 'remix watch',
       ignore_watch: ['.'],
       env: {
         NODE_ENV: process.env.NODE_ENV ?? 'development',
@@ -14,6 +23,7 @@ module.exports = {
       script:
         'local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem',
       autorestart: false,
+      ignore_watch: ['.'],
       env: {
         FORCE_COLOR: '1',
       },

@@ -16,7 +16,7 @@ function Shape() {
 
   const [bgColor, setBgColor] = React.useState('bg-inverse')
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const bgColorId = Math.ceil(Math.random() * 3)
     setBgColor(bgColorMap[bgColorId - 1])
   }, [])

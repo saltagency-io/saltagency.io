@@ -1,10 +1,16 @@
-node_modules
+.idea/
+.vscode/
+.DS_Store
+node_modules/
 
 /.cache
 /build
+/server-build
 /public/build
-.env
-.idea/
 /app/styles/**/*.css
+
 localhost-key.pem
 localhost.pem
+
+.env
+
