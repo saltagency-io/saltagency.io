@@ -196,7 +196,7 @@ export function App() {
             __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
           }}
         />
-        <LiveReload nonce={nonce} />
+        {ENV.NODE_ENV === 'development' ? <LiveReload nonce={nonce} /> : null}
       </body>
     </html>
   )

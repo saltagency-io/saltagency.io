@@ -1,7 +1,4 @@
-import type {
-  EntryContext,
-  HandleDocumentRequestFunction,
-} from '@remix-run/node'
+import type { HandleDocumentRequestFunction } from '@remix-run/node'
 import { Response } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 

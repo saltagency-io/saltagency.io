@@ -66,12 +66,12 @@ app.use(
         res.setHeader('cache-control', 'no-cache')
         return
       }
-      if (
-        relativePath.startsWith('fonts') ||
-        relativePath.startsWith('build')
-      ) {
-        res.setHeader('cache-control', 'public, max-age=31536000, immutable')
-      }
+      // if (
+      //   relativePath.startsWith('fonts') ||
+      //   relativePath.startsWith('build')
+      // ) {
+      //   res.setHeader('cache-control', 'public, max-age=31536000, immutable')
+      // }
     },
   }),
 )
@@ -155,6 +155,14 @@ function getRequestHandlerOptions(): Parameters<
   return { build, mode: MODE, getLoadContext }
 }
 
+function purgeRequireCache() {
+  for (const key in require.cache) {
+    if (key.startsWith(BUILD_DIR)) {
+      delete require.cache[key]
+    }
+  }
+}
+
 if (MODE === 'production') {
   app.all('*', createRequestHandler(getRequestHandlerOptions()))
 } else {
@@ -169,11 +177,3 @@ app.listen(port, () => {
   require('../build')
   console.log(`Express server started on http://localhost:${port}`)
 })
-
-function purgeRequireCache() {
-  for (const key in require.cache) {
-    if (key.startsWith(BUILD_DIR)) {
-      delete require.cache[key]
-    }
-  }
-}
