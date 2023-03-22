@@ -46,8 +46,9 @@ function ButtonInner({
       />
       <div
         className={clsx(
-          'relative flex w-full items-center justify-center gap-x-2 whitespace-nowrap text-center text-lg leading-6 text-white',
+          'relative flex w-full items-center justify-center gap-x-2 whitespace-nowrap text-center text-lg leading-6',
           {
+            'text-white': variant !== 'outline',
             'text-black': variant === 'outline',
             'px-6 py-4': size === 'large',
             'px-6 py-2': size === 'medium',
