@@ -1,13 +1,15 @@
 {
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "types": ["jest"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
+    "target": "es2020",
+    "module": "es2020",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2019",
     "strict": true,
     "allowJs": true,
     "importsNotUsedAsValues": "error",
@@ -19,6 +21,7 @@
     "paths": {
       "~/*": ["./app/*"]
     },
+    "skipLibCheck": true,
     "typeRoots": ["./types", "./node_modules/@types"],
 
     // Remix takes care of building everything in `remix build`.

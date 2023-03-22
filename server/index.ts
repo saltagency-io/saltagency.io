@@ -10,8 +10,8 @@ import onFinished from 'on-finished'
 import path from 'path'
 import serverTiming from 'server-timing'
 
-const here = (...d: string[]) => path.join(__dirname, ...d)
-const primaryHost = 'salt.fly.dev' // TODO: change when we go live
+const here = (...d: Array<string>) => path.join(__dirname, ...d)
+const primaryHost = 'salt.fly.dev' // TODO: change this when we go live
 const getHost = (req: { get: (key: string) => string | undefined }) =>
   req.get('X-Forwarded-Host') ?? req.get('host') ?? ''
 
@@ -22,23 +22,19 @@ const app = express()
 
 app.use(serverTiming())
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   res.set('X-Powered-By', 'Salt Agency')
   res.set('X-Fly-Region', process.env.FLY_REGION ?? 'unknown')
-  res.set('X-Fly-Name', process.env.FLY_APP_NAME ?? 'unknown')
+  res.set('X-Fly-App', process.env.FLY_APP_NAME ?? 'unknown')
   res.set('X-Frame-Options', 'SAMEORIGIN')
 
   const host = getHost(req)
   if (!host.endsWith(primaryHost)) {
     res.set('X-Robots-Tag', 'noindex')
   }
-
   res.set('Access-Control-Allow-Origin', `https://${host}`)
 
-  if (MODE === 'production') {
-    res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
-  }
-
+  res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
   next()
 })
 
@@ -51,6 +47,16 @@ app.use((req, res, next) => {
     return
   }
   next()
+})
+
+app.use((req, res, next) => {
+  if (req.path.endsWith('/') && req.path.length > 1) {
+    const query = req.url.slice(req.path.length)
+    const safepath = req.path.slice(0, -1).replace(/\/+/g, '/')
+    res.redirect(301, safepath + query)
+  } else {
+    next()
+  }
 })
 
 app.use(compression())
@@ -66,16 +72,18 @@ app.use(
         res.setHeader('cache-control', 'no-cache')
         return
       }
-      // if (
-      //   relativePath.startsWith('fonts') ||
-      //   relativePath.startsWith('build')
-      // ) {
-      //   res.setHeader('cache-control', 'public, max-age=31536000, immutable')
-      // }
+
+      if (
+        relativePath.startsWith('fonts') ||
+        relativePath.startsWith('build')
+      ) {
+        res.setHeader('cache-control', 'public, max-age=31536000, immutable')
+      }
     },
   }),
 )
 
+// Log the referrer for 404s
 app.use((req, res, next) => {
   onFinished(res, () => {
     const referrer = req.get('referer')
@@ -155,21 +163,13 @@ function getRequestHandlerOptions(): Parameters<
   return { build, mode: MODE, getLoadContext }
 }
 
-function purgeRequireCache() {
-  for (const key in require.cache) {
-    if (key.startsWith(BUILD_DIR)) {
-      delete require.cache[key]
-    }
-  }
-}
-
 if (MODE === 'production') {
   app.all('*', createRequestHandler(getRequestHandlerOptions()))
 } else {
-  purgeRequireCache()
-  app.all('*', (req, res, next) =>
-    createRequestHandler(getRequestHandlerOptions())(req, res, next),
-  )
+  app.all('*', (req, res, next) => {
+    purgeRequireCache()
+    return createRequestHandler(getRequestHandlerOptions())(req, res, next)
+  })
 }
 
 const port = process.env.PORT ?? 3000
@@ -177,3 +177,11 @@ app.listen(port, () => {
   require('../build')
   console.log(`Express server started on http://localhost:${port}`)
 })
+
+function purgeRequireCache() {
+  for (const key in require.cache) {
+    if (key.startsWith(BUILD_DIR)) {
+      delete require.cache[key]
+    }
+  }
+}

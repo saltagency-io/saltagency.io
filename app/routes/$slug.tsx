@@ -31,6 +31,8 @@ export async function loader({ params, request }: DataFunctionArgs) {
   const preview = isPreview(request)
   const { pathname } = new URL(request.url)
 
+  console.log({ pathname })
+
   // Block the layout path when not in preview mode
   if (pathedRoutes[pathname] || (!preview && pathname === '/layout')) {
     throw new Response('Use other route', { status: 404 })

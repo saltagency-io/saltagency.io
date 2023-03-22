@@ -66,6 +66,7 @@
   "devDependencies": {
     "@remix-run/dev": "^1.12.0",
     "@remix-run/eslint-config": "^1.12.0",
+    "@remix-run/serve": "^1.12.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.8",
