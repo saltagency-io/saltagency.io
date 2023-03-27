@@ -10,27 +10,41 @@ import type {
   Vacancy,
   VacancyStoryContent,
 } from '~/types'
+import { defaultLanguage, SupportedLanguage } from '~/utils/i18n'
+import { useI18n } from '~/utils/i18n-provider'
 import { removeTrailingSlash } from '~/utils/misc'
 
-function formatUrl(url: string, anchor?: string) {
-  let formatted = url
-  if (url === 'home') {
-    formatted = `/`
+function formatUrl(url: string, language: SupportedLanguage, anchor?: string) {
+  if (url.includes(':')) {
+    return url
   }
-  if (!formatted.startsWith('/') && !formatted.startsWith('http')) {
+
+  let formatted = url
+
+  if (url === 'home') {
+    formatted = language !== defaultLanguage ? `/${language}` : '/'
+  }
+  if (!formatted.startsWith('/')) {
     formatted = `/${formatted}`
   }
   if (anchor) {
     formatted = `${formatted}${anchor.startsWith('#') ? anchor : `#${anchor}`}`
   }
+
   return removeTrailingSlash(formatted)
 }
+export function mapLink(language: SupportedLanguage = defaultLanguage) {
+  return (link: LinkBlok): LinkType => {
+    const urlTarget =
+      link.target.linktype === 'story'
+        ? link.target.story?.full_slug
+        : link.target.cached_url
 
-export function mapLink(link: LinkBlok): LinkType {
-  return {
-    id: link?._uid,
-    url: formatUrl(link?.target.cached_url ?? '', link.anchor),
-    text: link?.text,
+    return {
+      id: link?._uid,
+      url: formatUrl(urlTarget ?? '', language, link.anchor),
+      text: link?.text,
+    }
   }
 }
 
@@ -42,23 +56,44 @@ export function mapAsset(asset: Asset): Image {
   }
 }
 
-export function mapSection(section: SectionBlok): Section {
+export function useLocalizedMappers() {
+  const { language } = useI18n()
   return {
+    mapLink: mapLink(language),
+    mapSection: mapSection(language),
+    mapVacancy: mapVacancy(language),
+  }
+}
+
+export function mapSection(language = defaultLanguage) {
+  return (section: SectionBlok): Section => ({
     id: section._uid,
     icon: section.icon,
     title: section.title,
     text: section.text,
     link:
       Array.isArray(section.link) && section.link.length
-        ? mapLink(section.link[0])
+        ? mapLink(language)(section.link[0])
         : undefined,
-  }
+  })
 }
 
-export function mapVacancy(vacancy: StoryData<VacancyStoryContent>): Vacancy {
-  return {
-    id: vacancy.id?.toString() ?? '',
-    name: vacancy.name,
-    slug: vacancy.full_slug,
+export function mapVacancy(lang = defaultLanguage) {
+  return (vacancy: StoryData<VacancyStoryContent>): Vacancy => {
+    let slug = ''
+    if (lang === defaultLanguage) {
+      slug = vacancy.default_full_slug ?? ''
+    } else {
+      const translatedSlug = vacancy.translated_slugs?.find(
+        (slug) => slug.lang === lang,
+      )
+      slug = `${translatedSlug?.lang}/${translatedSlug?.path}`
+    }
+
+    return {
+      id: vacancy.id?.toString() ?? '',
+      name: vacancy.name,
+      slug: slug,
+    }
   }
 }

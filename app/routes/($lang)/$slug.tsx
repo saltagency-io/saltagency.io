@@ -1,48 +1,59 @@
 import * as React from 'react'
 
-import type { DataFunctionArgs } from '@remix-run/node'
-import { json, type MetaFunction } from '@remix-run/node'
+import type { DataFunctionArgs, MetaFunction } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
+import type { LoaderData as RootLoaderData } from '../../root'
 import { NotFoundError } from '~/components/errors'
-import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
-import type { LoaderData as RootLoaderData } from '~/root'
+import { getStoriesForSitemap, getStoryBySlug } from '~/lib/storyblok.server'
+import { pathedRoutes } from '~/other-routes.server'
 import type { Handle } from '~/types'
+import { getLanguageFromContext } from '~/utils/i18n'
 import { getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
 
 export const handle: Handle = {
   getSitemapEntries: async () => {
-    const pages = await getAllVacancies(false)
-    return (pages || []).map((page) => ({
-      route: `/${page.full_slug}`,
-      priority: 0.7,
+    const pages = await getStoriesForSitemap()
+    return pages.map((page) => ({
+      route: `/${page.slug}`,
+      priority: 0.4,
     }))
   },
 }
 
-export async function loader({ params, request }: DataFunctionArgs) {
-  if (!params.slug) {
-    throw new Error('Slug is not defined!')
-  }
+export async function loader({ params, request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const initialStory = await getVacancyBySlug(params.slug, preview)
+  const language = getLanguageFromContext(context)
+  const { pathname } = new URL(request.url)
+
+  // Block the layout path when not in preview mode
+  if (pathedRoutes[pathname] || (!preview && pathname === '/layout')) {
+    throw new Response('Use other route', { status: 404 })
+  }
+
+  let slug
+  if (!params.slug && params.lang === language) {
+    slug = 'home'
+  } else {
+    slug = params.slug ?? params.lang ?? 'home'
+  }
+
+  const initialStory = await getStoryBySlug(slug, language, preview)
 
   if (!initialStory) {
     throw json({}, { status: 404 })
   }
 
-  const { origin } = new URL(request.url)
-
   const data = {
     initialStory,
     preview,
-    origin,
   }
 
   return typedjson(data, {
@@ -62,29 +73,25 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
       ...getSocialMetas({
         title: meta?.title,
         description: meta?.description,
-        url: getUrl(requestInfo),
         image: meta?.og_image,
+        url: getUrl(requestInfo),
       }),
     }
   } else {
     return {
       title: 'Not found',
-      description: 'You landed on a career page that we could not find 😢',
+      description: 'You landed on a page that we could not find 😢',
     }
   }
 }
 
-export default function VacancyPage() {
-  const data = useTypedLoaderData()
+export default function Page() {
+  const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.initialStory, {}, data.preview)
 
   return (
     <main>
-      <StoryblokComponent
-        blok={story.content}
-        slug={story.slug}
-        publishDate={story.first_published_at}
-      />
+      <StoryblokComponent blok={story.content} />
     </main>
   )
 }

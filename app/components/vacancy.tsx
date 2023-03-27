@@ -4,6 +4,7 @@ import { Breadcrumbs } from '~/components/breadcrumbs'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
 import { H1, H4 } from '~/components/typography'
+import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 
 type Props = {
@@ -14,7 +15,12 @@ type Props = {
 }
 
 export function Vacancy({ children, title, summary, slug }: Props) {
+  const { language, isDefaultLanguage } = useI18n()
   const { t } = useLabels()
+
+  const url = `${
+    isDefaultLanguage ? '' : `/${language}`
+  }/careers/${slug}/apply?role=${encodeURIComponent(title)}`
 
   return (
     <>
@@ -27,11 +33,7 @@ export function Vacancy({ children, title, summary, slug }: Props) {
           <H4 as="h2" variant="secondary" className="mb-8">
             {summary}
           </H4>
-          <ButtonLink
-            to={`/careers/${slug}/apply?role=${encodeURIComponent(title)}`}
-          >
-            {t('cta.apply')}
-          </ButtonLink>
+          <ButtonLink to={url}>{t('cta.apply')}</ButtonLink>
         </div>
       </Grid>
       {children}

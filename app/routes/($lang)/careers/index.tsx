@@ -10,6 +10,7 @@ import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
+import { useI18n } from '~/utils/i18n-provider'
 import { getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'

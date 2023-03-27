@@ -4,11 +4,20 @@ import compression from 'compression'
 import crypto from 'crypto'
 import express from 'express'
 import 'express-async-errors'
+import fs from 'fs'
 import helmet from 'helmet'
+import https from 'https'
 import morgan from 'morgan'
 import onFinished from 'on-finished'
 import path from 'path'
 import serverTiming from 'server-timing'
+
+import {
+  defaultLanguage,
+  isSupportedLanguage,
+  supportedLanguages,
+} from '~/utils/i18n'
+import { removeTrailingSlash } from '~/utils/misc'
 
 const here = (...d: Array<string>) => path.join(__dirname, ...d)
 const primaryHost = 'salt.fly.dev' // TODO: change this when we go live
@@ -22,7 +31,7 @@ const app = express()
 
 app.use(serverTiming())
 
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   res.set('X-Powered-By', 'Salt Agency')
   res.set('X-Fly-Region', process.env.FLY_REGION ?? 'unknown')
   res.set('X-Fly-App', process.env.FLY_APP_NAME ?? 'unknown')
@@ -32,22 +41,23 @@ app.use(async (req, res, next) => {
   if (!host.endsWith(primaryHost)) {
     res.set('X-Robots-Tag', 'noindex')
   }
-  res.set('Access-Control-Allow-Origin', `https://${host}`)
 
-  res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
+  // res.set('Access-Control-Allow-Origin', `https://${host}`)
+  // res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
+
   next()
 })
 
-app.use((req, res, next) => {
-  const proto = req.get('X-Forwarded-Proto')
-  const host = getHost(req)
-  if (proto === 'http') {
-    res.set('X-Forwarded-Proto', 'https')
-    res.redirect(`https://${host}${req.originalUrl}`)
-    return
-  }
-  next()
-})
+// app.use((req, res, next) => {
+//   const proto = req.get('X-Forwarded-Proto')
+//   const host = getHost(req)
+//   if (proto === 'http') {
+//     res.set('X-Forwarded-Proto', 'https')
+//     res.redirect(`https://${host}${req.originalUrl}`)
+//     return
+//   }
+//   next()
+// })
 
 app.use((req, res, next) => {
   if (req.path.endsWith('/') && req.path.length > 1) {
@@ -133,6 +143,7 @@ app.use(
           'google.com',
           'www.google.com',
         ],
+        'frame-ancestors': ["'self'", 'app.storyblok.com'],
         'img-src': ["'self'", 'data:', 'a.storyblok.com'],
         'media-src': ["'self'", 'a.storyblok.com', 'data:', 'blob:'],
         'script-src': [
@@ -153,14 +164,46 @@ app.use(
   }),
 )
 
+// i18n middleware
+app.use((req, res, next) => {
+  const [urlLang] = req.path.slice(1).split('/')
+
+  if (isSupportedLanguage(urlLang)) {
+    res.locals.language = urlLang
+    if (urlLang === defaultLanguage) {
+      res.redirect(req.path.replace(`/${urlLang}`, ''))
+    }
+  } else {
+    const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage
+    res.locals.language = lang
+
+    if (lang !== defaultLanguage) {
+      res.redirect(`${removeTrailingSlash(`${lang}${req.path}`)}`)
+    }
+  }
+
+  next()
+})
+
 function getRequestHandlerOptions(): Parameters<
   typeof createRequestHandler
 >[0] {
   const build = require('../build')
   function getLoadContext(req: any, res: any) {
-    return { cspNonce: res.locals.cspNonce }
+    return {
+      cspNonce: res.locals.cspNonce,
+      language: res.locals.language,
+    }
   }
   return { build, mode: MODE, getLoadContext }
+}
+
+function purgeRequireCache() {
+  for (const key in require.cache) {
+    if (key.startsWith(BUILD_DIR)) {
+      delete require.cache[key]
+    }
+  }
 }
 
 if (MODE === 'production') {
@@ -172,16 +215,16 @@ if (MODE === 'production') {
   })
 }
 
+// const server = https.createServer(
+//   {
+//     cert: fs.readFileSync(here('../localhost.pem')),
+//     key: fs.readFileSync(here('../localhost-key.pem')),
+//   },
+//   app,
+// )
+
 const port = process.env.PORT ?? 3000
 app.listen(port, () => {
   require('../build')
-  console.log(`Express server started on http://localhost:${port}`)
+  console.log(`Express server started on https://localhost:${port}`)
 })
-
-function purgeRequireCache() {
-  for (const key in require.cache) {
-    if (key.startsWith(BUILD_DIR)) {
-      delete require.cache[key]
-    }
-  }
-}

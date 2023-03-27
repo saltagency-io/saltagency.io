@@ -8,6 +8,8 @@ import { PassThrough } from 'stream'
 
 import { routes as otherRoutes } from '~/other-routes.server'
 import { getEnv } from '~/utils/env.server'
+import { defaultLanguage, isSupportedLanguage } from '~/utils/i18n'
+import { I18nProvider } from '~/utils/i18n-provider'
 import { NonceProvider } from '~/utils/nonce-provider'
 
 global.ENV = getEnv()
@@ -71,13 +73,18 @@ function handleBotRequest(...args: DocRequestArgs) {
   ] = args
 
   const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
+  const language = isSupportedLanguage(loadContext.language)
+    ? loadContext.language
+    : defaultLanguage
 
   return new Promise((resolve, reject) => {
     let didError = false
 
     const { pipe, abort } = renderToPipeableStream(
       <NonceProvider value={nonce}>
-        <RemixServer context={remixContext} url={request.url} />
+        <I18nProvider language={language}>
+          <RemixServer context={remixContext} url={request.url} />
+        </I18nProvider>
       </NonceProvider>,
       {
         nonce,
@@ -120,17 +127,22 @@ function handleBrowserRequest(...args: DocRequestArgs) {
   ] = args
 
   const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
+  const language = isSupportedLanguage(loadContext.language)
+    ? loadContext.language
+    : defaultLanguage
 
   return new Promise((resolve, reject) => {
     let didError = false
 
     const { pipe, abort } = renderToPipeableStream(
       <NonceProvider value={nonce}>
-        <RemixServer
-          context={remixContext}
-          url={request.url}
-          abortDelay={ABORT_DELAY}
-        />
+        <I18nProvider language={language}>
+          <RemixServer
+            context={remixContext}
+            url={request.url}
+            abortDelay={ABORT_DELAY}
+          />
+        </I18nProvider>
       </NonceProvider>,
       {
         nonce,

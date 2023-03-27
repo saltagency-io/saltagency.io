@@ -16,6 +16,8 @@ import {
 
 import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
+import { defaultLanguage } from '~/utils/i18n'
+import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 
 function NavLink({
@@ -264,10 +266,16 @@ type Props = {
 }
 
 export function Navbar({ menu }: Props) {
+  const { language } = useI18n()
+
   return (
     <div className="absolute top-0 left-0 right-0 z-10 mx-8vw py-8 lg:mt-12 lg:py-8">
       <nav className="mx-auto flex max-w-5xl items-center justify-between">
-        <Link prefetch="intent" to="/" title="home">
+        <Link
+          to={language !== defaultLanguage ? `/${language}` : '/'}
+          prefetch="intent"
+          title="home"
+        >
           <span className="sr-only">Salt Agency</span>
           {/*Mobile*/}
           <Logo size="small" className="block lg:hidden" />

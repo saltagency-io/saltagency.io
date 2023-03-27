@@ -32,6 +32,8 @@ import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
 import { getEnv } from '~/utils/env.server'
 import * as gtag from '~/utils/gtag.client'
+import { getLanguageFromContext } from '~/utils/i18n'
+import { I18nProvider, useI18n } from '~/utils/i18n-provider'
 import { LabelsProvider } from '~/utils/labels-provider'
 import {
   getDomainUrl,
@@ -47,12 +49,12 @@ storyblokInit({
   components,
   accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
-  apiOptions: {
-    cache: {
-      clear: 'auto',
-      type: 'memory',
-    },
-  },
+  // apiOptions: {
+  //   cache: {
+  //     clear: 'auto',
+  //     type: 'memory',
+  //   },
+  // },
 })
 
 export const links: LinksFunction = () => {
@@ -99,12 +101,14 @@ export const links: LinksFunction = () => {
 
 export type LoaderData = SerializeFrom<typeof loader>
 
-export async function loader({ request }: DataFunctionArgs) {
+export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
+  const language = getLanguageFromContext(context)
+
   const [layoutStory, labels, vacancies] = await Promise.all([
-    getLayout(),
+    getLayout(language, preview),
     getDataSource('labels'),
-    getAllVacancies(preview),
+    getAllVacancies(language, preview),
   ])
 
   const data = {
@@ -112,6 +116,7 @@ export async function loader({ request }: DataFunctionArgs) {
     preview,
     labels,
     vacancies,
+    language: context.language,
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -137,6 +142,7 @@ export function App() {
   const data = useTypedLoaderData<typeof loader>()
   const nonce = useNonce()
   const location = useLocation()
+  const { language } = useI18n()
 
   React.useEffect(() => {
     if (data.ENV.GOOGLE_ANALYTICS?.length) {
@@ -145,7 +151,7 @@ export function App() {
   }, [data.ENV.GOOGLE_ANALYTICS, location])
 
   return (
-    <html lang="en">
+    <html lang={language}>
       <head>
         <Meta />
         <Links />
@@ -196,7 +202,7 @@ export function App() {
             __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
           }}
         />
-        {ENV.NODE_ENV === 'development' ? <LiveReload nonce={nonce} /> : null}
+        <LiveReload nonce={nonce} />
       </body>
     </html>
   )
@@ -206,13 +212,15 @@ export default function AppWithProviders() {
   const data = useTypedLoaderData<typeof loader>()
 
   return (
-    <PreviewStateProvider value={{ preview: data.preview }}>
-      <LabelsProvider data={data.labels}>
-        <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
-          <App />
-        </VacanciesProvider>
-      </LabelsProvider>
-    </PreviewStateProvider>
+    <I18nProvider language={data.language}>
+      <PreviewStateProvider value={{ preview: data.preview }}>
+        <LabelsProvider data={data.labels}>
+          <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
+            <App />
+          </VacanciesProvider>
+        </LabelsProvider>
+      </PreviewStateProvider>
+    </I18nProvider>
   )
 }
 

@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import ReactMarkdown from 'react-markdown'
 
 import { H1, H2, H3, H4, H5, H6, Paragraph } from '~/components/typography'
+import { useI18n } from '~/utils/i18n-provider'
 import { AnchorOrLink } from '~/utils/misc'
 
 type Props = {
@@ -17,12 +18,13 @@ type Props = {
 }
 
 export function Markdown({ children, ...props }: Props) {
-  return <ReactMarkdown children={children} components={getComponents(props)} />
+  const components = useComponents(props)
+  return <ReactMarkdown children={children} components={components} />
 }
 
 type Components = React.ComponentProps<typeof ReactMarkdown>['components']
 
-function getComponents({
+function useComponents({
   textAlign = 'left',
   textColor = 'primary',
   bodyTextSize = 'lg',
@@ -30,6 +32,8 @@ function getComponents({
   responsive = true,
   linksInNewTab = false,
 }: Omit<Props, 'children'>): Components {
+  const { language, isDefaultLanguage } = useI18n()
+
   const alignClassName = `text-${textAlign}`
   const colorClassName = `text-${textColor}`
 
@@ -57,7 +61,11 @@ function getComponents({
     ),
     a: (props) => (
       <AnchorOrLink
-        to={props.href}
+        to={
+          props.href?.includes(':') || isDefaultLanguage
+            ? props.href
+            : `/${language}${props.href}`
+        }
         target={linksInNewTab ? '_blank' : undefined}
         rel={linksInNewTab ? 'noopener' : undefined}
         className={clsx('underlined active', colorClassName, {

@@ -2,10 +2,12 @@ import * as React from 'react'
 
 import { Footer } from '~/components/footer'
 import type { FooterBlok } from '~/types'
-import { mapLink } from '~/utils/mappers'
+import { useLocalizedMappers } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbFooter({ blok }: { blok: FooterBlok }) {
+  const { mapLink } = useLocalizedMappers()
+
   const [location] = blok.location
 
   return (

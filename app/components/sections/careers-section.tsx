@@ -6,7 +6,8 @@ import { motion } from 'framer-motion'
 import { Grid } from '~/components/grid'
 import { H3, Subtitle } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
-import { mapVacancy } from '~/utils/mappers'
+import { useI18n } from '~/utils/i18n-provider'
+import { mapVacancy, useLocalizedMappers } from '~/utils/mappers'
 import { useVacancies } from '~/utils/providers'
 
 type Props = {
@@ -23,6 +24,7 @@ export function CareersSection({
   theme = 'light',
 }: Props) {
   const { vacancies } = useVacancies()
+  const { mapVacancy } = useLocalizedMappers()
 
   return (
     <div
