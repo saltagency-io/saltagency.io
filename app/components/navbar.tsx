@@ -52,6 +52,7 @@ function NavLink({
 
 function MobileMenuList({ menu }: { menu: LinkType[] }) {
   const { isExpanded } = useMenuButtonContext()
+  const { language, isDefaultLanguage } = useI18n()
   const { t } = useLabels()
   const shouldReduceMotion = useReducedMotion()
 
@@ -98,7 +99,11 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
           >
             <MenuItems className="border-none bg-transparent p-0">
               <>
-                <MenuLink className={linkClassName} as={Link} to="/">
+                <MenuLink
+                  as={Link}
+                  className={linkClassName}
+                  to={isDefaultLanguage ? '/' : `/${language}`}
+                >
                   {t('home')}
                 </MenuLink>
                 {menu.map((link) => (

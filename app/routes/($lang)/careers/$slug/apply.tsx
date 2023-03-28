@@ -5,10 +5,16 @@ import type {
   HeadersFunction,
   MetaFunction,
 } from '@remix-run/node'
-import { json } from '@remix-run/node'
-import { useFetcher, useSearchParams } from '@remix-run/react'
+import { DataFunctionArgs, json } from '@remix-run/node'
+import {
+  useFetcher,
+  useRouteLoaderData,
+  useSearchParams,
+} from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
+import type { UseDataFunctionReturn } from 'remix-typedjson'
+import { typedjson } from 'remix-typedjson'
 
 import { Breadcrumbs } from '~/components/breadcrumbs'
 import { Button } from '~/components/button'
@@ -22,16 +28,23 @@ import { Grid } from '~/components/grid'
 import { H1, H3, H4 } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendApplicationToNotion } from '~/lib/notion.server'
-import { getAllVacancies } from '~/lib/storyblok.server'
+import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import * as ga from '~/utils/gtag.client'
+import { defaultLanguage, getLanguageFromContext } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
-import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
+import {
+  createAlternateLinks,
+  getLabelKeyForError,
+  getRequiredGlobalEnvVar,
+  getUrl,
+} from '~/utils/misc'
 import { useVacancies } from '~/utils/providers'
 import { getSocialMetas } from '~/utils/seo'
-import type { ValidateFn } from '~/utils/validators'
+import { isPreview } from '~/utils/storyblok'
 import {
   isValidBody,
   isValidEmail,
@@ -41,14 +54,49 @@ import {
   isValidUrl,
 } from '~/utils/validators'
 
+const dynamicLinks: DynamicLinksFunction<
+  UseDataFunctionReturn<typeof loader>
+> = ({ data, parentsData }) => {
+  const requestInfo = parentsData[0].requestInfo
+  const links = createAlternateLinks(data.initialStory, requestInfo.origin)
+  return links.map((link) => ({ ...link, href: `${link.href}/apply` }))
+}
+
 export const handle: Handle = {
   getSitemapEntries: async () => {
-    const pages = await getAllVacancies(false)
+    const pages = await getAllVacancies(defaultLanguage, false)
     return (pages || []).map((page) => ({
       route: `/${page.full_slug}/apply`,
       priority: 0.6,
     }))
   },
+  dynamicLinks,
+}
+
+export async function loader({ params, request, context }: DataFunctionArgs) {
+  if (!params.slug) {
+    throw new Error('Slug is not defined!')
+  }
+
+  const preview = isPreview(request)
+  const language = getLanguageFromContext(context)
+  const initialStory = await getVacancyBySlug(params.slug, language, preview)
+
+  if (!initialStory) {
+    throw json({}, { status: 404 })
+  }
+
+  const data = {
+    initialStory,
+    preview,
+  }
+
+  return typedjson(data, {
+    status: 200,
+    headers: {
+      'Cache-Control': 'private, max-age=3600',
+    },
+  })
 }
 
 type Fields = {
@@ -68,12 +116,6 @@ type ActionData = {
   fields: Fields
   errors: Fields & { generalError?: string }
 }
-
-const getLabelKeyForError =
-  (validator: ValidateFn, errorKey: string) => (val: string | null) => {
-    const valid = validator(val)
-    return valid ? null : errorKey
-  }
 
 export const action: ActionFunction = async ({ request }) => {
   return handleFormSubmission<ActionData>({

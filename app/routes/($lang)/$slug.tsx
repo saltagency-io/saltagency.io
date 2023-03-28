@@ -1,22 +1,34 @@
 import * as React from 'react'
 
 import type { DataFunctionArgs, MetaFunction } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
+import { json } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+import {
+  typedjson,
+  UseDataFunctionReturn,
+  useTypedLoaderData,
+} from 'remix-typedjson'
 
 import type { LoaderData as RootLoaderData } from '../../root'
 import { NotFoundError } from '~/components/errors'
 import { getStoriesForSitemap, getStoryBySlug } from '~/lib/storyblok.server'
 import { pathedRoutes } from '~/other-routes.server'
 import type { Handle } from '~/types'
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import { getLanguageFromContext } from '~/utils/i18n'
-import { getUrl } from '~/utils/misc'
+import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
+
+const dynamicLinks: DynamicLinksFunction<
+  UseDataFunctionReturn<typeof loader>
+> = ({ data, parentsData }) => {
+  const requestInfo = parentsData[0].requestInfo
+  return createAlternateLinks(data.initialStory, requestInfo.origin)
+}
 
 export const handle: Handle = {
   getSitemapEntries: async () => {
@@ -26,6 +38,7 @@ export const handle: Handle = {
       priority: 0.4,
     }))
   },
+  dynamicLinks,
 }
 
 export async function loader({ params, request, context }: DataFunctionArgs) {

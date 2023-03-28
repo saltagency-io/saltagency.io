@@ -6,6 +6,7 @@ import clsx from 'clsx'
 
 import type { LinkType } from '../../types'
 import { Grid } from '~/components/grid'
+import { LanguageSwitch } from '~/components/language-switch'
 import { Paragraph } from '~/components/typography'
 import { Markdown } from '~/utils/markdown'
 
@@ -129,19 +130,23 @@ export function Footer({
           >
             {disclaimer}
           </Paragraph>
-          <ul className="flex flex-col lg:flex-row lg:justify-between lg:gap-x-4">
-            {additionalLinks.map((link) => (
-              <li key={link.id} className="mb-4 last:mb-0 lg:mb-0">
-                <Link
-                  to={link.url}
-                  prefetch="intent"
-                  className={`${textClassName} text-lg`}
-                >
-                  {link.text}
-                </Link>
-              </li>
-            ))}
-          </ul>
+
+          <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center">
+            <ul className="flex flex-col lg:flex-row lg:justify-between lg:gap-x-4">
+              {additionalLinks.map((link) => (
+                <li key={link.id} className="mb-4 last:mb-0 lg:mb-0">
+                  <Link
+                    to={link.url}
+                    prefetch="intent"
+                    className={`${textClassName} text-lg`}
+                  >
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <LanguageSwitch />
+          </div>
         </div>
       </Grid>
     </footer>

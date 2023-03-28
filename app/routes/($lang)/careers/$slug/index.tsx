@@ -6,15 +6,28 @@ import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+import {
+  typedjson,
+  UseDataFunctionReturn,
+  useTypedLoaderData,
+} from 'remix-typedjson'
 
 import { NotFoundError } from '~/components/errors'
 import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
-import { getUrl } from '~/utils/misc'
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
+import { getLanguageFromContext } from '~/utils/i18n'
+import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
+
+const dynamicLinks: DynamicLinksFunction<
+  UseDataFunctionReturn<typeof loader>
+> = ({ data, parentsData }) => {
+  const requestInfo = parentsData[0].requestInfo
+  return createAlternateLinks(data.initialStory, requestInfo.origin)
+}
 
 export const handle: Handle = {
   getSitemapEntries: async () => {
@@ -24,26 +37,25 @@ export const handle: Handle = {
       priority: 0.7,
     }))
   },
+  dynamicLinks,
 }
 
-export async function loader({ params, request }: DataFunctionArgs) {
+export async function loader({ params, request, context }: DataFunctionArgs) {
   if (!params.slug) {
     throw new Error('Slug is not defined!')
   }
 
   const preview = isPreview(request)
-  const initialStory = await getVacancyBySlug(params.slug, preview)
+  const language = getLanguageFromContext(context)
+  const initialStory = await getVacancyBySlug(params.slug, language, preview)
 
   if (!initialStory) {
     throw json({}, { status: 404 })
   }
 
-  const { origin } = new URL(request.url)
-
   const data = {
     initialStory,
     preview,
-    origin,
   }
 
   return typedjson(data, {

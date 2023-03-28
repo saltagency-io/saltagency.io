@@ -275,3 +275,9 @@ type DataSourceEntry = {
   value: string
   dimensions: any[] | null
 }
+
+type TranslatedSlug = {
+  path: string
+  name: string | null
+  lang: string
+}

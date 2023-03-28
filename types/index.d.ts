@@ -1,3 +1,5 @@
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
+
 export type NonNullProperties<Type> = {
   [Key in keyof Type]-?: Exclude<Type[Key], null | undefined>
 }
@@ -24,6 +26,7 @@ export type Handle = {
     | Promise<Array<SitemapEntry | null> | null>
     | Array<SitemapEntry | null>
     | null
+  dynamicLinks?: DynamicLinksFunction
 }
 
 export type Image = {

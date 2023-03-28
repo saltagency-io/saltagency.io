@@ -11,7 +11,11 @@ import { useFetcher } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import ReCaptcha from 'react-google-recaptcha'
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+import {
+  typedjson,
+  UseDataFunctionReturn,
+  useTypedLoaderData,
+} from 'remix-typedjson'
 
 import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
@@ -22,13 +26,20 @@ import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
 import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
+import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import * as ga from '~/utils/gtag.client'
+import { getLanguageFromContext } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
-import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
+import {
+  createAlternateLinks,
+  getLabelKeyForError,
+  getRequiredGlobalEnvVar,
+  getUrl,
+} from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
-import type { ValidateFn } from '~/utils/validators'
 import {
   isValidBody,
   isValidEmail,
@@ -37,9 +48,21 @@ import {
   isValidString,
 } from '~/utils/validators'
 
-export async function loader({ request }: DataFunctionArgs) {
+const dynamicLinks: DynamicLinksFunction<
+  UseDataFunctionReturn<typeof loader>
+> = ({ data, parentsData }) => {
+  const requestInfo = parentsData[0].requestInfo
+  return createAlternateLinks(data.initialStory, requestInfo.origin)
+}
+
+export const handle: Handle = {
+  dynamicLinks,
+}
+
+export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const initialStory = await getStoryBySlug('contact', preview)
+  const language = getLanguageFromContext(context)
+  const initialStory = await getStoryBySlug('contact', language, preview)
 
   if (!initialStory) {
     throw json({}, { status: 404 })
@@ -91,13 +114,6 @@ type ActionData = {
   status: 'success' | 'error'
   fields: Fields
   errors: Fields & { generalError?: string }
-}
-
-function getLabelKeyForError(validator: ValidateFn, errorKey: string) {
-  return (val: string | null) => {
-    const valid = validator(val)
-    return valid ? null : errorKey
-  }
 }
 
 export const action: ActionFunction = async ({ request }) => {

@@ -1,34 +1,46 @@
 import * as React from 'react'
 
 import type { MetaFunction } from '@remix-run/node'
-import type { HeadersFunction } from '@remix-run/node'
 import { DataFunctionArgs, json } from '@remix-run/node'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+import {
+  typedjson,
+  UseDataFunctionReturn,
+  useTypedLoaderData,
+} from 'remix-typedjson'
 
 import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
-import { useI18n } from '~/utils/i18n-provider'
-import { getUrl } from '~/utils/misc'
+import type { Handle } from '~/types'
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
+import { getLanguageFromContext } from '~/utils/i18n'
+import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
 
-export async function loader({ request }: DataFunctionArgs) {
+const dynamicLinks: DynamicLinksFunction<
+  UseDataFunctionReturn<typeof loader>
+> = ({ data, parentsData }) => {
+  const requestInfo = parentsData[0].requestInfo
+  return createAlternateLinks(data.initialStory, requestInfo.origin)
+}
+
+export const handle: Handle = { dynamicLinks }
+
+export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const initialStory = await getStoryBySlug('careers/', preview)
+  const language = getLanguageFromContext(context)
+  const initialStory = await getStoryBySlug('careers/', language, preview)
 
   if (!initialStory) {
     throw json({}, { status: 404 })
   }
 
-  const { origin } = new URL(request.url)
-
   const data = {
     initialStory,
     preview,
-    origin,
   }
 
   return typedjson(data, {
@@ -39,20 +51,26 @@ export async function loader({ request }: DataFunctionArgs) {
   })
 }
 
-export const meta: MetaFunction = ({ parentsData }) => {
+export const meta: MetaFunction = ({ data, parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
-  return {
-    ...getSocialMetas({
-      title: 'Careers | Salt',
-      description: 'Open positions at Salt. Come and join us!',
-      url: getUrl(requestInfo),
-    }),
+
+  if (data?.initialStory) {
+    const meta = data.initialStory.content.metatags
+    return {
+      ...getSocialMetas({
+        title: meta?.title,
+        description: meta?.description,
+        image: meta?.og_image,
+        url: getUrl(requestInfo),
+      }),
+    }
+  } else {
+    return {
+      title: 'Not found',
+      description: 'You landed on a page that we could not find 😢',
+    }
   }
 }
-
-export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'private, max-age=3600',
-})
 
 export default function CareersIndex() {
   const data = useTypedLoaderData<typeof loader>()

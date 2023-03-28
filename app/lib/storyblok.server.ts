@@ -57,9 +57,10 @@ export async function getStoryBySlug(
 
 export async function getVacancyBySlug(
   slug: string,
+  language = defaultLanguage,
   preview = false,
 ): Promise<StoryData<VacancyStoryContent> | undefined> {
-  const params = getDefaultParams({ preview })
+  const params = getDefaultParams({ preview, language })
 
   try {
     const { data } = await getStoryblokApi().get(

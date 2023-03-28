@@ -42,22 +42,22 @@ app.use((req, res, next) => {
     res.set('X-Robots-Tag', 'noindex')
   }
 
-  // res.set('Access-Control-Allow-Origin', `https://${host}`)
-  // res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
+  res.set('Access-Control-Allow-Origin', `https://${host}`)
+  res.set('Strict-Transport-Security', `max-age=${60 * 60 * 24 * 365 * 100}`)
 
   next()
 })
 
-// app.use((req, res, next) => {
-//   const proto = req.get('X-Forwarded-Proto')
-//   const host = getHost(req)
-//   if (proto === 'http') {
-//     res.set('X-Forwarded-Proto', 'https')
-//     res.redirect(`https://${host}${req.originalUrl}`)
-//     return
-//   }
-//   next()
-// })
+app.use((req, res, next) => {
+  const proto = req.get('X-Forwarded-Proto')
+  const host = getHost(req)
+  if (proto === 'http') {
+    res.set('X-Forwarded-Proto', 'https')
+    res.redirect(`https://${host}${req.originalUrl}`)
+    return
+  }
+  next()
+})
 
 app.use((req, res, next) => {
   if (req.path.endsWith('/') && req.path.length > 1) {

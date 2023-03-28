@@ -30,6 +30,7 @@ import { components } from '~/storyblok'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
+import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
 import * as gtag from '~/utils/gtag.client'
 import { getLanguageFromContext } from '~/utils/i18n'
@@ -49,12 +50,12 @@ storyblokInit({
   components,
   accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
   use: [apiPlugin],
-  // apiOptions: {
-  //   cache: {
-  //     clear: 'auto',
-  //     type: 'memory',
-  //   },
-  // },
+  apiOptions: {
+    cache: {
+      clear: 'auto',
+      type: 'memory',
+    },
+  },
 })
 
 export const links: LinksFunction = () => {
@@ -116,7 +117,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
     preview,
     labels,
     vacancies,
-    language: context.language,
+    language,
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -127,15 +128,19 @@ export async function loader({ request, context }: DataFunctionArgs) {
   return typedjson(data)
 }
 
-export const meta: MetaFunction = ({ data }) => {
-  const requestInfo = data?.requestInfo
-
+export const meta: MetaFunction = () => {
   return {
     charset: 'utf-8',
     title: 'Salt',
     viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
-    canonical: removeTrailingSlash(`${requestInfo.origin}${requestInfo.path}`),
   }
+}
+
+function CanonicalUrl({ origin }: { origin: string }) {
+  const { pathname } = useLocation()
+  const canonicalUrl = removeTrailingSlash(`${origin}${pathname}`)
+
+  return <link rel="canonical" href={canonicalUrl} />
 }
 
 export function App() {
@@ -154,7 +159,11 @@ export function App() {
     <html lang={language}>
       <head>
         <Meta />
+        <CanonicalUrl origin={data.requestInfo.origin} />
+
         <Links />
+        <DynamicLinks />
+
         {process.env.NODE_ENV === 'development' ||
         !data.ENV.GOOGLE_ANALYTICS ? null : (
           <>
@@ -226,8 +235,10 @@ export default function AppWithProviders() {
 
 function ErrorDoc({ children }: { children: React.ReactNode }) {
   const nonce = useNonce()
+  const { language } = useI18n()
+
   return (
-    <html lang="en">
+    <html lang={language}>
       <head>
         <title>Oh no...</title>
         <Links />

@@ -21,7 +21,7 @@ function formatUrl(url: string, language: SupportedLanguage, anchor?: string) {
 
   let formatted = url
 
-  if (url === 'home') {
+  if (url === 'home' || url === `${language}/home`) {
     formatted = language !== defaultLanguage ? `/${language}` : '/'
   }
   if (!formatted.startsWith('/')) {
