@@ -19,6 +19,7 @@ import { pathedRoutes } from '~/other-routes.server'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import { getLanguageFromContext } from '~/utils/i18n'
+import { useI18n } from '~/utils/i18n-provider'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { isPreview } from '~/utils/storyblok'
@@ -51,12 +52,10 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
     throw new Response('Use other route', { status: 404 })
   }
 
-  let slug
-  if (!params.slug && params.lang === language) {
-    slug = 'home'
-  } else {
-    slug = params.slug ?? params.lang ?? 'home'
-  }
+  const slug =
+    !params.slug && params.lang === language
+      ? 'home'
+      : params.slug ?? params.lang ?? 'home'
 
   const initialStory = await getStoryBySlug(slug, language, preview)
 

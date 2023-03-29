@@ -12,6 +12,7 @@ import type {
 } from '~/types'
 import type { getEnv } from '~/utils/env.server'
 import { defaultLanguage } from '~/utils/i18n'
+import { getTranslatedSlugsFromStory } from '~/utils/storyblok'
 import type { ValidateFn } from '~/utils/validators'
 
 export const LOGO_URL =
@@ -194,26 +195,14 @@ export function createAlternateLinks(
 ) {
   if (!story) return []
 
-  const slugs =
-    story.lang === 'default'
-      ? story.translated_slugs ?? []
-      : [
-          {
-            lang: defaultLanguage,
-            name: story.name,
-            path: story.default_full_slug ?? '',
-          },
-          ...(story.translated_slugs || []).filter(
-            (slug) => slug.lang !== story.lang,
-          ),
-        ]
+  const slugs = getTranslatedSlugsFromStory(story)
 
   return slugs.map((slug) => ({
     rel: 'alternate',
     hrefLang: slug.lang,
     href: removeTrailingSlash(
-      `${origin}${slug.lang === defaultLanguage ? '' : `/${slug.lang}`}${
-        slug.path === 'home' ? '' : `/${slug.path}`
+      `${origin}${slug.lang === defaultLanguage ? '' : `/${slug.lang}`}/${
+        slug.path
       }`,
     ),
   }))

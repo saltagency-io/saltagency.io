@@ -1,5 +1,7 @@
 import { ButtonLink } from '~/components/button'
 import type { ButtonBlok } from '~/types'
+import { useI18n } from '~/utils/i18n-provider'
+import { formatUrl } from '~/utils/mappers'
 import { sbIconMap, StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbButton({
@@ -9,29 +11,30 @@ export function SbButton({
   blok: ButtonBlok
   ringOffsetColor: 'white' | 'black'
 }) {
-  let to =
-    blok.link.cached_url.startsWith('/') || blok.link.cached_url.includes(':')
-      ? blok.link.cached_url
-      : `/${blok.link.cached_url}`
+  const { language } = useI18n()
+  const { link, anchor, icon, text, variant } = blok
 
-  to = blok.anchor
-    ? blok.anchor.startsWith('#')
-      ? `${to}${blok.anchor}`
-      : `${to}#${blok.anchor}`
-    : to
+  console.log({ link })
 
-  const Icon = sbIconMap[blok.icon ?? '']
+  const urlTarget =
+    link.linktype === 'story' && link.story?.full_slug
+      ? link.story?.full_slug
+      : link.cached_url
+
+  const url = formatUrl(urlTarget, language, anchor)
+
+  const Icon = sbIconMap[icon ?? '']
 
   return (
     <StoryBlokWrapper blok={blok}>
       <ButtonLink
         prefetch="intent"
-        to={to}
-        variant={blok.variant}
+        to={url}
+        variant={variant}
         ringOffsetColor={ringOffsetColor}
       >
         {Icon ? <Icon /> : null}
-        {blok.text}
+        {text}
       </ButtonLink>
     </StoryBlokWrapper>
   )

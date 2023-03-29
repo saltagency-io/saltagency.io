@@ -1,5 +1,8 @@
 import * as React from 'react'
 
+import { useNavigate } from '@remix-run/react'
+
+import type { TranslatedSlug } from '../../types'
 import {
   defaultLanguage,
   supportedLanguages,
@@ -11,6 +14,7 @@ type I18nContextState = {
   language: SupportedLanguage
   supportedLanguages: SupportedLanguage[]
   changeLanguage: (lang: SupportedLanguage) => void
+  translatedSlugs: TranslatedSlug[]
   isDefaultLanguage: boolean
 }
 
@@ -23,9 +27,11 @@ export const useI18n = () => React.useContext(I18nContext)
 export const I18nProvider = ({
   children,
   language,
+  translatedSlugs = [],
 }: {
   children: React.ReactNode
   language: unknown
+  translatedSlugs?: TranslatedSlug[]
 }) => {
   const [currentLanguage, setCurrentLanguage] =
     React.useState<SupportedLanguage>(
@@ -40,6 +46,7 @@ export const I18nProvider = ({
 
   const value: I18nContextState = {
     changeLanguage,
+    translatedSlugs,
     supportedLanguages: supportedLanguages,
     language: currentLanguage,
     isDefaultLanguage: currentLanguage === defaultLanguage,

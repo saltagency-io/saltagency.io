@@ -14,7 +14,11 @@ import { defaultLanguage, SupportedLanguage } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
 import { removeTrailingSlash } from '~/utils/misc'
 
-function formatUrl(url: string, language: SupportedLanguage, anchor?: string) {
+export function formatUrl(
+  url: string,
+  language: SupportedLanguage,
+  anchor?: string,
+) {
   if (url.includes(':')) {
     return url
   }
@@ -33,10 +37,11 @@ function formatUrl(url: string, language: SupportedLanguage, anchor?: string) {
 
   return removeTrailingSlash(formatted)
 }
+
 export function mapLink(language: SupportedLanguage = defaultLanguage) {
   return (link: LinkBlok): LinkType => {
     const urlTarget =
-      link.target.linktype === 'story'
+      link.target.linktype === 'story' && link.target.story?.full_slug
         ? link.target.story?.full_slug
         : link.target.cached_url
 

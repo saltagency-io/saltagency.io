@@ -1,6 +1,6 @@
 import type * as React from 'react'
 
-import { SbBlokData, storyblokEditable } from '@storyblok/react'
+import { SbBlokData, storyblokEditable, StoryData } from '@storyblok/react'
 
 import {
   IconBankNotes,
@@ -17,11 +17,40 @@ import {
   IconUserGroup,
   IconUsers,
 } from '~/components/icons'
+import type {
+  PageStoryContent,
+  TranslatedSlug,
+  VacancyStoryContent,
+} from '~/types'
+import { defaultLanguage } from '~/utils/i18n'
 import { usePreviewState } from '~/utils/providers'
 
 export function isPreview(request: Request) {
   const { searchParams } = new URL(request.url)
   return !!searchParams.get('_storyblok')
+}
+
+function mapHomeToRoot(slug: TranslatedSlug) {
+  return { ...slug, path: slug.path === 'home' ? '' : slug.path }
+}
+
+export function getTranslatedSlugsFromStory(
+  story: StoryData<PageStoryContent | VacancyStoryContent>,
+): TranslatedSlug[] {
+  if (story.lang === 'default') {
+    return (story.translated_slugs || []).map(mapHomeToRoot)
+  } else {
+    return [
+      {
+        lang: defaultLanguage,
+        name: story.name,
+        path: story.default_full_slug ?? '',
+      },
+      ...(story.translated_slugs || []).filter(
+        (slug) => slug.lang !== story.lang,
+      ),
+    ].map(mapHomeToRoot)
+  }
 }
 
 export function StoryBlokWrapper({

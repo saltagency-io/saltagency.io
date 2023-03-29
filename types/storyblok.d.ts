@@ -246,6 +246,7 @@ type Link = {
   fieldtype: string
   linktype: string
   url: string
+  story?: StoryLink
 }
 
 type StoryLink = {
@@ -274,10 +275,4 @@ type DataSourceEntry = {
   name: string
   value: string
   dimensions: any[] | null
-}
-
-type TranslatedSlug = {
-  path: string
-  name: string | null
-  lang: string
 }

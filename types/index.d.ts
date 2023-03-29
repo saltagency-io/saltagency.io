@@ -60,4 +60,10 @@ export type Breadcrumb = {
   name: string
 }
 
+export type TranslatedSlug = {
+  path: string
+  name: string | null
+  lang: string
+}
+
 export * from './storyblok'

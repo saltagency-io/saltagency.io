@@ -14,6 +14,7 @@ import {
   ScrollRestoration,
   useCatch,
   useLocation,
+  useMatches,
 } from '@remix-run/react'
 
 import { storyblokInit, apiPlugin, StoryblokComponent } from '@storyblok/react'
@@ -43,7 +44,7 @@ import {
 } from '~/utils/misc'
 import { useNonce } from '~/utils/nonce-provider'
 import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
-import { isPreview } from '~/utils/storyblok'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import { SdLogo } from '~/utils/structured-data'
 
 storyblokInit({
@@ -219,9 +220,14 @@ export function App() {
 
 export default function AppWithProviders() {
   const data = useTypedLoaderData<typeof loader>()
+  const matches = useMatches()
+
+  const translatedSlugs = getTranslatedSlugsFromStory(
+    matches[1].data.initialStory,
+  )
 
   return (
-    <I18nProvider language={data.language}>
+    <I18nProvider language={data.language} translatedSlugs={translatedSlugs}>
       <PreviewStateProvider value={{ preview: data.preview }}>
         <LabelsProvider data={data.labels}>
           <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
