@@ -30,7 +30,7 @@ import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import * as ga from '~/utils/gtag.client'
-import { getLanguageFromContext } from '~/utils/i18n'
+import { defaultLanguage, getLanguageFromContext } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
 import {
   createAlternateLinks,
@@ -57,6 +57,14 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
+  getSitemapEntries: (language) => {
+    return [
+      {
+        route: `${language === defaultLanguage ? '' : `/${language}`}/contact`,
+        priority: 0.4,
+      },
+    ]
+  },
   dynamicLinks,
 }
 

@@ -63,8 +63,8 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
-  getSitemapEntries: async () => {
-    const pages = await getAllVacancies(defaultLanguage, false)
+  getSitemapEntries: async (language) => {
+    const pages = await getAllVacancies(language)
     return (pages || []).map((page) => ({
       route: `/${page.full_slug}/apply`,
       priority: 0.6,

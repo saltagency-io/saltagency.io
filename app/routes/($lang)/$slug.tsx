@@ -18,7 +18,7 @@ import { getStoriesForSitemap, getStoryBySlug } from '~/lib/storyblok.server'
 import { pathedRoutes } from '~/other-routes.server'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import { getLanguageFromContext } from '~/utils/i18n'
+import { defaultLanguage, getLanguageFromContext } from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
@@ -32,10 +32,14 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
-  getSitemapEntries: async () => {
-    const pages = await getStoriesForSitemap()
+  getSitemapEntries: async (language) => {
+    const pages = await getStoriesForSitemap(language)
     return pages.map((page) => ({
-      route: `/${page.slug}`,
+      route: `${
+        page.slug === 'home'
+          ? `${language === defaultLanguage ? '' : `/${language}`}`
+          : `/${page.full_slug}`
+      }`,
       priority: 0.4,
     }))
   },

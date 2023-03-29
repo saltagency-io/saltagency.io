@@ -9,7 +9,16 @@ type Handler = (
 
 export const pathedRoutes: Record<string, Handler> = {
   '/sitemap.xml': async (request, remixContext) => {
-    const sitemap = await getSitemapXml(request, remixContext)
+    const sitemap = await getSitemapXml(request, remixContext, 'en')
+    return new Response(sitemap, {
+      headers: {
+        'Content-Type': 'application/xml',
+        'Content-Length': String(Buffer.byteLength(sitemap)),
+      },
+    })
+  },
+  '/nl/sitemap.xml': async (request, remixContext) => {
+    const sitemap = await getSitemapXml(request, remixContext, 'nl')
     return new Response(sitemap, {
       headers: {
         'Content-Type': 'application/xml',

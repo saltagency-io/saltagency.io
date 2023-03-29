@@ -20,7 +20,7 @@ import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import { getLanguageFromContext } from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
-import {getTranslatedSlugsFromStory, isPreview} from '~/utils/storyblok'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 
 const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
@@ -31,8 +31,8 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
-  getSitemapEntries: async () => {
-    const pages = await getAllVacancies()
+  getSitemapEntries: async (language) => {
+    const pages = await getAllVacancies(language)
     return (pages || []).map((page) => ({
       route: `/${page.full_slug}`,
       priority: 0.7,

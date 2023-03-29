@@ -15,10 +15,10 @@ import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import { getLanguageFromContext } from '~/utils/i18n'
+import {defaultLanguage, getLanguageFromContext} from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
-import {getTranslatedSlugsFromStory, isPreview} from '~/utils/storyblok'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 
 const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
@@ -28,7 +28,17 @@ const dynamicLinks: DynamicLinksFunction<
   return createAlternateLinks(slugs, requestInfo.origin)
 }
 
-export const handle: Handle = { dynamicLinks }
+export const handle: Handle = {
+  getSitemapEntries: (language) => {
+    return [
+      {
+        route: `${language === defaultLanguage ? '' : `/${language}`}/careers`,
+        priority: 0.5,
+      },
+    ]
+  },
+  dynamicLinks,
+}
 
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)

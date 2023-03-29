@@ -78,7 +78,7 @@ export async function getAllVacancies(
   preview = false,
 ): Promise<StoryData<VacancyStoryContent>[] | undefined> {
   const params = {
-    ...getDefaultParams({ preview }),
+    ...getDefaultParams({ preview, language }),
     starts_with: 'careers/',
     is_startpage: 0,
   }
@@ -104,12 +104,13 @@ export async function getLayout(
   }
 }
 
-const sitemapBlackList = ['home', 'layout', 'contact', 'jobs/*']
+const sitemapBlackList = ['layout', 'contact', 'careers/*']
 
-export async function getStoriesForSitemap() {
+export async function getStoriesForSitemap(language: SupportedLanguage) {
   const params = {
     per_page: 100,
     excluding_slugs: sitemapBlackList.join(','),
+    language,
   }
 
   try {

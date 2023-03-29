@@ -1,4 +1,5 @@
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
+import type { SupportedLanguage } from '~/utils/i18n'
 
 export type NonNullProperties<Type> = {
   [Key in keyof Type]-?: Exclude<Type[Key], null | undefined>
@@ -21,6 +22,7 @@ export type SitemapEntry = {
 export type Handle = {
   id?: string
   getSitemapEntries?: (
+    language: SupportedLanguage,
     request: Request,
   ) =>
     | Promise<Array<SitemapEntry | null> | null>
