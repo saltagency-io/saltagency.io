@@ -109,7 +109,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
 
   const [layoutStory, labels, vacancies] = await Promise.all([
     getLayout(language, preview),
-    getDataSource('labels'),
+    getDataSource('labels', language),
     getAllVacancies(language, preview),
   ])
 

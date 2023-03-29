@@ -274,5 +274,5 @@ type DataSourceEntry = {
   id: number
   name: string
   value: string
-  dimensions: any[] | null
+  dimension_value: string | null
 }

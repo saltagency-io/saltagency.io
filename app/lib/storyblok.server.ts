@@ -26,14 +26,14 @@ function getDefaultParams({
 
 export async function getDataSource(
   name: string,
+  language = defaultLanguage,
 ): Promise<DataSourceEntry[] | undefined> {
   try {
-    const { data } = await getStoryblokApi().get(
-      `cdn/datasource_entries?datasource=${name}`,
-      {
-        per_page: 200,
-      },
-    )
+    const { data } = await getStoryblokApi().get(`cdn/datasource_entries`, {
+      datasource: name,
+      dimension: language,
+      per_page: 200,
+    })
     return data.datasource_entries
   } catch (error) {
     console.error(`Failed to fetch data source with name: ${name}`, error)

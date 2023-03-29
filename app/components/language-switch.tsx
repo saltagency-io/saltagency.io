@@ -19,7 +19,7 @@ export function LanguageSwitch() {
 
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const lang = event.target.value
-    if (isSupportedLanguage(lang)) {
+    if (isSupportedLanguage(lang) && lang !== language) {
       changeLanguage(lang)
 
       const slug = translatedSlugs.find((s) => s.lang === lang)
@@ -32,6 +32,7 @@ export function LanguageSwitch() {
             : `/${slug.lang}/${slug.path}${location.search}`,
         ),
       )
+      // Force refresh of data
       revalidator.revalidate()
     }
   }
