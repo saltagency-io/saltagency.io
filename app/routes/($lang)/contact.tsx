@@ -39,7 +39,7 @@ import {
   getUrl,
 } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
-import { isPreview } from '~/utils/storyblok'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
   isValidBody,
   isValidEmail,
@@ -52,7 +52,8 @@ const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  return createAlternateLinks(data.initialStory, requestInfo.origin)
+  const slugs = getTranslatedSlugsFromStory(data.story)
+  return createAlternateLinks(slugs, requestInfo.origin)
 }
 
 export const handle: Handle = {
@@ -62,14 +63,14 @@ export const handle: Handle = {
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
-  const initialStory = await getStoryBySlug('contact', language, preview)
+  const story = await getStoryBySlug('contact', language, preview)
 
-  if (!initialStory) {
+  if (!story) {
     throw json({}, { status: 404 })
   }
 
   const data = {
-    initialStory,
+    story,
     preview,
   }
 
@@ -84,8 +85,8 @@ export async function loader({ request, context }: DataFunctionArgs) {
 export const meta: MetaFunction = ({ data, parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
 
-  if (data?.initialStory) {
-    const meta = data.initialStory.content.metatags
+  if (data?.story) {
+    const meta = data.story.content.metatags
     return {
       ...getSocialMetas({
         title: meta.title,
@@ -145,7 +146,7 @@ export default function ContactPage() {
   const { t, to } = useLabels()
   const contactFetcher = useFetcher<ActionData>()
   const data = useTypedLoaderData<typeof loader>()
-  const story = useStoryblokState(data.initialStory, {}, data.preview)
+  const story = useStoryblokState(data.story, {}, data.preview)
 
   const [captchaValue, setCaptchaValue] = React.useState<string | null>(null)
 
@@ -167,9 +168,7 @@ export default function ContactPage() {
         <Grid className="lg:pb-42 pt-8 pb-16 lg:pt-24">
           <div className="col-span-full lg:col-span-5">
             <H5 as="p" variant="secondary" className="mb-8 lg:mb-0">
-              We're just one form away from working together. Fill out your
-              details and let us know what we can help you with and we'll get
-              back to you as soon as we can.
+              {t('contact.text')}
             </H5>
           </div>
           <div className="col-span-full lg:col-span-7 lg:px-8">

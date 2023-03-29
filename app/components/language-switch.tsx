@@ -1,6 +1,6 @@
 import type * as React from 'react'
 
-import {useNavigate, useRevalidator} from '@remix-run/react'
+import { useLocation, useNavigate, useRevalidator } from '@remix-run/react'
 
 import clsx from 'clsx'
 
@@ -15,6 +15,7 @@ export function LanguageSwitch() {
   const { language, translatedSlugs, changeLanguage } = useI18n()
   const navigate = useNavigate()
   const revalidator = useRevalidator()
+  const location = useLocation()
 
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const lang = event.target.value
@@ -27,8 +28,8 @@ export function LanguageSwitch() {
       navigate(
         removeTrailingSlash(
           lang === defaultLanguage
-            ? `/${slug.path}`
-            : `/${slug.lang}/${slug.path}`,
+            ? `/${slug.path}${location.search}`
+            : `/${slug.lang}/${slug.path}${location.search}`,
         ),
       )
       revalidator.revalidate()

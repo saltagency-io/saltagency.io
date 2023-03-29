@@ -19,16 +19,16 @@ import { pathedRoutes } from '~/other-routes.server'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import { getLanguageFromContext } from '~/utils/i18n'
-import { useI18n } from '~/utils/i18n-provider'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
-import { isPreview } from '~/utils/storyblok'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 
 const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  return createAlternateLinks(data.initialStory, requestInfo.origin)
+  const slugs = getTranslatedSlugsFromStory(data.story)
+  return createAlternateLinks(slugs, requestInfo.origin)
 }
 
 export const handle: Handle = {
@@ -57,14 +57,14 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
       ? 'home'
       : params.slug ?? params.lang ?? 'home'
 
-  const initialStory = await getStoryBySlug(slug, language, preview)
+  const story = await getStoryBySlug(slug, language, preview)
 
-  if (!initialStory) {
+  if (!story) {
     throw json({}, { status: 404 })
   }
 
   const data = {
-    initialStory,
+    story,
     preview,
   }
 
@@ -79,8 +79,8 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 export const meta: MetaFunction = ({ data, parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
 
-  if (data?.initialStory) {
-    const meta = data.initialStory.content.metatags
+  if (data?.story) {
+    const meta = data.story.content.metatags
     return {
       ...getSocialMetas({
         title: meta?.title,
@@ -99,7 +99,7 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 
 export default function Page() {
   const data = useTypedLoaderData<typeof loader>()
-  const story = useStoryblokState(data.initialStory, {}, data.preview)
+  const story = useStoryblokState(data.story, {}, data.preview)
 
   return (
     <main>

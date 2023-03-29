@@ -18,13 +18,14 @@ import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import { getLanguageFromContext } from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
-import { isPreview } from '~/utils/storyblok'
+import {getTranslatedSlugsFromStory, isPreview} from '~/utils/storyblok'
 
 const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  return createAlternateLinks(data.initialStory, requestInfo.origin)
+  const slugs = getTranslatedSlugsFromStory(data.story)
+  return createAlternateLinks(slugs, requestInfo.origin)
 }
 
 export const handle: Handle = { dynamicLinks }
@@ -32,14 +33,14 @@ export const handle: Handle = { dynamicLinks }
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
-  const initialStory = await getStoryBySlug('careers/', language, preview)
+  const story = await getStoryBySlug('careers/', language, preview)
 
-  if (!initialStory) {
+  if (!story) {
     throw json({}, { status: 404 })
   }
 
   const data = {
-    initialStory,
+    story,
     preview,
   }
 
@@ -54,8 +55,8 @@ export async function loader({ request, context }: DataFunctionArgs) {
 export const meta: MetaFunction = ({ data, parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
 
-  if (data?.initialStory) {
-    const meta = data.initialStory.content.metatags
+  if (data?.story) {
+    const meta = data.story.content.metatags
     return {
       ...getSocialMetas({
         title: meta?.title,
@@ -74,7 +75,7 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 
 export default function CareersIndex() {
   const data = useTypedLoaderData<typeof loader>()
-  const story = useStoryblokState(data.initialStory, {}, data.preview)
+  const story = useStoryblokState(data.story, {}, data.preview)
 
   return (
     <main>

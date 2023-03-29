@@ -8,6 +8,7 @@ import type { StoryData } from '@storyblok/react'
 import type {
   NonNullProperties,
   PageStoryContent,
+  TranslatedSlug,
   VacancyStoryContent,
 } from '~/types'
 import type { getEnv } from '~/utils/env.server'
@@ -189,14 +190,7 @@ export function unslugify(slug: string) {
   return words.map(capitalizeFirstChar).join(' ')
 }
 
-export function createAlternateLinks(
-  story: StoryData<PageStoryContent | VacancyStoryContent> | undefined,
-  origin: string,
-) {
-  if (!story) return []
-
-  const slugs = getTranslatedSlugsFromStory(story)
-
+export function createAlternateLinks(slugs: TranslatedSlug[], origin: string) {
   return slugs.map((slug) => ({
     rel: 'alternate',
     hrefLang: slug.lang,

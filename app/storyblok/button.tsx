@@ -14,8 +14,6 @@ export function SbButton({
   const { language } = useI18n()
   const { link, anchor, icon, text, variant } = blok
 
-  console.log({ link })
-
   const urlTarget =
     link.linktype === 'story' && link.story?.full_slug
       ? link.story?.full_slug

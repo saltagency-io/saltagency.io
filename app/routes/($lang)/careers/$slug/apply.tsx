@@ -44,7 +44,7 @@ import {
 } from '~/utils/misc'
 import { useVacancies } from '~/utils/providers'
 import { getSocialMetas } from '~/utils/seo'
-import { isPreview } from '~/utils/storyblok'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
   isValidBody,
   isValidEmail,
@@ -58,8 +58,8 @@ const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  const links = createAlternateLinks(data.initialStory, requestInfo.origin)
-  return links.map((link) => ({ ...link, href: `${link.href}/apply` }))
+  const slugs = getTranslatedSlugsFromStory(data.story)
+  return createAlternateLinks(slugs, requestInfo.origin)
 }
 
 export const handle: Handle = {
@@ -80,14 +80,26 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
-  const initialStory = await getVacancyBySlug(params.slug, language, preview)
 
-  if (!initialStory) {
+  let story = await getVacancyBySlug(params.slug, language, preview)
+
+  if (!story) {
     throw json({}, { status: 404 })
   }
 
+  // This is a bit of a hack but these pages do not exist is storyblok currently,
+  // so I see no way around this at the moment
+  story = {
+    ...story,
+    default_full_slug: `${story.default_full_slug}/apply`,
+    translated_slugs: (story.translated_slugs || []).map((slug) => ({
+      ...slug,
+      path: `${slug.path}/apply`,
+    })),
+  }
+
   const data = {
-    initialStory,
+    story,
     preview,
   }
 
