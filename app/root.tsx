@@ -222,7 +222,7 @@ export default function AppWithProviders() {
   const data = useTypedLoaderData<typeof loader>()
   const matches = useMatches()
 
-  const story = matches[matches.length - 1]?.data.story
+  const story = matches[matches.length - 1]?.data?.story
   const translatedSlugs = getTranslatedSlugsFromStory(story)
 
   return (

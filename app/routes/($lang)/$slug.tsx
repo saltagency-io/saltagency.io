@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import type { DataFunctionArgs, MetaFunction } from '@remix-run/node'
-import { json } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
@@ -27,7 +27,7 @@ const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  const slugs = getTranslatedSlugsFromStory(data.story)
+  const slugs = getTranslatedSlugsFromStory(data?.story)
   return createAlternateLinks(slugs, requestInfo.origin)
 }
 
@@ -65,6 +65,17 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
   if (!story) {
     throw json({}, { status: 404 })
+  }
+
+
+  // Home page has slug "home" but we don't want that url to work
+  if (pathname === '/home') {
+    throw redirect('/')
+  }
+
+  // Make sure a translated story cannot be requested using the default slug (e.g. /nl/about)
+  if (pathname !== '/' && pathname !== `/${story.full_slug}`) {
+    throw redirect(`/${story.full_slug}`)
   }
 
   const data = {

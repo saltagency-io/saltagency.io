@@ -1,8 +1,6 @@
 import * as React from 'react'
 
-import { useNavigate } from '@remix-run/react'
-
-import type { TranslatedSlug } from '../../types'
+import type { TranslatedSlug } from '~/types'
 import {
   defaultLanguage,
   supportedLanguages,

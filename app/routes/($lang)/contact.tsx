@@ -52,7 +52,7 @@ const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  const slugs = getTranslatedSlugsFromStory(data.story)
+  const slugs = getTranslatedSlugsFromStory(data?.story)
   return createAlternateLinks(slugs, requestInfo.origin)
 }
 

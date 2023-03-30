@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import type { DataFunctionArgs } from '@remix-run/node'
-import { json, type MetaFunction } from '@remix-run/node'
+import { json, type MetaFunction, redirect } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
@@ -26,7 +26,7 @@ const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  const slugs = getTranslatedSlugsFromStory(data.story)
+  const slugs = getTranslatedSlugsFromStory(data?.story)
   return createAlternateLinks(slugs, requestInfo.origin)
 }
 
@@ -48,10 +48,16 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
+  const { pathname } = new URL(request.url)
+
   const story = await getVacancyBySlug(params.slug, language, preview)
 
   if (!story) {
     throw json({}, { status: 404 })
+  }
+
+  if (pathname !== `/${story.full_slug}`) {
+    throw redirect(`/${story.full_slug}`)
   }
 
   const data = {

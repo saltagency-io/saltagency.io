@@ -4,7 +4,7 @@ import { Link } from '@remix-run/react'
 
 import clsx from 'clsx'
 
-import type { LinkType } from '../../types'
+import type { LinkType } from '~/types'
 import { Grid } from '~/components/grid'
 import { LanguageSwitch } from '~/components/language-switch'
 import { Paragraph } from '~/components/typography'

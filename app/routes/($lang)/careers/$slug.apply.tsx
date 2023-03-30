@@ -5,7 +5,7 @@ import type {
   HeadersFunction,
   MetaFunction,
 } from '@remix-run/node'
-import { DataFunctionArgs, json } from '@remix-run/node'
+import { DataFunctionArgs, json, redirect } from '@remix-run/node'
 import { useFetcher, useSearchParams } from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
@@ -59,7 +59,7 @@ const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  const slugs = getTranslatedSlugsFromStory(data.story)
+  const slugs = getTranslatedSlugsFromStory(data?.story)
   return createAlternateLinks(slugs, requestInfo.origin)
 }
 
@@ -81,6 +81,7 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
+  const { pathname } = new URL(request.url)
 
   let story = await getVacancyBySlug(params.slug, language, preview)
 
@@ -96,6 +97,10 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
       ...slug,
       path: `${slug.path}/${routes[slug.lang as SupportedLanguage]}`,
     })),
+  }
+
+  if (pathname !== `/${story.full_slug}/${routes[language]}`) {
+    throw redirect(`/${story.full_slug}/${routes[language]}`)
   }
 
   const data = {

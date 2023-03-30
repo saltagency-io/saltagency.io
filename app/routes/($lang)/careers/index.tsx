@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { DataFunctionArgs, json, MetaFunction } from '@remix-run/node'
+import { DataFunctionArgs, json, MetaFunction, redirect } from '@remix-run/node'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import type { UseDataFunctionReturn } from 'remix-typedjson'
-import {typedjson, useTypedLoaderData} from 'remix-typedjson'
+import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
@@ -29,7 +29,7 @@ const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
-  const slugs = getTranslatedSlugsFromStory(data.story)
+  const slugs = getTranslatedSlugsFromStory(data?.story)
   return createAlternateLinks(slugs, requestInfo.origin)
 }
 
@@ -71,10 +71,18 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
+  const { pathname } = new URL(request.url)
+
   const story = await getStoryBySlug('careers/', language, preview)
 
   if (!story) {
     throw json({}, { status: 404 })
+  }
+
+  if (`${pathname}/` !== `/${story.full_slug}`) {
+    throw redirect(
+      `/${story.full_slug.substring(0, story.full_slug.length - 1)}`,
+    )
   }
 
   const data = {

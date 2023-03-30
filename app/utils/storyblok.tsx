@@ -35,7 +35,7 @@ function mapHomeToRoot(slug: TranslatedSlug) {
 }
 
 export function getTranslatedSlugsFromStory(
-  story: StoryData<PageStoryContent | VacancyStoryContent>,
+  story: StoryData<PageStoryContent | VacancyStoryContent> | undefined,
 ): TranslatedSlug[] {
   if (!story) return []
 

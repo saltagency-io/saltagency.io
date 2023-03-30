@@ -2,7 +2,7 @@ import type * as React from 'react'
 
 import { StoryblokComponent } from '@storyblok/react'
 
-import type { PageWithChildBlok } from '../../types'
+import type { PageWithChildBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbPageWithChild({
