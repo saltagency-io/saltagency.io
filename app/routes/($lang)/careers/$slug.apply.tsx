@@ -6,7 +6,7 @@ import type {
   MetaFunction,
 } from '@remix-run/node'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
-import { useFetcher, useSearchParams } from '@remix-run/react'
+import { useCatch, useFetcher, useSearchParams } from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
 import type { UseDataFunctionReturn } from 'remix-typedjson'
@@ -14,6 +14,7 @@ import { typedjson } from 'remix-typedjson'
 
 import { Breadcrumbs } from '~/components/breadcrumbs'
 import { Button } from '~/components/button'
+import { NotFoundError } from '~/components/errors'
 import {
   ErrorPanel,
   Field,
@@ -105,7 +106,6 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
   const data = {
     story,
-    language,
     preview,
   }
 
@@ -134,14 +134,14 @@ const translatedDescription = (role: string, lang: SupportedLanguage) => {
 }
 
 export const meta: MetaFunction = ({ data, parentsData, location }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData
+  const { requestInfo, language } = parentsData.root as RootLoaderData
   const params = new URLSearchParams(location.search)
   const role = params.get('role') ?? ''
 
   return {
     ...getSocialMetas({
-      title: translatedTitle(role, data.language),
-      description: translatedDescription(role, data.language),
+      title: translatedTitle(role, language),
+      description: translatedDescription(role, language),
       url: getUrl(requestInfo),
     }),
   }

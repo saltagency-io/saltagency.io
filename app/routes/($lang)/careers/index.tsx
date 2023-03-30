@@ -14,6 +14,7 @@ import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import {
   defaultLanguage,
   getLanguageFromContext,
+  getStaticLabel,
   SupportedLanguage,
 } from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
@@ -48,7 +49,7 @@ export const handle: Handle = {
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData
+  const { requestInfo, language } = parentsData.root as RootLoaderData
 
   if (data.story) {
     const meta = data.story.content.metatags
@@ -62,8 +63,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
     }
   } else {
     return {
-      title: 'Not found',
-      description: 'You landed on a page that we could not find 😢',
+      title: getStaticLabel('404.meta.title', language),
+      description: getStaticLabel('404.meta.description', language),
     }
   }
 }

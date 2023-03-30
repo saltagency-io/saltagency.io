@@ -17,7 +17,6 @@ export function SbFooter({ blok }: { blok: FooterBlok }) {
         additionalLinks={blok.additionalLinks.map(mapLink)}
         address={location.address}
         directionsLink={mapLink(location.directionsLink[0])}
-        disclaimer={blok.disclaimer}
         socialText={blok.socialText}
       />
     </StoryBlokWrapper>

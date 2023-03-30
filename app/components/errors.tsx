@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { useMatches } from '@remix-run/react'
+import { useLocation, useMatches } from '@remix-run/react'
 
 import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
@@ -12,7 +12,13 @@ import { IconArrowDown } from '~/components/icons'
 import { H1, H2, H3, H4, H5, H6, Subtitle } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
 import type { Vacancy } from '~/types'
-import { mapVacancy } from '~/utils/mappers'
+import {
+  defaultLanguage,
+  getLanguageFromPath,
+  getStaticLabel,
+  isSupportedLanguage,
+} from '~/utils/i18n'
+import { useLocalizedMappers } from '~/utils/mappers'
 import { useVacancies } from '~/utils/providers'
 
 function RedBox({ error }: { error: Error }) {
@@ -59,9 +65,15 @@ function RedBox({ error }: { error: Error }) {
 type ErrorSectionProps = {
   title: string
   subtitle: string
+  ctaText: string
 }
 
-export function ErrorSection({ title, subtitle }: ErrorSectionProps) {
+export function ErrorSection({ title, subtitle, ctaText }: ErrorSectionProps) {
+  const location = useLocation()
+  const language = getLanguageFromPath(location.pathname)
+
+  console.log({ language })
+
   return (
     <div className="py-40">
       <Grid>
@@ -72,8 +84,12 @@ export function ErrorSection({ title, subtitle }: ErrorSectionProps) {
           <H4 className="mb-10" variant="secondary" inverse>
             {subtitle}
           </H4>
-          <ButtonLink className="mx-auto" to="/">
-            Take me home
+          <ButtonLink
+            className="mx-auto"
+            ringOffsetColor="black"
+            to={language === defaultLanguage ? '/' : `/${language}`}
+          >
+            {ctaText}
           </ButtonLink>
         </div>
       </Grid>
@@ -90,6 +106,9 @@ export function ErrorPage({
   errorSectionProps: ErrorSectionProps
   vacancies?: Vacancy[]
 }) {
+  const location = useLocation()
+  const language = getLanguageFromPath(location.pathname)
+
   React.useEffect(() => {
     document.body.classList.add('header-light')
 
@@ -133,7 +152,7 @@ export function ErrorPage({
                   variant="secondary"
                   inverse
                 >
-                  But wait! We're you searching for a job opening perhaps?
+                  {getStaticLabel('404.more', language)}
                   <motion.div
                     animate={{
                       y: [0, -5, 5, 0],
@@ -151,16 +170,11 @@ export function ErrorPage({
 
               <div className="col-span-4 md:col-span-8 lg:col-span-5">
                 <Subtitle variant="pink" className="mb-4">
-                  We're hiring
+                  {getStaticLabel('404.careers.subtitle', language)}
                 </Subtitle>
                 <H3 as="h2" inverse className="mb-14 lg:mb-12">
-                  We are looking for a broad spectrum of expertise to join Salt
+                  {getStaticLabel('404.careers.title', language)}
                 </H3>
-                <div className="hidden lg:block">
-                  <ButtonLink to="/careers" variant="outline-inverse">
-                    Careers
-                  </ButtonLink>
-                </div>
               </div>
               <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
                 <VacancyList
@@ -168,11 +182,6 @@ export function ErrorPage({
                   vacancies={vacancies}
                   transition={false}
                 />
-              </div>
-              <div className="block pt-14 lg:hidden">
-                <ButtonLink to="/careers" variant="outline-inverse">
-                  Careers
-                </ButtonLink>
               </div>
             </Grid>
           </div>
@@ -184,16 +193,21 @@ export function ErrorPage({
 
 export function NotFoundError() {
   const matches = useMatches()
+  const { vacancies } = useVacancies()
+  const { mapVacancy } = useLocalizedMappers()
+  const location = useLocation()
+
+  const language = getLanguageFromPath(location.pathname)
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
-  const { vacancies } = useVacancies()
 
   return (
     <ErrorPage
       vacancies={vacancies.map(mapVacancy)}
       errorSectionProps={{
-        title: `Oh no.. it seems we've lost this page`,
-        subtitle: `We searched everywhere but we couldn't find "${pathname}"`,
+        title: getStaticLabel('404.title', language),
+        subtitle: `${getStaticLabel('404.subtitle', language)} "${pathname}"`,
+        ctaText: getStaticLabel('404.cta', language),
       }}
     />
   )
@@ -201,6 +215,9 @@ export function NotFoundError() {
 
 export function ServerError({ error }: { error?: Error }) {
   const matches = useMatches()
+  const location = useLocation()
+
+  const language = getLanguageFromPath(location.pathname)
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
 
@@ -208,8 +225,9 @@ export function ServerError({ error }: { error?: Error }) {
     <ErrorPage
       error={error}
       errorSectionProps={{
-        title: '500',
-        subtitle: `500 - Oops, something went terribly wrong on "${pathname}". Sorry about that!`,
+        title: getStaticLabel('500.title', language),
+        subtitle: `${getStaticLabel('500.subtitle', language)} "${pathname}"`,
+        ctaText: getStaticLabel('500.cta', language),
       }}
     />
   )

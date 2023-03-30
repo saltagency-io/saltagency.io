@@ -17,7 +17,7 @@ import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import { getLanguageFromContext } from '~/utils/i18n'
+import {getLanguageFromContext, getStaticLabel} from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
@@ -74,7 +74,7 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData
+  const { requestInfo, language } = parentsData.root as RootLoaderData
 
   if (data?.story) {
     const meta = data.story.content.metatags
@@ -88,8 +88,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
     }
   } else {
     return {
-      title: 'Not found',
-      description: 'You landed on a career page that we could not find 😢',
+      title: getStaticLabel('404.meta.title', language),
+      description: getStaticLabel('404.meta.description', language),
     }
   }
 }
@@ -106,10 +106,4 @@ export default function VacancyPage() {
       />
     </main>
   )
-}
-
-export function CatchBoundary() {
-  const caught = useCatch()
-  console.error('CatchBoundary', caught)
-  return <NotFoundError />
 }

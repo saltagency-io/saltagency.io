@@ -47,7 +47,6 @@ export type FooterBlok = SbBlokData & {
   menu: LinkBlok[]
   additionalLinks: LinkBlok[]
   location: LocationBlok[]
-  disclaimer: string
   socialText: string
 }
 

@@ -4,10 +4,10 @@ import { Link } from '@remix-run/react'
 
 import clsx from 'clsx'
 
-import type { LinkType } from '~/types'
 import { Grid } from '~/components/grid'
 import { LanguageSwitch } from '~/components/language-switch'
 import { Paragraph } from '~/components/typography'
+import type { LinkType } from '~/types'
 import { Markdown } from '~/utils/markdown'
 
 type Props = {
@@ -15,7 +15,6 @@ type Props = {
   additionalLinks: LinkType[]
   address: string
   directionsLink: LinkType
-  disclaimer: string
   socialText: string
 }
 
@@ -63,7 +62,6 @@ export function Footer({
   address,
   directionsLink,
   additionalLinks,
-  disclaimer,
   socialText,
 }: Props) {
   return (
@@ -128,7 +126,7 @@ export function Footer({
             textColorClassName="text-white"
             size="lg"
           >
-            {disclaimer}
+            <span>© Salt Agency {new Date().getFullYear()}</span>
           </Paragraph>
 
           <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center">

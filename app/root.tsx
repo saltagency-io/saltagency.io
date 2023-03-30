@@ -34,7 +34,11 @@ import vendorStyles from '~/styles/vendors.css'
 import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
 import * as gtag from '~/utils/gtag.client'
-import { getLanguageFromContext } from '~/utils/i18n'
+import {
+  getLanguageFromContext,
+  getLanguageFromPath,
+  getStaticLabel,
+} from '~/utils/i18n'
 import { I18nProvider, useI18n } from '~/utils/i18n-provider'
 import { LabelsProvider } from '~/utils/labels-provider'
 import {
@@ -222,7 +226,8 @@ export default function AppWithProviders() {
   const data = useTypedLoaderData<typeof loader>()
   const matches = useMatches()
 
-  const story = matches[matches.length - 1]?.data?.story
+  const last = matches[matches.length - 1]
+  const story = last?.data?.story
   const translatedSlugs = getTranslatedSlugsFromStory(story)
 
   return (
@@ -258,13 +263,20 @@ function ErrorDoc({ children }: { children: React.ReactNode }) {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   const location = useLocation()
+  const language = getLanguageFromPath(location.pathname)
+
   console.error(error)
+
   return (
     <ErrorDoc>
       <ErrorPage
+        error={error}
         errorSectionProps={{
-          title: '500',
-          subtitle: `Oops, something went terribly wrong on "${location.pathname}". Sorry about that!`,
+          title: getStaticLabel('500.title', language),
+          subtitle: `${getStaticLabel('500.subtitle', language)} "${
+            location.pathname
+          }"`,
+          ctaText: getStaticLabel('500.cta', language),
         }}
       />
     </ErrorDoc>
@@ -274,6 +286,8 @@ export function ErrorBoundary({ error }: { error: Error }) {
 export function CatchBoundary() {
   const caught = useCatch()
   const location = useLocation()
+  const language = getLanguageFromPath(location.pathname)
+
   console.error('CatchBoundary', caught)
 
   if (caught.status === 404) {
@@ -281,8 +295,11 @@ export function CatchBoundary() {
       <ErrorDoc>
         <ErrorPage
           errorSectionProps={{
-            title: '404',
-            subtitle: `We searched everywhere but we couldn't find "${location.pathname}"`,
+            title: getStaticLabel('404.title', language),
+            subtitle: `${getStaticLabel('404.subtitle', language)} "${
+              location.pathname
+            }"`,
+            ctaText: getStaticLabel('404.cta', language),
           }}
         />
       </ErrorDoc>
@@ -294,8 +311,11 @@ export function CatchBoundary() {
       <ErrorDoc>
         <ErrorPage
           errorSectionProps={{
-            title: '500',
-            subtitle: `Oops, something went terribly wrong on "${location.pathname}". Sorry about that!`,
+            title: getStaticLabel('500.title', language),
+            subtitle: `${getStaticLabel('500.subtitle', language)} "${
+              location.pathname
+            }"`,
+            ctaText: getStaticLabel('500.cta', language),
           }}
         />
       </ErrorDoc>

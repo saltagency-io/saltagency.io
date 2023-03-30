@@ -1,7 +1,8 @@
 import * as React from 'react'
 
-import { Outlet } from '@remix-run/react'
+import { Outlet, useCatch } from '@remix-run/react'
 
+import { NotFoundError } from '~/components/errors'
 import type { Handle } from '~/types'
 
 export const handle: Handle = {
@@ -10,4 +11,10 @@ export const handle: Handle = {
 
 export default function CareersRoot() {
   return <Outlet />
+}
+
+export function CatchBoundary() {
+  const caught = useCatch()
+  console.error('CatchBoundary', caught)
+  return <NotFoundError />
 }

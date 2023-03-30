@@ -30,7 +30,11 @@ import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import * as ga from '~/utils/gtag.client'
-import { defaultLanguage, getLanguageFromContext } from '~/utils/i18n'
+import {
+  defaultLanguage,
+  getLanguageFromContext,
+  getStaticLabel,
+} from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
 import {
   createAlternateLinks,
@@ -91,7 +95,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData
+  const { requestInfo, language } = parentsData.root as RootLoaderData
 
   if (data?.story) {
     const meta = data.story.content.metatags
@@ -105,8 +109,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
     }
   } else {
     return {
-      title: 'Not found',
-      description: 'You landed on a page that we could not find 😢',
+      title: getStaticLabel('404.meta.title', language),
+      description: getStaticLabel('404.meta.description', language),
     }
   }
 }
