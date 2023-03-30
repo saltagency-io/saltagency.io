@@ -4,20 +4,23 @@ import compression from 'compression'
 import crypto from 'crypto'
 import express from 'express'
 import 'express-async-errors'
-import fs from 'fs'
 import helmet from 'helmet'
-import https from 'https'
 import morgan from 'morgan'
 import onFinished from 'on-finished'
 import path from 'path'
 import serverTiming from 'server-timing'
 
-import {
-  defaultLanguage,
-  isSupportedLanguage,
-  supportedLanguages,
-} from '~/utils/i18n'
-import { removeTrailingSlash } from '~/utils/misc'
+type SupportedLanguage = 'en' | 'nl'
+
+const defaultLanguage: SupportedLanguage = 'en'
+const supportedLanguages: SupportedLanguage[] = ['en', 'nl']
+
+const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
+  return (
+    typeof lang === 'string' &&
+    supportedLanguages.includes(lang as SupportedLanguage)
+  )
+}
 
 const here = (...d: Array<string>) => path.join(__dirname, ...d)
 const primaryHost = 'salt.fly.dev' // TODO: change this when we go live
@@ -178,7 +181,8 @@ app.use((req, res, next) => {
     res.locals.language = lang
 
     if (lang !== defaultLanguage) {
-      res.redirect(`${removeTrailingSlash(`${lang}${req.path}`)}`)
+      const path = `${lang}${req.path}`
+      res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
     }
   }
 
@@ -226,5 +230,5 @@ if (MODE === 'production') {
 const port = process.env.PORT ?? 3000
 app.listen(port, () => {
   require('../build')
-  console.log(`Express server started on https://localhost:${port}`)
+  console.log(`Express server started on http://localhost:${port}`)
 })
