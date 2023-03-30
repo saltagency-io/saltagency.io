@@ -96,7 +96,6 @@ export default function VacancyPage() {
     <main>
       <StoryblokComponent
         blok={story.content}
-        slug={story.slug}
         publishDate={story.first_published_at}
       />
     </main>

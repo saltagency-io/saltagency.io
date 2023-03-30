@@ -6,11 +6,7 @@ import type {
   MetaFunction,
 } from '@remix-run/node'
 import { DataFunctionArgs, json } from '@remix-run/node'
-import {
-  useFetcher,
-  useRouteLoaderData,
-  useSearchParams,
-} from '@remix-run/react'
+import { useFetcher, useSearchParams } from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
 import type { UseDataFunctionReturn } from 'remix-typedjson'
@@ -34,7 +30,7 @@ import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import * as ga from '~/utils/gtag.client'
-import { defaultLanguage, getLanguageFromContext } from '~/utils/i18n'
+import { getLanguageFromContext, SupportedLanguage } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
 import {
   createAlternateLinks,
@@ -54,6 +50,11 @@ import {
   isValidUrl,
 } from '~/utils/validators'
 
+export const routes: Record<SupportedLanguage, string> = {
+  en: 'apply',
+  nl: 'solliciteren',
+}
+
 const dynamicLinks: DynamicLinksFunction<
   UseDataFunctionReturn<typeof loader>
 > = ({ data, parentsData }) => {
@@ -66,7 +67,7 @@ export const handle: Handle = {
   getSitemapEntries: async (language) => {
     const pages = await getAllVacancies(language)
     return (pages || []).map((page) => ({
-      route: `/${page.full_slug}/apply`,
+      route: `/${page.full_slug}/${routes[language]}`,
       priority: 0.6,
     }))
   },
@@ -87,19 +88,19 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
     throw json({}, { status: 404 })
   }
 
-  // This is a bit of a hack but these pages do not exist is storyblok currently,
-  // so I see no way around this at the moment
+  // This is a bit of a hack but these pages do not exist is storyblok currently.
   story = {
     ...story,
-    default_full_slug: `${story.default_full_slug}/apply`,
+    default_full_slug: `${story.default_full_slug}/${routes.en}`,
     translated_slugs: (story.translated_slugs || []).map((slug) => ({
       ...slug,
-      path: `${slug.path}/apply`,
+      path: `${slug.path}/${routes[slug.lang as SupportedLanguage]}`,
     })),
   }
 
   const data = {
     story,
+    language,
     preview,
   }
 
@@ -109,6 +110,36 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
       'Cache-Control': 'private, max-age=3600',
     },
   })
+}
+
+const translatedTitle = (role: string, lang: SupportedLanguage) => {
+  const titles = {
+    en: `Apply for ${role} | Salt`,
+    nl: `Soliciteer op ${role} | Salt`,
+  }
+  return titles[lang]
+}
+
+const translatedDescription = (role: string, lang: SupportedLanguage) => {
+  const descriptions = {
+    en: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
+    nl: `Soliciteer op ${role} at Salt. Wil jij onderdeel zijn van een nieuwe en ambitieuze consultancy startup?`,
+  }
+  return descriptions[lang]
+}
+
+export const meta: MetaFunction = ({ data, parentsData, location }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData
+  const params = new URLSearchParams(location.search)
+  const role = params.get('role') ?? ''
+
+  return {
+    ...getSocialMetas({
+      title: translatedTitle(role, data.language),
+      description: translatedDescription(role, data.language),
+      url: getUrl(requestInfo),
+    }),
+  }
 }
 
 type Fields = {
@@ -156,24 +187,6 @@ export const action: ActionFunction = async ({ request }) => {
     },
   })
 }
-
-export const meta: MetaFunction = ({ parentsData, location }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData
-  const params = new URLSearchParams(location.search)
-  const role = params.get('role')
-
-  return {
-    ...getSocialMetas({
-      title: `Apply for ${role} | Salt`,
-      description: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
-      url: getUrl(requestInfo),
-    }),
-  }
-}
-
-export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'private, max-age=3600',
-})
 
 export default function ApplyPage() {
   const applyFetcher = useFetcher<ActionData>()

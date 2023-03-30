@@ -15,7 +15,7 @@ type Props = {
   publishDate: string
 }
 
-export function SbVacancy({ blok, slug, publishDate }: Props) {
+export function SbVacancy({ blok, publishDate }: Props) {
   const { requestInfo }: RootLoaderData = useRouteLoaderData('root')
   const jobDescription = blok.body.find((b) => b.component === 'jobDescription')
 
@@ -31,7 +31,7 @@ export function SbVacancy({ blok, slug, publishDate }: Props) {
         datePosted={datePosted}
       />
 
-      <Vacancy title={blok.title} summary={blok.summary} slug={slug}>
+      <Vacancy title={blok.title} summary={blok.summary}>
         {blok.body.map((nestedBlok) => (
           <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
         ))}

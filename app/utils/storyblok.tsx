@@ -37,6 +37,8 @@ function mapHomeToRoot(slug: TranslatedSlug) {
 export function getTranslatedSlugsFromStory(
   story: StoryData<PageStoryContent | VacancyStoryContent>,
 ): TranslatedSlug[] {
+  if (!story) return []
+
   if (story.lang === 'default') {
     return (story.translated_slugs || []).map(mapHomeToRoot)
   } else {
