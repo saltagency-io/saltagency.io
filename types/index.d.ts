@@ -1,3 +1,6 @@
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
+import type { SupportedLanguage } from '~/utils/i18n'
+
 export type NonNullProperties<Type> = {
   [Key in keyof Type]-?: Exclude<Type[Key], null | undefined>
 }
@@ -19,11 +22,13 @@ export type SitemapEntry = {
 export type Handle = {
   id?: string
   getSitemapEntries?: (
+    language: SupportedLanguage,
     request: Request,
   ) =>
     | Promise<Array<SitemapEntry | null> | null>
     | Array<SitemapEntry | null>
     | null
+  dynamicLinks?: DynamicLinksFunction
 }
 
 export type Image = {
@@ -55,6 +60,12 @@ export type Vacancy = {
 export type Breadcrumb = {
   path: string
   name: string
+}
+
+export type TranslatedSlug = {
+  path: string
+  name: string | null
+  lang: string
 }
 
 export * from './storyblok'

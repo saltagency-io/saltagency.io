@@ -5,10 +5,12 @@ import type {
   HeadersFunction,
   MetaFunction,
 } from '@remix-run/node'
-import { json } from '@remix-run/node'
+import { DataFunctionArgs, json, redirect } from '@remix-run/node'
 import { useFetcher, useSearchParams } from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
+import type { UseDataFunctionReturn } from 'remix-typedjson'
+import { typedjson } from 'remix-typedjson'
 
 import { Breadcrumbs } from '~/components/breadcrumbs'
 import { Button } from '~/components/button'
@@ -22,16 +24,23 @@ import { Grid } from '~/components/grid'
 import { H1, H3, H4 } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendApplicationToNotion } from '~/lib/notion.server'
-import { getAllVacancies } from '~/lib/storyblok.server'
+import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import * as ga from '~/utils/gtag.client'
+import { getLanguageFromContext, SupportedLanguage } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
-import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
+import {
+  createAlternateLinks,
+  getLabelKeyForError,
+  getRequiredGlobalEnvVar,
+  getUrl,
+} from '~/utils/misc'
 import { useVacancies } from '~/utils/providers'
 import { getSocialMetas } from '~/utils/seo'
-import type { ValidateFn } from '~/utils/validators'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
   isValidBody,
   isValidEmail,
@@ -41,14 +50,101 @@ import {
   isValidUrl,
 } from '~/utils/validators'
 
+export const routes: Record<SupportedLanguage, string> = {
+  en: 'apply',
+  nl: 'solliciteren',
+}
+
+const dynamicLinks: DynamicLinksFunction<
+  UseDataFunctionReturn<typeof loader>
+> = ({ data, parentsData }) => {
+  const requestInfo = parentsData[0].requestInfo
+  const slugs = getTranslatedSlugsFromStory(data?.story)
+  return createAlternateLinks(slugs, requestInfo.origin)
+}
+
 export const handle: Handle = {
-  getSitemapEntries: async () => {
-    const pages = await getAllVacancies(false)
+  getSitemapEntries: async (language) => {
+    const pages = await getAllVacancies(language)
     return (pages || []).map((page) => ({
-      route: `/${page.full_slug}/apply`,
+      route: `/${page.full_slug}/${routes[language]}`,
       priority: 0.6,
     }))
   },
+  dynamicLinks,
+}
+
+export async function loader({ params, request, context }: DataFunctionArgs) {
+  if (!params.slug) {
+    throw new Error('Slug is not defined!')
+  }
+
+  const preview = isPreview(request)
+  const language = getLanguageFromContext(context)
+  const { pathname } = new URL(request.url)
+
+  let story = await getVacancyBySlug(params.slug, language, preview)
+
+  if (!story) {
+    throw json({}, { status: 404 })
+  }
+
+  // This is a bit of a hack but these pages do not exist is storyblok currently.
+  story = {
+    ...story,
+    default_full_slug: `${story.default_full_slug}/${routes.en}`,
+    translated_slugs: (story.translated_slugs || []).map((slug) => ({
+      ...slug,
+      path: `${slug.path}/${routes[slug.lang as SupportedLanguage]}`,
+    })),
+  }
+
+  if (pathname !== `/${story.full_slug}/${routes[language]}`) {
+    throw redirect(`/${story.full_slug}/${routes[language]}`)
+  }
+
+  const data = {
+    story,
+    language,
+    preview,
+  }
+
+  return typedjson(data, {
+    status: 200,
+    headers: {
+      'Cache-Control': 'private, max-age=3600',
+    },
+  })
+}
+
+const translatedTitle = (role: string, lang: SupportedLanguage) => {
+  const titles = {
+    en: `Apply for ${role} | Salt`,
+    nl: `Soliciteer op ${role} | Salt`,
+  }
+  return titles[lang]
+}
+
+const translatedDescription = (role: string, lang: SupportedLanguage) => {
+  const descriptions = {
+    en: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
+    nl: `Soliciteer op ${role} at Salt. Wil jij onderdeel zijn van een nieuwe en ambitieuze consultancy startup?`,
+  }
+  return descriptions[lang]
+}
+
+export const meta: MetaFunction = ({ data, parentsData, location }) => {
+  const { requestInfo } = parentsData.root as RootLoaderData
+  const params = new URLSearchParams(location.search)
+  const role = params.get('role') ?? ''
+
+  return {
+    ...getSocialMetas({
+      title: translatedTitle(role, data.language),
+      description: translatedDescription(role, data.language),
+      url: getUrl(requestInfo),
+    }),
+  }
 }
 
 type Fields = {
@@ -68,12 +164,6 @@ type ActionData = {
   fields: Fields
   errors: Fields & { generalError?: string }
 }
-
-const getLabelKeyForError =
-  (validator: ValidateFn, errorKey: string) => (val: string | null) => {
-    const valid = validator(val)
-    return valid ? null : errorKey
-  }
 
 export const action: ActionFunction = async ({ request }) => {
   return handleFormSubmission<ActionData>({
@@ -102,24 +192,6 @@ export const action: ActionFunction = async ({ request }) => {
     },
   })
 }
-
-export const meta: MetaFunction = ({ parentsData, location }) => {
-  const { requestInfo } = parentsData.root as RootLoaderData
-  const params = new URLSearchParams(location.search)
-  const role = params.get('role')
-
-  return {
-    ...getSocialMetas({
-      title: `Apply for ${role} | Salt`,
-      description: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
-      url: getUrl(requestInfo),
-    }),
-  }
-}
-
-export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'private, max-age=3600',
-})
 
 export default function ApplyPage() {
   const applyFetcher = useFetcher<ActionData>()

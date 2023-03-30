@@ -14,6 +14,7 @@ import {
   ScrollRestoration,
   useCatch,
   useLocation,
+  useMatches,
 } from '@remix-run/react'
 
 import { storyblokInit, apiPlugin, StoryblokComponent } from '@storyblok/react'
@@ -30,8 +31,11 @@ import { components } from '~/storyblok'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
+import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
 import * as gtag from '~/utils/gtag.client'
+import { getLanguageFromContext } from '~/utils/i18n'
+import { I18nProvider, useI18n } from '~/utils/i18n-provider'
 import { LabelsProvider } from '~/utils/labels-provider'
 import {
   getDomainUrl,
@@ -40,7 +44,7 @@ import {
 } from '~/utils/misc'
 import { useNonce } from '~/utils/nonce-provider'
 import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
-import { isPreview } from '~/utils/storyblok'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import { SdLogo } from '~/utils/structured-data'
 
 storyblokInit({
@@ -99,12 +103,14 @@ export const links: LinksFunction = () => {
 
 export type LoaderData = SerializeFrom<typeof loader>
 
-export async function loader({ request }: DataFunctionArgs) {
+export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
+  const language = getLanguageFromContext(context)
+
   const [layoutStory, labels, vacancies] = await Promise.all([
-    getLayout(),
-    getDataSource('labels'),
-    getAllVacancies(preview),
+    getLayout(language, preview),
+    getDataSource('labels', language),
+    getAllVacancies(language, preview),
   ])
 
   const data = {
@@ -112,6 +118,7 @@ export async function loader({ request }: DataFunctionArgs) {
     preview,
     labels,
     vacancies,
+    language,
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -122,21 +129,26 @@ export async function loader({ request }: DataFunctionArgs) {
   return typedjson(data)
 }
 
-export const meta: MetaFunction = ({ data }) => {
-  const requestInfo = data?.requestInfo
-
+export const meta: MetaFunction = () => {
   return {
     charset: 'utf-8',
     title: 'Salt',
     viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
-    canonical: removeTrailingSlash(`${requestInfo.origin}${requestInfo.path}`),
   }
+}
+
+function CanonicalUrl({ origin }: { origin: string }) {
+  const { pathname } = useLocation()
+  const canonicalUrl = removeTrailingSlash(`${origin}${pathname}`)
+
+  return <link rel="canonical" href={canonicalUrl} />
 }
 
 export function App() {
   const data = useTypedLoaderData<typeof loader>()
   const nonce = useNonce()
   const location = useLocation()
+  const { language } = useI18n()
 
   React.useEffect(() => {
     if (data.ENV.GOOGLE_ANALYTICS?.length) {
@@ -145,10 +157,14 @@ export function App() {
   }, [data.ENV.GOOGLE_ANALYTICS, location])
 
   return (
-    <html lang="en">
+    <html lang={language}>
       <head>
         <Meta />
+        <CanonicalUrl origin={data.requestInfo.origin} />
+
         <Links />
+        <DynamicLinks />
+
         {process.env.NODE_ENV === 'development' ||
         !data.ENV.GOOGLE_ANALYTICS ? null : (
           <>
@@ -196,7 +212,7 @@ export function App() {
             __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
           }}
         />
-        {ENV.NODE_ENV === 'development' ? <LiveReload nonce={nonce} /> : null}
+        <LiveReload nonce={nonce} />
       </body>
     </html>
   )
@@ -204,22 +220,30 @@ export function App() {
 
 export default function AppWithProviders() {
   const data = useTypedLoaderData<typeof loader>()
+  const matches = useMatches()
+
+  const story = matches[matches.length - 1]?.data?.story
+  const translatedSlugs = getTranslatedSlugsFromStory(story)
 
   return (
-    <PreviewStateProvider value={{ preview: data.preview }}>
-      <LabelsProvider data={data.labels}>
-        <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
-          <App />
-        </VacanciesProvider>
-      </LabelsProvider>
-    </PreviewStateProvider>
+    <I18nProvider language={data.language} translatedSlugs={translatedSlugs}>
+      <PreviewStateProvider value={{ preview: data.preview }}>
+        <LabelsProvider data={data.labels}>
+          <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
+            <App />
+          </VacanciesProvider>
+        </LabelsProvider>
+      </PreviewStateProvider>
+    </I18nProvider>
   )
 }
 
 function ErrorDoc({ children }: { children: React.ReactNode }) {
   const nonce = useNonce()
+  const { language } = useI18n()
+
   return (
-    <html lang="en">
+    <html lang={language}>
       <head>
         <title>Oh no...</title>
         <Links />

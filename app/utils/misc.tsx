@@ -3,8 +3,17 @@ import * as React from 'react'
 import type { LinkProps } from '@remix-run/react'
 import { Link } from '@remix-run/react'
 
-import type { NonNullProperties } from '~/types'
+import type { StoryData } from '@storyblok/react'
+
+import type {
+  NonNullProperties,
+  PageStoryContent,
+  TranslatedSlug,
+  VacancyStoryContent,
+} from '~/types'
 import type { getEnv } from '~/utils/env.server'
+import { defaultLanguage } from '~/utils/i18n'
+import { getTranslatedSlugsFromStory } from '~/utils/storyblok'
 import type { ValidateFn } from '~/utils/validators'
 
 export const LOGO_URL =
@@ -179,4 +188,16 @@ export function getLabelKeyForError(validator: ValidateFn, errorKey: string) {
 export function unslugify(slug: string) {
   const words = slug.split('-')
   return words.map(capitalizeFirstChar).join(' ')
+}
+
+export function createAlternateLinks(slugs: TranslatedSlug[], origin: string) {
+  return slugs.map((slug) => ({
+    rel: 'alternate',
+    hrefLang: slug.lang,
+    href: removeTrailingSlash(
+      `${origin}${slug.lang === defaultLanguage ? '' : `/${slug.lang}`}/${
+        slug.path
+      }`,
+    ),
+  }))
 }

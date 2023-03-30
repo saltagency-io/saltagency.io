@@ -127,7 +127,7 @@ export function ContactSection({
             </div>
           </div>
 
-          <div className="col-span-full lg:col-span-5 lg:col-start-1 lg:row-start-1">
+          <div className="col-span-full flex items-center lg:col-span-5 lg:col-start-1 lg:row-start-1">
             {image ? (
               <img
                 {...getImgProps(image.url, image.alt, {

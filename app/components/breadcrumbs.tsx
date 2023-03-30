@@ -4,19 +4,21 @@ import { Link, useLocation, useRouteLoaderData } from '@remix-run/react'
 
 import clsx from 'clsx'
 
-import type { Breadcrumb } from '../../types'
+import type { Breadcrumb } from '~/types'
 import { IconChevronLeft, IconChevronRight } from '~/components/icons'
 import type { LoaderData as RootLoaderData } from '~/root'
+import { useI18n } from '~/utils/i18n-provider'
 import { unslugify } from '~/utils/misc'
 import { SdBreadCrumbs } from '~/utils/structured-data'
 
 export function Breadcrumbs() {
   const location = useLocation()
+  const { language } = useI18n()
   const { requestInfo }: RootLoaderData = useRouteLoaderData('root')
 
   const parts = location.pathname.slice(1).split('/')
 
-  const breadcrumbs = parts.map<Breadcrumb>((part, i) => {
+  let breadcrumbs = parts.map<Breadcrumb>((part, i) => {
     const base = parts.slice(0, i).join('/')
 
     return {
@@ -24,6 +26,10 @@ export function Breadcrumbs() {
       name: unslugify(part),
     }
   })
+
+  if (breadcrumbs[0].path === `/${language}`) {
+    breadcrumbs = breadcrumbs.slice(1)
+  }
 
   const BackLink = () => (
     <Link
@@ -56,7 +62,7 @@ export function Breadcrumbs() {
           ) : (
             <ol className="hidden items-center gap-x-2 lg:flex">
               {breadcrumbs.map((breadcrumb, i) => {
-                const isLastItem = i + 1 === parts.length
+                const isLastItem = i + 1 === breadcrumbs.length
                 return (
                   <li
                     key={breadcrumb.path}

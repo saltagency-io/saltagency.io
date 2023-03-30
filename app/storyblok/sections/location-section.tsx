@@ -1,9 +1,11 @@
 import { LocationSection } from '~/components/sections/location-section'
 import type { LocationSectionBlok } from '~/types'
-import { mapAsset, mapLink } from '~/utils/mappers'
+import { mapAsset, useLocalizedMappers } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbLocationSection({ blok }: { blok: LocationSectionBlok }) {
+  const { mapLink } = useLocalizedMappers()
+
   const [location] = blok.location
 
   return (

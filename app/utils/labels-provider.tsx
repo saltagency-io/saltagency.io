@@ -22,7 +22,7 @@ export function LabelsProvider({
   const labels = (data || []).reduce<Record<string, string>>(
     (result, entry) => ({
       ...result,
-      [entry.name]: entry.value,
+      [entry.name]: entry.dimension_value || entry.value,
     }),
     {},
   )

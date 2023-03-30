@@ -68,7 +68,7 @@ export type ButtonBlok = SbBlokData & {
 
 export type LinkBlok = SbBlokData & {
   component: BlokTypes.Link
-  target: Link
+  target: Link & { story?: StoryLink }
   text: string
   anchor?: string
 }
@@ -246,6 +246,16 @@ type Link = {
   fieldtype: string
   linktype: string
   url: string
+  story?: StoryLink
+}
+
+type StoryLink = {
+  full_slug: string
+  id: number
+  name: string
+  slug: strinbg
+  url: string
+  uuid: string
 }
 
 type Asset = {
@@ -264,5 +274,5 @@ type DataSourceEntry = {
   id: number
   name: string
   value: string
-  dimensions: any[] | null // TODO: type dimensions when we need them
+  dimension_value: string | null
 }

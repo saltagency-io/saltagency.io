@@ -5,7 +5,7 @@ import { ApplicationProcessSection } from '~/components/sections/application-sec
 import { FormulaSection } from '~/components/sections/formula-section'
 import { PropositionSection } from '~/components/sections/proposition-section'
 import type { BlockWithSectionsBlok, Section } from '~/types'
-import { mapSection } from '~/utils/mappers'
+import { useLocalizedMappers } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 enum Variant {
@@ -31,6 +31,8 @@ const sections: Record<Variant, SectionComponent> = {
 }
 
 export function SbBlockWithSections({ blok }: { blok: BlockWithSectionsBlok }) {
+  const { mapSection } = useLocalizedMappers()
+
   const Section = sections[blok.variant]
   return (
     <StoryBlokWrapper blok={blok}>

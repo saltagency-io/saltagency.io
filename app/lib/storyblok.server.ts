@@ -7,23 +7,33 @@ import type {
   PageStoryContent,
   VacancyStoryContent,
 } from '~/types'
+import type { SupportedLanguage } from '~/utils/i18n'
+import { defaultLanguage } from '~/utils/i18n'
 
-function getDefaultParams({ preview }: { preview: boolean }) {
+function getDefaultParams({
+  preview,
+  language,
+}: {
+  preview: boolean
+  language?: SupportedLanguage
+}) {
   return {
     version: preview ? 'draft' : 'published',
+    resolve_links: 'url',
+    language: language ?? defaultLanguage,
   }
 }
 
 export async function getDataSource(
   name: string,
+  language = defaultLanguage,
 ): Promise<DataSourceEntry[] | undefined> {
   try {
-    const { data } = await getStoryblokApi().get(
-      `cdn/datasource_entries?datasource=${name}`,
-      {
-        per_page: 200,
-      },
-    )
+    const { data } = await getStoryblokApi().get(`cdn/datasource_entries`, {
+      datasource: name,
+      dimension: language,
+      per_page: 200,
+    })
     return data.datasource_entries
   } catch (error) {
     console.error(`Failed to fetch data source with name: ${name}`, error)
@@ -32,9 +42,10 @@ export async function getDataSource(
 
 export async function getStoryBySlug(
   slug: string,
+  language: SupportedLanguage,
   preview = false,
 ): Promise<StoryData<PageStoryContent> | undefined> {
-  const params = getDefaultParams({ preview })
+  const params = getDefaultParams({ preview, language })
 
   try {
     const { data } = await getStoryblokApi().get(`cdn/stories/${slug}`, params)
@@ -46,9 +57,10 @@ export async function getStoryBySlug(
 
 export async function getVacancyBySlug(
   slug: string,
+  language = defaultLanguage,
   preview = false,
 ): Promise<StoryData<VacancyStoryContent> | undefined> {
-  const params = getDefaultParams({ preview })
+  const params = getDefaultParams({ preview, language })
 
   try {
     const { data } = await getStoryblokApi().get(
@@ -62,10 +74,11 @@ export async function getVacancyBySlug(
 }
 
 export async function getAllVacancies(
+  language: SupportedLanguage = defaultLanguage,
   preview = false,
 ): Promise<StoryData<VacancyStoryContent>[] | undefined> {
   const params = {
-    ...getDefaultParams({ preview }),
+    ...getDefaultParams({ preview, language }),
     starts_with: 'careers/',
     is_startpage: 0,
   }
@@ -78,9 +91,10 @@ export async function getAllVacancies(
 }
 
 export async function getLayout(
+  language: SupportedLanguage,
   preview = false,
 ): Promise<StoryData<LayoutStoryContent> | undefined> {
-  const params = getDefaultParams({ preview })
+  const params = getDefaultParams({ preview, language })
 
   try {
     const { data } = await getStoryblokApi().get(`cdn/stories/layout`, params)
@@ -90,12 +104,13 @@ export async function getLayout(
   }
 }
 
-const sitemapBlackList = ['home', 'layout', 'contact', 'jobs/*']
+const sitemapBlackList = ['layout', 'contact', 'careers/*']
 
-export async function getStoriesForSitemap() {
+export async function getStoriesForSitemap(language: SupportedLanguage) {
   const params = {
     per_page: 100,
     excluding_slugs: sitemapBlackList.join(','),
+    language,
   }
 
   try {

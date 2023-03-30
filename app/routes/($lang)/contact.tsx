@@ -11,7 +11,11 @@ import { useFetcher } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import ReCaptcha from 'react-google-recaptcha'
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+import {
+  typedjson,
+  UseDataFunctionReturn,
+  useTypedLoaderData,
+} from 'remix-typedjson'
 
 import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
@@ -22,13 +26,20 @@ import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
 import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
+import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
+import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import * as ga from '~/utils/gtag.client'
+import { defaultLanguage, getLanguageFromContext } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
-import { getRequiredGlobalEnvVar, getUrl } from '~/utils/misc'
+import {
+  createAlternateLinks,
+  getLabelKeyForError,
+  getRequiredGlobalEnvVar,
+  getUrl,
+} from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
-import { isPreview } from '~/utils/storyblok'
-import type { ValidateFn } from '~/utils/validators'
+import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
   isValidBody,
   isValidEmail,
@@ -37,16 +48,37 @@ import {
   isValidString,
 } from '~/utils/validators'
 
-export async function loader({ request }: DataFunctionArgs) {
-  const preview = isPreview(request)
-  const initialStory = await getStoryBySlug('contact', preview)
+const dynamicLinks: DynamicLinksFunction<
+  UseDataFunctionReturn<typeof loader>
+> = ({ data, parentsData }) => {
+  const requestInfo = parentsData[0].requestInfo
+  const slugs = getTranslatedSlugsFromStory(data?.story)
+  return createAlternateLinks(slugs, requestInfo.origin)
+}
 
-  if (!initialStory) {
+export const handle: Handle = {
+  getSitemapEntries: (language) => {
+    return [
+      {
+        route: `${language === defaultLanguage ? '' : `/${language}`}/contact`,
+        priority: 0.4,
+      },
+    ]
+  },
+  dynamicLinks,
+}
+
+export async function loader({ request, context }: DataFunctionArgs) {
+  const preview = isPreview(request)
+  const language = getLanguageFromContext(context)
+  const story = await getStoryBySlug('contact', language, preview)
+
+  if (!story) {
     throw json({}, { status: 404 })
   }
 
   const data = {
-    initialStory,
+    story,
     preview,
   }
 
@@ -61,8 +93,8 @@ export async function loader({ request }: DataFunctionArgs) {
 export const meta: MetaFunction = ({ data, parentsData }) => {
   const { requestInfo } = parentsData.root as RootLoaderData
 
-  if (data?.initialStory) {
-    const meta = data.initialStory.content.metatags
+  if (data?.story) {
+    const meta = data.story.content.metatags
     return {
       ...getSocialMetas({
         title: meta.title,
@@ -91,13 +123,6 @@ type ActionData = {
   status: 'success' | 'error'
   fields: Fields
   errors: Fields & { generalError?: string }
-}
-
-function getLabelKeyForError(validator: ValidateFn, errorKey: string) {
-  return (val: string | null) => {
-    const valid = validator(val)
-    return valid ? null : errorKey
-  }
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -129,7 +154,7 @@ export default function ContactPage() {
   const { t, to } = useLabels()
   const contactFetcher = useFetcher<ActionData>()
   const data = useTypedLoaderData<typeof loader>()
-  const story = useStoryblokState(data.initialStory, {}, data.preview)
+  const story = useStoryblokState(data.story, {}, data.preview)
 
   const [captchaValue, setCaptchaValue] = React.useState<string | null>(null)
 
@@ -151,9 +176,7 @@ export default function ContactPage() {
         <Grid className="lg:pb-42 pt-8 pb-16 lg:pt-24">
           <div className="col-span-full lg:col-span-5">
             <H5 as="p" variant="secondary" className="mb-8 lg:mb-0">
-              We're just one form away from working together. Fill out your
-              details and let us know what we can help you with and we'll get
-              back to you as soon as we can.
+              {t('contact.text')}
             </H5>
           </div>
           <div className="col-span-full lg:col-span-7 lg:px-8">

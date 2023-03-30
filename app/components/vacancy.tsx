@@ -4,16 +4,18 @@ import { Breadcrumbs } from '~/components/breadcrumbs'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
 import { H1, H4 } from '~/components/typography'
+import { routes } from '~/routes/($lang)/careers/$slug.apply'
+import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 
 type Props = {
   children: React.ReactNode
   title: string
   summary: string
-  slug: string
 }
 
-export function Vacancy({ children, title, summary, slug }: Props) {
+export function Vacancy({ children, title, summary }: Props) {
+  const { language } = useI18n()
   const { t } = useLabels()
 
   return (
@@ -28,7 +30,7 @@ export function Vacancy({ children, title, summary, slug }: Props) {
             {summary}
           </H4>
           <ButtonLink
-            to={`/careers/${slug}/apply?role=${encodeURIComponent(title)}`}
+            to={`${routes[language]}?role=${encodeURIComponent(title)}`}
           >
             {t('cta.apply')}
           </ButtonLink>
