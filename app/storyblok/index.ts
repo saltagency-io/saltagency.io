@@ -25,6 +25,7 @@ import { SbContactSection } from '~/storyblok/sections/contact-section'
 import { SbImageSection } from '~/storyblok/sections/image-section'
 import { SbTeamSection } from '~/storyblok/sections/team-section'
 import { SbSpacer } from '~/storyblok/spacer'
+import {SbRichText} from "~/storyblok/rich-text";
 
 // Would prefer to put this in types/storyblok.d.ts but that breaks the build for some reason 🤷
 export enum BlokTypes {
@@ -53,6 +54,7 @@ export enum BlokTypes {
   JobDescription = 'jobDescription',
   Banner = 'banner',
   Spacer = 'spacer',
+  RichText = 'richText',
 
   // Sections
   BlockWithSections = 'blockWithSections',
@@ -83,6 +85,7 @@ export const components = {
   [BlokTypes.Quote]: SbQuote,
   [BlokTypes.Banner]: SbBanner,
   [BlokTypes.Spacer]: SbSpacer,
+  [BlokTypes.RichText]: SbRichText,
   [BlokTypes.PeopleSection]: SbPeopleSection,
   [BlokTypes.CareersSection]: SbCareersSection,
   [BlokTypes.HeaderSection]: SbHeaderSection,

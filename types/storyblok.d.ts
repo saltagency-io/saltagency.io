@@ -104,6 +104,12 @@ export type BannerBlok = SbBlokData & {
   theme: 'dark' | 'light'
 }
 
+export type RichTextBlok = SbBlokData & {
+  component: BlokTypes.RichText,
+  content: string
+  theme: 'dark' | 'light'
+}
+
 export type TextSectionBlok = SbBlokData & {
   components: BlokTypes.TextSection
   subtitle: string
