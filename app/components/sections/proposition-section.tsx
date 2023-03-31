@@ -55,19 +55,19 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
               >
                 <Grid
                   nested
-                  className="border-secondary border-b py-8 transition hover:border-white focus:border-white lg:py-14"
+                  className="border-secondary border-b pt-8 pb-16 transition hover:border-white focus:border-white lg:py-14"
                 >
                   <div className="col-span-6">
-                    <H4 as="h3" className="text-inverse mb-14 pb-2 lg:pb-0">
+                    <H4 as="h3" className="text-inverse mb-2 lg:mb-0">
                       {section.title}
                     </H4>
                     <Paragraph
                       as="div"
                       className={clsx(
-                        'absolute left-0 bottom-14 flex items-center gap-x-2',
-                        'translate-y-4 opacity-0 transition',
-                        'group-hover:translate-y-0 group-hover:opacity-70',
-                        'group-focus:translate-y-0 group-focus:opacity-70',
+                        'absolute left-0 bottom-4 flex items-center gap-x-2 lg:bottom-14',
+                        'opacity-90 transition lg:translate-y-4 lg:opacity-0',
+                        'lg:group-hover:translate-y-0 lg:group-hover:opacity-70',
+                        'lg:group-focus:translate-y-0 lg:group-focus:opacity-70',
                       )}
                       textColorClassName="text-white"
                     >
