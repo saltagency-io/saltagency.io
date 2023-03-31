@@ -8,6 +8,7 @@ RUN mkdir /app
 WORKDIR /app
 
 ADD package.json .npmrc package-lock.json ./
+ADD other/patches ./other/patches
 RUN npm install
 
 # Setup production node_modules
