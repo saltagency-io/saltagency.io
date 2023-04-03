@@ -93,6 +93,7 @@ export type ClientsBlok = SbBlokData & {
 export type CalculatorBlok = SbBlokData & {
   component: BlokTypes.Calculator
   title?: string
+  subtitle?: string
 }
 
 export type BannerBlok = SbBlokData & {
@@ -105,7 +106,7 @@ export type BannerBlok = SbBlokData & {
 }
 
 export type RichTextBlok = SbBlokData & {
-  component: BlokTypes.RichText,
+  component: BlokTypes.RichText
   content: string
   theme: 'dark' | 'light'
 }

@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { Select } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
 import { SwitchToggle } from '~/components/switch-toggle'
+import { H3, Subtitle } from '~/components/typography'
 import { useLabels } from '~/utils/labels-provider'
 
 const numberFormatter = new Intl.NumberFormat('nl-NL', {
@@ -18,8 +19,8 @@ function Divider() {
     <>
       <tr className="h-4" />
       <tr className="h-0">
-        <td className="border-t border-solid border-white" />
-        <td className="border-t border-solid border-white" />
+        <td className="border-primary border-t border-solid" />
+        <td className="border-primary border-t border-solid" />
       </tr>
       <tr className="h-4" />
     </>
@@ -36,7 +37,7 @@ function Row({
   negativeValue?: boolean
 }) {
   return (
-    <tr className="h-8 text-white">
+    <tr className="text-primary h-8 font-bold">
       <td>{label}</td>
       <td className="text-right">
         {negativeValue ? '-' : ''} {numberFormatter.format(value)}
@@ -58,7 +59,7 @@ function OptionalRow({
 }) {
   return (
     <tr
-      className="h-8 cursor-pointer text-white hover:bg-gray-700"
+      className="text-primary h-8 cursor-pointer font-bold hover:bg-gray-200"
       onClick={onClick}
     >
       <td>
@@ -189,7 +190,12 @@ function calculate({
 
 const rates = [80, 90, 100, 110, 120, 130, 140, 150]
 
-export function Calculator() {
+type Props = {
+  title?: string
+  subtitle?: string
+}
+
+export function Calculator({ title, subtitle }: Props) {
   const { t } = useLabels()
 
   const [rate, setRate] = React.useState(rates[2])
@@ -219,12 +225,20 @@ export function Calculator() {
   })
 
   return (
-    <div className="bg-gray-900 py-20">
+    <div className="bg-primary py-10 lg:py-20">
       <Grid>
-        <div className="col-span-full">
-          <div className="flex max-w-[500px] flex-col items-start justify-between lg:flex-row lg:items-center">
+        <div className="col-span-full lg:col-span-6">
+          <Subtitle variant="blue" className="mb-4">
+            {subtitle}
+          </Subtitle>
+          <H3 as="h2" className="mb-8 lg:mb-0" variant="primary">
+            {title}
+          </H3>
+        </div>
+        <div className="col-span-full lg:col-span-6 py-4">
+          <div className="mb-2 lg:mb-8 flex flex-col items-start justify-between lg:flex-row lg:items-center">
             <Select
-              className="w-[170px] text-white"
+              className="w-[170px]"
               label={t('calculator.rate')}
               name="rate"
               defaultValue={String(rate)}
@@ -244,64 +258,64 @@ export function Calculator() {
               onClick={(active) => setPeriod(active ? 'month' : 'year')}
             />
           </div>
-        </div>
-        <table className="col-span-full max-w-[500px]">
-          <tbody>
-            <Row label={t('calculator.revenue.average')} value={revenue} />
-            <Row
-              label={t('calculator.revenue.relative')}
-              value={revenueRelative}
-            />
-            <Divider />
-            <Row
-              label={t('calculator.charges.employer')}
-              value={employerCharges}
-              negativeValue
-            />
-            <Divider />
-            <Row label={t('calculator.salary.base')} value={salaryBase} />
-            <Row label={t('calculator.holiday')} value={holiday} />
-            <Row label={t('calculator.pension')} value={pension} />
-            <Row label={t('calculator.bonus')} value={bonus.monthly} />
-            <Divider />
-            <Row label={t('calculator.salary.gross')} value={salaryGross} />
-            <Divider />
-            <Row label="Remaining revenue" value={bonus.remainderGross} />
-            <OptionalRow
-              label={t('calculator.expenses.development')}
-              value={expenses.training}
-              isChecked={usesTraining}
-              onClick={() => setUsesTraining(!usesTraining)}
-            />
-            <OptionalRow
-              label={t('calculator.expenses.equipment')}
-              value={expenses.equipment}
-              isChecked={usesEquipment}
-              onClick={() => setUsesEquipment(!usesEquipment)}
-            />
-            <OptionalRow
-              label={t('calculator.expenses.travel')}
-              value={expenses.travel}
-              isChecked={usesTravel}
-              onClick={() => setUsesTravel(!usesTravel)}
-            />
-            <Divider />
-            {period === 'year' ? (
-              <>
-                <Row
-                  label={t('calculator.bonus.yearly')}
-                  value={bonus.yearly}
-                />
-                <Row label={t('calculator.total')} value={total} />
-              </>
-            ) : (
+          <table className="w-full">
+            <tbody>
+              <Row label={t('calculator.revenue.average')} value={revenue} />
               <Row
-                label={t('calculator.bonus.remainder')}
-                value={bonus.remainder}
+                label={t('calculator.revenue.relative')}
+                value={revenueRelative}
               />
-            )}
-          </tbody>
-        </table>
+              <Divider />
+              <Row
+                label={t('calculator.charges.employer')}
+                value={employerCharges}
+                negativeValue
+              />
+              <Divider />
+              <Row label={t('calculator.salary.base')} value={salaryBase} />
+              <Row label={t('calculator.holiday')} value={holiday} />
+              <Row label={t('calculator.pension')} value={pension} />
+              <Row label={t('calculator.bonus')} value={bonus.monthly} />
+              <Divider />
+              <Row label={t('calculator.salary.gross')} value={salaryGross} />
+              <Divider />
+              <Row label="Remaining revenue" value={bonus.remainderGross} />
+              <OptionalRow
+                label={t('calculator.expenses.development')}
+                value={expenses.training}
+                isChecked={usesTraining}
+                onClick={() => setUsesTraining(!usesTraining)}
+              />
+              <OptionalRow
+                label={t('calculator.expenses.equipment')}
+                value={expenses.equipment}
+                isChecked={usesEquipment}
+                onClick={() => setUsesEquipment(!usesEquipment)}
+              />
+              <OptionalRow
+                label={t('calculator.expenses.travel')}
+                value={expenses.travel}
+                isChecked={usesTravel}
+                onClick={() => setUsesTravel(!usesTravel)}
+              />
+              <Divider />
+              {period === 'year' ? (
+                <>
+                  <Row
+                    label={t('calculator.bonus.yearly')}
+                    value={bonus.yearly}
+                  />
+                  <Row label={t('calculator.total')} value={total} />
+                </>
+              ) : (
+                <Row
+                  label={t('calculator.bonus.remainder')}
+                  value={bonus.remainder}
+                />
+              )}
+            </tbody>
+          </table>
+        </div>
       </Grid>
     </div>
   )

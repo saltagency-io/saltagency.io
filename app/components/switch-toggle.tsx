@@ -25,13 +25,13 @@ export function SwitchToggle({
         className="flex items-center justify-center"
         onClick={() => onClick(active)}
       >
-        <span className="text-sm text-white">{labelInactive}</span>
+        <span className="text-sm font-bold">{labelInactive}</span>
         <div
           className={clsx(
             'mx-3 flex h-7 w-14 items-center rounded-full px-1 transition',
             {
               'bg-gray-500': !active,
-              'bg-purple-500': active,
+              'bg-blue-500': active,
             },
           )}
         >
@@ -44,7 +44,7 @@ export function SwitchToggle({
             )}
           />
         </div>
-        <span className="text-sm text-white">{labelActive}</span>
+        <span className="text-sm font-bold">{labelActive}</span>
       </div>
     </div>
   )

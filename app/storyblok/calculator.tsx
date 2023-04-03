@@ -5,7 +5,7 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 export function SbCalculator({ blok }: { blok: CalculatorBlok }) {
   return (
     <StoryBlokWrapper blok={blok} key={blok._uid}>
-      <Calculator />
+      <Calculator title={blok.title} subtitle={blok.subtitle} />
     </StoryBlokWrapper>
   )
 }
