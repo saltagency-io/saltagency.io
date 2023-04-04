@@ -21,6 +21,7 @@ import { storyblokInit, apiPlugin, StoryblokComponent } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
+import { Consent, CookieBar } from '~/components/cookie-bar'
 import { ErrorPage } from '~/components/errors'
 import {
   getAllVacancies,
@@ -31,6 +32,7 @@ import { components } from '~/storyblok'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
+import { getConsentSession } from '~/utils/consent.server'
 import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
 import * as gtag from '~/utils/gtag.client'
@@ -110,6 +112,7 @@ export type LoaderData = SerializeFrom<typeof loader>
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
+  const consentSession = await getConsentSession(request)
 
   const [layoutStory, labels, vacancies] = await Promise.all([
     getLayout(language, preview),
@@ -127,6 +130,9 @@ export async function loader({ request, context }: DataFunctionArgs) {
     requestInfo: {
       origin: getDomainUrl(request),
       path: new URL(request.url).pathname,
+      session: {
+        consent: consentSession.getConsent(),
+      },
     },
   }
 
@@ -154,6 +160,8 @@ export function App() {
   const location = useLocation()
   const { language } = useI18n()
 
+  const consent = data.requestInfo.session.consent
+
   React.useEffect(() => {
     if (data.ENV.GOOGLE_ANALYTICS?.length) {
       gtag.pageView(location.pathname, data.ENV.GOOGLE_ANALYTICS)
@@ -165,12 +173,17 @@ export function App() {
       <head>
         <Meta />
         <CanonicalUrl origin={data.requestInfo.origin} />
-
         <Links />
         <DynamicLinks />
+      </head>
+      <body>
+        <StoryblokComponent blok={data.layoutStory?.content} />
+        {!consent && !data.preview ? <CookieBar /> : null}
 
-        {process.env.NODE_ENV === 'development' ||
-        !data.ENV.GOOGLE_ANALYTICS ? null : (
+        <ScrollRestoration nonce={nonce} />
+        {data.ENV.NODE_ENV !== 'production' ||
+        !data.ENV.GOOGLE_ANALYTICS ||
+        consent !== Consent.Accepted ? null : (
           <>
             <link rel="preconnect" href="https://www.googletagmanager.com" />
             <script
@@ -204,10 +217,6 @@ export function App() {
           </>
         )}
         <SdLogo origin={data.requestInfo.origin} />
-      </head>
-      <body>
-        <StoryblokComponent blok={data.layoutStory?.content} />
-        <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <script
           nonce={nonce}
@@ -216,6 +225,17 @@ export function App() {
             __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
           }}
         />
+        {data.ENV.NODE_ENV !== 'production' ||
+        consent !== Consent.Accepted ? null : (
+          <script
+            async
+            defer
+            nonce={nonce}
+            type="text/javascript"
+            id="hs-script-loader"
+            src="https://js-na1.hs-scripts.com/20177448.js"
+          />
+        )}
         <LiveReload nonce={nonce} />
       </body>
     </html>

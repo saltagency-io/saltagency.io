@@ -134,7 +134,17 @@ app.use(
     crossOriginEmbedderPolicy: false,
     contentSecurityPolicy: {
       directives: {
-        'connect-src': MODE === 'development' ? ['ws:', "'self'"] : null,
+        'connect-src':
+          MODE === 'development'
+            ? ['ws:', "'self'"]
+            : [
+                "'self'",
+                '*.analytics.google.com',
+                '*.google-analytics.com',
+                '*.googletagmanager.com',
+                'api.hubspot.com',
+                'forms.hscollectedforms.net',
+              ],
         'font-src': "'self'",
         'frame-src': [
           "'self'",
@@ -147,7 +157,17 @@ app.use(
           'www.google.com',
         ],
         'frame-ancestors': ["'self'", 'app.storyblok.com'],
-        'img-src': ["'self'", 'data:', 'a.storyblok.com'],
+        'img-src': [
+          "'self'",
+          'data:',
+          'a.storyblok.com',
+          '*.google.com',
+          '*.google-analytics.com',
+          '*.googletagmanager.com',
+          '*.google.nl',
+          'forms.hsforms.com',
+          'track.hubspot.com',
+        ],
         'media-src': ["'self'", 'a.storyblok.com', 'data:', 'blob:'],
         'script-src': [
           "'strict-dynamic'",
@@ -156,7 +176,8 @@ app.use(
           'app.storyblok.com',
           'google.com',
           'gstatic.com',
-          'googletagmanager.com',
+          '*.googletagmanager.com',
+          'js-na1.hs-scripts.com', // hubspot
           // @ts-expect-error locals doesn't exist on helmet's Response type
           (req, res) => `'nonce-${res.locals.cspNonce}'`,
         ],
@@ -174,7 +195,8 @@ app.use((req, res, next) => {
   if (isSupportedLanguage(urlLang)) {
     res.locals.language = urlLang
     if (urlLang === defaultLanguage) {
-      res.redirect(req.path.replace(`/${urlLang}`, ''))
+      const redirectTo = req.path.replace(`/${urlLang}`, '')
+      res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
     }
   } else {
     const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage

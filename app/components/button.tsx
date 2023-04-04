@@ -51,8 +51,8 @@ function ButtonInner({
             'text-white': variant !== 'outline',
             'text-black': variant === 'outline',
             'px-6 py-4': size === 'large',
-            'px-6 py-2': size === 'medium',
-            'px-4 py-1 text-sm': size === 'small',
+            'px-6 py-3': size === 'medium',
+            'px-4 py-2 text-sm': size === 'small',
           },
         )}
       >

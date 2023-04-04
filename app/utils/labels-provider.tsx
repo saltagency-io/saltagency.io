@@ -2,8 +2,12 @@ import * as React from 'react'
 
 import type { DataSourceEntry } from '~/types'
 
+type Options = {
+  replace?: boolean
+}
+
 const LabelsContext = React.createContext<{
-  t: (key: string) => string
+  t: (key: string, opts?: Options) => string
   to: (key: string | null | undefined) => string | undefined
 }>({
   t: (key) => key,
@@ -11,6 +15,14 @@ const LabelsContext = React.createContext<{
 })
 
 LabelsContext.displayName = 'LabelsContext'
+
+function parseLink(label: string) {
+  const regex = /[\[]{1}([^\]\[]+)[\]]{1}[(]{1}([^()"]+)("(.+)")?[)]{1}/g
+  return label.replace(
+    regex,
+    '<a class="underlined active" href="$2" title="$4">$1</a>',
+  )
+}
 
 export function LabelsProvider({
   children,
@@ -28,8 +40,12 @@ export function LabelsProvider({
   )
 
   const translate = React.useCallback(
-    (key: string) => {
-      return labels[key] ?? `unknown:${key}`
+    (key: string, opts: Options = {}) => {
+      const label = labels[key] ?? `unknown:${key}`
+      if (opts.replace) {
+        return parseLink(label)
+      }
+      return label
     },
     [labels],
   )

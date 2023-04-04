@@ -72,8 +72,6 @@ export function ErrorSection({ title, subtitle, ctaText }: ErrorSectionProps) {
   const location = useLocation()
   const language = getLanguageFromPath(location.pathname)
 
-  console.log({ language })
-
   return (
     <div className="py-40">
       <Grid>
