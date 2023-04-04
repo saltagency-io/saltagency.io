@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Form, Link, useLocation } from '@remix-run/react'
+import { Form, useLocation } from '@remix-run/react'
 
 import clsx from 'clsx'
 
@@ -40,24 +40,26 @@ export function CookieBar() {
           __html: t('cookies.text', { replace: true }),
         }}
       />
-      <Button
-        name="consent"
-        value={Consent.Rejected}
-        type="submit"
-        size="medium"
-        variant="outline"
-      >
-        {t('cookies.reject')}
-      </Button>
-      <Button
-        name="consent"
-        value={Consent.Accepted}
-        type="submit"
-        size="medium"
-        variant="secondary"
-      >
-        {t('cookies.accept')}
-      </Button>
+      <div className="flex gap-x-4">
+        <Button
+          name="consent"
+          value={Consent.Rejected}
+          type="submit"
+          size="medium"
+          variant="outline"
+        >
+          {t('cookies.reject')}
+        </Button>
+        <Button
+          name="consent"
+          value={Consent.Accepted}
+          type="submit"
+          size="medium"
+          variant="secondary"
+        >
+          {t('cookies.accept')}
+        </Button>
+      </div>
     </Form>
   )
 }
