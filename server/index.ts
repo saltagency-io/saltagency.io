@@ -134,7 +134,8 @@ app.use(
     crossOriginEmbedderPolicy: false,
     contentSecurityPolicy: {
       directives: {
-        'connect-src': MODE === 'development' ? ['ws:', "'self'"] : null,
+        'connect-src':
+          MODE === 'development' ? ['ws:', "'self'"] : ["'self'", 'cdn.usefathom.com'],
         'font-src': "'self'",
         'frame-src': [
           "'self'",
