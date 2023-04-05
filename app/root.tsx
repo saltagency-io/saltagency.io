@@ -21,7 +21,6 @@ import { storyblokInit, apiPlugin, StoryblokComponent } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-import { Consent, CookieBar } from '~/components/cookie-bar'
 import { ErrorPage } from '~/components/errors'
 import {
   getAllVacancies,
@@ -32,7 +31,6 @@ import { components } from '~/storyblok'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
-import { getConsentSession } from '~/utils/consent.server'
 import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
 import * as gtag from '~/utils/gtag.client'
@@ -112,7 +110,6 @@ export type LoaderData = SerializeFrom<typeof loader>
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
-  const consentSession = await getConsentSession(request)
 
   const [layoutStory, labels, vacancies] = await Promise.all([
     getLayout(language, preview),
@@ -130,9 +127,6 @@ export async function loader({ request, context }: DataFunctionArgs) {
     requestInfo: {
       origin: getDomainUrl(request),
       path: new URL(request.url).pathname,
-      session: {
-        consent: consentSession.getConsent(),
-      },
     },
   }
 
@@ -147,9 +141,34 @@ export const meta: MetaFunction = () => {
   }
 }
 
-function CanonicalUrl({ origin }: { origin: string }) {
+declare global {
+  interface Window {
+    fathom: { trackPageview(): void } | undefined
+  }
+}
+
+type FathomQueue = Array<{ command: 'trackPageview' }>
+
+function CanonicalUrl({
+  origin,
+  fathomQueue,
+}: {
+  origin: string
+  fathomQueue: React.MutableRefObject<FathomQueue>
+}) {
   const { pathname } = useLocation()
   const canonicalUrl = removeTrailingSlash(`${origin}${pathname}`)
+
+  React.useEffect(() => {
+    if (window.fathom) {
+      window.fathom.trackPageview()
+    } else {
+      fathomQueue.current.push({ command: 'trackPageview' })
+    }
+    // Fathom looks uses the canonical URL to track visits, so we're using it
+    // as a dependency even though we're not using it explicitly
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canonicalUrl])
 
   return <link rel="canonical" href={canonicalUrl} />
 }
@@ -157,66 +176,43 @@ function CanonicalUrl({ origin }: { origin: string }) {
 export function App() {
   const data = useTypedLoaderData<typeof loader>()
   const nonce = useNonce()
-  const location = useLocation()
   const { language } = useI18n()
-
-  const consent = data.requestInfo.session.consent
-
-  React.useEffect(() => {
-    if (data.ENV.GOOGLE_ANALYTICS?.length) {
-      gtag.pageView(location.pathname, data.ENV.GOOGLE_ANALYTICS)
-    }
-  }, [data.ENV.GOOGLE_ANALYTICS, location])
+  const fathomQueue = React.useRef<FathomQueue>([])
 
   return (
     <html lang={language}>
       <head>
         <Meta />
-        <CanonicalUrl origin={data.requestInfo.origin} />
+        <CanonicalUrl
+          origin={data.requestInfo.origin}
+          fathomQueue={fathomQueue}
+        />
         <Links />
         <DynamicLinks />
       </head>
       <body>
         <StoryblokComponent blok={data.layoutStory?.content} />
-        {!consent && !data.preview ? <CookieBar /> : null}
-
         <ScrollRestoration nonce={nonce} />
-        {data.ENV.NODE_ENV !== 'production' ||
-        !data.ENV.GOOGLE_ANALYTICS ||
-        consent !== Consent.Accepted ? null : (
-          <>
-            <link rel="preconnect" href="https://www.googletagmanager.com" />
-            <script
-              async
-              nonce={nonce}
-              src={`https://www.googletagmanager.com/gtag/js?id=${data.ENV.GOOGLE_ANALYTICS}`}
-            />
-            <script
-              async
-              nonce={nonce}
-              src={`https://www.googletagmanager.com/gtag/js?id=${data.ENV.GOOGLE_AW_TAG}`}
-            />
-            <script
-              async
-              id="gtag-init"
-              nonce={nonce}
-              dangerouslySetInnerHTML={{
-                __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${data.ENV.GOOGLE_ANALYTICS}', {
-                page_path: window.location.pathname
-              });
-              gtag('config', '${data.ENV.GOOGLE_AW_TAG}', {
-                page_path: window.location.pathname
-              });
-              `,
-              }}
-            />
-          </>
-        )}
         <SdLogo origin={data.requestInfo.origin} />
+        {ENV.NODE_ENV === 'production' ? null : (
+          <script
+            nonce={nonce}
+            src="https://cdn.usefathom.com/script.js"
+            data-site="TRHLKHVT"
+            data-spa="history"
+            data-auto="false" // prevent tracking visit twice on initial page load
+            // data-excluded-domains="localhost" // TODO: add dev env here when we have this
+            defer
+            onLoad={() => {
+              fathomQueue.current.forEach(({ command }) => {
+                if (window.fathom) {
+                  window.fathom[command]()
+                }
+              })
+              fathomQueue.current = []
+            }}
+          />
+        )}
         <Scripts nonce={nonce} />
         <script
           nonce={nonce}
@@ -225,17 +221,6 @@ export function App() {
             __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
           }}
         />
-        {data.ENV.NODE_ENV !== 'production' ||
-        consent !== Consent.Accepted ? null : (
-          <script
-            async
-            defer
-            nonce={nonce}
-            type="text/javascript"
-            id="hs-script-loader"
-            src="https://js-na1.hs-scripts.com/20177448.js"
-          />
-        )}
         <LiveReload nonce={nonce} />
       </body>
     </html>

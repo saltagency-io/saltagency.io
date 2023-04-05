@@ -134,17 +134,7 @@ app.use(
     crossOriginEmbedderPolicy: false,
     contentSecurityPolicy: {
       directives: {
-        'connect-src':
-          MODE === 'development'
-            ? ['ws:', "'self'"]
-            : [
-                "'self'",
-                '*.analytics.google.com',
-                '*.google-analytics.com',
-                '*.googletagmanager.com',
-                'api.hubspot.com',
-                'forms.hscollectedforms.net',
-              ],
+        'connect-src': MODE === 'development' ? ['ws:', "'self'"] : null,
         'font-src': "'self'",
         'frame-src': [
           "'self'",
@@ -153,31 +143,17 @@ app.use(
           'youtu.be',
           'youtube-nocookie.com',
           'www.youtube-nocookie.com',
-          'google.com',
-          'www.google.com',
+          '*.google.com',
         ],
         'frame-ancestors': ["'self'", 'app.storyblok.com'],
-        'img-src': [
-          "'self'",
-          'data:',
-          'a.storyblok.com',
-          '*.google.com',
-          '*.google-analytics.com',
-          '*.googletagmanager.com',
-          '*.google.nl',
-          'forms.hsforms.com',
-          'track.hubspot.com',
-        ],
+        'img-src': ["'self'", 'data:', 'a.storyblok.com', 'cdn.usefathom.com'],
         'media-src': ["'self'", 'a.storyblok.com', 'data:', 'blob:'],
         'script-src': [
           "'strict-dynamic'",
           "'unsafe-eval'",
           "'self'",
           'app.storyblok.com',
-          'google.com',
-          'gstatic.com',
-          '*.googletagmanager.com',
-          'js-na1.hs-scripts.com', // hubspot
+          'cdn.usefathom.com',
           // @ts-expect-error locals doesn't exist on helmet's Response type
           (req, res) => `'nonce-${res.locals.cspNonce}'`,
         ],

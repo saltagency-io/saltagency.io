@@ -204,14 +204,14 @@ export default function ApplyPage() {
   const messageSuccessfullySent =
     applyFetcher.type === 'done' && applyFetcher.data.status === 'success'
 
-  React.useEffect(() => {
-    if (messageSuccessfullySent) {
-      ga.event({
-        action: 'conversion',
-        group: getRequiredGlobalEnvVar('GOOGLE_AW_CONVERSION_EVENT'),
-      })
-    }
-  }, [messageSuccessfullySent])
+  // React.useEffect(() => {
+  //   if (messageSuccessfullySent) {
+  //     ga.event({
+  //       action: 'conversion',
+  //       group: getRequiredGlobalEnvVar('GOOGLE_AW_CONVERSION_EVENT'),
+  //     })
+  //   }
+  // }, [messageSuccessfullySent])
 
   return (
     <main>
