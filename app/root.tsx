@@ -34,8 +34,8 @@ import vendorStyles from '~/styles/vendors.css'
 import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
 import {
-  getLanguageFromContext,
-  getLanguageFromPath,
+  getLocaleFromContext,
+  getLocaleFromPath,
   getStaticLabel,
 } from '~/utils/i18n'
 import { I18nProvider, useI18n } from '~/utils/i18n-provider'
@@ -108,12 +108,12 @@ export type LoaderData = SerializeFrom<typeof loader>
 
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
+  const locale = getLocaleFromContext(context)
 
   const [layoutStory, labels, vacancies] = await Promise.all([
-    getLayout(language, preview),
-    getDataSource('labels', language),
-    getAllVacancies(language, preview),
+    getLayout(locale, preview),
+    getDataSource('labels', locale),
+    getAllVacancies(locale, preview),
   ])
 
   const data = {
@@ -121,7 +121,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
     preview,
     labels,
     vacancies,
-    language,
+    locale,
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -180,11 +180,11 @@ function CanonicalUrl({
 export function App() {
   const data = useTypedLoaderData<typeof loader>()
   const nonce = useNonce()
-  const { language } = useI18n()
+  const { locale } = useI18n()
   const fathomQueue = React.useRef<FathomQueue>([])
 
   return (
-    <html lang={language}>
+    <html lang={locale}>
       <head>
         <Meta />
         <CanonicalUrl
@@ -240,7 +240,7 @@ export default function AppWithProviders() {
   const translatedSlugs = getTranslatedSlugsFromStory(story)
 
   return (
-    <I18nProvider language={data.language} translatedSlugs={translatedSlugs}>
+    <I18nProvider locale={data.locale} translatedSlugs={translatedSlugs}>
       <PreviewStateProvider value={{ preview: data.preview }}>
         <LabelsProvider data={data.labels}>
           <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
@@ -254,10 +254,10 @@ export default function AppWithProviders() {
 
 function ErrorDoc({ children }: { children: React.ReactNode }) {
   const nonce = useNonce()
-  const { language } = useI18n()
+  const { locale } = useI18n()
 
   return (
-    <html lang={language}>
+    <html lang={locale}>
       <head>
         <title>Oh no...</title>
         <Links />
@@ -272,7 +272,7 @@ function ErrorDoc({ children }: { children: React.ReactNode }) {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
+  const locale = getLocaleFromPath(location.pathname)
 
   console.error(error)
 
@@ -281,11 +281,11 @@ export function ErrorBoundary({ error }: { error: Error }) {
       <ErrorPage
         error={error}
         errorSectionProps={{
-          title: getStaticLabel('500.title', language),
-          subtitle: `${getStaticLabel('500.subtitle', language)} "${
+          title: getStaticLabel('500.title', locale),
+          subtitle: `${getStaticLabel('500.subtitle', locale)} "${
             location.pathname
           }"`,
-          ctaText: getStaticLabel('500.cta', language),
+          ctaText: getStaticLabel('500.cta', locale),
         }}
       />
     </ErrorDoc>
@@ -295,7 +295,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 export function CatchBoundary() {
   const caught = useCatch()
   const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
+  const locale = getLocaleFromPath(location.pathname)
 
   console.error('CatchBoundary', caught)
 
@@ -304,11 +304,11 @@ export function CatchBoundary() {
       <ErrorDoc>
         <ErrorPage
           errorSectionProps={{
-            title: getStaticLabel('404.title', language),
-            subtitle: `${getStaticLabel('404.subtitle', language)} "${
+            title: getStaticLabel('404.title', locale),
+            subtitle: `${getStaticLabel('404.subtitle', locale)} "${
               location.pathname
             }"`,
-            ctaText: getStaticLabel('404.cta', language),
+            ctaText: getStaticLabel('404.cta', locale),
           }}
         />
       </ErrorDoc>
@@ -320,11 +320,11 @@ export function CatchBoundary() {
       <ErrorDoc>
         <ErrorPage
           errorSectionProps={{
-            title: getStaticLabel('500.title', language),
-            subtitle: `${getStaticLabel('500.subtitle', language)} "${
+            title: getStaticLabel('500.title', locale),
+            subtitle: `${getStaticLabel('500.subtitle', locale)} "${
               location.pathname
             }"`,
-            ctaText: getStaticLabel('500.cta', language),
+            ctaText: getStaticLabel('500.cta', locale),
           }}
         />
       </ErrorDoc>

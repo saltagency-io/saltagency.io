@@ -13,10 +13,10 @@ import { H1, H2, H3, H4, H5, H6, Subtitle } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
 import type { Vacancy } from '~/types'
 import {
-  defaultLanguage,
-  getLanguageFromPath,
+  defaultLocale,
+  getLocaleFromPath,
   getStaticLabel,
-  isSupportedLanguage,
+  isSupportedLocale,
 } from '~/utils/i18n'
 import { useLocalizedMappers } from '~/utils/mappers'
 import { useVacancies } from '~/utils/providers'
@@ -70,7 +70,7 @@ type ErrorSectionProps = {
 
 export function ErrorSection({ title, subtitle, ctaText }: ErrorSectionProps) {
   const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
+  const locale = getLocaleFromPath(location.pathname)
 
   return (
     <div className="py-40">
@@ -85,7 +85,7 @@ export function ErrorSection({ title, subtitle, ctaText }: ErrorSectionProps) {
           <ButtonLink
             className="mx-auto"
             ringOffsetColor="black"
-            to={language === defaultLanguage ? '/' : `/${language}`}
+            to={locale === defaultLocale ? '/' : `/${locale}`}
           >
             {ctaText}
           </ButtonLink>
@@ -105,7 +105,7 @@ export function ErrorPage({
   vacancies?: Vacancy[]
 }) {
   const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
+  const locale = getLocaleFromPath(location.pathname)
 
   React.useEffect(() => {
     document.body.classList.add('header-light')
@@ -150,7 +150,7 @@ export function ErrorPage({
                   variant="secondary"
                   inverse
                 >
-                  {getStaticLabel('404.more', language)}
+                  {getStaticLabel('404.more', locale)}
                   <motion.div
                     animate={{
                       y: [0, -5, 5, 0],
@@ -168,10 +168,10 @@ export function ErrorPage({
 
               <div className="col-span-4 md:col-span-8 lg:col-span-5">
                 <Subtitle variant="pink" className="mb-4">
-                  {getStaticLabel('404.careers.subtitle', language)}
+                  {getStaticLabel('404.careers.subtitle', locale)}
                 </Subtitle>
                 <H3 as="h2" inverse className="mb-14 lg:mb-12">
-                  {getStaticLabel('404.careers.title', language)}
+                  {getStaticLabel('404.careers.title', locale)}
                 </H3>
               </div>
               <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
@@ -195,7 +195,7 @@ export function NotFoundError() {
   const { mapVacancy } = useLocalizedMappers()
   const location = useLocation()
 
-  const language = getLanguageFromPath(location.pathname)
+  const locale = getLocaleFromPath(location.pathname)
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
 
@@ -203,9 +203,9 @@ export function NotFoundError() {
     <ErrorPage
       vacancies={vacancies.map(mapVacancy)}
       errorSectionProps={{
-        title: getStaticLabel('404.title', language),
-        subtitle: `${getStaticLabel('404.subtitle', language)} "${pathname}"`,
-        ctaText: getStaticLabel('404.cta', language),
+        title: getStaticLabel('404.title', locale),
+        subtitle: `${getStaticLabel('404.subtitle', locale)} "${pathname}"`,
+        ctaText: getStaticLabel('404.cta', locale),
       }}
     />
   )
@@ -215,7 +215,7 @@ export function ServerError({ error }: { error?: Error }) {
   const matches = useMatches()
   const location = useLocation()
 
-  const language = getLanguageFromPath(location.pathname)
+  const locale = getLocaleFromPath(location.pathname)
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
 
@@ -223,9 +223,9 @@ export function ServerError({ error }: { error?: Error }) {
     <ErrorPage
       error={error}
       errorSectionProps={{
-        title: getStaticLabel('500.title', language),
-        subtitle: `${getStaticLabel('500.subtitle', language)} "${pathname}"`,
-        ctaText: getStaticLabel('500.cta', language),
+        title: getStaticLabel('500.title', locale),
+        subtitle: `${getStaticLabel('500.subtitle', locale)} "${pathname}"`,
+        ctaText: getStaticLabel('500.cta', locale),
       }}
     />
   )

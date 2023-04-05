@@ -1,28 +1,26 @@
-export type SupportedLanguage = 'en' | 'nl'
+export type SupportedLocale = 'en' | 'nl'
 
-export const defaultLanguage: SupportedLanguage = 'en'
-export const supportedLanguages: SupportedLanguage[] = ['en', 'nl']
+export const defaultLocale: SupportedLocale = 'en'
+export const supportedLocales: SupportedLocale[] = ['en', 'nl']
 
-export const isSupportedLanguage = (
-  lang: unknown,
-): lang is SupportedLanguage => {
+export const isSupportedLocale = (lang: unknown): lang is SupportedLocale => {
   return (
     typeof lang === 'string' &&
-    supportedLanguages.includes(lang as SupportedLanguage)
+    supportedLocales.includes(lang as SupportedLocale)
   )
 }
 
-export function getLanguageFromContext(context: Record<string, unknown>) {
-  const { language } = context
-  return isSupportedLanguage(language) ? language : defaultLanguage
+export function getLocaleFromContext(context: Record<string, unknown>) {
+  const { locale } = context
+  return isSupportedLocale(locale) ? locale : defaultLocale
 }
 
-export function getLanguageFromPath(path: string) {
+export function getLocaleFromPath(path: string) {
   const [urlLang] = path.slice(1).split('/')
-  return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
+  return isSupportedLocale(urlLang) ? urlLang : defaultLocale
 }
 
-const labels: Record<SupportedLanguage, Record<string, string>> = {
+const labels: Record<SupportedLocale, Record<string, string>> = {
   en: {
     '404.title': "Oh no.. it seems we've lost this page",
     '404.subtitle': "We searched everywhere but we couldn't find",
@@ -55,8 +53,8 @@ const labels: Record<SupportedLanguage, Record<string, string>> = {
   },
 }
 
-export function getStaticLabel(key: string, lang: SupportedLanguage) {
-  const labelSet = labels[lang]
-  if (!labelSet) return `unknown language: ${lang}`
+export function getStaticLabel(key: string, locale: SupportedLocale) {
+  const labelSet = labels[locale]
+  if (!labelSet) return `unknown locale: ${locale}`
   return labelSet[key] ?? `unknown static label key: ${key}`
 }

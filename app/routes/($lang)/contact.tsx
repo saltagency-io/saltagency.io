@@ -30,8 +30,8 @@ import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import {
-  defaultLanguage,
-  getLanguageFromContext,
+  defaultLocale,
+  getLocaleFromContext,
   getStaticLabel,
 } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
@@ -60,10 +60,10 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
-  getSitemapEntries: (language) => {
+  getSitemapEntries: (locale) => {
     return [
       {
-        route: `${language === defaultLanguage ? '' : `/${language}`}/contact`,
+        route: `${locale === defaultLocale ? '' : `/${locale}`}/contact`,
         priority: 0.4,
       },
     ]
@@ -73,8 +73,8 @@ export const handle: Handle = {
 
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
-  const story = await getStoryBySlug('contact', language, preview)
+  const locale = getLocaleFromContext(context)
+  const story = await getStoryBySlug('contact', locale, preview)
 
   if (!story) {
     throw json({}, { status: 404 })
@@ -94,7 +94,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
-  const { requestInfo, language } = parentsData.root as RootLoaderData
+  const { requestInfo, locale } = parentsData.root as RootLoaderData
 
   if (data?.story) {
     const meta = data.story.content.metatags
@@ -108,8 +108,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
     }
   } else {
     return {
-      title: getStaticLabel('404.meta.title', language),
-      description: getStaticLabel('404.meta.description', language),
+      title: getStaticLabel('404.meta.title', locale),
+      description: getStaticLabel('404.meta.description', locale),
     }
   }
 }

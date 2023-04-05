@@ -16,7 +16,7 @@ import {
 
 import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
-import { defaultLanguage } from '~/utils/i18n'
+import { defaultLocale } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 
@@ -52,7 +52,7 @@ function NavLink({
 
 function MobileMenuList({ menu }: { menu: LinkType[] }) {
   const { isExpanded } = useMenuButtonContext()
-  const { language, isDefaultLanguage } = useI18n()
+  const { locale, isDefaultLocale } = useI18n()
   const { t } = useLabels()
   const shouldReduceMotion = useReducedMotion()
 
@@ -102,7 +102,7 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
                 <MenuLink
                   as={Link}
                   className={linkClassName}
-                  to={isDefaultLanguage ? '/' : `/${language}`}
+                  to={isDefaultLocale ? '/' : `/${locale}`}
                 >
                   {t('home')}
                 </MenuLink>
@@ -271,13 +271,13 @@ type Props = {
 }
 
 export function Navbar({ menu }: Props) {
-  const { language } = useI18n()
+  const { locale } = useI18n()
 
   return (
     <div className="absolute top-0 left-0 right-0 z-10 mx-8vw py-8 lg:mt-12 lg:py-8">
       <nav className="mx-auto flex max-w-5xl items-center justify-between">
         <Link
-          to={language !== defaultLanguage ? `/${language}` : '/'}
+          to={locale !== defaultLocale ? `/${locale}` : '/'}
           prefetch="intent"
           title="home"
         >

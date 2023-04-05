@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import type { DataFunctionArgs } from '@remix-run/node'
 import { json, type MetaFunction, redirect } from '@remix-run/node'
-import { useCatch } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
@@ -12,12 +11,11 @@ import {
   useTypedLoaderData,
 } from 'remix-typedjson'
 
-import { NotFoundError } from '~/components/errors'
 import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import {getLanguageFromContext, getStaticLabel} from '~/utils/i18n'
+import {getLocaleFromContext, getStaticLabel} from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
@@ -31,8 +29,8 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
-  getSitemapEntries: async (language) => {
-    const pages = await getAllVacancies(language)
+  getSitemapEntries: async (locale) => {
+    const pages = await getAllVacancies(locale)
     return (pages || []).map((page) => ({
       route: `/${page.full_slug}`,
       priority: 0.7,
@@ -47,10 +45,10 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   }
 
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
+  const locale = getLocaleFromContext(context)
   const { pathname } = new URL(request.url)
 
-  const story = await getVacancyBySlug(params.slug, language, preview)
+  const story = await getVacancyBySlug(params.slug, locale, preview)
 
   if (!story) {
     throw json({}, { status: 404 })
@@ -74,7 +72,7 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
-  const { requestInfo, language } = parentsData.root as RootLoaderData
+  const { requestInfo, locale } = parentsData.root as RootLoaderData
 
   if (data?.story) {
     const meta = data.story.content.metatags
@@ -88,8 +86,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
     }
   } else {
     return {
-      title: getStaticLabel('404.meta.title', language),
-      description: getStaticLabel('404.meta.description', language),
+      title: getStaticLabel('404.meta.title', locale),
+      description: getStaticLabel('404.meta.description', locale),
     }
   }
 }

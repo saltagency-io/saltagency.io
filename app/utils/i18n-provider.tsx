@@ -2,18 +2,18 @@ import * as React from 'react'
 
 import type { TranslatedSlug } from '~/types'
 import {
-  defaultLanguage,
-  supportedLanguages,
-  isSupportedLanguage,
-  type SupportedLanguage,
+  defaultLocale,
+  supportedLocales,
+  isSupportedLocale,
+  type SupportedLocale,
 } from '~/utils/i18n'
 
 type I18nContextState = {
-  language: SupportedLanguage
-  supportedLanguages: SupportedLanguage[]
-  changeLanguage: (lang: SupportedLanguage) => void
+  locale: SupportedLocale
+  supportedLocales: SupportedLocale[]
+  changeLocale: (lang: SupportedLocale) => void
   translatedSlugs: TranslatedSlug[]
-  isDefaultLanguage: boolean
+  isDefaultLocale: boolean
 }
 
 export const I18nContext = React.createContext<I18nContextState>(
@@ -24,30 +24,30 @@ export const useI18n = () => React.useContext(I18nContext)
 
 export const I18nProvider = ({
   children,
-  language,
+  locale,
   translatedSlugs = [],
 }: {
   children: React.ReactNode
-  language: unknown
+  locale: unknown
   translatedSlugs?: TranslatedSlug[]
 }) => {
-  const [currentLanguage, setCurrentLanguage] =
-    React.useState<SupportedLanguage>(
-      isSupportedLanguage(language) ? language : defaultLanguage,
+  const [currentLocale, setCurrentLocale] =
+    React.useState<SupportedLocale>(
+      isSupportedLocale(locale) ? locale : defaultLocale,
     )
 
-  const changeLanguage = React.useCallback((lang: string) => {
-    if (isSupportedLanguage(lang)) {
-      setCurrentLanguage(lang)
+  const changeLocale = React.useCallback((locale: string) => {
+    if (isSupportedLocale(locale)) {
+      setCurrentLocale(locale)
     }
   }, [])
 
   const value: I18nContextState = {
-    changeLanguage,
+    changeLocale,
     translatedSlugs,
-    supportedLanguages: supportedLanguages,
-    language: currentLanguage,
-    isDefaultLanguage: currentLanguage === defaultLanguage,
+    supportedLocales: supportedLocales,
+    locale: currentLocale,
+    isDefaultLocale: currentLocale === defaultLocale,
   }
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>

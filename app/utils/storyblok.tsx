@@ -22,7 +22,7 @@ import type {
   TranslatedSlug,
   VacancyStoryContent,
 } from '~/types'
-import { defaultLanguage } from '~/utils/i18n'
+import { defaultLocale } from '~/utils/i18n'
 import { usePreviewState } from '~/utils/providers'
 
 export function isPreview(request: Request) {
@@ -44,7 +44,7 @@ export function getTranslatedSlugsFromStory(
   } else {
     return [
       {
-        lang: defaultLanguage,
+        lang: defaultLocale,
         name: story.name,
         path: story.default_full_slug ?? '',
       },

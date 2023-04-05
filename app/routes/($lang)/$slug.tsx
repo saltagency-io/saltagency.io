@@ -19,8 +19,8 @@ import { pathedRoutes } from '~/other-routes.server'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
 import {
-  defaultLanguage,
-  getLanguageFromContext,
+  defaultLocale,
+  getLocaleFromContext,
   getStaticLabel,
 } from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
@@ -36,12 +36,12 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
-  getSitemapEntries: async (language) => {
-    const pages = await getStoriesForSitemap(language)
+  getSitemapEntries: async (locale) => {
+    const pages = await getStoriesForSitemap(locale)
     return pages.map((page) => ({
       route: `${
         page.slug === 'home'
-          ? `${language === defaultLanguage ? '' : `/${language}`}`
+          ? `${locale === defaultLocale ? '' : `/${locale}`}`
           : `/${page.full_slug}`
       }`,
       priority: 0.4,
@@ -52,7 +52,7 @@ export const handle: Handle = {
 
 export async function loader({ params, request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
+  const locale = getLocaleFromContext(context)
   const { pathname } = new URL(request.url)
 
   // Block the layout path when not in preview mode
@@ -61,11 +61,11 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   }
 
   const slug =
-    !params.slug && params.lang === language
+    !params.slug && params.lang === locale
       ? 'home'
       : params.slug ?? params.lang ?? 'home'
 
-  const story = await getStoryBySlug(slug, language, preview)
+  const story = await getStoryBySlug(slug, locale, preview)
 
   if (!story) {
     throw json({}, { status: 404 })
@@ -95,7 +95,7 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 }
 
 export const meta: MetaFunction = ({ data, parentsData }) => {
-  const { requestInfo, language } = parentsData.root as RootLoaderData
+  const { requestInfo, locale } = parentsData.root as RootLoaderData
 
   if (data?.story) {
     const meta = data.story.content.metatags
@@ -109,8 +109,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
     }
   } else {
     return {
-      title: getStaticLabel('404.meta.title', language),
-      description: getStaticLabel('404.meta.description', language),
+      title: getStaticLabel('404.meta.title', locale),
+      description: getStaticLabel('404.meta.description', locale),
     }
   }
 }

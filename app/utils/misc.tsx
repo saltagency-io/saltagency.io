@@ -5,7 +5,7 @@ import { Link } from '@remix-run/react'
 
 import type { NonNullProperties, TranslatedSlug } from '~/types'
 import type { getEnv } from '~/utils/env.server'
-import { defaultLanguage } from '~/utils/i18n'
+import { defaultLocale } from '~/utils/i18n'
 import type { ValidateFn } from '~/utils/validators'
 
 export const LOGO_URL =
@@ -187,7 +187,7 @@ export function createAlternateLinks(slugs: TranslatedSlug[], origin: string) {
     rel: 'alternate',
     hrefLang: slug.lang,
     href: removeTrailingSlash(
-      `${origin}${slug.lang === defaultLanguage ? '' : `/${slug.lang}`}/${
+      `${origin}${slug.lang === defaultLocale ? '' : `/${slug.lang}`}/${
         slug.path
       }`,
     ),

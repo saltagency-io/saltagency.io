@@ -5,29 +5,29 @@ import { useLocation, useNavigate, useRevalidator } from '@remix-run/react'
 import clsx from 'clsx'
 
 import { IconChevronDown } from '~/components/icons'
-import { defaultLanguage, isSupportedLanguage } from '~/utils/i18n'
+import { defaultLocale, isSupportedLocale } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 import { removeTrailingSlash } from '~/utils/misc'
 
-export function LanguageSwitch() {
+export function LocaleSwitch() {
   const { t } = useLabels()
-  const { language, translatedSlugs, changeLanguage } = useI18n()
+  const { locale, translatedSlugs, changeLocale } = useI18n()
   const navigate = useNavigate()
   const revalidator = useRevalidator()
   const location = useLocation()
 
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const lang = event.target.value
-    if (isSupportedLanguage(lang) && lang !== language) {
-      changeLanguage(lang)
+    const newLocale = event.target.value
+    if (isSupportedLocale(newLocale) && newLocale !== locale) {
+      changeLocale(newLocale)
 
-      const slug = translatedSlugs.find((s) => s.lang === lang)
+      const slug = translatedSlugs.find((s) => s.lang === newLocale)
       if (!slug) return
 
       navigate(
         removeTrailingSlash(
-          lang === defaultLanguage
+          newLocale === defaultLocale
             ? `/${slug.path}${location.search}`
             : `/${slug.lang}/${slug.path}${location.search}`,
         ),
@@ -39,13 +39,13 @@ export function LanguageSwitch() {
 
   return (
     <div className="relative inline-block">
-      <label htmlFor="lang" className="sr-only">
+      <label htmlFor="locale" className="sr-only">
         {t('language.change')}
       </label>
       <select
-        id="lang"
-        name="language"
-        value={language}
+        id="locale"
+        name="locale"
+        value={locale}
         onChange={onChange}
         className={clsx(
           'border-secondary appearance-none rounded-lg border-2 bg-transparent py-2 pr-10 pl-4 text-white',

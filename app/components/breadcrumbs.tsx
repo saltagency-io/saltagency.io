@@ -13,7 +13,7 @@ import { SdBreadCrumbs } from '~/utils/structured-data'
 
 export function Breadcrumbs() {
   const location = useLocation()
-  const { language } = useI18n()
+  const { locale } = useI18n()
   const { requestInfo }: RootLoaderData = useRouteLoaderData('root')
 
   const parts = location.pathname.slice(1).split('/')
@@ -27,7 +27,7 @@ export function Breadcrumbs() {
     }
   })
 
-  if (breadcrumbs[0].path === `/${language}`) {
+  if (breadcrumbs[0].path === `/${locale}`) {
     breadcrumbs = breadcrumbs.slice(1)
   }
 

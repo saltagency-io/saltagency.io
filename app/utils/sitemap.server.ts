@@ -3,13 +3,13 @@ import type { EntryContext } from '@remix-run/node'
 import { isEqual } from 'lodash'
 
 import type { Handle, SitemapEntry } from '~/types'
-import type { SupportedLanguage } from '~/utils/i18n'
+import type { SupportedLocale } from '~/utils/i18n'
 import { getDomainUrl, removeTrailingSlash, typedBoolean } from '~/utils/misc'
 
 export async function getSitemapXml(
   request: Request,
   remixContext: EntryContext,
-  language: SupportedLanguage,
+  locale: SupportedLocale,
 ) {
   const domainUrl = getDomainUrl(request)
 
@@ -32,7 +32,7 @@ export async function getSitemapXml(
 
         const handle = mod.handle as Handle | undefined
         if (handle?.getSitemapEntries) {
-          return handle.getSitemapEntries(language, request)
+          return handle.getSitemapEntries(locale, request)
         }
 
         // Exclude resource routes from the sitemap

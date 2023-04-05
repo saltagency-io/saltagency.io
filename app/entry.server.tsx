@@ -8,7 +8,7 @@ import { PassThrough } from 'stream'
 
 import { routes as otherRoutes } from '~/other-routes.server'
 import { getEnv } from '~/utils/env.server'
-import { defaultLanguage, isSupportedLanguage } from '~/utils/i18n'
+import { defaultLocale, isSupportedLocale } from '~/utils/i18n'
 import { I18nProvider } from '~/utils/i18n-provider'
 import { NonceProvider } from '~/utils/nonce-provider'
 
@@ -73,16 +73,16 @@ function handleBotRequest(...args: DocRequestArgs) {
   ] = args
 
   const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
-  const language = isSupportedLanguage(loadContext.language)
-    ? loadContext.language
-    : defaultLanguage
+  const locale = isSupportedLocale(loadContext.locale)
+    ? loadContext.locale
+    : defaultLocale
 
   return new Promise((resolve, reject) => {
     let didError = false
 
     const { pipe, abort } = renderToPipeableStream(
       <NonceProvider value={nonce}>
-        <I18nProvider language={language}>
+        <I18nProvider locale={locale}>
           <RemixServer context={remixContext} url={request.url} />
         </I18nProvider>
       </NonceProvider>,
@@ -127,16 +127,16 @@ function handleBrowserRequest(...args: DocRequestArgs) {
   ] = args
 
   const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
-  const language = isSupportedLanguage(loadContext.language)
-    ? loadContext.language
-    : defaultLanguage
+  const locale = isSupportedLocale(loadContext.locale)
+    ? loadContext.locale
+    : defaultLocale
 
   return new Promise((resolve, reject) => {
     let didError = false
 
     const { pipe, abort } = renderToPipeableStream(
       <NonceProvider value={nonce}>
-        <I18nProvider language={language}>
+        <I18nProvider locale={locale}>
           <RemixServer
             context={remixContext}
             url={request.url}

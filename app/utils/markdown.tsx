@@ -32,7 +32,7 @@ function useComponents({
   responsive = true,
   linksInNewTab = false,
 }: Omit<Props, 'children'>): Components {
-  const { language, isDefaultLanguage } = useI18n()
+  const { locale, isDefaultLocale } = useI18n()
 
   const alignClassName = `text-${textAlign}`
   const colorClassName = `text-${textColor}`
@@ -62,9 +62,9 @@ function useComponents({
     a: (props) => (
       <AnchorOrLink
         to={
-          props.href?.includes(':') || isDefaultLanguage
+          props.href?.includes(':') || isDefaultLocale
             ? props.href
-            : `/${language}${props.href}`
+            : `/${locale}${props.href}`
         }
         target={linksInNewTab ? '_blank' : undefined}
         rel={linksInNewTab ? 'noopener' : undefined}

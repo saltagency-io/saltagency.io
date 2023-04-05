@@ -5,7 +5,7 @@ import { Link } from '@remix-run/react'
 import clsx from 'clsx'
 
 import { Grid } from '~/components/grid'
-import { LanguageSwitch } from '~/components/language-switch'
+import { LocaleSwitch } from '~/components/locale-switch'
 import { Paragraph } from '~/components/typography'
 import type { LinkType } from '~/types'
 import { Markdown } from '~/utils/markdown'
@@ -143,7 +143,7 @@ export function Footer({
                 </li>
               ))}
             </ul>
-            <LanguageSwitch />
+            <LocaleSwitch />
           </div>
         </div>
       </Grid>

@@ -10,15 +10,15 @@ import onFinished from 'on-finished'
 import path from 'path'
 import serverTiming from 'server-timing'
 
-type SupportedLanguage = 'en' | 'nl'
+import type { SupportedLocale } from '~/utils/i18n'
 
-const defaultLanguage: SupportedLanguage = 'en'
-const supportedLanguages: SupportedLanguage[] = ['en', 'nl']
+const defaultLocale: SupportedLocale = 'en'
+const supportedLocales: SupportedLocale[] = ['en', 'nl']
 
-const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
+const isSupportedLanguage = (locale: unknown): locale is SupportedLocale => {
   return (
-    typeof lang === 'string' &&
-    supportedLanguages.includes(lang as SupportedLanguage)
+    typeof locale === 'string' &&
+    supportedLocales.includes(locale as SupportedLocale)
   )
 }
 
@@ -135,7 +135,9 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         'connect-src':
-          MODE === 'development' ? ['ws:', "'self'"] : ["'self'", 'cdn.usefathom.com'],
+          MODE === 'development'
+            ? ['ws:', "'self'"]
+            : ["'self'", 'cdn.usefathom.com'],
         'font-src': "'self'",
         'frame-src': [
           "'self'",
@@ -167,20 +169,20 @@ app.use(
 
 // i18n middleware
 app.use((req, res, next) => {
-  const [urlLang] = req.path.slice(1).split('/')
+  const [localeFromUrl] = req.path.slice(1).split('/')
 
-  if (isSupportedLanguage(urlLang)) {
-    res.locals.language = urlLang
-    if (urlLang === defaultLanguage) {
-      const redirectTo = req.path.replace(`/${urlLang}`, '')
+  if (isSupportedLanguage(localeFromUrl)) {
+    res.locals.locale = localeFromUrl
+    if (localeFromUrl === defaultLocale) {
+      const redirectTo = req.path.replace(`/${localeFromUrl}`, '')
       res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
     }
   } else {
-    const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage
-    res.locals.language = lang
+    const prefLocale = req.acceptsLanguages(...supportedLocales) || defaultLocale
+    res.locals.locale = prefLocale
 
-    if (lang !== defaultLanguage) {
-      const path = `${lang}${req.path}`
+    if (prefLocale !== defaultLocale) {
+      const path = `${prefLocale}${req.path}`
       res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
     }
   }
@@ -195,7 +197,7 @@ function getRequestHandlerOptions(): Parameters<
   function getLoadContext(req: any, res: any) {
     return {
       cspNonce: res.locals.cspNonce,
-      language: res.locals.language,
+      locale: res.locals.locale,
     }
   }
   return { build, mode: MODE, getLoadContext }

@@ -15,7 +15,7 @@ type Props = {
 }
 
 export function Vacancy({ children, title, summary }: Props) {
-  const { language } = useI18n()
+  const { locale } = useI18n()
   const { t } = useLabels()
 
   return (
@@ -30,7 +30,7 @@ export function Vacancy({ children, title, summary }: Props) {
             {summary}
           </H4>
           <ButtonLink
-            to={`${routes[language]}?role=${encodeURIComponent(title)}`}
+            to={`${routes[locale]}?role=${encodeURIComponent(title)}`}
           >
             {t('cta.apply')}
           </ButtonLink>

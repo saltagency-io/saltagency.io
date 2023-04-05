@@ -10,13 +10,13 @@ import type {
   Vacancy,
   VacancyStoryContent,
 } from '~/types'
-import { defaultLanguage, SupportedLanguage } from '~/utils/i18n'
+import { defaultLocale, SupportedLocale } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
 import { removeTrailingSlash } from '~/utils/misc'
 
 export function formatUrl(
   url: string,
-  language: SupportedLanguage,
+  locale: SupportedLocale,
   anchor?: string,
 ) {
   if (url.includes(':')) {
@@ -25,8 +25,8 @@ export function formatUrl(
 
   let formatted = url
 
-  if (url === 'home' || url === `${language}/home`) {
-    formatted = language !== defaultLanguage ? `/${language}` : '/'
+  if (url === 'home' || url === `${locale}/home`) {
+    formatted = locale !== defaultLocale ? `/${locale}` : '/'
   }
   if (!formatted.startsWith('/')) {
     formatted = `/${formatted}`
@@ -38,7 +38,7 @@ export function formatUrl(
   return removeTrailingSlash(formatted)
 }
 
-export function mapLink(language: SupportedLanguage = defaultLanguage) {
+export function mapLink(locale: SupportedLocale = defaultLocale) {
   return (link: LinkBlok): LinkType => {
     const urlTarget =
       link.target.linktype === 'story' && link.target.story?.full_slug
@@ -47,7 +47,7 @@ export function mapLink(language: SupportedLanguage = defaultLanguage) {
 
     return {
       id: link?._uid,
-      url: formatUrl(urlTarget ?? '', language, link.anchor),
+      url: formatUrl(urlTarget ?? '', locale, link.anchor),
       text: link?.text,
     }
   }
@@ -62,15 +62,15 @@ export function mapAsset(asset: Asset): Image {
 }
 
 export function useLocalizedMappers() {
-  const { language } = useI18n()
+  const { locale } = useI18n()
   return {
-    mapLink: mapLink(language),
-    mapSection: mapSection(language),
-    mapVacancy: mapVacancy(language),
+    mapLink: mapLink(locale),
+    mapSection: mapSection(locale),
+    mapVacancy: mapVacancy(locale),
   }
 }
 
-export function mapSection(language = defaultLanguage) {
+export function mapSection(locale = defaultLocale) {
   return (section: SectionBlok): Section => ({
     id: section._uid,
     icon: section.icon,
@@ -78,15 +78,15 @@ export function mapSection(language = defaultLanguage) {
     text: section.text,
     link:
       Array.isArray(section.link) && section.link.length
-        ? mapLink(language)(section.link[0])
+        ? mapLink(locale)(section.link[0])
         : undefined,
   })
 }
 
-export function mapVacancy(lang = defaultLanguage) {
+export function mapVacancy(lang = defaultLocale) {
   return (vacancy: StoryData<VacancyStoryContent>): Vacancy => {
     let slug = ''
-    if (lang === defaultLanguage) {
+    if (lang === defaultLocale) {
       slug = vacancy.default_full_slug ?? ''
     } else {
       const translatedSlug = vacancy.translated_slugs?.find(

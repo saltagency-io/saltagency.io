@@ -11,7 +11,7 @@ export function SbButton({
   blok: ButtonBlok
   ringOffsetColor: 'white' | 'black'
 }) {
-  const { language } = useI18n()
+  const { locale } = useI18n()
   const { link, anchor, icon, text, variant } = blok
 
   const urlTarget =
@@ -19,7 +19,7 @@ export function SbButton({
       ? link.story?.full_slug
       : link.cached_url
 
-  const url = formatUrl(urlTarget, language, anchor)
+  const url = formatUrl(urlTarget, locale, anchor)
 
   const Icon = sbIconMap[icon ?? '']
 

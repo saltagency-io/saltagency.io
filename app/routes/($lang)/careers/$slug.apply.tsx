@@ -1,12 +1,8 @@
 import * as React from 'react'
 
-import type {
-  ActionFunction,
-  HeadersFunction,
-  MetaFunction,
-} from '@remix-run/node'
+import type { ActionFunction, MetaFunction } from '@remix-run/node'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
-import { useCatch, useFetcher, useSearchParams } from '@remix-run/react'
+import { useFetcher, useSearchParams } from '@remix-run/react'
 
 import ReCaptcha from 'react-google-recaptcha'
 import type { UseDataFunctionReturn } from 'remix-typedjson'
@@ -14,7 +10,6 @@ import { typedjson } from 'remix-typedjson'
 
 import { Breadcrumbs } from '~/components/breadcrumbs'
 import { Button } from '~/components/button'
-import { NotFoundError } from '~/components/errors'
 import {
   ErrorPanel,
   Field,
@@ -30,8 +25,7 @@ import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import * as ga from '~/utils/gtag.client'
-import { getLanguageFromContext, SupportedLanguage } from '~/utils/i18n'
+import { getLocaleFromContext, SupportedLocale } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
 import {
   createAlternateLinks,
@@ -51,7 +45,7 @@ import {
   isValidUrl,
 } from '~/utils/validators'
 
-export const routes: Record<SupportedLanguage, string> = {
+export const routes: Record<SupportedLocale, string> = {
   en: 'apply',
   nl: 'solliciteren',
 }
@@ -65,10 +59,10 @@ const dynamicLinks: DynamicLinksFunction<
 }
 
 export const handle: Handle = {
-  getSitemapEntries: async (language) => {
-    const pages = await getAllVacancies(language)
+  getSitemapEntries: async (locale) => {
+    const pages = await getAllVacancies(locale)
     return (pages || []).map((page) => ({
-      route: `/${page.full_slug}/${routes[language]}`,
+      route: `/${page.full_slug}/${routes[locale]}`,
       priority: 0.6,
     }))
   },
@@ -81,10 +75,10 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   }
 
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
+  const locale = getLocaleFromContext(context)
   const { pathname } = new URL(request.url)
 
-  let story = await getVacancyBySlug(params.slug, language, preview)
+  let story = await getVacancyBySlug(params.slug, locale, preview)
 
   if (!story) {
     throw json({}, { status: 404 })
@@ -96,12 +90,12 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
     default_full_slug: `${story.default_full_slug}/${routes.en}`,
     translated_slugs: (story.translated_slugs || []).map((slug) => ({
       ...slug,
-      path: `${slug.path}/${routes[slug.lang as SupportedLanguage]}`,
+      path: `${slug.path}/${routes[slug.lang as SupportedLocale]}`,
     })),
   }
 
-  if (pathname !== `/${story.full_slug}/${routes[language]}`) {
-    throw redirect(`/${story.full_slug}/${routes[language]}`)
+  if (pathname !== `/${story.full_slug}/${routes[locale]}`) {
+    throw redirect(`/${story.full_slug}/${routes[locale]}`)
   }
 
   const data = {
@@ -117,31 +111,31 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   })
 }
 
-const translatedTitle = (role: string, lang: SupportedLanguage) => {
+const translatedTitle = (role: string, locale: SupportedLocale) => {
   const titles = {
     en: `Apply for ${role} | Salt`,
     nl: `Soliciteer op ${role} | Salt`,
   }
-  return titles[lang]
+  return titles[locale]
 }
 
-const translatedDescription = (role: string, lang: SupportedLanguage) => {
+const translatedDescription = (role: string, locale: SupportedLocale) => {
   const descriptions = {
     en: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
     nl: `Soliciteer op ${role} at Salt. Wil jij onderdeel zijn van een nieuwe en ambitieuze consultancy startup?`,
   }
-  return descriptions[lang]
+  return descriptions[locale]
 }
 
 export const meta: MetaFunction = ({ data, parentsData, location }) => {
-  const { requestInfo, language } = parentsData.root as RootLoaderData
+  const { requestInfo, locale } = parentsData.root as RootLoaderData
   const params = new URLSearchParams(location.search)
   const role = params.get('role') ?? ''
 
   return {
     ...getSocialMetas({
-      title: translatedTitle(role, language),
-      description: translatedDescription(role, language),
+      title: translatedTitle(role, locale),
+      description: translatedDescription(role, locale),
       url: getUrl(requestInfo),
     }),
   }
