@@ -201,7 +201,7 @@ export function App() {
             data-site="TRHLKHVT"
             data-spa="history"
             data-auto="false" // prevent tracking visit twice on initial page load
-            // data-excluded-domains="localhost" // TODO: add dev env here when we have this
+            data-excluded-domains="localhost" // TODO: add dev env here when we have this
             defer
             onLoad={() => {
               fathomQueue.current.forEach(({ command }) => {
