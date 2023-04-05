@@ -33,7 +33,6 @@ import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
 import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
-import * as gtag from '~/utils/gtag.client'
 import {
   getLanguageFromContext,
   getLanguageFromPath,
@@ -143,7 +142,12 @@ export const meta: MetaFunction = () => {
 
 declare global {
   interface Window {
-    fathom: { trackPageview(): void } | undefined
+    fathom:
+      | {
+          trackPageview(): void
+          trackGoal(id: string, cents: number): void
+        }
+      | undefined
   }
 }
 

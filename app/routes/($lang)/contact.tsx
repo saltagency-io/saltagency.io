@@ -29,7 +29,6 @@ import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import * as ga from '~/utils/gtag.client'
 import {
   defaultLanguage,
   getLanguageFromContext,
@@ -165,14 +164,11 @@ export default function ContactPage() {
   const messageSuccessfullySent =
     contactFetcher.type === 'done' && contactFetcher.data.status === 'success'
 
-  // React.useEffect(() => {
-  //   if (messageSuccessfullySent) {
-  //     ga.event({
-  //       action: 'conversion',
-  //       group: getRequiredGlobalEnvVar('GOOGLE_AW_CONVERSION_EVENT'),
-  //     })
-  //   }
-  // }, [messageSuccessfullySent])
+  React.useEffect(() => {
+    if (window.fathom && messageSuccessfullySent) {
+      window.fathom.trackGoal('BDSMAWUC', 0)
+    }
+  }, [messageSuccessfullySent])
 
   return (
     <main>

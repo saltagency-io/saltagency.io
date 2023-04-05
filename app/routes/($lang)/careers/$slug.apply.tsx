@@ -204,14 +204,11 @@ export default function ApplyPage() {
   const messageSuccessfullySent =
     applyFetcher.type === 'done' && applyFetcher.data.status === 'success'
 
-  // React.useEffect(() => {
-  //   if (messageSuccessfullySent) {
-  //     ga.event({
-  //       action: 'conversion',
-  //       group: getRequiredGlobalEnvVar('GOOGLE_AW_CONVERSION_EVENT'),
-  //     })
-  //   }
-  // }, [messageSuccessfullySent])
+  React.useEffect(() => {
+    if (window.fathom && messageSuccessfullySent) {
+      window.fathom.trackGoal('51XZFYES', 0)
+    }
+  }, [messageSuccessfullySent])
 
   return (
     <main>
