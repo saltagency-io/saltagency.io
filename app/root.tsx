@@ -194,7 +194,7 @@ export function App() {
         <StoryblokComponent blok={data.layoutStory?.content} />
         <ScrollRestoration nonce={nonce} />
         <SdLogo origin={data.requestInfo.origin} />
-        {ENV.NODE_ENV === 'production' ? null : (
+        {ENV.NODE_ENV === 'development' ? null : (
           <script
             nonce={nonce}
             src="https://cdn.usefathom.com/script.js"
