@@ -31,6 +31,9 @@ export function formatUrl(
   if (!formatted.startsWith('/')) {
     formatted = `/${formatted}`
   }
+  if (language === defaultLanguage && formatted.includes(defaultLanguage)) {
+    formatted = formatted.replace(defaultLanguage, '')
+  }
   if (anchor) {
     formatted = `${formatted}${anchor.startsWith('#') ? anchor : `#${anchor}`}`
   }

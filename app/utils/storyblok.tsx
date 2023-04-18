@@ -39,8 +39,10 @@ export function getTranslatedSlugsFromStory(
 ): TranslatedSlug[] {
   if (!story) return []
 
-  if (story.lang === 'default') {
-    return (story.translated_slugs || []).map(mapHomeToRoot)
+  if (story.lang === defaultLanguage) {
+    return (story.translated_slugs || [])
+      .filter((story) => story.lang === defaultLanguage)
+      .map(mapHomeToRoot)
   } else {
     return [
       {

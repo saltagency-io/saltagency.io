@@ -30,7 +30,6 @@ import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import * as ga from '~/utils/gtag.client'
 import { getLanguageFromContext, SupportedLanguage } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
 import {

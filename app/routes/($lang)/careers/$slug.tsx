@@ -17,7 +17,11 @@ import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import {getLanguageFromContext, getStaticLabel} from '~/utils/i18n'
+import {
+  defaultLanguage,
+  getLanguageFromContext,
+  getStaticLabel,
+} from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
@@ -56,7 +60,7 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
     throw json({}, { status: 404 })
   }
 
-  if (pathname !== `/${story.full_slug}`) {
+  if (language !== defaultLanguage && pathname !== `/${story.full_slug}`) {
     throw redirect(`/${story.full_slug}`)
   }
 

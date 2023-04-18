@@ -73,11 +73,15 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
   // Home page has slug "home" but we don't want that url to work
   if (pathname.includes('home')) {
-    throw redirect('/')
+    throw redirect(language === defaultLanguage ? '/' : `/${language}`)
   }
 
   // Make sure a translated story cannot be requested using the default slug (e.g. /nl/about)
-  if (story.slug !== 'home' && pathname !== `/${story.full_slug}`) {
+  if (
+    story.slug !== 'home' &&
+    language !== defaultLanguage &&
+    pathname !== `/${story.full_slug}`
+  ) {
     throw redirect(`/${story.full_slug}`)
   }
 

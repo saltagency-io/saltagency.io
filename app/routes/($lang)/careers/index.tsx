@@ -80,7 +80,10 @@ export async function loader({ request, context }: DataFunctionArgs) {
     throw json({}, { status: 404 })
   }
 
-  if (`${pathname}/` !== `/${story.full_slug}`) {
+  if (
+    language !== defaultLanguage &&
+    `${pathname}/` !== `/${story.full_slug}`
+  ) {
     throw redirect(
       `/${story.full_slug.substring(0, story.full_slug.length - 1)}`,
     )
