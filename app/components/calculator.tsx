@@ -134,7 +134,7 @@ const baseSalaryAmount = 4800
 const pensionAmount = 274
 const relativeRevenuePercentage = 0.7
 const employerTaxPercentage = 0.18
-const maxEmployerCharges = 52000
+const maxEmployerCharges = 71000
 
 function calculate({
   period,
