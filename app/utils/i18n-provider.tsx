@@ -11,7 +11,7 @@ import {
 type I18nContextState = {
   locale: SupportedLocale
   supportedLocales: SupportedLocale[]
-  changeLocale: (lang: SupportedLocale) => void
+  updateLocale: (locale: SupportedLocale) => void
   translatedSlugs: TranslatedSlug[]
   isDefaultLocale: boolean
 }
@@ -31,19 +31,18 @@ export const I18nProvider = ({
   locale: unknown
   translatedSlugs?: TranslatedSlug[]
 }) => {
-  const [currentLocale, setCurrentLocale] =
-    React.useState<SupportedLocale>(
-      isSupportedLocale(locale) ? locale : defaultLocale,
-    )
+  console.log({ locale })
 
-  const changeLocale = React.useCallback((locale: string) => {
-    if (isSupportedLocale(locale)) {
-      setCurrentLocale(locale)
-    }
+  const [currentLocale, setCurrentLocale] = React.useState<SupportedLocale>(
+    isSupportedLocale(locale) ? locale : defaultLocale,
+  )
+
+  const updateLocale = React.useCallback((locale: SupportedLocale) => {
+    setCurrentLocale(locale)
   }, [])
 
   const value: I18nContextState = {
-    changeLocale,
+    updateLocale,
     translatedSlugs,
     supportedLocales: supportedLocales,
     locale: currentLocale,

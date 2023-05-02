@@ -1,28 +1,43 @@
 import type * as React from 'react'
 
-import { useLocation, useNavigate, useRevalidator } from '@remix-run/react'
+import {
+  useFetcher,
+  useLocation,
+  useNavigate,
+  useRevalidator,
+} from '@remix-run/react'
 
 import clsx from 'clsx'
 
 import { IconChevronDown } from '~/components/icons'
-import { defaultLocale, isSupportedLocale } from '~/utils/i18n'
+import { defaultLocale, isSupportedLocale, SupportedLocale } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 import { removeTrailingSlash } from '~/utils/misc'
 
 export function LocaleSwitch() {
   const { t } = useLabels()
-  const { locale, translatedSlugs, changeLocale } = useI18n()
+  const fetcher = useFetcher()
+  const { locale, translatedSlugs, updateLocale } = useI18n()
   const navigate = useNavigate()
   const revalidator = useRevalidator()
   const location = useLocation()
 
-  const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const changeLocale = async (newLocale: SupportedLocale) => {
+    fetcher.submit(
+      { locale: newLocale },
+      { action: '/action/set-locale', method: 'post' },
+    )
+    updateLocale(newLocale)
+  }
+
+  const onChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocale = event.target.value
-    if (isSupportedLocale(newLocale) && newLocale !== locale) {
-      changeLocale(newLocale)
+    if (isSupportedLocale(newLocale)) {
+      await changeLocale(newLocale)
 
       const slug = translatedSlugs.find((s) => s.lang === newLocale)
+
       if (!slug) return
 
       navigate(

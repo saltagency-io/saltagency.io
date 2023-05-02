@@ -83,14 +83,14 @@ export function mapSection(locale = defaultLocale) {
   })
 }
 
-export function mapVacancy(lang = defaultLocale) {
+export function mapVacancy(locale = defaultLocale) {
   return (vacancy: StoryData<VacancyStoryContent>): Vacancy => {
     let slug = ''
-    if (lang === defaultLocale) {
+    if (locale === defaultLocale) {
       slug = vacancy.default_full_slug ?? ''
     } else {
       const translatedSlug = vacancy.translated_slugs?.find(
-        (slug) => slug.lang === lang,
+        (slug) => slug.lang === locale,
       )
       slug = `${translatedSlug?.lang}/${translatedSlug?.path}`
     }

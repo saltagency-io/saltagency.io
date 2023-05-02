@@ -15,7 +15,7 @@ import type { SupportedLocale } from '~/utils/i18n'
 const defaultLocale: SupportedLocale = 'en'
 const supportedLocales: SupportedLocale[] = ['en', 'nl']
 
-const isSupportedLanguage = (locale: unknown): locale is SupportedLocale => {
+const isSupportedLocale = (locale: unknown): locale is SupportedLocale => {
   return (
     typeof locale === 'string' &&
     supportedLocales.includes(locale as SupportedLocale)
@@ -169,19 +169,30 @@ app.use(
 
 // i18n middleware
 app.use((req, res, next) => {
+  // If we have a i18nSession, assume the user has manually changed their
+  // so the locale from there has highest priority.
+  if (req.headers.cookie?.includes('Salt_i18n')) {
+    return next()
+  }
+
+  const isActionRoute = req.path.includes('action')
   const [localeFromUrl] = req.path.slice(1).split('/')
 
-  if (isSupportedLanguage(localeFromUrl)) {
+  if (isSupportedLocale(localeFromUrl)) {
     res.locals.locale = localeFromUrl
-    if (localeFromUrl === defaultLocale) {
+
+    // Default locale should never be in the URL
+    if (localeFromUrl === defaultLocale && !isActionRoute) {
       const redirectTo = req.path.replace(`/${localeFromUrl}`, '')
       res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
     }
   } else {
-    const prefLocale = req.acceptsLanguages(...supportedLocales) || defaultLocale
+    const prefLocale =
+      req.acceptsLanguages(...supportedLocales) || defaultLocale
+
     res.locals.locale = prefLocale
 
-    if (prefLocale !== defaultLocale) {
+    if (prefLocale !== defaultLocale && !isActionRoute) {
       const path = `${prefLocale}${req.path}`
       res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
     }

@@ -4,7 +4,7 @@ import { Breadcrumbs } from '~/components/breadcrumbs'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
 import { H1, H4 } from '~/components/typography'
-import { routes } from '~/routes/($lang)/careers/$slug.apply'
+import { routes } from '~/routes/($locale)/careers/$slug.apply'
 import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 

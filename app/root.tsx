@@ -39,6 +39,7 @@ import {
   getStaticLabel,
 } from '~/utils/i18n'
 import { I18nProvider, useI18n } from '~/utils/i18n-provider'
+import { getI18nSession } from '~/utils/i18n.server'
 import { LabelsProvider } from '~/utils/labels-provider'
 import {
   getDomainUrl,
@@ -109,6 +110,7 @@ export type LoaderData = SerializeFrom<typeof loader>
 export async function loader({ request, context }: DataFunctionArgs) {
   const preview = isPreview(request)
   const locale = getLocaleFromContext(context)
+  const i18nSession = await getI18nSession(request)
 
   const [layoutStory, labels, vacancies] = await Promise.all([
     getLayout(locale, preview),
@@ -121,7 +123,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
     preview,
     labels,
     vacancies,
-    locale,
+    locale: i18nSession.getLocale() ?? locale, // Use the user's preferred locale from cookie if we have one
     ENV: getEnv(),
     requestInfo: {
       origin: getDomainUrl(request),
@@ -188,7 +190,7 @@ export function App() {
       <head>
         <Meta />
         <CanonicalUrl
-          origin={data.requestInfo.origin}
+          origin={data.requestInfo?.origin}
           fathomQueue={fathomQueue}
         />
         <Links />
@@ -197,7 +199,7 @@ export function App() {
       <body>
         <StoryblokComponent blok={data.layoutStory?.content} />
         <ScrollRestoration nonce={nonce} />
-        <SdLogo origin={data.requestInfo.origin} />
+        <SdLogo origin={data.requestInfo?.origin} />
         {ENV.NODE_ENV === 'development' ? null : (
           <script
             nonce={nonce}

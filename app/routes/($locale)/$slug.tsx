@@ -32,7 +32,7 @@ const dynamicLinks: DynamicLinksFunction<
 > = ({ data, parentsData }) => {
   const requestInfo = parentsData[0].requestInfo
   const slugs = getTranslatedSlugsFromStory(data?.story)
-  return createAlternateLinks(slugs, requestInfo.origin)
+  return createAlternateLinks(slugs, requestInfo?.origin)
 }
 
 export const handle: Handle = {
@@ -61,9 +61,9 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   }
 
   const slug =
-    !params.slug && params.lang === locale
+    !params.slug && params.locale === locale
       ? 'home'
-      : params.slug ?? params.lang ?? 'home'
+      : params.slug ?? params.locale ?? 'home'
 
   const story = await getStoryBySlug(slug, locale, preview)
 
@@ -72,14 +72,14 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   }
 
   // Home page has slug "home" but we don't want that url to work
-  if (pathname.includes('home')) {
-    throw redirect('/')
-  }
+  // if (pathname.includes('home')) {
+  //   throw redirect('/')
+  // }
 
   // Make sure a translated story cannot be requested using the default slug (e.g. /nl/about)
-  if (story.slug !== 'home' && pathname !== `/${story.full_slug}`) {
-    throw redirect(`/${story.full_slug}`)
-  }
+  // if (story.slug !== 'home' && pathname !== `/${story.full_slug}`) {
+  //   throw redirect(`/${story.full_slug}`)
+  // }
 
   const data = {
     story,

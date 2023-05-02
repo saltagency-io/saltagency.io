@@ -3,10 +3,10 @@ export type SupportedLocale = 'en' | 'nl'
 export const defaultLocale: SupportedLocale = 'en'
 export const supportedLocales: SupportedLocale[] = ['en', 'nl']
 
-export const isSupportedLocale = (lang: unknown): lang is SupportedLocale => {
+export const isSupportedLocale = (locale: unknown): locale is SupportedLocale => {
   return (
-    typeof lang === 'string' &&
-    supportedLocales.includes(lang as SupportedLocale)
+    typeof locale === 'string' &&
+    supportedLocales.includes(locale as SupportedLocale)
   )
 }
 
