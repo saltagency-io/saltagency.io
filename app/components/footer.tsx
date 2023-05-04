@@ -143,7 +143,7 @@ export function Footer({
                 </li>
               ))}
             </ul>
-            <LanguageSwitch />
+            {/*<LanguageSwitch />*/}
           </div>
         </div>
       </Grid>
