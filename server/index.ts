@@ -135,7 +135,9 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         'connect-src':
-          MODE === 'development' ? ['ws:', "'self'"] : ["'self'", 'cdn.usefathom.com'],
+          MODE === 'development'
+            ? ['ws:', "'self'", '*.hcaptcha.com']
+            : ["'self'", 'cdn.usefathom.com', '*.hcaptcha.com'],
         'font-src': "'self'",
         'frame-src': [
           "'self'",
@@ -144,7 +146,7 @@ app.use(
           'youtu.be',
           'youtube-nocookie.com',
           'www.youtube-nocookie.com',
-          '*.google.com',
+          '*.hcaptcha.com',
         ],
         'frame-ancestors': ["'self'", 'app.storyblok.com'],
         'img-src': ["'self'", 'data:', 'a.storyblok.com', 'cdn.usefathom.com'],

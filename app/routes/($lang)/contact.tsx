@@ -10,12 +10,13 @@ import { useFetcher } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
-import ReCaptcha from 'react-google-recaptcha'
 import {
   typedjson,
   UseDataFunctionReturn,
   useTypedLoaderData,
 } from 'remix-typedjson'
+
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 
 import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
@@ -249,10 +250,9 @@ export default function ContactPage() {
 
                 <div className="mb-8">
                   <div className="h-[78px]">
-                    <ReCaptcha
-                      theme="light"
-                      sitekey={getRequiredGlobalEnvVar('GOOGLE_CAPTCHA_KEY')}
-                      onChange={setCaptchaValue}
+                    <HCaptcha
+                      sitekey={getRequiredGlobalEnvVar('HCAPTCHA_KEY')}
+                      onVerify={setCaptchaValue}
                     />
                   </div>
                   {contactFetcher.data?.errors.captcha ? (

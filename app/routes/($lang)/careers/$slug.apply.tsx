@@ -1,20 +1,16 @@
 import * as React from 'react'
 
-import type {
-  ActionFunction,
-  HeadersFunction,
-  MetaFunction,
-} from '@remix-run/node'
+import type { ActionFunction, MetaFunction } from '@remix-run/node'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
-import { useCatch, useFetcher, useSearchParams } from '@remix-run/react'
+import { useFetcher, useSearchParams } from '@remix-run/react'
 
-import ReCaptcha from 'react-google-recaptcha'
 import type { UseDataFunctionReturn } from 'remix-typedjson'
 import { typedjson } from 'remix-typedjson'
 
+import HCaptcha from '@hcaptcha/react-hcaptcha'
+
 import { Breadcrumbs } from '~/components/breadcrumbs'
 import { Button } from '~/components/button'
-import { NotFoundError } from '~/components/errors'
 import {
   ErrorPanel,
   Field,
@@ -132,7 +128,7 @@ const translatedDescription = (role: string, lang: SupportedLanguage) => {
   return descriptions[lang]
 }
 
-export const meta: MetaFunction = ({ data, parentsData, location }) => {
+export const meta: MetaFunction = ({ parentsData, location }) => {
   const { requestInfo, language } = parentsData.root as RootLoaderData
   const params = new URLSearchParams(location.search)
   const role = params.get('role') ?? ''
@@ -349,10 +345,9 @@ export default function ApplyPage() {
 
               <div className="mb-8">
                 <div className="h-[78px]">
-                  <ReCaptcha
-                    theme="light"
-                    sitekey={getRequiredGlobalEnvVar('GOOGLE_CAPTCHA_KEY')}
-                    onChange={setCaptchaValue}
+                  <HCaptcha
+                    sitekey={getRequiredGlobalEnvVar('HCAPTCHA_KEY')}
+                    onVerify={setCaptchaValue}
                   />
                 </div>
                 {applyFetcher.data?.errors.captcha ? (

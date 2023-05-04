@@ -1,3 +1,5 @@
+import { getRequiredServerEnvVar } from '~/utils/misc'
+
 export async function sendCaptcha(token: string | null): Promise<
   | {
       success: true
@@ -13,19 +15,16 @@ export async function sendCaptcha(token: string | null): Promise<
     }
 > {
   const payload = new URLSearchParams({
-    secret: process.env.GOOGLE_CAPTCHA_SECRET ?? '',
+    secret: getRequiredServerEnvVar('HCAPTCHA_SECRET'),
     response: token ?? '',
   })
 
-  const response = await fetch(
-    'https://www.google.com/recaptcha/api/siteverify',
-    {
-      method: 'post',
-      body: payload,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+  const response = await fetch('https://api.hcaptcha.com/siteverify', {
+    method: 'post',
+    body: payload,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-  )
+  })
   return response.json()
 }

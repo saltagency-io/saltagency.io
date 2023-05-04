@@ -5,7 +5,7 @@ export function getEnv() {
     GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS,
     GOOGLE_AW_TAG: process.env.GOOGLE_AW_TAG,
     GOOGLE_AW_CONVERSION_EVENT: process.env.GOOGLE_AW_CONVERSION_EVENT,
-    GOOGLE_CAPTCHA_KEY: process.env.GOOGLE_CAPTCHA_KEY,
+    HCAPTCHA_KEY: process.env.HCAPTCHA_KEY,
   }
 }
 
