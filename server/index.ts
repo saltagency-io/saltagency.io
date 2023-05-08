@@ -23,7 +23,7 @@ const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
 }
 
 const here = (...d: Array<string>) => path.join(__dirname, ...d)
-const primaryHost = 'salt.fly.dev' // TODO: change this when we go live
+const primaryHost = 'saltagency.io' // TODO: change this when we go live
 const getHost = (req: { get: (key: string) => string | undefined }) =>
   req.get('X-Forwarded-Host') ?? req.get('host') ?? ''
 
