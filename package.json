@@ -38,9 +38,9 @@
     "@notionhq/client": "^2.2.3",
     "@reach/accordion": "^0.18.0",
     "@reach/menu-button": "^0.18.0",
-    "@remix-run/express": "^1.12.0",
-    "@remix-run/node": "^1.12.0",
-    "@remix-run/react": "^1.12.0",
+    "@remix-run/express": "^1.16.0",
+    "@remix-run/node": "^1.16.0",
+    "@remix-run/react": "^1.16.0",
     "@storyblok/react": "^1.3.4",
     "axios": "0.27.2",
     "clsx": "^1.2.1",
@@ -65,7 +65,7 @@
     "server-timing": "^3.3.3"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.12.0",
+    "@remix-run/dev": "^1.16.0",
     "@remix-run/eslint-config": "^1.12.0",
     "@remix-run/serve": "^1.12.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
