@@ -34,6 +34,7 @@ const app = express()
 
 app.use(serverTiming())
 
+// Setup headers
 app.use((req, res, next) => {
   res.set('X-Powered-By', 'Salt Agency')
   res.set('X-Fly-Region', process.env.FLY_REGION ?? 'unknown')
@@ -51,17 +52,29 @@ app.use((req, res, next) => {
   next()
 })
 
+// Forward HTTP to HTTPS
 app.use((req, res, next) => {
   const proto = req.get('X-Forwarded-Proto')
   const host = getHost(req)
   if (proto === 'http') {
     res.set('X-Forwarded-Proto', 'https')
-    res.redirect(`https://${host}${req.originalUrl}`)
-    return
+    return res.redirect(`https://${host}${req.originalUrl}`)
   }
   next()
 })
 
+// Redirect www to non-www
+app.use((req, res, next) => {
+  const host = getHost(req)
+  if (host.startsWith('www.')) {
+    const newHost = host.slice(4)
+    app.set('trust proxy', true)
+    return res.redirect(301, `${req.protocol}://${newHost}${req.originalUrl}`)
+  }
+  next()
+})
+
+// Strip trailing slash
 app.use((req, res, next) => {
   if (req.path.endsWith('/') && req.path.length > 1) {
     const query = req.url.slice(req.path.length)
@@ -76,6 +89,7 @@ app.use(compression())
 
 const publicAbsolutePath = here('../public')
 
+// Setup static files with a cache duration of 6(?!) years
 app.use(
   express.static(publicAbsolutePath, {
     maxAge: '1w',
@@ -109,6 +123,7 @@ app.use((req, res, next) => {
   next()
 })
 
+// Setup morgan logger
 app.use(
   morgan((tokens, req, res) => {
     const host = getHost(req)
@@ -124,11 +139,13 @@ app.use(
   }),
 )
 
+// Add csp nonce
 app.use((req, res, next) => {
   res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
   next()
 })
 
+// Setup csp using helmet
 app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
