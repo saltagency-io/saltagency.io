@@ -23,7 +23,7 @@ const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
 }
 
 const here = (...d: Array<string>) => path.join(__dirname, ...d)
-const primaryHost = 'saltagency.io' // TODO: change this when we go live
+const devHost = 'fly.dev' // TODO: change this when we go live
 const getHost = (req: { get: (key: string) => string | undefined }) =>
   req.get('X-Forwarded-Host') ?? req.get('host') ?? ''
 
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
   res.set('X-Frame-Options', 'SAMEORIGIN')
 
   const host = getHost(req)
-  if (!host.endsWith(primaryHost)) {
+  if (host.endsWith(devHost)) {
     res.set('X-Robots-Tag', 'noindex')
   }
 
@@ -74,7 +74,17 @@ app.use((req, res, next) => {
   next()
 })
 
-// Strip trailing slash
+//Redirect /jobs to /careers while we purge old record from Google search
+app.use((req, res, next) => {
+  if (req.path === '/jobs' && req.path.length) {
+    const proto = req.protocol
+    const query = req.url.slice(req.path.length)
+    const host = getHost(req)
+    return res.redirect(`${proto}://${host}/careers${query}`)
+  }
+  next()
+})
+
 app.use((req, res, next) => {
   if (req.path.endsWith('/') && req.path.length > 1) {
     const query = req.url.slice(req.path.length)
