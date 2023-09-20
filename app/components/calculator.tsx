@@ -44,7 +44,7 @@ function Row({
   showCurrencySign?: boolean
 }) {
   return (
-    <tr className="text-inverse h-8 text-lg font-medium leading-6 align-top">
+    <tr className="text-inverse h-8 align-top text-lg font-medium leading-6">
       <td>{label}</td>
       <td className="whitespace-nowrap text-right">
         {showCurrencySign ? `€ ` : ''}
@@ -68,7 +68,7 @@ function OptionalRow({
 }) {
   return (
     <tr
-      className="text-inverse h-8 cursor-pointer text-lg font-medium leading-6 align-top"
+      className="text-inverse h-8 cursor-pointer align-top text-lg font-medium leading-6"
       onClick={onClick}
     >
       <td>
@@ -171,7 +171,8 @@ function calculate({
   const revenueRelative = revenue * relativeRevenuePercentage
   const employerCharges = revenueRelative * employerTaxPercentage
 
-  const salaryBase = isYearly ? baseSalaryAmount * 12 : baseSalaryAmount
+  const salaryBase =
+    (isYearly ? baseSalaryAmount * 12 : baseSalaryAmount) * workingRate
   const holiday = salaryBase * 0.08
   const pension = isYearly ? pensionAmount * 12 : pensionAmount
 
@@ -286,7 +287,7 @@ export function Calculator({ title, subtitle }: Props) {
                   id="rate"
                   name="rate"
                   className={clsx(
-                    'border-secondary w-full appearance-none rounded-lg border-2 border bg-transparent p-5',
+                    'border-secondary w-full appearance-none rounded-lg border-2 bg-transparent p-5',
                     'text-lg font-bold text-white',
                     'focus:border-white focus:outline-none',
                   )}
