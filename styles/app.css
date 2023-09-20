@@ -1,35 +1,35 @@
 :root {
-  --color-black: #000000;
-  --color-white: #ffffff;
+  --color-black: 0 0% 0%;
+  --color-white: 0 0% 100%;
 
-  --color-gray-100: #234a860d;
-  --color-gray-200: #05196b1a;
-  --color-gray-300: #04134838;
-  --color-gray-400: #04134869;
-  --color-gray-500: #010d3796;
-  --color-gray-600: #000a33b5;
-  --color-gray-700: #030a2bd1;
-  --color-gray-800: #030820e5;
-  --color-gray-900: #020109f2;
+  --color-gray-100: 216 59% 33% / 0.051;
+  --color-gray-200: 228 91% 22% / 0.102;
+  --color-gray-300: 227 89% 15% / 0.22;
+  --color-gray-400: 227 89% 15% / 0.412;
+  --color-gray-500: 227 96% 11% / 0.588;
+  --color-gray-600: 228 100% 10% / 0.71;
+  --color-gray-700: 230 87% 9% / 0.82;
+  --color-gray-800: 230 83% 7% / 0.898;
+  --color-gray-900: 248 80% 2% / 0.949;
 
-  --color-blue-200: #e5e8ff;
-  --color-blue-300: #afb7ff;
-  --color-blue-400: #7985ff;
-  --color-blue-500: #4353ff;
-  --color-blue-600: #2c38b2;
-  --color-blue-700: #161d66;
-  --color-blue-800: #00021a;
+  --color-blue-200: 233 100% 95%;
+  --color-blue-300: 234 100% 84%;
+  --color-blue-400: 235 100% 74%;
+  --color-blue-500: 235 100% 63%;
+  --color-blue-600: 235 60% 44%;
+  --color-blue-700: 235 65% 24%;
+  --color-blue-800: 235 100% 5%;
 
-  --color-pink-200: #fce8eb;
-  --color-pink-300: #f7b9c2;
-  --color-pink-400: #f18998;
-  --color-pink-500: #eb596e;
-  --color-pink-600: #a53d4c;
-  --color-pink-700: #5e2029;
-  --color-pink-800: #170306;
+  --color-pink-200: 351 77% 95%;
+  --color-pink-300: 351 79% 85%;
+  --color-pink-400: 351 79% 74%;
+  --color-pink-500: 351 78% 64%;
+  --color-pink-600: 351 46% 44%;
+  --color-pink-700: 351 49% 25%;
+  --color-pink-800: 351 77% 5%;
 
-  --color-red-500: #ff0000;
-  --color-yellow-500: #ffc700;
+  --color-red-500: 0 100% 50%;
+  --color-yellow-500: 47 100% 50%;
 }
 
 :focus:not(:focus-visible) {
@@ -65,8 +65,8 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-text-fill-color: black !important;
-  -webkit-box-shadow: 0 0 0 999px var(--color-gray-100) inset !important;
-  box-shadow: 0 0 0 999px var(--color-gray-100) inset !important;
+  -webkit-box-shadow: 0 0 0 999px hsl(var(--color-gray-100)) inset !important;
+  box-shadow: 0 0 0 999px hsl(var(--color-gray-100)) inset !important;
   background-clip: content-box !important;
 }
 
@@ -75,8 +75,8 @@ input:-webkit-autofill:active {
 .dark input:-webkit-autofill:focus,
 .dark input:-webkit-autofill:active {
   -webkit-text-fill-color: white !important;
-  -webkit-box-shadow: 0 0 0 999px var(--color-gray-800) inset !important;
-  box-shadow: 0 0 0 999px var(--color-gray-800) inset !important;
+  -webkit-box-shadow: 0 0 0 999px hsl(var(--color-gray-800)) inset !important;
+  box-shadow: 0 0 0 999px hsl(var(--color-gray-800)) inset !important;
   background-clip: content-box !important;
 }
 
@@ -90,7 +90,7 @@ input:-webkit-autofill::first-line {
 }
 
 select:invalid {
-  color: var(--color-gray-400) !important;
+  color: hsl(var(--color-gray-400)) !important;
 }
 
 address {
@@ -103,8 +103,8 @@ img {
 }
 
 ::selection {
-  color: var(--color-gray-900);
-  background-color: var(--color-blue-400);
+  color: hsl(var(--color-gray-900));
+  background-color: hsl(var(--color-blue-400));
 }
 
 [hidden] {
@@ -112,7 +112,7 @@ img {
 }
 
 :focus {
-  outline-color: var(--color-blue-500);
+  outline-color: hsl(var(--color-blue-500));
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -191,9 +191,9 @@ a {
 }
 
 .header-light nav a {
-  color: var(--color-white) !important;
+  color: hsl(var(--color-white)) !important;
 }
 
 .header-light svg path {
-  fill: var(--color-white) !important;
+  fill: hsl(var(--color-white)) !important;
 }
