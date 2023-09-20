@@ -6,23 +6,32 @@
 @tailwind utilities;
 @tailwind screens;
 
-/* tailwind is configured to prefer this font */
+/* tailwind is configured to prefer these fonts */
+/* nunito-sans-regular - latin */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2'),
-    url('/fonts/Satoshi-Medium.woff') format('woff');
-  font-weight: 500;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
   font-style: normal;
-  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/nunito-sans-v15-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
+/* nunito-sans-700 - latin */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
-    url('/fonts/Satoshi-Bold.woff') format('woff');
-  font-weight: 700;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
   font-style: normal;
-  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/nunito-sans-v15-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* plus-jakarta-sans-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/plus-jakarta-sans-v8-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 @layer utilities {

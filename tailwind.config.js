@@ -59,7 +59,8 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['Satoshi', ...defaultTheme.fontFamily.sans],
+        sans: ['Nunito Sans', ...defaultTheme.fontFamily.sans],
+        display: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
         '3xl': '1.9375rem', // 31px
@@ -84,6 +85,7 @@ module.exports = {
       },
       spacing: {
         '8vw': '8vw', // page margin
+        18: '4.5rem', //72px
       },
       blur: {
         '4xl': '100px',

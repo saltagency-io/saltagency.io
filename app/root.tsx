@@ -67,14 +67,21 @@ export const links: LinksFunction = () => {
     {
       rel: 'preload',
       as: 'font',
-      href: '/fonts/Satoshi-Medium.woff2',
+      href: '/fonts/nunito-sans-v15-latin-regular.woff2',
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
     {
       rel: 'preload',
       as: 'font',
-      href: '/fonts/Satoshi-Bold.woff2',
+      href: '/fonts/nunito-sans-v15-latin-700.woff2',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous',
+    },
+    {
+      rel: 'preload',
+      as: 'font',
+      href: '/fonts/plus-jakarta-sans-v8-latin-700.woff2',
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
