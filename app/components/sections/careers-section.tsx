@@ -4,10 +4,9 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, Subtitle } from '~/components/typography'
+import { H3, H5 } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
-import { useI18n } from '~/utils/i18n-provider'
-import { mapVacancy, useLocalizedMappers } from '~/utils/mappers'
+import { useLocalizedMappers } from '~/utils/mappers'
 import { useVacancies } from '~/utils/providers'
 
 type Props = {
@@ -45,13 +44,13 @@ export function CareersSection({
             visible: { opacity: 1, transition: { duration: 0.25, delay: 0.1 } },
           }}
         >
-          <Subtitle variant="pink" className="mb-4">
+          <H5 as="h2" variant="secondary" className="mb-4">
             {subtitle}
-          </Subtitle>
-          <H3 as="h2" inverse={theme !== 'light'} className="mb-14 lg:mb-12">
+          </H5>
+          <H3 as="span" inverse={theme !== 'light'} className="mb-14 lg:mb-12">
             {title}
           </H3>
-          <div className="hidden lg:block">{children}</div>
+          <div className="hidden lg:mt-12 lg:block">{children}</div>
         </motion.div>
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <VacancyList

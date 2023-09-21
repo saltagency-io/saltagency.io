@@ -21,35 +21,27 @@ module.exports = {
       white: 'hsl(var(--color-white) / <alpha-value>)',
       black: 'hsl(var(--color-black) / <alpha-value>)',
 
-      gray: {
-        100: 'hsl(var(--color-gray-100))',
-        200: 'hsl(var(--color-gray-200))',
-        300: 'hsl(var(--color-gray-300))',
-        400: 'hsl(var(--color-gray-400))',
-        500: 'hsl(var(--color-gray-500))',
-        600: 'hsl(var(--color-gray-600))',
-        700: 'hsl(var(--color-gray-700))',
-        800: 'hsl(var(--color-gray-800))',
-        900: 'hsl(var(--color-gray-900))',
-      },
-      blue: {
-        200: 'hsl(var(--color-blue-200) / <alpha-value>)',
-        300: 'hsl(var(--color-blue-300) / <alpha-value>)',
-        400: 'hsl(var(--color-blue-400) / <alpha-value>)',
-        500: 'hsl(var(--color-blue-500) / <alpha-value>)',
-        600: 'hsl(var(--color-blue-600) / <alpha-value>)',
-        700: 'hsl(var(--color-blue-700) / <alpha-value>)',
-        800: 'hsl(var(--color-blue-800) / <alpha-value>)',
-      },
-      pink: {
-        200: 'hsl(var(--color-pink-200) / <alpha-value>)',
-        300: 'hsl(var(--color-pink-300) / <alpha-value>)',
-        400: 'hsl(var(--color-pink-400) / <alpha-value>)',
-        500: 'hsl(var(--color-pink-500) / <alpha-value>)',
-        600: 'hsl(var(--color-pink-600) / <alpha-value>)',
-        700: 'hsl(var(--color-pink-700) / <alpha-value>)',
-        800: 'hsl(var(--color-pink-800) / <alpha-value>)',
-      },
+      gray: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].reduce(
+        (acc, cv) => ({
+          ...acc,
+          [cv]: `hsl(var(--color-gray-${cv}) / <alpha-value>)`,
+        }),
+        {},
+      ),
+      blue: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].reduce(
+        (acc, cv) => ({
+          ...acc,
+          [cv]: `hsl(var(--color-blue-${cv}) / <alpha-value>)`,
+        }),
+        {},
+      ),
+      purple: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].reduce(
+        (acc, cv) => ({
+          ...acc,
+          [cv]: `hsl(var(--color-purple-${cv}) / <alpha-value>)`,
+        }),
+        {},
+      ),
       red: {
         500: 'hsl(var(--color-red-500) / <alpha-value>)',
       },
@@ -63,10 +55,10 @@ module.exports = {
         display: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
-        '3xl': '1.9375rem', // 31px
-        '4xl': '2.5625rem', // 41px
-        '5xl': '3.375rem', // 54px
-        '6xl': '4.375rem', // 70px
+        '3xl': '2rem', // 32px
+        '4xl': '2.5rem', // 4px
+        '5xl': '3rem', // 48px
+        '6xl': '3.5rem', // 56px
       },
       lineHeight: {
         normal: '120%',
@@ -89,6 +81,12 @@ module.exports = {
       },
       blur: {
         '4xl': '100px',
+      },
+      opacity: {
+        1: '0.01',
+      },
+      boxShadow: {
+        card: '0px 23px 38px 0px rgba(28, 32, 54, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.35) inset',
       },
     },
   },

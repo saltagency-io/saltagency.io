@@ -12,6 +12,7 @@ type Props = {
   left?: number
   rotate?: number
   opacity?: number
+  z?: number
   className?: string
 }
 
@@ -24,6 +25,7 @@ export function GradientCircle({
   left = 0,
   rotate = 0,
   opacity = 40,
+  z = -10,
   className,
 }: Props) {
   const shouldReduceMotion = useReducedMotion()
@@ -31,7 +33,7 @@ export function GradientCircle({
   return (
     <motion.div
       className={clsx(
-        'bg-gradient-radial pointer-events-none absolute z-0 rounded-full blur-4xl',
+        'bg-gradient-radial pointer-events-none absolute rounded-full blur-4xl',
         className,
       )}
       style={{
@@ -43,6 +45,7 @@ export function GradientCircle({
         right: right !== 0 ? `${right}px` : undefined,
         bottom: bottom !== 0 ? `${bottom}px` : undefined,
         left: left !== 0 ? `${left}px` : undefined,
+        zIndex: z,
       }}
       initial={{ scale: shouldReduceMotion ? 1 : 0.5 }}
       animate={{ scale: 1.01, rotate }} // If we scale to 1 safari dies

@@ -11,7 +11,7 @@ type Props = {
   children: string
   textAlign?: 'left' | 'right' | 'center'
   textColor?: 'primary' | 'secondary' | 'inverse' | 'inverse-secondary'
-  bodyTextSize?: 'sm' | 'lg' | 'xl'
+  bodyTextSize?: 'sm' | 'md' | 'lg' | 'xl'
   margins?: boolean
   responsive?: boolean
   linksInNewTab?: boolean
@@ -27,7 +27,7 @@ type Components = React.ComponentProps<typeof ReactMarkdown>['components']
 function useComponents({
   textAlign = 'left',
   textColor = 'primary',
-  bodyTextSize = 'lg',
+  bodyTextSize = 'md',
   margins = true,
   responsive = true,
   linksInNewTab = false,
@@ -84,6 +84,7 @@ function useComponents({
     ul: (props) => {
       const className = clsx('text-list tracking-tight', colorClassName, {
         'text-sm leading-6': bodyTextSize === 'sm',
+        'text-base': bodyTextSize === 'md',
         'text-lg leading-6': bodyTextSize === 'lg',
         'text-2xl leading-9': bodyTextSize === 'xl' && !responsive,
         'text-lg leading-7 md:text-2xl md:leading-9':

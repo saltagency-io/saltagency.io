@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, Subtitle } from '~/components/typography'
+import { H3, H5, Subtitle } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 
@@ -28,7 +28,7 @@ export function PeopleSection({ children, subtitle, title, people }: Props) {
     <div className="bg-secondary py-20 lg:py-40">
       <Grid>
         <motion.div
-          className="col-span-4 mb-8 md:col-span-8 lg:col-span-5 lg:mb-0"
+          className="col-span-4 mb-8 md:col-span-8 lg:col-span-6 lg:mb-0"
           initial="initial"
           whileInView="visible"
           viewport={{ once: true, margin: '-115px 0px' }}
@@ -37,13 +37,13 @@ export function PeopleSection({ children, subtitle, title, people }: Props) {
             visible: { opacity: 1, transition: { duration: 0.25, delay: 0.1 } },
           }}
         >
-          <Subtitle variant="gray" className="mb-4">
+          <H5 as="h2" variant="secondary" className="mb-4">
             {subtitle}
-          </Subtitle>
-          <H3 as="h2" className="mb-12 opacity-80">
+          </H5>
+          <H3 as="span" className="mb-12 opacity-80">
             {title}
           </H3>
-          <div className="hidden lg:block">{children}</div>
+          <div className="hidden lg:mt-12 lg:block">{children}</div>
         </motion.div>
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Grid
@@ -66,7 +66,7 @@ export function PeopleSection({ children, subtitle, title, people }: Props) {
                 )}
               >
                 <img
-                  className="w-full rounded-lg object-contain aspect-[12/16]"
+                  className="aspect-[12/16] w-full rounded-lg object-contain"
                   {...getImgProps(person.url, person.alt, {
                     widths: [160, 200, 484],
                     sizes: [

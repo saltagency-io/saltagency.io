@@ -1,11 +1,14 @@
-import * as React from 'react'
-
-type SizeProps = {
+export type IconProps = {
   height?: number
   width?: number
+  strokeWidth?: number
 }
 
-export function IconChevronRight({ height = 24, width = 24 }: SizeProps) {
+export function IconChevronRight({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +16,7 @@ export function IconChevronRight({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -26,7 +29,11 @@ export function IconChevronRight({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconChevronDown({ height = 24, width = 24 }: SizeProps) {
+export function IconChevronDown({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +41,7 @@ export function IconChevronDown({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -47,7 +54,11 @@ export function IconChevronDown({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconChevronLeft({ height = 24, width = 24 }: SizeProps) {
+export function IconChevronLeft({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +66,7 @@ export function IconChevronLeft({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -68,7 +79,11 @@ export function IconChevronLeft({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconArrowDown({ height = 24, width = 24 }: SizeProps) {
+export function IconArrowDown({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +91,7 @@ export function IconArrowDown({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -89,7 +104,11 @@ export function IconArrowDown({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconArrowRight({ height = 24, width = 24 }: SizeProps) {
+export function IconArrowRight({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +116,7 @@ export function IconArrowRight({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -110,7 +129,11 @@ export function IconArrowRight({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconEye({ height = 24, width = 24 }: SizeProps) {
+export function IconEye({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +141,7 @@ export function IconEye({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -136,7 +159,11 @@ export function IconEye({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconUsers({ height = 24, width = 24 }: SizeProps) {
+export function IconUsers({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +171,7 @@ export function IconUsers({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -157,7 +184,11 @@ export function IconUsers({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconHeart({ height = 24, width = 24 }: SizeProps) {
+export function IconHeart({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +196,7 @@ export function IconHeart({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -178,7 +209,11 @@ export function IconHeart({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconBankNotes({ height = 24, width = 24 }: SizeProps) {
+export function IconBankNotes({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +221,7 @@ export function IconBankNotes({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -199,7 +234,11 @@ export function IconBankNotes({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconShield({ height = 24, width = 24 }: SizeProps) {
+export function IconShield({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +246,7 @@ export function IconShield({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -220,7 +259,11 @@ export function IconShield({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconDocument({ height = 24, width = 24 }: SizeProps) {
+export function IconDocument({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -228,7 +271,7 @@ export function IconDocument({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -241,7 +284,11 @@ export function IconDocument({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconUserGroup({ height = 24, width = 24 }: SizeProps) {
+export function IconUserGroup({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -249,7 +296,7 @@ export function IconUserGroup({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -262,7 +309,11 @@ export function IconUserGroup({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconScale({ height = 24, width = 24 }: SizeProps) {
+export function IconScale({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -270,7 +321,7 @@ export function IconScale({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -283,7 +334,11 @@ export function IconScale({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconFingerPrint({ height = 24, width = 24 }: SizeProps) {
+export function IconFingerPrint({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -291,7 +346,7 @@ export function IconFingerPrint({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -304,7 +359,11 @@ export function IconFingerPrint({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconChatBubble({ height = 24, width = 24 }: SizeProps) {
+export function IconChatBubble({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -312,7 +371,7 @@ export function IconChatBubble({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -328,7 +387,8 @@ export function IconChatBubble({ height = 24, width = 24 }: SizeProps) {
 export function IconChatBubbleLeftRight({
   height = 24,
   width = 24,
-}: SizeProps) {
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -336,7 +396,7 @@ export function IconChatBubbleLeftRight({
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -349,7 +409,11 @@ export function IconChatBubbleLeftRight({
   )
 }
 
-export function IconCode({ height = 24, width = 24 }: SizeProps) {
+export function IconCode({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -357,7 +421,7 @@ export function IconCode({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -370,7 +434,11 @@ export function IconCode({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconEnvelope({ height = 24, width = 24 }: SizeProps) {
+export function IconEnvelope({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -378,7 +446,7 @@ export function IconEnvelope({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -391,7 +459,11 @@ export function IconEnvelope({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconPhone({ height = 24, width = 24 }: SizeProps) {
+export function IconPhone({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -399,7 +471,7 @@ export function IconPhone({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -412,7 +484,11 @@ export function IconPhone({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconSquareStack({ height = 24, width = 24 }: SizeProps) {
+export function IconSquareStack({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -420,7 +496,7 @@ export function IconSquareStack({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >
@@ -433,7 +509,11 @@ export function IconSquareStack({ height = 24, width = 24 }: SizeProps) {
   )
 }
 
-export function IconCheckCircle({ height = 24, width = 24 }: SizeProps) {
+export function IconCheckCircle({
+  height = 24,
+  width = 24,
+  strokeWidth = 2,
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -441,7 +521,7 @@ export function IconCheckCircle({ height = 24, width = 24 }: SizeProps) {
       height={height}
       width={width}
       viewBox="0 0 24 24"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       aria-hidden="true"
     >

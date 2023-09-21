@@ -1,11 +1,9 @@
-import * as React from 'react'
-
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Avatar } from '~/components/avatar'
 import { Grid } from '~/components/grid'
-import { H3, H5, Subtitle } from '~/components/typography'
+import { H3, H5 } from '~/components/typography'
 import type { Image } from '~/types'
 
 type Props = {
@@ -57,12 +55,9 @@ export function Quote({
         >
           <motion.div variants={childVariants}>
             {variant === 'extended' && subtitle ? (
-              <Subtitle
-                className="mb-6 text-center"
-                variant={theme === 'dark' ? 'pink' : 'blue'}
-              >
+              <H5 variant="secondary" as="h2" className="mb-6 text-center">
                 {subtitle}
-              </Subtitle>
+              </H5>
             ) : null}
             <Avatar
               className={clsx('mx-auto mb-6', {
@@ -106,14 +101,14 @@ export function Quote({
                 </H5>
               </div>
             ) : (
-              <H5
-                className="block text-center"
-                as="span"
-                variant="secondary"
-                inverse={theme === 'dark'}
+              <span
+                className={clsx(
+                  'block text-center',
+                  theme === 'dark' && 'text-gray-100',
+                )}
               >
                 {author}
-              </H5>
+              </span>
             )}
           </motion.div>
         </motion.div>

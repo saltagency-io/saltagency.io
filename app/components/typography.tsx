@@ -9,6 +9,7 @@ type TitleProps = {
   id?: string
   bold?: boolean
   inverse?: boolean
+  body?: boolean
 } & (
   | { children: React.ReactNode }
   | {
@@ -19,22 +20,17 @@ type TitleProps = {
 )
 
 const fontSize = {
-  h1: 'tracking-tight font-medium leading-normal md:leading-none text-4xl md:text-6xl',
-  h2: 'tracking-tight font-medium leading-normal text-4xl md:text-5xl',
-  h3: 'tracking-tight font-medium leading-normal text-3xl md:text-4xl',
-  h4: 'tracking-tight font-medium leading-normal text-2xl md:text-3xl',
-  h5: 'tracking-tight font-medium leading-normal text-xl md:text-2xl',
-  h6: 'tracking-tight font-medium leading-normal text-lg',
+  h1: 'text-5xl md:leading-[1.2] md:text-6xl',
+  h2: 'text-4xl md:leading-[1.16] md:text-5xl',
+  h3: 'text-3xl md:leading-[1.2] md:text-4xl',
+  h4: 'text-2xl md:leading-[1.25] md:text-3xl',
+  h5: 'text-xl md:leading-[1.33] md:text-2xl',
+  h6: 'text-lg',
 }
 
 const titleColors = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-}
-
-const titleColorsInverse = {
-  primary: 'text-inverse',
-  secondary: 'text-inverse-secondary',
+  primary: 'text-gray-800',
+  secondary: 'text-purple-400',
 }
 
 export function Title({
@@ -42,17 +38,27 @@ export function Title({
   size,
   as,
   className,
-  bold = false,
   inverse = false,
+  body = false,
+  bold = true,
   ...rest
 }: TitleProps & { size: keyof typeof fontSize }) {
   const Tag = as ?? size
+  const isBold = !body || bold
+  const textColor =
+    variant === 'secondary'
+      ? 'text-purple-400'
+      : inverse
+      ? 'text-white'
+      : 'text-gray-800'
   return (
     <Tag
       className={clsx(
+        'tracking-tight',
+        textColor,
+        body ? 'font-sans' : 'font-display',
+        isBold && 'font-bold',
         fontSize[size],
-        inverse ? titleColorsInverse[variant] : titleColors[variant],
-        { 'font-bold': bold },
         className,
       )}
       {...rest}
@@ -145,6 +151,19 @@ export function Subtitle({
         className,
       )}
     >
+      {children}
+    </span>
+  )
+}
+type IntroProps = {
+  className?: string
+}
+export function Intro({
+  children,
+  className,
+}: React.PropsWithChildren<IntroProps>) {
+  return (
+    <span className={clsx('text-2xl text-gray-600', className)}>
       {children}
     </span>
   )

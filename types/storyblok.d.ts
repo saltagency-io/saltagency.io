@@ -1,5 +1,7 @@
 import type { SbBlokData } from '@storyblok/react'
 
+import { CardIcon } from '~/components/card'
+import type { CardSectionVariant } from '~/components/sections/cards-section'
 import { SpacerSizes } from '~/components/spacer'
 import { BlokTypes } from '~/storyblok'
 
@@ -63,6 +65,14 @@ export type ButtonBlok = SbBlokData & {
   link: Link
   anchor?: string
   icon?: string
+}
+
+export type CardBlok = SbBlokData & {
+  component: BlokTypes.Card
+  icon: CardIcon
+  title: string
+  body: string
+  variant: 'light' | 'dark'
 }
 
 export type LinkBlok = SbBlokData & {
@@ -212,6 +222,15 @@ export type ContactSectionBlok = SbBlokData & {
   theme: 'dark' | 'light'
   actions: ButtonBlok[]
   phoneNumber?: string
+}
+
+export type CardsSectionBlok = SbBlokData & {
+  component: BlokTypes.CardsSection
+  variant: CardSectionVariant
+  sectionTitle: string
+  bodyTitle: string
+  body: string
+  cards: CardBlok[]
 }
 
 export type SpacerBlok = SbBlokData & {

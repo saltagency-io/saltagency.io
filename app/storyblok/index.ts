@@ -1,15 +1,13 @@
-import type * as React from 'react'
-
-import type { SbBlokData } from '@storyblok/react'
-
 import { SbButton } from './button'
 import { SbCalculator } from './calculator'
+import { SbCard } from './card'
 import { SbFooter } from './footer'
 import { SbJobDescription } from './job-description'
 import { SbNavigation } from './navigation'
 import { SbPage } from './page'
 import { SbQuote } from './quote'
 import { SbBlockWithSections } from './sections/block-with-sections'
+import { SbCardsSection } from './sections/cards-section'
 import { SbCareersSection } from './sections/careers-section'
 import { SbClients } from './sections/clients-section'
 import { SbHeaderSection } from './sections/header-section'
@@ -21,11 +19,11 @@ import { SbVacancy } from './vacancy'
 import { SbBanner } from '~/storyblok/banner'
 import { SbLayout } from '~/storyblok/layout'
 import { SbPageWithChild } from '~/storyblok/page-with-child'
+import { SbRichText } from '~/storyblok/rich-text'
 import { SbContactSection } from '~/storyblok/sections/contact-section'
 import { SbImageSection } from '~/storyblok/sections/image-section'
 import { SbTeamSection } from '~/storyblok/sections/team-section'
 import { SbSpacer } from '~/storyblok/spacer'
-import {SbRichText} from "~/storyblok/rich-text";
 
 // Would prefer to put this in types/storyblok.d.ts but that breaks the build for some reason 🤷
 export enum BlokTypes {
@@ -45,6 +43,7 @@ export enum BlokTypes {
   Location = 'location',
   TeamMember = 'teamMember',
   Section = 'section',
+  Card = 'card',
 
   // Components
   Hero = 'hero',
@@ -66,31 +65,34 @@ export enum BlokTypes {
   ImageSection = 'imageSection',
   TeamSection = 'teamSection',
   ContactSection = 'contactSection',
+  CardsSection = 'cardsSection',
 }
 
 export const components = {
-  [BlokTypes.Page]: SbPage,
-  [BlokTypes.Vacancy]: SbVacancy,
-  [BlokTypes.PageWithChild]: SbPageWithChild,
-  [BlokTypes.Layout]: SbLayout,
-  [BlokTypes.Navigation]: SbNavigation,
-  [BlokTypes.Footer]: SbFooter,
-  [BlokTypes.Button]: SbButton,
-  [BlokTypes.Hero]: SbHeroSection,
-  [BlokTypes.Clients]: SbClients,
-  [BlokTypes.Calculator]: SbCalculator,
-  [BlokTypes.TextSection]: SbTextSection,
-  [BlokTypes.BlockWithSections]: SbBlockWithSections,
-  [BlokTypes.JobDescription]: SbJobDescription,
-  [BlokTypes.Quote]: SbQuote,
   [BlokTypes.Banner]: SbBanner,
-  [BlokTypes.Spacer]: SbSpacer,
-  [BlokTypes.RichText]: SbRichText,
-  [BlokTypes.PeopleSection]: SbPeopleSection,
+  [BlokTypes.BlockWithSections]: SbBlockWithSections,
+  [BlokTypes.Button]: SbButton,
+  [BlokTypes.Calculator]: SbCalculator,
+  [BlokTypes.Card]: SbCard,
+  [BlokTypes.CardsSection]: SbCardsSection,
   [BlokTypes.CareersSection]: SbCareersSection,
-  [BlokTypes.HeaderSection]: SbHeaderSection,
-  [BlokTypes.LocationSection]: SbLocationSection,
-  [BlokTypes.ImageSection]: SbImageSection,
-  [BlokTypes.TeamSection]: SbTeamSection,
+  [BlokTypes.Clients]: SbClients,
   [BlokTypes.ContactSection]: SbContactSection,
+  [BlokTypes.Footer]: SbFooter,
+  [BlokTypes.HeaderSection]: SbHeaderSection,
+  [BlokTypes.Hero]: SbHeroSection,
+  [BlokTypes.ImageSection]: SbImageSection,
+  [BlokTypes.JobDescription]: SbJobDescription,
+  [BlokTypes.Layout]: SbLayout,
+  [BlokTypes.LocationSection]: SbLocationSection,
+  [BlokTypes.Navigation]: SbNavigation,
+  [BlokTypes.Page]: SbPage,
+  [BlokTypes.PageWithChild]: SbPageWithChild,
+  [BlokTypes.PeopleSection]: SbPeopleSection,
+  [BlokTypes.Quote]: SbQuote,
+  [BlokTypes.RichText]: SbRichText,
+  [BlokTypes.Spacer]: SbSpacer,
+  [BlokTypes.TeamSection]: SbTeamSection,
+  [BlokTypes.TextSection]: SbTextSection,
+  [BlokTypes.Vacancy]: SbVacancy,
 }

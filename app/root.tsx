@@ -21,6 +21,7 @@ import { storyblokInit, apiPlugin, StoryblokComponent } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
+import { SvgGradientReference } from './utils/svg-gradient-reference'
 import { ErrorPage } from '~/components/errors'
 import {
   getAllVacancies,
@@ -201,7 +202,7 @@ export function App() {
         <Links />
         <DynamicLinks />
       </head>
-      <body>
+      <body className="bg-[#f4f3fc]">
         <StoryblokComponent blok={data.layoutStory?.content} />
         <ScrollRestoration nonce={nonce} />
         <SdLogo origin={data.requestInfo.origin} />
@@ -233,6 +234,7 @@ export function App() {
           }}
         />
         <LiveReload nonce={nonce} />
+        <SvgGradientReference />
       </body>
     </html>
   )

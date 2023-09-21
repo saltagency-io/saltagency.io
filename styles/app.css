@@ -2,34 +2,38 @@
   --color-black: 0 0% 0%;
   --color-white: 0 0% 100%;
 
-  --color-gray-100: 216 59% 33% / 0.051;
-  --color-gray-200: 228 91% 22% / 0.102;
-  --color-gray-300: 227 89% 15% / 0.22;
-  --color-gray-400: 227 89% 15% / 0.412;
-  --color-gray-500: 227 96% 11% / 0.588;
-  --color-gray-600: 228 100% 10% / 0.71;
-  --color-gray-700: 230 87% 9% / 0.82;
-  --color-gray-800: 230 83% 7% / 0.898;
-  --color-gray-900: 248 80% 2% / 0.949;
+  --color-gray-50: 248 29% 95%;
+  --color-gray-100: 240 11% 88%;
+  --color-gray-200: 244 12% 76%;
+  --color-gray-300: 243 11% 65%;
+  --color-gray-400: 245 11% 54%;
+  --color-gray-500: 245 11% 48%;
+  --color-gray-600: 248 15% 31%;
+  --color-gray-700: 247 17% 20%;
+  --color-gray-800: 246 19% 10%;
+  --color-gray-900: 240 45% 2%;
 
-  --color-blue-200: 233 100% 95%;
-  --color-blue-300: 234 100% 84%;
-  --color-blue-400: 235 100% 74%;
+  --color-blue-50: 224 100% 95%;
+  --color-blue-100: 225 100% 91%;
+  --color-blue-200: 226 100% 83%;
+  --color-blue-300: 228 100% 74%;
+  --color-blue-400: 231 100% 66%;
   --color-blue-500: 235 100% 63%;
-  --color-blue-600: 235 60% 44%;
-  --color-blue-700: 235 65% 24%;
-  --color-blue-800: 235 100% 5%;
+  --color-blue-600: 248 85% 43%;
+  --color-blue-700: 250 100% 28%;
+  --color-blue-800: 247 100% 15%;
+  --color-blue-900: 242 100% 5%;
 
-  --color-pink-200: 351 77% 95%;
-  --color-pink-300: 351 79% 85%;
-  --color-pink-400: 351 79% 74%;
-  --color-pink-500: 351 78% 64%;
-  --color-pink-600: 351 46% 44%;
-  --color-pink-700: 351 49% 25%;
-  --color-pink-800: 351 77% 5%;
-
-  --color-red-500: 0 100% 50%;
-  --color-yellow-500: 47 100% 50%;
+  --color-purple-50: 263 60% 95%;
+  --color-purple-100: 263 70% 90%;
+  --color-purple-200: 263 63% 79%;
+  --color-purple-300: 253 100% 76%;
+  --color-purple-400: 259 100% 66%;
+  --color-purple-500: 260 85% 59%;
+  --color-purple-600: 268 100% 35%;
+  --color-purple-700: 267 100% 24%;
+  --color-purple-800: 264 100% 13%;
+  --color-purple-900: 252 100% 4%;
 }
 
 :focus:not(:focus-visible) {
@@ -39,6 +43,7 @@
 html {
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+  color: hsl(var(--color-gray-600));
 }
 
 body {
@@ -144,8 +149,8 @@ a {
   position: absolute;
   width: 100%;
   left: 0;
-  bottom: -4px;
-  height: 2px;
+  bottom: -2px;
+  height: 1px;
   transform: scaleX(0);
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   transform-origin: left;

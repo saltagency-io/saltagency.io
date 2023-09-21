@@ -193,3 +193,11 @@ export function createAlternateLinks(slugs: TranslatedSlug[], origin: string) {
     ),
   }))
 }
+
+export function multilineToBreaks(text: string): React.ReactNode {
+  const lines = text.split('\n')
+  return lines.flatMap((line, i) =>
+    // eslint-disable-next-line react/jsx-key
+    i < lines.length - 1 ? [line, <br key={`break--${i}`} />] : [line],
+  )
+}
