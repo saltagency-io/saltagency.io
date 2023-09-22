@@ -114,16 +114,16 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
 const translatedTitle = (role: string, lang: SupportedLanguage) => {
   const titles = {
-    en: `Apply for ${role} | Salt`,
-    nl: `Soliciteer op ${role} | Salt`,
+    en: `Apply for ${role} | Koodin`,
+    nl: `Soliciteer op ${role} | Koodin`,
   }
   return titles[lang]
 }
 
 const translatedDescription = (role: string, lang: SupportedLanguage) => {
   const descriptions = {
-    en: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
-    nl: `Soliciteer op ${role} at Salt. Wil jij onderdeel zijn van een nieuwe en ambitieuze consultancy startup?`,
+    en: `Apply for ${role} at Koodin. Do you love to be part an excitingly new and ambitious consultancy startup?`,
+    nl: `Soliciteer op ${role} at Koodin. Wil jij onderdeel zijn van een nieuwe en ambitieuze consultancy startup?`,
   }
   return descriptions[lang]
 }

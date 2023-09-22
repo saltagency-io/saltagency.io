@@ -143,7 +143,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
 export const meta: MetaFunction = () => {
   return {
     charset: 'utf-8',
-    title: 'Salt',
+    title: 'Koodin',
     viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
   }
 }
@@ -213,7 +213,7 @@ export function App() {
             data-site="TRHLKHVT"
             data-spa="history"
             data-auto="false" // prevent tracking visit twice on initial page load
-            data-excluded-domains="localhost,salt.fly.dev"
+            data-excluded-domains="localhost,salt.fly.dev,koodin.fly.dev"
             defer
             onLoad={() => {
               fathomQueue.current.forEach(({ command }) => {

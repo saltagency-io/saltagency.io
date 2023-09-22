@@ -310,7 +310,7 @@ export function Navbar({ menu }: Props) {
           prefetch="intent"
           title="home"
         >
-          <span className="sr-only">Salt Agency</span>
+          <span className="sr-only">Koodin</span>
           {/*Mobile*/}
           <Logo size="small" className="block lg:hidden" />
           {/*Desktop*/}

@@ -30,7 +30,7 @@ const labels: Record<SupportedLanguage, Record<string, string>> = {
     '404.more': "But wait! We're you searching for a job opening perhaps?",
     '404.careers.subtitle': "We're hiring",
     '404.careers.title':
-      "We're looking for a broad spectrum of expertise to join Salt",
+      "We're looking for a broad spectrum of expertise to join Koodin",
     '404.meta.title': 'Not found',
     '404.meta.description': 'You landed on a page that we could not find 😢',
     '500.title': '500 Error, Sorry about that!',
@@ -45,7 +45,7 @@ const labels: Record<SupportedLanguage, Record<string, string>> = {
     '404.more': 'Maar wacht even! Zocht je misschien naar een vacature?',
     '404.careers.subtitle': 'Wij zijn op zoek',
     '404.careers.title':
-      'We zoeken een breed spectrum aan expertise om Salt te versterken',
+      'We zoeken een breed spectrum aan expertise om Koodin te versterken',
     '404.meta.title': 'Niet gevonden',
     '404.meta.description':
       'Je bent op een pagina beland die we niet meer kunnen vinden 😢',

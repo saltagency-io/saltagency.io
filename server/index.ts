@@ -36,7 +36,7 @@ app.use(serverTiming())
 
 // Setup headers
 app.use((req, res, next) => {
-  res.set('X-Powered-By', 'Salt Agency')
+  res.set('X-Powered-By', 'Koodin')
   res.set('X-Fly-Region', process.env.FLY_REGION ?? 'unknown')
   res.set('X-Fly-App', process.env.FLY_APP_NAME ?? 'unknown')
   res.set('X-Frame-Options', 'SAMEORIGIN')
