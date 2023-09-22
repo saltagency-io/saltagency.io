@@ -60,9 +60,7 @@ export function HeaderSection({ title, body }: Props) {
             <H1 className="mb-4 lg:mb-10 lg:text-center">{title}</H1>
           </motion.div>
           <motion.div className="lg:px-32" variants={childVariants}>
-            <H4 as="p" variant="secondary" className="lg:text-center">
-              {body}
-            </H4>
+            <p className="lg:text-center lg:text-2xl">{body}</p>
           </motion.div>
           <motion.div
             className="pt-28 text-center lg:pt-72"

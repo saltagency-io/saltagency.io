@@ -227,6 +227,7 @@ export type ContactSectionBlok = SbBlokData & {
 export type CardsSectionBlok = SbBlokData & {
   component: BlokTypes.CardsSection
   variant: CardSectionVariant
+  columns: number
   sectionTitle: string
   bodyTitle: string
   body: string

@@ -1,10 +1,8 @@
-import * as React from 'react'
-
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, H4, Subtitle } from '~/components/typography'
+import { H3, H4, H5, Paragraph, Subtitle } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 
@@ -52,22 +50,21 @@ export function TextSection({
           }}
         >
           <motion.div variants={childVariants}>
-            <Subtitle
-              className="mb-4"
-              variant={theme === 'dark' ? 'pink' : 'blue'}
-            >
+            <H5 as="h2" className="mb-4" variant="secondary">
               {subtitle}
-            </Subtitle>
+            </H5>
           </motion.div>
           <motion.div variants={childVariants}>
-            <H3 as="h2" className="mb-6" inverse={theme === 'dark'}>
+            <H3 className="mb-6" inverse={theme === 'dark'}>
               {title}
             </H3>
           </motion.div>
           <motion.div variants={childVariants}>
-            <H4 as="p" variant="secondary" inverse={theme === 'dark'}>
+            <p
+              className={clsx('text-2xl', theme === 'dark' && 'text-gray-100')}
+            >
               {body}
-            </H4>
+            </p>
           </motion.div>
           {image?.url ? (
             <motion.div className="-ml-8vw -mr-8vw pt-12 lg:m-0">

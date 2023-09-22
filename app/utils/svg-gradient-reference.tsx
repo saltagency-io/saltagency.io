@@ -12,9 +12,9 @@ export function SvgGradientReference() {
       }}
     >
       <defs>
-        <linearGradient id="gradient-brand">
-          <stop offset="0%" stopColor="hsl(235 100% 63%)" />
-          <stop offset="100%" stopColor="hsl(260 85% 59%)" />
+        <linearGradient id="gradient-brand" gradientTransform="rotate(90)">
+          <stop offset="0%" stopColor="hsl(260 85% 59%)" />
+          <stop offset="100%" stopColor="hsl(235 100% 63%)" />
         </linearGradient>
       </defs>
     </svg>

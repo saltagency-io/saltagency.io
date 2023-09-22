@@ -74,7 +74,7 @@ export function ClientsSection({ logos }: { logos: Image[] }) {
   const groups = groupLogos(logos)
 
   return (
-    <Grid as="section" className="hidden pb-40 lg:grid">
+    <Grid as="section" className="hidden lg:grid">
       <motion.div
         className="col-span-full grid grid-cols-5"
         initial={{ opacity: 0 }}

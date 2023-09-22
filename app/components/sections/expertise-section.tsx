@@ -1,13 +1,9 @@
-import * as React from 'react'
-
-import { Link } from '@remix-run/react'
-
 import clsx from 'clsx'
 import { useReducedMotion, motion } from 'framer-motion'
 
+import { DecoratedBackground } from '../decorated-background'
 import { Grid } from '~/components/grid'
-import { IconArrowRight } from '~/components/icons'
-import { H3, H4, Paragraph, Subtitle } from '~/components/typography'
+import { H3, H4, H5, Paragraph, Subtitle } from '~/components/typography'
 import type { Section } from '~/types'
 import { sbIconMap } from '~/utils/storyblok'
 
@@ -27,7 +23,7 @@ export function ExpertiseSection({ subtitle, title, sections }: Props) {
 
   return (
     <motion.div
-      className="bg-gradient py-20 lg:py-40"
+      className="relative bg-black/80 py-20 lg:py-40"
       id="formula"
       initial="initial"
       whileInView="visible"
@@ -38,12 +34,13 @@ export function ExpertiseSection({ subtitle, title, sections }: Props) {
         },
       }}
     >
+      <DecoratedBackground />
       <Grid rowGap>
         <motion.div className="col-span-full" variants={childVariants}>
-          <Subtitle className="mb-4" variant="pink">
+          <H5 as="h2" className="mb-4" variant="secondary">
             {subtitle}
-          </Subtitle>
-          <H3 as="h2" inverse className="pb-10 lg:pb-16">
+          </H5>
+          <H3 inverse className="pb-10 lg:pb-16">
             {title}
           </H3>
         </motion.div>

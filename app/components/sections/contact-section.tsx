@@ -78,9 +78,9 @@ export function ContactSection({
 
   return (
     <div
-      className={clsx('py-20 lg:py-32', {
-        'bg-inverse': theme === 'dark',
-        'bg-primary': theme === 'light',
+      className={clsx('py-20 lg:py-40', {
+        'bg-white': theme === 'light',
+        'bg-gradient': theme === 'dark',
       })}
     >
       <motion.div
@@ -101,14 +101,11 @@ export function ContactSection({
                 </H3>
               </motion.div>
               <motion.div variants={childVariants}>
-                <H4
-                  as="p"
-                  variant="secondary"
-                  inverse={theme === 'dark'}
-                  className="mb-8"
+                <p
+                  className={clsx('mb-8', theme === 'dark' && 'text-gray-100')}
                 >
                   {text}
-                </H4>
+                </p>
               </motion.div>
               <motion.div
                 className="flex flex-col gap-4 lg:flex-row lg:items-center"
@@ -127,7 +124,7 @@ export function ContactSection({
             </div>
           </div>
 
-          <div className="col-span-full flex items-center lg:col-span-5 lg:col-start-1 lg:row-start-1">
+          <div className="col-span-full m-6 overflow-hidden rounded-full object-cover shadow-2xl lg:col-span-5 lg:col-start-1 lg:row-start-1">
             {image ? (
               <img
                 {...getImgProps(image.url, image.alt, {

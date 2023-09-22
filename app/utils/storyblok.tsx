@@ -108,4 +108,12 @@ export const sbGradientIconMap: Record<
   star: GIconStar,
   eye: GIconEye,
   handHeart: GIconHandHeart,
+  calendar: GIconEye,
+  community: GIconEye,
+  draw: GIconEye,
+  money: GIconEye,
+  shield: GIconEye,
+  speechBubble: GIconEye,
+  tag: GIconEye,
+  team: GIconEye,
 }

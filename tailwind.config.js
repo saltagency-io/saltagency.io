@@ -82,11 +82,13 @@ module.exports = {
       blur: {
         '4xl': '100px',
       },
+      dropShadow: {},
       opacity: {
         1: '0.01',
       },
       boxShadow: {
         card: '0px 23px 38px 0px rgba(28, 32, 54, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.35) inset',
+        'card-container': '0px 16px 64px hsl(var(--color-purple-700) / 0.1)',
       },
     },
   },

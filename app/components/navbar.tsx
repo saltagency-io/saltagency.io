@@ -304,7 +304,7 @@ export function Navbar({ menu }: Props) {
 
   return (
     <div className="absolute top-0 left-0 right-0 z-10 mx-8vw mt-12 lg:mt-16">
-      <nav className="ml-auto flex h-12 max-w-5xl items-center justify-between lg:h-18">
+      <nav className="mx-auto flex h-12 max-w-5xl items-center justify-between lg:h-18">
         <Link
           to={language !== defaultLanguage ? `/${language}` : '/'}
           prefetch="intent"
