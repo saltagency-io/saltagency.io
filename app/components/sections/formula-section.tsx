@@ -34,9 +34,7 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
     >
       <Grid className="gap-x-0 md:gap-x-0 lg:gap-x-0">
         <div className="col-span-full">
-          <Subtitle className="mb-4">
-            {subtitle}
-          </Subtitle>
+          <Subtitle className="mb-4">{subtitle}</Subtitle>
           <H3 as="h2" className="pb-10 lg:pb-24">
             {title}
           </H3>

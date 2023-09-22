@@ -186,7 +186,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {({ inputProps }) => (
           <div className="relative">
             <select
-              className={`${inputClassName} pr-10 appearance-none`}
+              className={`${inputClassName} appearance-none pr-10`}
               ref={ref}
               {...props}
               {...inputProps}

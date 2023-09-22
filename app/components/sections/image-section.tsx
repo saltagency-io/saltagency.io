@@ -21,7 +21,7 @@ export function ImageSection({ image }: { image: Image }) {
           }}
         >
           <img
-            className="w-full object-cover aspect-[2/1]"
+            className="aspect-[2/1] w-full object-cover"
             {...getImgProps(image.url, image.alt, {
               widths: [375, 724, 1136],
               sizes: [
