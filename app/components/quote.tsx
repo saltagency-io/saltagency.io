@@ -11,7 +11,7 @@ type Props = {
   text: string
   author: string
   avatar: Image
-  theme?: 'dark' | 'light'
+  theme?: 'dark' | 'light' | 'gray'
   variant?: 'basic' | 'extended'
 }
 
@@ -35,16 +35,14 @@ export function Quote({
       className={clsx({
         'bg-primary': theme === 'light',
         'bg-inverse': theme === 'dark',
+        'bg-gray-body': theme === 'gray',
         'py-20 lg:py-32': variant === 'extended',
         'py-20 lg:py-40': variant === 'basic',
       })}
     >
       <Grid>
         <motion.div
-          className={clsx({
-            'col-span-full': variant === 'extended',
-            'col-span-4 md:col-span-8 lg:col-start-3': variant === 'basic',
-          })}
+          className="col-span-full"
           initial="initial"
           whileInView="visible"
           viewport={{ once: true, margin: '-75px 0px' }}
@@ -91,14 +89,11 @@ export function Quote({
                   alt={avatar.alt}
                   theme={theme}
                 />
-                <H5
-                  className="block text-center"
-                  as="span"
-                  variant="secondary"
-                  inverse={theme === 'dark'}
+                <span
+                  className={clsx('block', theme === 'dark' && 'text-gray-100')}
                 >
                   {author}
-                </H5>
+                </span>
               </div>
             ) : (
               <span

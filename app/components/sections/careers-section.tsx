@@ -13,7 +13,7 @@ type Props = {
   children: React.ReactNode
   subtitle: string
   title: string
-  theme?: 'dark' | 'dark-alt' | 'light'
+  theme?: 'dark' | 'dark-alt' | 'light' | 'gray'
 }
 
 export function CareersSection({
@@ -31,6 +31,7 @@ export function CareersSection({
         'bg-white': theme === 'light',
         'bg-gradient': theme === 'dark-alt',
         'bg-gradient-dark': theme === 'dark',
+        'bg-gray-body': theme === 'gray',
       })}
     >
       <Grid>
@@ -47,14 +48,18 @@ export function CareersSection({
           <H5 as="h2" variant="secondary" className="mb-4">
             {subtitle}
           </H5>
-          <H3 as="span" inverse={theme !== 'light'} className="mb-14 lg:mb-12">
+          <H3
+            as="span"
+            inverse={theme.startsWith('dark')}
+            className="mb-14 lg:mb-12"
+          >
             {title}
           </H3>
           <div className="hidden lg:mt-12 lg:block">{children}</div>
         </motion.div>
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <VacancyList
-            theme={theme === 'light' ? 'dark' : 'light'}
+            theme={theme.startsWith('dark') ? 'light' : 'dark'}
             vacancies={vacancies.map(mapVacancy)}
           />
         </div>

@@ -21,7 +21,7 @@ module.exports = {
       white: 'hsl(var(--color-white) / <alpha-value>)',
       black: 'hsl(var(--color-black) / <alpha-value>)',
 
-      gray: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].reduce(
+      gray: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 'body'].reduce(
         (acc, cv) => ({
           ...acc,
           [cv]: `hsl(var(--color-gray-${cv}) / <alpha-value>)`,
@@ -68,6 +68,9 @@ module.exports = {
       },
       textOpacity: {
         60: '0.6',
+      },
+      borderRadius: {
+        '4xl': '2rem',
       },
       gridTemplateRows: {
         'max-content': 'max-content',

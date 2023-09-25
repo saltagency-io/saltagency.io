@@ -7,7 +7,7 @@ import { getImgProps } from '~/utils/images'
 type Props = {
   url: string
   alt: string
-  theme?: 'dark' | 'light' | 'white'
+  theme?: 'dark' | 'light' | 'white' | 'gray'
   size?: 'small' | 'large'
   className?: string
 }
@@ -29,6 +29,7 @@ export function Avatar({
           'border-avatar-dark': theme === 'dark',
           'border-avatar-light': theme === 'light',
           'border-white': theme === 'white',
+          'border-gray-body': theme === 'gray',
         },
         className,
       )}

@@ -202,7 +202,7 @@ export function App() {
         <Links />
         <DynamicLinks />
       </head>
-      <body className="bg-[#f4f3fc]">
+      <body className="bg-gray-body">
         <StoryblokComponent blok={data.layoutStory?.content} />
         <ScrollRestoration nonce={nonce} />
         <SdLogo origin={data.requestInfo.origin} />

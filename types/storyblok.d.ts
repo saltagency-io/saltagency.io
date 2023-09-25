@@ -153,7 +153,7 @@ export type QuoteBlok = SbBlokData & {
   author: string
   avatar: Asset
   variant: 'basic' | 'extended'
-  theme: 'light' | 'dark'
+  theme: 'light' | 'dark' | 'gray'
 }
 
 export type PeopleSectionBlok = SbBlokData & {

@@ -3,9 +3,13 @@ import type * as React from 'react'
 import { SbBlokData, storyblokEditable, StoryData } from '@storyblok/react'
 
 import {
+  GIconCommunity,
   GIconEye,
   GIconHandHeart,
+  GIconMoney,
+  GIconShield,
   GIconStar,
+  GIconTeam,
   IconProps as GradientIconProps,
 } from '~/components/gradient-icons'
 import {
@@ -109,11 +113,11 @@ export const sbGradientIconMap: Record<
   eye: GIconEye,
   handHeart: GIconHandHeart,
   calendar: GIconEye,
-  community: GIconEye,
+  community: GIconCommunity,
   draw: GIconEye,
-  money: GIconEye,
-  shield: GIconEye,
+  money: GIconMoney,
+  shield: GIconShield,
   speechBubble: GIconEye,
   tag: GIconEye,
-  team: GIconEye,
+  team: GIconTeam,
 }
