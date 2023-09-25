@@ -131,7 +131,7 @@ enum Period {
 const averageWorkDays = 21.66666667
 const unbillableDays = 38
 const baseSalaryAmount = 4800
-const pensionAmount = 274
+const pensionAmounts = [274, 239, 205]
 const relativeRevenuePercentage = 0.7
 const employerTaxPercentage = 0.18
 const maxEmployerCharges = 71000
@@ -153,7 +153,12 @@ function calculate({
 }): CalculationResult {
   const isYearly = period === 'year'
   const workingRate = hoursPerWeek === 40 ? 1 : hoursPerWeek === 36 ? 0.9 : 0.8
-
+  const pensionAmount =
+    hoursPerWeek === 40
+      ? pensionAmounts[0]
+      : hoursPerWeek === 36
+      ? pensionAmounts[1]
+      : pensionAmounts[2]
   const expensesTraining = usesTraining ? 100 : 0
   const expensesTravel = usesTravel ? 200 : 0
   const expensesEquipment = usesEquipment ? 100 : 0
@@ -258,7 +263,7 @@ export function Calculator({ title, subtitle }: Props) {
       className="bg-cover bg-center pt-20 pb-32 lg:pb-40"
       style={{
         backgroundImage:
-          'url(https://a.storyblok.com/f/180005/1443x1100/ab21757705/bg.jpg)',
+          'url(https://a.storyblok.com/f/180005/1443x1100/073964b179/bg.jpg)',
       }}
     >
       <Grid>
