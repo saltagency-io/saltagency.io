@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { Accordion } from '~/components/accordion'
 import { Grid } from '~/components/grid'
-import { H3, Subtitle } from '~/components/typography'
+import { H3, H5 } from '~/components/typography'
 import type { Section } from '~/types'
 
 type Props = {
@@ -22,7 +22,7 @@ export function AccordionSection({ subtitle, title, sections }: Props) {
   }
 
   return (
-    <motion.div className="bg-gray-900 py-28">
+    <motion.div className="py-28">
       <Grid>
         <motion.div
           className="col-span-full"
@@ -38,12 +38,12 @@ export function AccordionSection({ subtitle, title, sections }: Props) {
           }}
         >
           <motion.div variants={childVariants}>
-            <Subtitle className="mb-4" variant="pink">
+            <H5 as="h2" className="mb-4" variant="secondary">
               {subtitle}
-            </Subtitle>
+            </H5>
           </motion.div>
           <motion.div variants={childVariants}>
-            <H3 as="h2" className="mb-10 lg:mb-28" inverse>
+            <H3 className="mb-10" inverse>
               {title}
             </H3>
           </motion.div>

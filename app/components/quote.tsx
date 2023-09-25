@@ -5,13 +5,13 @@ import { Avatar } from '~/components/avatar'
 import { Grid } from '~/components/grid'
 import { H3, H5 } from '~/components/typography'
 import type { Image } from '~/types'
+import { useGroup } from '~/utils/providers'
 
 type Props = {
   subtitle?: string
   text: string
   author: string
   avatar: Image
-  theme?: 'dark' | 'light' | 'gray'
   variant?: 'basic' | 'extended'
 }
 
@@ -20,9 +20,9 @@ export function Quote({
   text,
   author,
   avatar,
-  theme = 'light',
   variant = 'basic',
 }: Props) {
+  const { theme } = useGroup()
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -33,9 +33,6 @@ export function Quote({
   return (
     <div
       className={clsx({
-        'bg-primary': theme === 'light',
-        'bg-inverse': theme === 'dark',
-        'bg-gray-body': theme === 'gray',
         'py-20 lg:py-32': variant === 'extended',
         'py-20 lg:py-40': variant === 'basic',
       })}
@@ -63,7 +60,6 @@ export function Quote({
               })}
               url={avatar.url}
               alt={avatar.alt}
-              theme={theme}
             />
           </motion.div>
 
@@ -73,7 +69,7 @@ export function Quote({
               className={clsx('mb-8', {
                 'text-center': variant === 'extended',
                 'text-center lg:text-left': variant === 'basic',
-                'text-inverse': theme === 'dark',
+                'text-inverse': theme.startsWith('dark'),
               })}
             >
               “{text}”
@@ -87,10 +83,12 @@ export function Quote({
                   className="hidden lg:block"
                   url={avatar.url}
                   alt={avatar.alt}
-                  theme={theme}
                 />
                 <span
-                  className={clsx('block', theme === 'dark' && 'text-gray-100')}
+                  className={clsx(
+                    'block',
+                    theme.startsWith('dark') && 'text-gray-100',
+                  )}
                 >
                   {author}
                 </span>
@@ -99,7 +97,7 @@ export function Quote({
               <span
                 className={clsx(
                   'block text-center',
-                  theme === 'dark' && 'text-gray-100',
+                  theme.startsWith('dark') && 'text-gray-100',
                 )}
               >
                 {author}

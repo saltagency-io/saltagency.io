@@ -2,11 +2,9 @@ import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Card, type Props as CardProps } from '../card'
-import { DecoratedBackground } from '../decorated-background'
 import { Grid } from '../grid'
 import { H3, H5, Paragraph } from '../typography'
-
-export type CardSectionVariant = 'light' | 'dark' | 'hero'
+import { useGroup } from '~/utils/providers'
 
 const columnStyle: Record<number, string> = {
   1: 'lg:col-span-12',
@@ -21,7 +19,6 @@ type Props = {
   columns: number
   bodyTitle?: string
   body?: string
-  variant?: CardSectionVariant
 }
 export function CardsSection({
   cards,
@@ -29,9 +26,8 @@ export function CardsSection({
   columns,
   bodyTitle,
   body,
-  variant = 'light',
 }: Props) {
-  console.log(columns)
+  const { theme } = useGroup()
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -42,10 +38,7 @@ export function CardsSection({
   const onlySectionTitle = sectionTitle && !bodyTitle && !body
   return (
     <motion.div
-      className={clsx(
-        'relative py-20 lg:py-40',
-        variant === 'dark' && 'bg-black/80',
-      )}
+      className={clsx('relative py-20 lg:py-40')}
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}
@@ -55,7 +48,6 @@ export function CardsSection({
         },
       }}
     >
-      {variant === 'dark' && <DecoratedBackground />}
       <Grid className={clsx('z-10')}>
         <motion.div
           className={clsx('col-span-full', onlySectionTitle ? 'mb-6' : 'mb-20')}
@@ -65,7 +57,7 @@ export function CardsSection({
             {sectionTitle}
           </H5>
           {bodyTitle && (
-            <H3 as="h2" inverse={variant === 'dark'} className="mt-4">
+            <H3 as="h2" inverse={theme.startsWith('dark')} className="mt-4">
               {bodyTitle}
             </H3>
           )}
@@ -80,7 +72,7 @@ export function CardsSection({
               key={id}
               icon={icon}
               title={title}
-              variant={variant === 'hero' ? 'light' : variant}
+              variant={theme.startsWith('dark') ? 'dark' : 'light'}
               className={clsx('col-span-12', columnStyle[columns])}
             >
               {body}

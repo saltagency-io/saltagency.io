@@ -8,6 +8,7 @@ import { Grid } from '~/components/grid'
 import { H3, H4 } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
+import { useGroup } from '~/utils/providers'
 
 const bgColorMap = ['bg-yellow-500', 'bg-pink-500', 'bg-blue-400']
 
@@ -58,7 +59,6 @@ type Props = {
   image?: Image
   children: React.ReactNode
   phoneNumber?: string
-  theme: 'dark' | 'light'
 }
 
 export function ContactSection({
@@ -67,8 +67,9 @@ export function ContactSection({
   image,
   children,
   phoneNumber,
-  theme,
 }: Props) {
+  const { theme } = useGroup()
+  const isDark = theme.startsWith('dark')
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -77,12 +78,7 @@ export function ContactSection({
   }
 
   return (
-    <div
-      className={clsx('py-20 lg:py-40', {
-        'bg-white': theme === 'light',
-        'bg-gradient': theme === 'dark',
-      })}
-    >
+    <div className="py-20 lg:py-40">
       <motion.div
         initial="initial"
         animate="visible"
@@ -96,14 +92,12 @@ export function ContactSection({
           <div className="col-span-full flex items-center lg:col-span-6 lg:col-start-7 lg:row-start-1">
             <div>
               <motion.div variants={childVariants}>
-                <H3 as="h2" inverse={theme === 'dark'} className="mb-4">
+                <H3 as="h2" inverse={isDark} className="mb-4">
                   {title}
                 </H3>
               </motion.div>
               <motion.div variants={childVariants}>
-                <p
-                  className={clsx('mb-8', theme === 'dark' && 'text-gray-100')}
-                >
+                <p className={clsx('mb-8', isDark && 'text-gray-100')}>
                   {text}
                 </p>
               </motion.div>
@@ -114,8 +108,8 @@ export function ContactSection({
                 {children}
                 {phoneNumber ? (
                   <PhoneButton
-                    variant={theme === 'dark' ? 'outline-inverse' : 'outline'}
-                    ringOffsetColor={theme === 'dark' ? 'black' : 'white'}
+                    variant={isDark ? 'outline-inverse' : 'outline'}
+                    ringOffsetColor={isDark ? 'black' : 'white'}
                   >
                     {phoneNumber}
                   </PhoneButton>

@@ -1,11 +1,8 @@
-import * as React from 'react'
-
 import { Link } from '@remix-run/react'
 
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
-import { DecoratedBackground } from '../decorated-background'
 import { Grid } from '~/components/grid'
 import { IconArrowRight } from '~/components/icons'
 import { H3, H4, H5, Paragraph } from '~/components/typography'
@@ -27,7 +24,7 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
 
   return (
     <motion.div
-      className="relative bg-black/80 py-20 lg:py-40"
+      className="relative py-20 lg:py-40"
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}
@@ -37,7 +34,6 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
         },
       }}
     >
-      <DecoratedBackground />
       <Grid className="z-10">
         <motion.div className="col-span-full" variants={childVariants}>
           <H5 as="h2" variant="secondary" className="mb-4">

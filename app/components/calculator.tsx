@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { Grid } from '~/components/grid'
 import { IconChevronDown } from '~/components/icons'
 import { ToggleButton, ToggleButtonGroup } from '~/components/toggle-buttons'
-import { H3, H4, H5, Subtitle } from '~/components/typography'
+import { H3, H5 } from '~/components/typography'
 import { useLabels } from '~/utils/labels-provider'
 
 const formatter = new Intl.NumberFormat('nl-NL', {
@@ -258,28 +258,21 @@ export function Calculator({ title, subtitle }: Props) {
   })
 
   return (
-    <div
-      id="fair-pay"
-      className="bg-cover bg-center pt-20 pb-32 lg:pb-40"
-      style={{
-        backgroundImage:
-          'url(https://a.storyblok.com/f/180005/1443x1100/073964b179/bg.jpg)',
-      }}
-    >
+    <div id="fair-pay" className="pt-20 pb-32 lg:pb-40">
       <Grid>
-        <div className="col-span-full lg:text-center">
-          <Subtitle variant="pink" className="mb-4">
+        <div className="col-span-full">
+          <H5 as="h2" variant="secondary" className="mb-4">
             {subtitle}
-          </Subtitle>
-          <H3 as="h2" inverse className="mb-8 lg:mb-20 lg:px-40">
+          </H5>
+          <H3 inverse className="mb-8 lg:mb-10">
             {title}
           </H3>
         </div>
-        <div className="bg-transparent-light col-span-full flex flex-col justify-between rounded-lg px-6 py-8 backdrop-blur-lg lg:flex-row lg:p-14">
+        <div className="col-span-full flex flex-col gap-8 lg:flex-row lg:gap-16">
           <div className="flex flex-grow flex-col gap-y-4 lg:gap-y-8 lg:pr-20">
-            <H4 as="h3" inverse>
+            <H5 as="h4" inverse>
               {t('calculator.title')}
-            </H4>
+            </H5>
             <div>
               <label
                 htmlFor="rate"
@@ -347,6 +340,12 @@ export function Calculator({ title, subtitle }: Props) {
                 </ToggleButton>
               </ToggleButtonGroup>
             </div>
+            <p
+              className="text-gray-100/70"
+              dangerouslySetInnerHTML={{
+                __html: t('calculator.cta', { replace: true }),
+              }}
+            />
           </div>
           <table className="mt-14 w-full lg:mt-0 lg:w-[410px]">
             <tbody>
@@ -415,16 +414,6 @@ export function Calculator({ title, subtitle }: Props) {
               )}
             </tbody>
           </table>
-        </div>
-        <div className="col-span-full pt-8 text-center lg:pt-10">
-          <H5
-            as="p"
-            variant="secondary"
-            inverse
-            dangerouslySetInnerHTML={{
-              __html: t('calculator.cta', { replace: true }),
-            }}
-          />
         </div>
       </Grid>
     </div>

@@ -1,7 +1,8 @@
 import type { SbBlokData } from '@storyblok/react'
 
+import type { GroupTheme } from 'types'
+
 import { CardIcon } from '~/components/card'
-import type { CardSectionVariant } from '~/components/sections/cards-section'
 import { SpacerSizes } from '~/components/spacer'
 import { BlokTypes } from '~/storyblok'
 
@@ -26,12 +27,12 @@ export type LayoutStoryContent = {
 }
 
 export type PageBlok = SbBlokData & {
-  body: BodyComponent[]
+  body: GroupBlok[]
 }
 
 export type PageWithChildBlok = SbBlokData & {
-  topBody: BodyComponent[]
-  bottomBody: BodyComponent[]
+  topBody: GroupBlok[]
+  bottomBody: GroupBlok[]
 }
 
 export type LayoutBlok = SbBlokData & {
@@ -50,6 +51,12 @@ export type FooterBlok = SbBlokData & {
   additionalLinks: LinkBlok[]
   location: LocationBlok[]
   socialText: string
+}
+
+export type GroupBlok = SbBlokData & {
+  component: BlokTypes.Group
+  theme: GroupTheme
+  content: BodyComponent[]
 }
 
 export type VacancyBlok = SbBlokData & {
@@ -226,7 +233,6 @@ export type ContactSectionBlok = SbBlokData & {
 
 export type CardsSectionBlok = SbBlokData & {
   component: BlokTypes.CardsSection
-  variant: CardSectionVariant
   columns: number
   sectionTitle: string
   bodyTitle: string

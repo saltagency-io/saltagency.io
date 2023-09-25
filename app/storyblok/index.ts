@@ -2,6 +2,7 @@ import { SbButton } from './button'
 import { SbCalculator } from './calculator'
 import { SbCard } from './card'
 import { SbFooter } from './footer'
+import { SbGroup } from './group'
 import { SbJobDescription } from './job-description'
 import { SbNavigation } from './navigation'
 import { SbPage } from './page'
@@ -36,6 +37,7 @@ export enum BlokTypes {
   Layout = 'layout',
   Navigation = 'navigation',
   Footer = 'footer',
+  Group = 'group',
 
   // Nested Components
   Button = 'button',
@@ -79,6 +81,7 @@ export const components = {
   [BlokTypes.Clients]: SbClients,
   [BlokTypes.ContactSection]: SbContactSection,
   [BlokTypes.Footer]: SbFooter,
+  [BlokTypes.Group]: SbGroup,
   [BlokTypes.HeaderSection]: SbHeaderSection,
   [BlokTypes.Hero]: SbHeroSection,
   [BlokTypes.ImageSection]: SbImageSection,

@@ -3,22 +3,17 @@ import * as React from 'react'
 import clsx from 'clsx'
 
 import { getImgProps } from '~/utils/images'
+import { useGroup } from '~/utils/providers'
 
 type Props = {
   url: string
   alt: string
-  theme?: 'dark' | 'light' | 'white' | 'gray'
   size?: 'small' | 'large'
   className?: string
 }
 
-export function Avatar({
-  url,
-  alt,
-  theme = 'dark',
-  size = 'large',
-  className,
-}: Props) {
+export function Avatar({ url, alt, size = 'large', className }: Props) {
+  const { theme } = useGroup()
   return (
     <div
       className={clsx(
@@ -26,10 +21,9 @@ export function Avatar({
         {
           'h-10 w-10 border-4': size === 'small',
           'h-16 w-16 border-8': size === 'large',
-          'border-avatar-dark': theme === 'dark',
-          'border-avatar-light': theme === 'light',
-          'border-white': theme === 'white',
-          'border-gray-body': theme === 'gray',
+          'border-avatar-dark': theme.startsWith('dark'),
+          'border-white': theme.startsWith('white'),
+          'border-gray-body': theme.startsWith('gray'),
         },
         className,
       )}

@@ -30,7 +30,7 @@ export function TeamSection({ subtitle, title, members }: Props) {
   return (
     <motion.div
       id="team"
-      className="relative bg-black/80 py-20 lg:py-40"
+      className="relative py-20 lg:py-40"
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}
@@ -40,7 +40,6 @@ export function TeamSection({ subtitle, title, members }: Props) {
         },
       }}
     >
-      <DecoratedBackground />
       <Grid className="z-10 gap-y-10">
         <motion.div className="col-span-full mb-10" variants={childVariants}>
           <H5 as="h2" className="mb-4" variant="secondary">

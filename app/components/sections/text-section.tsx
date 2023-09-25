@@ -2,25 +2,21 @@ import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, H4, H5, Paragraph, Subtitle } from '~/components/typography'
+import { H3, H5 } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
+import { useGroup } from '~/utils/providers'
 
 type Props = {
   subtitle: string
   title: string
   body: string
   image?: Image
-  theme?: 'dark' | 'light'
 }
 
-export function TextSection({
-  subtitle,
-  title,
-  body,
-  image,
-  theme = 'light',
-}: Props) {
+export function TextSection({ subtitle, title, body, image }: Props) {
+  const { theme } = useGroup()
+  const isDark = theme.startsWith('dark')
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -29,12 +25,7 @@ export function TextSection({
   }
 
   return (
-    <div
-      className={clsx('py-24 lg:py-40', {
-        'bg-primary': theme === 'light',
-        'bg-inverse': theme === 'dark',
-      })}
-    >
+    <div className="py-24 lg:py-40">
       <Grid>
         <motion.div
           className="col-span-full lg:col-span-10 lg:col-start-2"
@@ -55,14 +46,12 @@ export function TextSection({
             </H5>
           </motion.div>
           <motion.div variants={childVariants}>
-            <H3 className="mb-6" inverse={theme === 'dark'}>
+            <H3 className="mb-6" inverse={isDark}>
               {title}
             </H3>
           </motion.div>
           <motion.div variants={childVariants}>
-            <p
-              className={clsx('text-2xl', theme === 'dark' && 'text-gray-100')}
-            >
+            <p className={clsx('text-2xl', isDark && 'text-gray-100')}>
               {body}
             </p>
           </motion.div>

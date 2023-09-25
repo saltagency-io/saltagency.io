@@ -7,33 +7,21 @@ import { Grid } from '~/components/grid'
 import { H3, H5 } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
 import { useLocalizedMappers } from '~/utils/mappers'
-import { useVacancies } from '~/utils/providers'
+import { useGroup, useVacancies } from '~/utils/providers'
 
 type Props = {
   children: React.ReactNode
   subtitle: string
   title: string
-  theme?: 'dark' | 'dark-alt' | 'light' | 'gray'
 }
 
-export function CareersSection({
-  children,
-  subtitle,
-  title,
-  theme = 'light',
-}: Props) {
+export function CareersSection({ children, subtitle, title }: Props) {
+  const { theme } = useGroup()
   const { vacancies } = useVacancies()
   const { mapVacancy } = useLocalizedMappers()
 
   return (
-    <div
-      className={clsx('py-20 lg:py-40', {
-        'bg-white': theme === 'light',
-        'bg-gradient': theme === 'dark-alt',
-        'bg-gradient-dark': theme === 'dark',
-        'bg-gray-body': theme === 'gray',
-      })}
-    >
+    <div className="py-20 lg:py-40">
       <Grid>
         <motion.div
           className="col-span-4 md:col-span-8 lg:col-span-5"
