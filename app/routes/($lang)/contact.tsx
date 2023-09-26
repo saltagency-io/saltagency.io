@@ -176,11 +176,13 @@ export default function ContactPage() {
       <StoryblokComponent blok={story.content}>
         <Grid className="lg:pb-42 pt-8 pb-16 lg:pt-24">
           <div className="col-span-full lg:col-span-5">
-            <H5 as="p" variant="secondary" className="mb-8 lg:mb-0">
-              {t('contact.text')}
+            <H5 as="h2" variant="secondary" className="mb-4">
+              {t('contact.sectionTitle')}
             </H5>
+            <H3 className="mb-4">{t('contact.bodyTitle')}</H3>
+            <p className="mb-4">{t('contact.body')}</p>
           </div>
-          <div className="col-span-full lg:col-span-7 lg:px-8">
+          <div className="col-span-full lg:col-span-6 lg:col-start-7">
             {messageSuccessfullySent ? (
               <div className="min-h-[50vh]">
                 <H3 as="span">{t('form.contact.success')}</H3>
@@ -233,19 +235,17 @@ export default function ContactPage() {
                   error={to(contactFetcher?.data?.errors.body)}
                 />
 
-                <div className="mb-8 flex items-center gap-x-4 rounded-lg bg-gray-100 py-4 px-6">
+                <div className="mb-8 flex items-center gap-x-4 rounded-full bg-gray-50 p-4">
                   <Avatar
                     url="https://a.storyblok.com/f/198542/236x236/9a05e3ee75/dennis-round.png"
                     alt="Dennis"
-                    theme="white"
                     size="small"
+                    theme="light-white"
                   />
-                  <Paragraph textColorClassName="text-gray-700" size="lg">
-                    <strong className="text-gray-900">
-                      {t('contact.response.name')}
-                    </strong>{' '}
+                  <p>
+                    <strong>{t('contact.response.name')}</strong>{' '}
                     {t('contact.response')}
-                  </Paragraph>
+                  </p>
                 </div>
 
                 <div className="mb-8">
@@ -267,9 +267,11 @@ export default function ContactPage() {
                     {t('form.contact.error')}
                   </ErrorPanel>
                 ) : null}
-                <Button type="submit" className="w-full" variant="secondary">
-                  {t('form.contact.submit')}
-                </Button>
+                <div className="flex justify-center">
+                  <Button type="submit" variant="primary" className="mx-auto">
+                    {t('form.contact.submit')}
+                  </Button>
+                </div>
               </contactFetcher.Form>
             )}
           </div>

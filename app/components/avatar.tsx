@@ -10,20 +10,28 @@ type Props = {
   alt: string
   size?: 'small' | 'large'
   className?: string
+  theme?: ReturnType<typeof useGroup>['theme']
 }
 
-export function Avatar({ url, alt, size = 'large', className }: Props) {
-  const { theme } = useGroup()
+export function Avatar({
+  url,
+  alt,
+  size = 'large',
+  theme: themeOverwrite,
+  className,
+}: Props) {
+  const groupState = useGroup()
+  const theme = themeOverwrite ?? groupState.theme
   return (
     <div
       className={clsx(
-        'flex items-center justify-center overflow-hidden rounded-full border-8',
+        'flex items-center justify-center overflow-hidden rounded-full border',
         {
-          'h-10 w-10 border-4': size === 'small',
+          'h-14 w-14 border-4': size === 'small',
           'h-16 w-16 border-8': size === 'large',
           'border-avatar-dark': theme.startsWith('dark'),
-          'border-white': theme.startsWith('white'),
-          'border-gray-body': theme.startsWith('gray'),
+          'border-white': theme === 'light-white',
+          'border-gray-body': theme.startsWith('light-gray'),
         },
         className,
       )}

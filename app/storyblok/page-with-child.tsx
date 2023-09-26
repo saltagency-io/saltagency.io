@@ -3,6 +3,7 @@ import type * as React from 'react'
 import { StoryblokComponent } from '@storyblok/react'
 
 import type { PageWithChildBlok } from '~/types'
+import { GroupProvider } from '~/utils/providers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbPageWithChild({
@@ -14,15 +15,18 @@ export function SbPageWithChild({
 }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      {blok.topBody?.map((nestedBlok) => (
-        <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
-      ))}
+      {/* Fallback group theme provider */}
+      <GroupProvider value={{ theme: 'light-white' }}>
+        {blok.topBody?.map((nestedBlok) => (
+          <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
+        ))}
 
-      {children}
+        {children}
 
-      {blok.bottomBody?.map((nestedBlok) => (
-        <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
-      ))}
+        {blok.bottomBody?.map((nestedBlok) => (
+          <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
+        ))}
+      </GroupProvider>
     </StoryBlokWrapper>
   )
 }

@@ -192,6 +192,7 @@ export type LocationSectionBlok = SbBlokData & {
   location: LocationBlok[]
   image: Asset
   imageMobile: Asset
+  officeImage: Asset
   links: LinkBlok[]
 }
 
