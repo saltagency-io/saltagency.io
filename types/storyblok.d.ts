@@ -17,7 +17,7 @@ export type PageStoryContent = {
 export type VacancyStoryContent = {
   title: string
   summary: string
-  body: Array<JobDescriptionBlok | BlockWithSectionsBlok>
+  body: GroupBlok[]
   metatags: MetaTags
 }
 

@@ -7,6 +7,7 @@ import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
 import { Vacancy } from '~/components/vacancy'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { VacancyBlok } from '~/types'
+import { GroupProvider } from '~/utils/providers'
 import { SdJobPosting } from '~/utils/structured-data'
 
 type Props = {
@@ -24,18 +25,21 @@ export function SbVacancy({ blok, publishDate }: Props) {
 
   return (
     <div {...storyblokEditable(blok)}>
-      <SdJobPosting
-        title={blok.title}
-        origin={requestInfo.origin}
-        description={(jobDescription?.description as string) ?? ''}
-        datePosted={datePosted}
-      />
+      {/* Fallback group theme provider */}
+      <GroupProvider value={{ theme: 'light-white' }}>
+        <SdJobPosting
+          title={blok.title}
+          origin={requestInfo.origin}
+          description={(jobDescription?.description as string) ?? ''}
+          datePosted={datePosted}
+        />
 
-      <Vacancy title={blok.title} summary={blok.summary}>
-        {blok.body.map((nestedBlok) => (
-          <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
-        ))}
-      </Vacancy>
+        <Vacancy title={blok.title} summary={blok.summary}>
+          {blok.body.map((nestedBlok) => (
+            <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
+          ))}
+        </Vacancy>
+      </GroupProvider>
     </div>
   )
 }

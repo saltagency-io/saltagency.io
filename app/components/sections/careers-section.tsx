@@ -24,7 +24,7 @@ export function CareersSection({ children, subtitle, title }: Props) {
     <div className="py-20 lg:py-40">
       <Grid>
         <motion.div
-          className="col-span-4 md:col-span-8 lg:col-span-5"
+          className="col-span-4 mb-12 md:col-span-8 lg:col-span-5"
           initial="initial"
           whileInView="visible"
           viewport={{ once: true, margin: '-115px 0px' }}
@@ -36,11 +36,7 @@ export function CareersSection({ children, subtitle, title }: Props) {
           <H5 as="h2" variant="secondary" className="mb-4">
             {subtitle}
           </H5>
-          <H3
-            as="span"
-            inverse={theme.startsWith('dark')}
-            className="mb-14 lg:mb-12"
-          >
+          <H3 as="span" inverse={theme.startsWith('dark')}>
             {title}
           </H3>
           <div className="hidden lg:mt-12 lg:block">{children}</div>

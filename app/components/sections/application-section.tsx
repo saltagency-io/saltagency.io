@@ -3,7 +3,7 @@ import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, H4, Paragraph, Subtitle } from '~/components/typography'
+import { H3, H4, H5, Paragraph, Subtitle } from '~/components/typography'
 import type { Section } from '~/types'
 import { sbIconMap } from '~/utils/storyblok'
 
@@ -26,7 +26,7 @@ export function ApplicationProcessSection({
   }
 
   return (
-    <div className="bg-inverse py-20 lg:py-40">
+    <div className="py-20 lg:py-40">
       <motion.div
         initial="initial"
         whileInView="visible"
@@ -44,10 +44,10 @@ export function ApplicationProcessSection({
             className="col-span-full lg:col-span-3"
             variants={childVariants}
           >
-            <Subtitle variant="pink" className="mb-4">
+            <H5 as="h2" variant="secondary" className="mb-2">
               {subtitle}
-            </Subtitle>
-            <H3 as="h2" className="mb-16 lg:mb-0" inverse>
+            </H5>
+            <H3 className="mb-16 lg:mb-0" inverse>
               {title}
             </H3>
           </motion.div>

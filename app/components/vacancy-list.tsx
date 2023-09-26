@@ -16,7 +16,6 @@ export function VacancyList({
   transition?: boolean
 }) {
   const shouldReduceMotion = useReducedMotion()
-
   return (
     <motion.ul
       className="-mt-6"
