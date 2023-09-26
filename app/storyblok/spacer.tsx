@@ -7,10 +7,7 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 export function SbSpacer({ blok }: { blok: SpacerBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      <Spacer
-        size={blok.size}
-        className={blok.color === 'white' ? 'bg-primary' : 'bg-inverse'}
-      />
+      <Spacer size={blok.size} />
     </StoryBlokWrapper>
   )
 }
