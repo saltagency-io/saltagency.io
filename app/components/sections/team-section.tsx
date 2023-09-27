@@ -74,7 +74,7 @@ export function TeamSection({ subtitle, title, members }: Props) {
                   <Paragraph
                     as="span"
                     size="xl"
-                    textColorClassName="text-gray-100"
+                    textColorClassName="text-gray-100/70"
                   >
                     {member.role}
                   </Paragraph>
