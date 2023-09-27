@@ -8,7 +8,7 @@ export function DecoratedBackground() {
       className={clsx(
         'pointer-events-none absolute inset-0',
         'before:absolute before:inset-0 before:z-[1] before:bg-gradient-to-r before:from-transparent before:to-blue-500/10',
-        'after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:via-transparent after:to-black/40',
+        'after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:via-transparent after:to-black',
       )}
     >
       <GradientCircle
