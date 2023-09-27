@@ -131,7 +131,7 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
 }
 
 const topVariants = {
-  open: { rotate: 45, y: 7 },
+  open: { rotate: 45, y: 6 },
   closed: { rotate: 0, y: 0 },
 }
 
@@ -141,7 +141,7 @@ const centerVariants = {
 }
 
 const bottomVariants = {
-  open: { rotate: -45, y: -5 },
+  open: { rotate: -45, y: -6 },
   closed: { rotate: 0, y: 0 },
 }
 
@@ -178,7 +178,7 @@ function MobileMenu({ menu }: { menu: LinkType[] }) {
                   variants={topVariants}
                   transition={transition}
                   x="6"
-                  y="9"
+                  y="10"
                   width="20"
                   height="2"
                   rx="1"
@@ -189,7 +189,7 @@ function MobileMenu({ menu }: { menu: LinkType[] }) {
                   variants={centerVariants}
                   transition={transition}
                   x="6"
-                  y="15"
+                  y="16"
                   width="20"
                   height="2"
                   rx="1"
@@ -200,7 +200,7 @@ function MobileMenu({ menu }: { menu: LinkType[] }) {
                   variants={bottomVariants}
                   transition={transition}
                   x="6"
-                  y="21"
+                  y="22"
                   width="20"
                   height="2"
                   rx="1"
