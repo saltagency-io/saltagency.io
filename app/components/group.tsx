@@ -13,6 +13,7 @@ const backgroundColorStyles: Record<GroupTheme, string> = {
   dark: 'bg-black/80',
   'light-gray': 'bg-gray-body',
   'light-gray-decorated': 'bg-gray-body',
+  'light-hero': 'bg-transparent',
   'light-white': 'bg-white',
   'dark-to-footer': 'bg-gradient',
 }

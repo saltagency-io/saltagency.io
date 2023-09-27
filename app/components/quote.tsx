@@ -54,6 +54,7 @@ export function Quote({
             })}
             url={avatar.url}
             alt={avatar.alt}
+            theme={theme}
           />
         </motion.div>
 
@@ -77,6 +78,7 @@ export function Quote({
                 className="hidden lg:block"
                 url={avatar.url}
                 alt={avatar.alt}
+                theme={theme}
               />
               <span
                 className={clsx(

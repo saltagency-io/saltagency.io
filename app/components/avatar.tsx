@@ -1,27 +1,17 @@
-import * as React from 'react'
-
 import clsx from 'clsx'
+import type { GroupTheme } from 'types'
 
 import { getImgProps } from '~/utils/images'
-import { useGroup } from '~/utils/providers'
 
 type Props = {
   url: string
   alt: string
   size?: 'small' | 'large'
   className?: string
-  theme?: ReturnType<typeof useGroup>['theme']
+  theme: GroupTheme
 }
 
-export function Avatar({
-  url,
-  alt,
-  size = 'large',
-  theme: themeOverwrite,
-  className,
-}: Props) {
-  const groupState = useGroup()
-  const theme = themeOverwrite ?? groupState.theme
+export function Avatar({ url, alt, size = 'large', theme, className }: Props) {
   return (
     <div
       className={clsx(
@@ -31,7 +21,8 @@ export function Avatar({
           'h-16 w-16 border-8': size === 'large',
           'border-avatar-dark': theme.startsWith('dark'),
           'border-white': theme === 'light-white',
-          'border-gray-body': theme.startsWith('light-gray'),
+          'border-gray-50':
+            theme.startsWith('light-gray') || theme === 'light-hero',
         },
         className,
       )}

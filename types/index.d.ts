@@ -75,5 +75,6 @@ export type GroupTheme =
   | 'dark-decorated'
   | 'dark-to-footer'
   | 'light-white'
+  | 'light-hero'
 
 export * from './storyblok'
