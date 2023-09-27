@@ -28,11 +28,6 @@ const fontSize = {
   h6: 'text-lg',
 }
 
-const titleColors = {
-  primary: 'text-gray-800',
-  secondary: 'text-purple-400',
-}
-
 export function Title({
   variant = 'primary',
   size,
