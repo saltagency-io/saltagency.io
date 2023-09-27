@@ -37,7 +37,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
     return (
       <div
         className={clsx(
-          'flex flex-col gap-6 rounded-3xl border p-6 shadow-card',
+          'flex flex-col gap-4 rounded-3xl border p-6 shadow-card',
           variantStyles[variant],
           className,
         )}
