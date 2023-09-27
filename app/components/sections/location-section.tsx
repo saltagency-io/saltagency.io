@@ -41,7 +41,7 @@ export function LocationSection({
   link,
 }: Props) {
   return (
-    <div className="relative -my-20 py-20 lg:-my-40 lg:py-40">
+    <div className="relative -my-20 overflow-hidden py-20 lg:-my-40 lg:py-40">
       {/*Mobile*/}
       <div className="absolute inset-0 z-0 block mix-blend-multiply lg:hidden">
         <Image src={imageMobile.url} alt={imageMobile.alt} />
