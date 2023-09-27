@@ -112,18 +112,12 @@ export function Paragraph({
   ...rest
 }: ParagraphProps) {
   return React.createElement(as, {
-    className: clsx(
-      'max-w-full font-medium tracking-tight',
-      textColorClassName,
-      className,
-      {
-        'text-sm leading-6': size === 'sm',
-        'text-lg leading-6': size === 'lg',
-        'text-2xl leading-9': size === 'xl' && !responsive,
-        'text-lg leading-7 md:text-2xl md:leading-9':
-          size === 'xl' && responsive,
-      },
-    ),
+    className: clsx('max-w-full', textColorClassName, className, {
+      'text-sm': size === 'sm',
+      'text-lg': size === 'lg',
+      'text-2xl': size === 'xl' && !responsive,
+      'text-lg md:text-2xl': size === 'xl' && responsive,
+    }),
     ...rest,
   })
 }
