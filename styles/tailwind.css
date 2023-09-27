@@ -40,7 +40,7 @@
   }
 
   .focus-ring-black {
-    @apply focus-ring-base ring-gray-900 group-active:ring-black;
+    @apply focus-ring-base ring-gray-800/50 group-active:ring-black;
   }
 
   .focus-ring-inverse {
