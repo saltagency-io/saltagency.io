@@ -25,7 +25,7 @@ export function HeaderSection({ title, body }: Props) {
   }
 
   return (
-    <div className="relative py-20 lg:py-40">
+    <div className="relative">
       {/*Mobile*/}
       <GradientCircle
         className="mx-auto block lg:hidden"
