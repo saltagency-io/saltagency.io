@@ -13,9 +13,16 @@ export function SvgGradientReference() {
         }}
       >
         <defs>
-          <linearGradient id="gradient-brand" gradientTransform="rotate(90)">
-            <stop offset="0%" stopColor="hsl(260 85% 59%)" />
-            <stop offset="100%" stopColor="hsl(235 100% 63%)" />
+          <linearGradient
+            id="gradient-brand"
+            x1="20"
+            y1="2"
+            x2="20"
+            y2="38"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#8954FF" />
+            <stop offset="1" stop-color="#546DFF" />
           </linearGradient>
         </defs>
       </svg>
