@@ -30,7 +30,6 @@ export function TeamSection({ subtitle, title, members }: Props) {
   return (
     <motion.div
       id="team"
-      className="relative py-20 lg:py-40"
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}

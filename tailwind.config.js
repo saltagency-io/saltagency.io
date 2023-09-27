@@ -80,7 +80,9 @@ module.exports = {
       },
       spacing: {
         '8vw': '8vw', // page margin
+        '100vw': '100vw',
         18: '4.5rem', //72px
+        30: '7.5rem', // 120px
       },
       blur: {
         '4xl': '100px',

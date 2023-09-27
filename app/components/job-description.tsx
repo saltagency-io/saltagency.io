@@ -14,7 +14,7 @@ export function JobDescription({ description, requirements }: Props) {
   const { t } = useLabels()
 
   return (
-    <Grid className="pb-4 pt-16 lg:pb-20 lg:pt-40">
+    <Grid>
       <div className="col-span-full mb-6 lg:mb-14 lg:pb-6">
         <H5 as="h2" className="mb-4" variant="secondary">
           {t('vacancy.description.subtitle')}

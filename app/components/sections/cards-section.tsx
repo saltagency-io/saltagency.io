@@ -38,7 +38,6 @@ export function CardsSection({
   const onlySectionTitle = sectionTitle && !bodyTitle && !body
   return (
     <motion.div
-      className={clsx('relative py-20 lg:py-40')}
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}

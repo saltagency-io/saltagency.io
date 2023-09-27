@@ -19,7 +19,6 @@ export function FormulaSection({ subtitle, title, sections }: Props) {
 
   return (
     <motion.div
-      className="py-20 lg:py-40"
       id="formula"
       initial="initial"
       whileInView="visible"

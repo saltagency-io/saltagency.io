@@ -3,7 +3,7 @@ import { useReducedMotion, motion } from 'framer-motion'
 
 import { DecoratedBackground } from '../decorated-background'
 import { Grid } from '~/components/grid'
-import { H3, H4, H5, Paragraph, Subtitle } from '~/components/typography'
+import { H3, H4, H5, Paragraph } from '~/components/typography'
 import type { Section } from '~/types'
 import { sbIconMap } from '~/utils/storyblok'
 
@@ -23,7 +23,6 @@ export function ExpertiseSection({ subtitle, title, sections }: Props) {
 
   return (
     <motion.div
-      className="relative bg-black/80 py-20 lg:py-40"
       id="formula"
       initial="initial"
       whileInView="visible"

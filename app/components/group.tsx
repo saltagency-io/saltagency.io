@@ -19,7 +19,12 @@ const backgroundColorStyles: Record<GroupTheme, string> = {
 export function Group({ theme, children }: React.PropsWithChildren<Props>) {
   return (
     <GroupProvider value={{ theme }}>
-      <section className={clsx('relative', backgroundColorStyles[theme])}>
+      <section
+        className={clsx(
+          'relative flex flex-col gap-20 py-20 lg:gap-40 lg:py-40',
+          backgroundColorStyles[theme],
+        )}
+      >
         {theme === 'dark-decorated' && <DecoratedBackground />}
         {children}
       </section>

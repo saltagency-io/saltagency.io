@@ -41,7 +41,7 @@ export function LocationSection({
   link,
 }: Props) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative -my-20 py-20 lg:-my-40 lg:py-40">
       {/*Mobile*/}
       <div className="absolute inset-0 z-0 block mix-blend-multiply lg:hidden">
         <Image src={imageMobile.url} alt={imageMobile.alt} />
@@ -52,7 +52,7 @@ export function LocationSection({
       </div>
 
       <Grid>
-        <div className="relative z-10 col-span-full py-20 lg:col-span-5 lg:pt-36 lg:pb-8">
+        <div className="relative z-10 col-span-full lg:col-span-5">
           <H5 as="h2" variant="secondary" className="mb-4">
             {subtitle}
           </H5>
@@ -75,7 +75,7 @@ export function LocationSection({
             </ButtonLink>
           ) : null}
         </div>
-        <div className="col-span-full flex h-full items-stretch lg:col-start-7">
+        <div className="col-span-full -mx-8vw mt-10 flex h-full w-100vw items-stretch lg:col-start-7 lg:m-0 lg:w-auto">
           <Image src={officeImage.url} alt={officeImage.alt} />
         </div>
       </Grid>

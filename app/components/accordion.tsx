@@ -27,14 +27,14 @@ function AccordionItemContent({
   return (
     <>
       <div>
-        <AccordionButton className="group relative w-full py-6 text-left">
+        <AccordionButton className="md:gap6 group relative flex w-full justify-between gap-4 py-6 text-left">
           <H5 as="span" inverse>
             {title}
           </H5>
 
           <span
             className={clsx(
-              'absolute inset-y-0 right-0 my-auto h-10 w-10 lg:right-8',
+              'h-8 w-8',
               'flex items-center justify-center',
               'transition',
               isExpanded ? 'text-blue-500' : 'text-white',

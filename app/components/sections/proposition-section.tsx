@@ -24,7 +24,6 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
 
   return (
     <motion.div
-      className="relative py-20 lg:py-40"
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}

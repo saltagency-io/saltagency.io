@@ -258,7 +258,7 @@ export function Calculator({ title, subtitle }: Props) {
   })
 
   return (
-    <div id="fair-pay" className="pt-20 pb-32 lg:pb-40">
+    <div id="fair-pay">
       <Grid>
         <div className="col-span-full">
           <H5 as="h2" variant="secondary" className="mb-4">

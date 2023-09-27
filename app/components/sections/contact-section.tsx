@@ -78,64 +78,60 @@ export function ContactSection({
   }
 
   return (
-    <div className="py-20 lg:py-40">
-      <motion.div
-        initial="initial"
-        animate="visible"
-        viewport={{ once: true, margin: '-115px 0px' }}
-        variants={{
-          initial: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-        }}
-      >
-        <Grid className="gap-y-16 lg:gap-y-0">
-          <div className="col-span-full flex items-center lg:col-span-6 lg:col-start-7 lg:row-start-1">
-            <div>
-              <motion.div variants={childVariants}>
-                <H3 as="h2" inverse={isDark} className="mb-4">
-                  {title}
-                </H3>
-              </motion.div>
-              <motion.div variants={childVariants}>
-                <p className={clsx('mb-8', isDark && 'text-gray-100')}>
-                  {text}
-                </p>
-              </motion.div>
-              <motion.div
-                className="flex flex-col gap-4 lg:flex-row lg:items-center"
-                variants={childVariants}
-              >
-                {children}
-                {phoneNumber ? (
-                  <PhoneButton
-                    variant={isDark ? 'outline-inverse' : 'outline'}
-                    ringOffsetColor={isDark ? 'black' : 'white'}
-                  >
-                    {phoneNumber}
-                  </PhoneButton>
-                ) : null}
-              </motion.div>
-            </div>
+    <motion.div
+      initial="initial"
+      animate="visible"
+      viewport={{ once: true, margin: '-115px 0px' }}
+      variants={{
+        initial: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+      }}
+    >
+      <Grid className="gap-y-10 md:gap-y-0">
+        <div className="col-span-full flex items-center md:col-span-5 md:col-start-4 md:row-start-1 lg:col-span-6 lg:col-start-7">
+          <div>
+            <motion.div variants={childVariants}>
+              <H3 as="h2" inverse={isDark} className="mb-4">
+                {title}
+              </H3>
+            </motion.div>
+            <motion.div variants={childVariants}>
+              <p className={clsx('mb-8', isDark && 'text-gray-100')}>{text}</p>
+            </motion.div>
+            <motion.div
+              className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-center"
+              variants={childVariants}
+            >
+              {children}
+              {phoneNumber ? (
+                <PhoneButton
+                  variant={isDark ? 'outline-inverse' : 'outline'}
+                  ringOffsetColor={isDark ? 'black' : 'white'}
+                >
+                  {phoneNumber}
+                </PhoneButton>
+              ) : null}
+            </motion.div>
           </div>
+        </div>
 
-          <div className="col-span-full m-6 overflow-hidden rounded-full object-cover shadow-2xl lg:col-span-5 lg:col-start-1 lg:row-start-1">
-            {image ? (
-              <img
-                {...getImgProps(image.url, image.alt, {
-                  widths: [375, 508, 1016],
-                  sizes: [
-                    '(max-width: 1023px) 84vw',
-                    '(min-width: 1024px) 35vw',
-                    '375px',
-                  ],
-                })}
-              />
-            ) : (
-              <Shape />
-            )}
-          </div>
-        </Grid>
-      </motion.div>
-    </div>
+        <div className="aspect-square col-span-2 col-start-2 overflow-hidden rounded-full object-cover shadow-2xl md:col-start-1 md:row-start-1 md:self-start lg:col-span-5 lg:col-start-1 lg:m-6">
+          {image ? (
+            <img
+              {...getImgProps(image.url, image.alt, {
+                widths: [375, 508, 1016],
+                sizes: [
+                  '(max-width: 1023px) 84vw',
+                  '(min-width: 1024px) 35vw',
+                  '375px',
+                ],
+              })}
+            />
+          ) : (
+            <Shape />
+          )}
+        </div>
+      </Grid>
+    </motion.div>
   )
 }

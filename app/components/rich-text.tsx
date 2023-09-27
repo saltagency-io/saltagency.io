@@ -14,16 +14,12 @@ type Props = {
 export function RichText({ content }: Props) {
   const { theme } = useGroup()
   return (
-    <div>
-      <Grid as="section" className="py-4 lg:py-8 lg:px-28">
-        <div className="col-span-full">
-          <Markdown
-            textColor={theme.startsWith('dark') ? 'inverse' : 'primary'}
-          >
-            {content}
-          </Markdown>
-        </div>
-      </Grid>
-    </div>
+    <Grid className="lg:px-28">
+      <div className="col-span-full">
+        <Markdown textColor={theme.startsWith('dark') ? 'inverse' : 'primary'}>
+          {content}
+        </Markdown>
+      </div>
+    </Grid>
   )
 }
