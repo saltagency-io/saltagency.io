@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { GradientCircle } from '~/components/gradient-circle'
 import { Grid } from '~/components/grid'
-import { H1, H4, Intro } from '~/components/typography'
+import { H1, Intro } from '~/components/typography'
 import { multilineToBreaks } from '~/utils/misc'
 
 type Props = {
@@ -58,36 +58,34 @@ export function HeroSection({ children, title, body }: Props) {
         top={10}
         opacity={20}
       />
-      <div className="py-12 lg:py-40">
-        <Grid as="header">
-          <motion.div
-            className="col-span-4 md:col-span-8 lg:col-span-12"
-            initial="initial"
-            animate="visible"
-            variants={{
-              initial: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-            }}
-          >
-            <motion.div variants={childVariants}>
-              <H1 className="break mb-6 text-center">
-                {multilineToBreaks(title)}
-              </H1>
-            </motion.div>
-
-            <motion.div variants={childVariants}>
-              <Intro className="block text-center">{body}</Intro>
-            </motion.div>
-
-            <motion.div
-              className="flex flex-col items-center justify-center gap-4 pt-10 lg:flex-row lg:gap-6"
-              variants={childVariants}
-            >
-              {children}
-            </motion.div>
+      <Grid as="header">
+        <motion.div
+          className="col-span-4 md:col-span-8 lg:col-span-12"
+          initial="initial"
+          animate="visible"
+          variants={{
+            initial: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+          }}
+        >
+          <motion.div variants={childVariants}>
+            <H1 className="break mb-6 text-center">
+              {multilineToBreaks(title)}
+            </H1>
           </motion.div>
-        </Grid>
-      </div>
+
+          <motion.div variants={childVariants}>
+            <Intro className="block text-center">{body}</Intro>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col items-center justify-center gap-4 pt-10 lg:flex-row lg:gap-6"
+            variants={childVariants}
+          >
+            {children}
+          </motion.div>
+        </motion.div>
+      </Grid>
     </>
   )
 }
