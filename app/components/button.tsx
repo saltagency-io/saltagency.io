@@ -39,7 +39,7 @@ function ButtonInner({
         className={clsx(
           'focus-ring absolute inset-0 transform rounded-full font-bold opacity-100 transition-all disabled:opacity-50',
           {
-            'focus-ring-purple bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_100%] bg-[0%] duration-1000 group-hover:bg-[-100%]':
+            'focus-ring-blue bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_100%] bg-[0%] duration-1000 group-hover:bg-[-100%] group-active:bg-[0%]':
               variant === 'primary',
             'focus-ring-black bg-gray-900': variant === 'secondary',
             'focus-ring-black border-black': variant === 'outline',
@@ -53,7 +53,7 @@ function ButtonInner({
       />
       <div
         className={clsx(
-          'relative flex w-full items-center justify-center gap-x-2 whitespace-nowrap text-center text-lg leading-6',
+          'relative flex w-full items-center justify-center gap-x-2 whitespace-nowrap text-center text-lg leading-6 transition-all group-active:opacity-70',
           {
             'text-white': variant !== 'outline',
             'text-black': variant === 'outline',
