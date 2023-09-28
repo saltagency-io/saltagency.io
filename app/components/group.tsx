@@ -1,6 +1,9 @@
 import clsx from 'clsx'
 
-import { DecoratedBackground } from './decorated-background'
+import {
+  DecoratedBackgroundDark,
+  DecoratedBackgroundHero,
+} from './decorated-background'
 import type { GroupTheme } from '~/types'
 import { GroupProvider } from '~/utils/providers'
 
@@ -11,8 +14,8 @@ type Props = {
 const backgroundColorStyles: Record<GroupTheme, string> = {
   'dark-decorated': 'bg-black/80',
   dark: 'bg-black/80',
-  'light-gray': 'bg-gray-body',
-  'light-gray-decorated': 'bg-gray-body',
+  'light-gray': 'bg-transparent',
+  'light-gray-decorated': 'bg-transparent',
   'light-hero': 'bg-transparent',
   'light-white': 'bg-white',
   'dark-to-footer': 'bg-gradient',
@@ -22,12 +25,12 @@ export function Group({ theme, children }: React.PropsWithChildren<Props>) {
     <GroupProvider value={{ theme }}>
       <section
         className={clsx(
-          'relative flex flex-col gap-20 lg:gap-40',
+          'relative flex flex-col gap-20 py-20 lg:gap-40 lg:py-40',
           backgroundColorStyles[theme],
-          theme === 'light-hero' ? 'pt-0 pb-20 lg:pb-40' : 'py-20 lg:py-40',
         )}
       >
-        {theme === 'dark-decorated' && <DecoratedBackground />}
+        {theme === 'dark-decorated' && <DecoratedBackgroundDark />}
+        {theme === 'light-hero' && <DecoratedBackgroundHero />}
         {children}
       </section>
     </GroupProvider>
