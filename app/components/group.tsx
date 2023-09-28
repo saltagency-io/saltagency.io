@@ -16,7 +16,6 @@ const backgroundColorStyles: Record<GroupTheme, string> = {
   dark: 'bg-black/80',
   'light-gray': 'bg-transparent',
   'light-gray-decorated': 'bg-transparent',
-  'light-hero': 'bg-transparent',
   'light-white': 'bg-white',
   'dark-to-footer': 'bg-gradient',
 }
@@ -30,7 +29,7 @@ export function Group({ theme, children }: React.PropsWithChildren<Props>) {
         )}
       >
         {theme === 'dark-decorated' && <DecoratedBackgroundDark />}
-        {theme === 'light-hero' && <DecoratedBackgroundHero />}
+        {theme === 'light-gray-decorated' && <DecoratedBackgroundHero />}
         {children}
       </section>
     </GroupProvider>
