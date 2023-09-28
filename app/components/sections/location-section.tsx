@@ -50,6 +50,7 @@ export function LocationSection({
       <div className="absolute inset-0 z-0 hidden mix-blend-multiply lg:block">
         <Image src={image.url} alt={image.alt} />
       </div>
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-gray-800"></div>
 
       <Grid>
         <div className="relative z-10 col-span-full lg:col-span-5">
