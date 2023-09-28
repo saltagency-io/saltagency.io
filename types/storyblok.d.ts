@@ -134,7 +134,6 @@ export type TextSectionBlok = SbBlokData & {
   title: string
   body: string
   image?: Asset
-  theme: 'dark' | 'light'
 }
 
 export type SectionBlok = SbBlokData & {
@@ -160,7 +159,6 @@ export type QuoteBlok = SbBlokData & {
   author: string
   avatar: Asset
   variant: 'basic' | 'extended'
-  theme: 'light' | 'dark' | 'gray'
 }
 
 export type PeopleSectionBlok = SbBlokData & {
@@ -175,7 +173,6 @@ export type CareersSectionBlok = SbBlokData & {
   component: BlokTypes.CareersSection
   subtitle: string
   title: string
-  theme: 'dark' | 'dark-alt' | 'light'
   actions: ButtonBlok[]
 }
 

@@ -11,7 +11,6 @@ export function SbQuote({ blok }: { blok: QuoteBlok }) {
         text={blok.text}
         author={blok.author}
         avatar={mapAsset(blok.avatar)}
-        theme={blok.theme}
         variant={blok.variant}
       />
     </StoryBlokWrapper>

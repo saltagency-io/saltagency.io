@@ -90,7 +90,7 @@ type ParagraphProps = {
   prose?: boolean
   textColorClassName?: string
   as?: React.ElementType
-  size?: 'sm' | 'lg' | 'xl'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   responsive?: boolean
 } & (
   | { children: React.ReactNode }
@@ -109,6 +109,7 @@ export function Paragraph({
   return React.createElement(as, {
     className: clsx('max-w-full', textColorClassName, className, {
       'text-sm': size === 'sm',
+      'text-base': size === 'md',
       'text-lg': size === 'lg',
       'text-2xl': size === 'xl' && !responsive,
       'text-lg md:text-2xl': size === 'xl' && responsive,
