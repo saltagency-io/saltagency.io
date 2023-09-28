@@ -81,6 +81,7 @@ module.exports = {
       spacing: {
         '8vw': '8vw', // page margin
         '100vw': '100vw',
+        '200vw': '200vw',
         '100vh': '100vh',
         18: '4.5rem', //72px
         30: '7.5rem', // 120px
