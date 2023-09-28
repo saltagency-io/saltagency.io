@@ -21,8 +21,8 @@ export function SvgGradientReference() {
             y2="38"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#8954FF" />
-            <stop offset="1" stop-color="#546DFF" />
+            <stop stopColor="#8954FF" />
+            <stop offset="1" stopColor="#546DFF" />
           </linearGradient>
         </defs>
       </svg>

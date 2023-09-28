@@ -204,6 +204,7 @@ export function App() {
       </head>
       <body className="bg-gray-body">
         <StoryblokComponent blok={data.layoutStory?.content} />
+        <div id="menuPortal"></div>
         <ScrollRestoration nonce={nonce} />
         <SdLogo origin={data.requestInfo.origin} />
         {ENV.NODE_ENV === 'development' ? null : (

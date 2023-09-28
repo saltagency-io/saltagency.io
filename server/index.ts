@@ -255,8 +255,8 @@ if (MODE === 'production') {
 //   app,
 // )
 
-const port = process.env.PORT ?? 3000
-app.listen(port, () => {
+const port = parseInt(process.env.PORT ?? '3000')
+app.listen(port, '0.0.0.0', 511, () => {
   require('../build')
   console.log(`Express server started on http://localhost:${port}`)
 })

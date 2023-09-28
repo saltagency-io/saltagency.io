@@ -1,28 +1,26 @@
-import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { Link, useLocation } from '@remix-run/react'
+import { Link, useLocation, useNavigate } from '@remix-run/react'
 
 import clsx from 'clsx'
 import {
   AnimatePresence,
   MotionValue,
   motion,
+  motionValue,
   useReducedMotion,
   useScroll,
   useTransform,
 } from 'framer-motion'
-
-import {
-  Menu,
-  MenuButton,
-  MenuItems,
-  MenuLink,
-  MenuPopover,
-  useMenuButtonContext,
-} from '@reach/menu-button'
+import { createPortal } from 'react-dom'
 
 import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
+import {
+  enableBodyScroll,
+  disableBodyScroll,
+  clearAllBodyScrollLocks,
+} from '~/utils/bodyScrollLock'
 import { defaultLanguage } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
@@ -52,9 +50,9 @@ function NavLink({
         to={to}
         prefetch="intent"
         className={clsx(
-          'underlined hover:text-primary focus:text-primary flex h-full items-center px-4 focus:outline-none',
+          'underlined flex h-full items-center px-4 focus:outline-none ',
           'select-none whitespace-nowrap font-bold leading-6 tracking-tight',
-          isSelected && 'active',
+          isSelected && 'active text-blue-400',
         )}
         {...rest}
       >
@@ -64,23 +62,29 @@ function NavLink({
   )
 }
 
-function MobileMenuList({ menu }: { menu: LinkType[] }) {
-  const { isExpanded } = useMenuButtonContext()
+function MobileMenuList({
+  menu,
+  expanded,
+  closeMenu,
+  scrollY,
+}: {
+  menu: LinkType[]
+  expanded: boolean
+  closeMenu: () => void
+  scrollY: MotionValue<number>
+}) {
+  const menuRef = useRef<HTMLDivElement | null>(null)
+  const navigate = useNavigate()
   const { language, isDefaultLanguage } = useI18n()
   const { t } = useLabels()
   const shouldReduceMotion = useReducedMotion()
 
-  React.useEffect(() => {
-    if (isExpanded) {
-      document.body.classList.add('fixed')
-      document.body.classList.add('overflow-y-auto')
-      document.body.style.height = 'calc(100vh - env(safe-area-inset-bottom))'
-    } else {
-      document.body.classList.remove('fixed')
-      document.body.classList.remove('overflow-y-auto')
-      document.body.style.removeProperty('height')
-    }
-  }, [isExpanded])
+  const topOffset = useTransform(scrollY, [0, 64], [112, 48])
+  const height = useTransform(
+    topOffset,
+    [112, 48],
+    ['calc(100vh - 112px)', 'calc(100vh - 48px)'],
+  )
 
   const linkClassName = clsx(
     'text-primary text-2xl leading-normal tracking-tight',
@@ -88,60 +92,76 @@ function MobileMenuList({ menu }: { menu: LinkType[] }) {
     'hover:bg-primary focus:bg-primary',
   )
 
+  const handleLink =
+    (to: string) => (e: React.PointerEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+      closeMenu()
+      navigate(to)
+    }
+
+  useEffect(() => {
+    if (!menuRef.current) {
+      return
+    }
+    if (expanded) {
+      disableBodyScroll(menuRef.current)
+      return
+    }
+    enableBodyScroll(menuRef.current)
+    return () => {
+      clearAllBodyScrollLocks()
+    }
+  }, [expanded])
+
   return (
     <AnimatePresence>
-      {isExpanded ? (
-        <MenuPopover
-          position={(r) => ({
-            top: `calc(${Number(r?.top) + Number(r?.height)}px + 2rem)`,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          })}
-          style={{ display: 'block' }}
-          className="z-50"
+      {expanded ? (
+        <motion.div
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -50, opacity: 0 }}
+          transition={{
+            duration: shouldReduceMotion ? 0 : 0.5,
+            type: 'spring',
+          }}
+          style={{ top: topOffset, height }}
+          className="fixed z-50  w-100vw bg-white py-12"
+          ref={menuRef}
         >
-          <motion.div
-            initial={{ y: -50, opacity: 0, overflowY: 'hidden' }}
-            animate={{ y: 0, opacity: 1, overflowY: 'scroll' }}
-            exit={{ y: -50, opacity: 0, overflowY: 'hidden' }}
-            transition={{
-              duration: shouldReduceMotion ? 0 : 0.2,
-              ease: 'linear',
-            }}
-            className="bg-primary flex h-full flex-col overflow-x-hidden py-12"
-          >
-            <MenuItems className="border-none bg-transparent p-0">
-              <>
-                <MenuLink
-                  as={Link}
-                  className={linkClassName}
-                  to={isDefaultLanguage ? '/' : `/${language}`}
+          <ul className="flex flex-col items-center gap-6">
+            <button onClick={handleLink('/')} className="flex">
+              <Link
+                className={linkClassName}
+                to={isDefaultLanguage ? '/' : `/${language}`}
+              >
+                {t('home')}
+              </Link>
+            </button>
+            {menu.map((link) => (
+              <button
+                key={link.id}
+                onClick={handleLink(link.url)}
+                className="flex"
+              >
+                <Link
+                  className={`${linkClassName} hover:text-gray-600 focus:text-gray-600`}
+                  to={link.url}
                 >
-                  {t('home')}
-                </MenuLink>
-                {menu.map((link) => (
-                  <MenuLink
-                    className={`${linkClassName} hover:text-gray-600 focus:text-gray-600`}
-                    key={link.id}
-                    as={Link}
-                    to={link.url}
-                  >
-                    {link.text}
-                  </MenuLink>
-                ))}
-              </>
-            </MenuItems>
-            <GradientCircle
-              rotate={-75}
-              height={758}
-              width={758}
-              top={140}
-              right={-540}
-              opacity={20}
-            />
-          </motion.div>
-        </MenuPopover>
+                  {link.text}
+                </Link>
+              </button>
+            ))}
+          </ul>
+          <GradientCircle
+            rotate={-75}
+            height={758}
+            width={758}
+            top={140}
+            right={-540}
+            opacity={20}
+          />
+        </motion.div>
       ) : null}
     </AnimatePresence>
   )
@@ -162,74 +182,89 @@ const bottomVariants = {
   closed: { rotate: 0, y: 0 },
 }
 
-function MobileMenu({ menu }: { menu: LinkType[] }) {
+function MobileMenu({
+  menu,
+  scrollY,
+  expanded,
+  setExpanded,
+}: {
+  menu: LinkType[]
+  scrollY: MotionValue<number>
+  expanded: boolean
+  setExpanded: (newVal: boolean) => void
+}) {
+  const state = expanded ? 'open' : 'closed'
   const shouldReduceMotion = useReducedMotion()
   const transition = shouldReduceMotion ? { duration: 0 } : {}
 
+  const iconColor = useTransform(scrollY, [60, 120], ['#16151F', '#FFFFFF'])
+  if (typeof document === 'undefined') {
+    return null
+  }
+
   return (
-    <Menu>
-      {({ isExpanded }) => {
-        const state = isExpanded ? 'open' : 'closed'
-        return (
-          <>
-            <MenuButton
-              className={clsx(
-                '-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-lg p-1 text-gray-700 transition focus:outline-none',
-                {
-                  'bg-gray-100': state === 'open',
-                },
-              )}
-            >
-              <span className="sr-only">
-                {state === 'open' ? 'Close menu' : 'Open menu'}
-              </span>
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <motion.rect
-                  animate={state}
-                  variants={topVariants}
-                  transition={transition}
-                  x="6"
-                  y="10"
-                  width="20"
-                  height="2"
-                  rx="1"
-                  fill="currentColor"
-                />
-                <motion.rect
-                  animate={state}
-                  variants={centerVariants}
-                  transition={transition}
-                  x="6"
-                  y="16"
-                  width="20"
-                  height="2"
-                  rx="1"
-                  fill="currentColor"
-                />
-                <motion.rect
-                  animate={state}
-                  variants={bottomVariants}
-                  transition={transition}
-                  x="6"
-                  y="22"
-                  width="20"
-                  height="2"
-                  rx="1"
-                  fill="currentColor"
-                />
-              </svg>
-            </MenuButton>
-            <MobileMenuList menu={menu} />
-          </>
-        )
-      }}
-    </Menu>
+    <>
+      <button
+        onClick={() => {
+          setExpanded(!expanded)
+        }}
+        className={clsx(
+          '-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-lg p-1 text-gray-700 transition focus:outline-none',
+        )}
+      >
+        <span className="sr-only">{expanded ? 'Close menu' : 'Open menu'}</span>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <motion.rect
+            animate={state}
+            variants={topVariants}
+            transition={transition}
+            x="6"
+            y="10"
+            width="20"
+            height="2"
+            rx="1"
+            fill={iconColor}
+          />
+          <motion.rect
+            animate={state}
+            variants={centerVariants}
+            transition={transition}
+            x="6"
+            y="16"
+            width="20"
+            height="2"
+            rx="1"
+            fill={iconColor}
+          />
+          <motion.rect
+            animate={state}
+            variants={bottomVariants}
+            transition={transition}
+            x="6"
+            y="22"
+            width="20"
+            height="2"
+            rx="1"
+            fill={iconColor}
+          />
+        </svg>
+      </button>
+      {createPortal(
+        <MobileMenuList
+          expanded={expanded}
+          menu={menu}
+          closeMenu={() => setExpanded(false)}
+          scrollY={scrollY}
+        />,
+        document.getElementById('menuPortal') ?? document.body,
+      )}
+    </>
   )
 }
 
@@ -238,15 +273,30 @@ type Props = {
 }
 
 export function Navbar({ menu }: Props) {
+  const [expanded, setExpanded] = useState(false)
   const { language } = useI18n()
 
   const { scrollY } = useScroll()
+  const scrollYRef = useRef(scrollY)
   const bgColor = useTransform(
-    scrollY,
+    scrollYRef.current,
     [60, 120],
     ['rgba(22, 21, 31, 0)', 'rgba(22, 21, 31, 0.75)'],
   )
-  const logoTextColor = useTransform(scrollY, [60, 120], ['#000', '#fff'])
+  const logoTextColor = useTransform(
+    scrollYRef.current,
+    [60, 120],
+    ['#000', '#fff'],
+  )
+
+  function handleExpand(newVal: boolean) {
+    if (!expanded) {
+      scrollYRef.current = motionValue(scrollY.get())
+    } else {
+      scrollYRef.current = scrollY
+    }
+    setExpanded(newVal)
+  }
 
   return (
     <motion.div
@@ -331,14 +381,19 @@ export function Navbar({ menu }: Props) {
 
         <ul className="hidden gap-x-2 lg:flex lg:self-stretch">
           {menu.map((link) => (
-            <NavLink key={link.id} to={link.url} scrollY={scrollY}>
+            <NavLink key={link.id} to={link.url} scrollY={scrollYRef.current}>
               {link.text}
             </NavLink>
           ))}
         </ul>
 
         <div className="block lg:hidden">
-          <MobileMenu menu={menu} />
+          <MobileMenu
+            menu={menu}
+            scrollY={scrollYRef.current}
+            expanded={expanded}
+            setExpanded={handleExpand}
+          />
         </div>
       </nav>
     </motion.div>
