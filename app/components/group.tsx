@@ -22,8 +22,9 @@ export function Group({ theme, children }: React.PropsWithChildren<Props>) {
     <GroupProvider value={{ theme }}>
       <section
         className={clsx(
-          'relative flex flex-col gap-20 py-20 lg:gap-40 lg:py-40',
+          'relative flex flex-col gap-20 lg:gap-40',
           backgroundColorStyles[theme],
+          theme === 'light-hero' ? 'pt-0 pb-20 lg:pb-40' : 'py-20 lg:py-40',
         )}
       >
         {theme === 'dark-decorated' && <DecoratedBackground />}
