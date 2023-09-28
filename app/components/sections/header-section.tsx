@@ -68,9 +68,9 @@ export function HeaderSection({ title, body }: Props) {
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}
           >
-            <Link className="inline-block" to="#formula">
+            <span className="inline-block">
               <Paragraph
-                className="hover:text-primary flex flex-col items-center gap-2 text-lg transition lg:flex-row lg:text-2xl"
+                className="flex flex-col items-center gap-2 text-lg transition lg:flex-row lg:text-2xl"
                 as="span"
                 textColorClassName="text-gray-400"
               >
@@ -88,7 +88,7 @@ export function HeaderSection({ title, body }: Props) {
                   <IconArrowDown />
                 </motion.div>
               </Paragraph>
-            </Link>
+            </span>
           </motion.div>
         </motion.div>
       </Grid>
