@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 
 import { Link, useLocation, useNavigate } from '@remix-run/react'
 
@@ -13,6 +13,7 @@ import {
   useTransform,
 } from 'framer-motion'
 import { createPortal } from 'react-dom'
+import { useHydrated } from 'remix-utils'
 
 import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
@@ -193,12 +194,14 @@ function MobileMenu({
   expanded: boolean
   setExpanded: (newVal: boolean) => void
 }) {
+  const isHydrated = useHydrated()
   const state = expanded ? 'open' : 'closed'
   const shouldReduceMotion = useReducedMotion()
   const transition = shouldReduceMotion ? { duration: 0 } : {}
 
   const iconColor = useTransform(scrollY, [60, 120], ['#16151F', '#FFFFFF'])
-  if (typeof document === 'undefined') {
+
+  if (!isHydrated) {
     return null
   }
 
