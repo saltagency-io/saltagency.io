@@ -1,7 +1,7 @@
 export type SupportedLanguage = 'en' | 'nl'
 
 export const defaultLanguage: SupportedLanguage = 'en'
-export const supportedLanguages: SupportedLanguage[] = ['en', 'nl']
+export const supportedLanguages: SupportedLanguage[] = ['en']
 
 export const isSupportedLanguage = (
   lang: unknown,
@@ -14,17 +14,23 @@ export const isSupportedLanguage = (
 
 export function getLanguageFromContext(context: Record<string, unknown>) {
   // TODO: Restore i18n support.
-  // For now we only support nl, as it would not make sense to have koodin.nl
-  // be in English
+  // For now we only support en, as it is the default in Storyblok.
+  // Changing the default to nl is not feasible at this time.
 
-  return 'nl'
+  return defaultLanguage
   //   const { language } = context
   //   return isSupportedLanguage(language) ? language : defaultLanguage
 }
 
 export function getLanguageFromPath(path: string) {
-  const [urlLang] = path.slice(1).split('/')
-  return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
+  // TODO: Restore i18n support.
+  // For now we only support en, as it is the default in Storyblok.
+  // Changing the default to nl is not feasible at this time.
+
+  return defaultLanguage
+
+  // const [urlLang] = path.slice(1).split('/')
+  // return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
 }
 
 const labels: Record<SupportedLanguage, Record<string, string>> = {
