@@ -13,8 +13,13 @@ export const isSupportedLanguage = (
 }
 
 export function getLanguageFromContext(context: Record<string, unknown>) {
-  const { language } = context
-  return isSupportedLanguage(language) ? language : defaultLanguage
+  // TODO: Restore i18n support.
+  // For now we only support nl, as it would not make sense to have koodin.nl
+  // be in English
+
+  return 'nl'
+  //   const { language } = context
+  //   return isSupportedLanguage(language) ? language : defaultLanguage
 }
 
 export function getLanguageFromPath(path: string) {
