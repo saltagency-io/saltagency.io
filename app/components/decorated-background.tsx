@@ -6,7 +6,7 @@ export function DecoratedBackgroundDark() {
   return (
     <div
       className={clsx(
-        'pointer-events-none absolute inset-0',
+        'pointer-events-none absolute inset-0 overflow-hidden',
         'before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:to-blue-500/10',
         'after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:via-transparent after:to-gray-800',
       )}
@@ -60,7 +60,7 @@ export function DecoratedBackgroundDark() {
 
 export function DecoratedBackgroundHero() {
   return (
-    <div className="pointer-events-none absolute inset-0 opacity-20">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-20">
       <svg
         style={{
           top: 600,
