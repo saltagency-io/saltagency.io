@@ -1,7 +1,8 @@
 export type SupportedLanguage = 'en' | 'nl'
 
-export const defaultLanguage: SupportedLanguage = 'en'
-export const supportedLanguages: SupportedLanguage[] = ['en']
+// TODO: Support en locale
+export const defaultLanguage: SupportedLanguage = 'nl'
+export const supportedLanguages: SupportedLanguage[] = ['nl']
 
 export const isSupportedLanguage = (
   lang: unknown,

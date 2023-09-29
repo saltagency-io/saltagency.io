@@ -11,9 +11,9 @@ import path from 'path'
 import serverTiming from 'server-timing'
 
 type SupportedLanguage = 'en' | 'nl'
-
-const defaultLanguage: SupportedLanguage = 'en'
-const supportedLanguages: SupportedLanguage[] = ['en', 'nl']
+// TODO: Support en locale
+const defaultLanguage: SupportedLanguage = 'nl'
+const supportedLanguages: SupportedLanguage[] = ['nl']
 
 const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
   return (

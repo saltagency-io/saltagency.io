@@ -26,7 +26,11 @@ import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import { getLanguageFromContext, SupportedLanguage } from '~/utils/i18n'
+import {
+  defaultLanguage,
+  getLanguageFromContext,
+  SupportedLanguage,
+} from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
 import {
   createAlternateLinks,
@@ -88,7 +92,7 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   // This is a bit of a hack but these pages do not exist is storyblok currently.
   story = {
     ...story,
-    default_full_slug: `${story.default_full_slug}/${routes.en}`,
+    default_full_slug: `${story.default_full_slug}/${routes[defaultLanguage]}`,
     translated_slugs: (story.translated_slugs || []).map((slug) => ({
       ...slug,
       path: `${slug.path}/${routes[slug.lang as SupportedLanguage]}`,
