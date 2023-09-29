@@ -9,14 +9,13 @@ import { motion } from 'framer-motion'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
 import { IconArrowDown } from '~/components/icons'
-import { H1, H2, H3, H4, H5, H6, Subtitle } from '~/components/typography'
+import { H1, H2, H3, H4, H5, H6 } from '~/components/typography'
 import { VacancyList } from '~/components/vacancy-list'
 import type { Vacancy } from '~/types'
 import {
   defaultLanguage,
   getLanguageFromPath,
   getStaticLabel,
-  isSupportedLanguage,
 } from '~/utils/i18n'
 import { useLocalizedMappers } from '~/utils/mappers'
 import { useVacancies } from '~/utils/providers'
@@ -107,14 +106,6 @@ export function ErrorPage({
   const location = useLocation()
   const language = getLanguageFromPath(location.pathname)
 
-  React.useEffect(() => {
-    document.body.classList.add('header-light')
-
-    return () => {
-      document.body.classList.remove('header-light')
-    }
-  }, [])
-
   return (
     <>
       <noscript>
@@ -147,7 +138,7 @@ export function ErrorPage({
                 <H5
                   as="div"
                   className="mx-auto inline-flex items-center gap-x-2"
-                  variant="secondary"
+                  variant="primary"
                   inverse
                 >
                   {getStaticLabel('404.more', language)}
@@ -167,10 +158,10 @@ export function ErrorPage({
               </div>
 
               <div className="col-span-4 md:col-span-8 lg:col-span-5">
-                <Subtitle variant="pink" className="mb-4">
+                <H5 as="h2" variant="secondary" className="mb-4">
                   {getStaticLabel('404.careers.subtitle', language)}
-                </Subtitle>
-                <H3 as="h2" inverse className="mb-14 lg:mb-12">
+                </H5>
+                <H3 inverse className="mb-14 lg:mb-12">
                   {getStaticLabel('404.careers.title', language)}
                 </H3>
               </div>
