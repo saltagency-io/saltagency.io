@@ -74,17 +74,6 @@ app.use((req, res, next) => {
   next()
 })
 
-//Redirect /jobs to /careers while we purge old record from Google search
-app.use((req, res, next) => {
-  if (req.path === '/jobs' && req.path.length) {
-    const proto = req.protocol
-    const query = req.url.slice(req.path.length)
-    const host = getHost(req)
-    return res.redirect(`${proto}://${host}/careers${query}`)
-  }
-  next()
-})
-
 app.use((req, res, next) => {
   if (req.path.endsWith('/') && req.path.length > 1) {
     const query = req.url.slice(req.path.length)
@@ -195,27 +184,27 @@ app.use(
 )
 
 // i18n middleware
-app.use((req, res, next) => {
-  const [urlLang] = req.path.slice(1).split('/')
+// app.use((req, res, next) => {
+//   const [urlLang] = req.path.slice(1).split('/')
 
-  if (isSupportedLanguage(urlLang)) {
-    res.locals.language = urlLang
-    if (urlLang === defaultLanguage) {
-      const redirectTo = req.path.replace(`/${urlLang}`, '')
-      res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
-    }
-  } else {
-    const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage
-    res.locals.language = lang
+//   if (isSupportedLanguage(urlLang)) {
+//     res.locals.language = urlLang
+//     if (urlLang === defaultLanguage) {
+//       const redirectTo = req.path.replace(`/${urlLang}`, '')
+//       res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
+//     }
+//   } else {
+//     const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage
+//     res.locals.language = lang
 
-    if (lang !== defaultLanguage) {
-      const path = `${lang}${req.path}`
-      res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
-    }
-  }
+//     if (lang !== defaultLanguage) {
+//       const path = `${lang}${req.path}`
+//       res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
+//     }
+//   }
 
-  next()
-})
+//   next()
+// })
 
 function getRequestHandlerOptions(): Parameters<
   typeof createRequestHandler
