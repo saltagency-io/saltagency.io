@@ -73,7 +73,7 @@ export async function getSitemapXml(
       }),
     )
   )
-    .flatMap((z) => z)
+    .flat()
     .filter(typedBoolean)
 
   const sitemapEntries: SitemapEntry[] = []

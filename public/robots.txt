@@ -2,4 +2,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://koodin.nl/sitemap.xml
-Sitemap: https://koodin.nl/en/sitemap.xml

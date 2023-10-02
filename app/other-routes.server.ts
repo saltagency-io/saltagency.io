@@ -1,5 +1,6 @@
 import type { EntryContext } from '@remix-run/node'
 
+import { defaultLanguage } from '~/utils/i18n'
 import { getSitemapXml } from '~/utils/sitemap.server'
 
 type Handler = (
@@ -9,7 +10,7 @@ type Handler = (
 
 export const pathedRoutes: Record<string, Handler> = {
   '/sitemap.xml': async (request, remixContext) => {
-    const sitemap = await getSitemapXml(request, remixContext, 'en')
+    const sitemap = await getSitemapXml(request, remixContext, defaultLanguage)
     return new Response(sitemap, {
       headers: {
         'Content-Type': 'application/xml',
@@ -17,15 +18,16 @@ export const pathedRoutes: Record<string, Handler> = {
       },
     })
   },
-  '/nl/sitemap.xml': async (request, remixContext) => {
-    const sitemap = await getSitemapXml(request, remixContext, 'nl')
-    return new Response(sitemap, {
-      headers: {
-        'Content-Type': 'application/xml',
-        'Content-Length': String(Buffer.byteLength(sitemap)),
-      },
-    })
-  },
+  //TODO: Restore sitemap generation for other languages when i18n is implemented
+  // '/nl/sitemap.xml': async (request, remixContext) => {
+  //   const sitemap = await getSitemapXml(request, remixContext, 'nl')
+  //   return new Response(sitemap, {
+  //     headers: {
+  //       'Content-Type': 'application/xml',
+  //       'Content-Length': String(Buffer.byteLength(sitemap)),
+  //     },
+  //   })
+  // },
 }
 
 export const routes: Handler[] = [
