@@ -11,6 +11,7 @@ export function SvgGradientReference() {
           overflow: 'hidden',
           pointerEvents: 'none',
         }}
+        aria-hidden="true"
       >
         <defs>
           <linearGradient

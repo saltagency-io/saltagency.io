@@ -2,8 +2,8 @@ import { LOGO_URL } from '~/utils/misc'
 
 export function getSocialMetas({
   url,
-  title = 'Salt Agency',
-  description = 'We provide lead consultants',
+  title = 'Koodin',
+  description = 'Wij leveren lead consultants',
   image = LOGO_URL,
   keywords,
 }: {
@@ -23,8 +23,8 @@ export function getSocialMetas({
     'og:description': description,
     'og:image': image,
     'twitter:card': image ? 'summary_large_image' : 'summary',
-    'twitter:creator': '@saltagency',
-    'twitter:site': '@saltagency',
+    'twitter:creator': '@koodin',
+    'twitter:site': '@koodin',
     'twitter:title': title,
     'twitter:description': description,
     'twitter:image': image,

@@ -200,7 +200,8 @@ export function App() {
           fathomQueue={fathomQueue}
         />
         <Links />
-        <DynamicLinks />
+        {/* TODO: Enable Dynamic links once i18n support is implemented */}
+        {/* <DynamicLinks /> */}
       </head>
       <body className="bg-gray-body">
         <StoryblokComponent blok={data.layoutStory?.content} />
