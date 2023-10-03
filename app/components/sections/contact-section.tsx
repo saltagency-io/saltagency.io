@@ -89,7 +89,7 @@ export function ContactSection({
     >
       <Grid className="gap-y-10 md:gap-y-0">
         <div className="col-span-full flex items-center md:col-span-5 md:col-start-4 md:row-start-1 lg:col-span-6 lg:col-start-7">
-          <div>
+          <div className="w-full text-center md:text-left">
             <motion.div variants={childVariants}>
               <H3 as="h2" inverse={isDark} className="mb-4">
                 {title}

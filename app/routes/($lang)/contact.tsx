@@ -10,6 +10,7 @@ import { useFetcher } from '@remix-run/react'
 
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
+import clsx from 'clsx'
 import {
   typedjson,
   UseDataFunctionReturn,
@@ -22,6 +23,7 @@ import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
 import { ErrorPanel, Field, InputError } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
+import { Spinner } from '~/components/spinner'
 import { H3, H5 } from '~/components/typography'
 import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
@@ -165,6 +167,8 @@ export default function ContactPage() {
   const messageSuccessfullySent =
     contactFetcher.type === 'done' && contactFetcher.data.status === 'success'
 
+  const messageSubmitted = contactFetcher.type === 'actionSubmission'
+
   React.useEffect(() => {
     if (window.fathom && messageSuccessfullySent) {
       window.fathom.trackGoal('BDSMAWUC', 0)
@@ -268,8 +272,28 @@ export default function ContactPage() {
                   </ErrorPanel>
                 ) : null}
                 <div className="flex justify-center">
-                  <Button type="submit" variant="primary" className="mx-auto">
-                    {t('form.contact.submit')}
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="relative mx-auto flex justify-center"
+                    disabled={messageSubmitted}
+                  >
+                    <span
+                      className={clsx(
+                        messageSubmitted ? 'opacity-0' : 'opacity-100',
+                      )}
+                    >
+                      {t('form.contact.submit')}
+                    </span>
+                    {messageSubmitted && (
+                      <div
+                        hidden={!messageSubmitted}
+                        className="absolute inset-0 z-10 flex items-center justify-center"
+                        aria-hidden="true"
+                      >
+                        <Spinner />
+                      </div>
+                    )}
                   </Button>
                 </div>
               </contactFetcher.Form>
