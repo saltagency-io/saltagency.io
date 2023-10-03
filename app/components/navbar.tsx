@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { Link, useLocation, useNavigate, useNavigation } from '@remix-run/react'
+import { Link, useLocation, useNavigation } from '@remix-run/react'
 
 import clsx from 'clsx'
 import FocusTrap from 'focus-trap-react'
@@ -8,7 +8,6 @@ import {
   AnimatePresence,
   MotionValue,
   motion,
-  motionValue,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -256,54 +255,37 @@ export function Navbar({ menu }: Props) {
   const { language } = useI18n()
 
   const [expanded, setExpanded] = useState(false)
-  const menuRef = useRef<HTMLDivElement | null>(null)
 
-  const { state: navState } = useNavigation()
-  const prevNavState = useRef(navState)
+  const navigation = useNavigation()
+  const prevNavState = useRef(navigation.state)
 
   const { scrollY } = useScroll()
-  const scrollYRef = useRef(scrollY)
   const bgColor = useTransform(
-    scrollYRef.current,
+    scrollY,
     [60, 120],
     ['rgba(22, 21, 31, 0)', 'rgba(22, 21, 31, 0.9)'],
   )
-  const logoTextColor = useTransform(
-    scrollYRef.current,
-    [60, 120],
-    ['#16151F', '#fff'],
-  )
+  const logoTextColor = useTransform(scrollY, [60, 120], ['#16151F', '#fff'])
   const logoTextColorWithExpand = expanded ? '#16151F' : logoTextColor
+  const backgroundWithExpand = expanded ? 'transparent' : bgColor
 
-  const handleExpand = useCallback(
-    (newVal: boolean) => {
-      if (!expanded) {
-        scrollYRef.current = motionValue(scrollY.get())
-      } else {
-        scrollYRef.current = scrollY
-      }
-      setExpanded(newVal)
-    },
-    [expanded],
-  )
-
-  useEffect(() => {
-    if (prevNavState.current === 'idle' && navState === 'loading') {
+  useLayoutEffect(() => {
+    if (prevNavState.current === 'idle' && navigation.state === 'loading') {
       clearAllBodyScrollLocks()
     }
-    if (prevNavState.current === 'loading' && navState === 'idle') {
-      scrollY.set(0)
-      scrollYRef.current = scrollY
+    if (prevNavState.current === 'loading' && navigation.state === 'idle') {
       setExpanded(false)
       clearAllBodyScrollLocks()
     }
-    prevNavState.current = navState
-  }, [navState, scrollY])
+    scrollY.stop()
+    scrollY.jump(0)
+    prevNavState.current = navigation.state
+  }, [navigation.state])
 
   return (
     <motion.div
       className="sticky top-0 left-0 right-0 z-50 mt-12 px-8vw backdrop-blur"
-      style={{ background: expanded ? 'transparent' : bgColor }}
+      style={{ background: backgroundWithExpand }}
     >
       <nav className="mx-auto flex h-18 max-w-5xl items-center justify-between">
         <Link
@@ -383,18 +365,18 @@ export function Navbar({ menu }: Props) {
 
         <ul className="hidden gap-x-2 lg:flex lg:self-stretch">
           {menu.map((link) => (
-            <NavLink key={link.id} to={link.url} scrollY={scrollYRef.current}>
+            <NavLink key={link.id} to={link.url} scrollY={scrollY}>
               {link.text}
             </NavLink>
           ))}
         </ul>
 
-        <div className="block lg:hidden" ref={menuRef}>
+        <div className="block lg:hidden">
           <MobileMenu
             menu={menu}
-            scrollY={scrollYRef.current}
+            scrollY={scrollY}
             expanded={expanded}
-            setExpanded={handleExpand}
+            setExpanded={setExpanded}
           />
         </div>
       </nav>
