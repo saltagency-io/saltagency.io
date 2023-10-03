@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { Link, useLocation, useNavigate } from '@remix-run/react'
+import { Link, useLocation, useNavigate, useNavigation } from '@remix-run/react'
 
 import clsx from 'clsx'
 import FocusTrap from 'focus-trap-react'
@@ -65,27 +65,12 @@ function NavLink({
 function MobileMenuList({
   menu,
   expanded,
-  closeMenu,
 }: {
   menu: LinkType[]
   expanded: boolean
-  closeMenu: () => void
 }) {
   const menuRef = useRef<HTMLElement | null>(null)
-  const navigate = useNavigate()
   const shouldReduceMotion = useReducedMotion()
-
-  const handleLink =
-    (to: string) => async (e: React.PointerEvent<HTMLButtonElement>) => {
-      e.preventDefault()
-      e.stopPropagation()
-      navigate(to)
-
-      await new Promise((resolve) => {
-        setTimeout(resolve, 150)
-      })
-      closeMenu()
-    }
 
   useEffect(() => {
     if (!menuRef.current) {
@@ -140,25 +125,19 @@ function MobileMenuList({
                   link.url === location.pathname ||
                   location.pathname.startsWith(`${link.url}/`)
                 return (
-                  <button
+                  <Link
                     key={link.id}
-                    onClick={handleLink(link.url)}
+                    to={link.url}
                     className={clsx(
-                      'h-18 self-stretch border-b px-4 transition',
+                      'flex h-18 items-center justify-center self-stretch border-b px-4 font-display text-2xl font-bold transition',
                       active
                         ? 'border-b-current opacity-100'
                         : 'border-b-transparent opacity-70',
                       'hover:border-b-current',
                     )}
                   >
-                    <Link
-                      tabIndex={-1}
-                      to={link.url}
-                      className="font-display text-2xl font-bold"
-                    >
-                      {link.text}
-                    </Link>
-                  </button>
+                    {link.text}
+                  </Link>
                 )
               })}
             </motion.ul>
@@ -262,11 +241,7 @@ function MobileMenu({
         </svg>
       </button>
       {createPortal(
-        <MobileMenuList
-          expanded={expanded}
-          menu={menu}
-          closeMenu={() => setExpanded(false)}
-        />,
+        <MobileMenuList expanded={expanded} menu={menu} />,
         document.getElementById('menuPortal') ?? document.body,
       )}
     </>
@@ -279,6 +254,8 @@ type Props = {
 
 export function Navbar({ menu }: Props) {
   const [expanded, setExpanded] = useState(false)
+  const { state: navState } = useNavigation()
+  const prevNavState = useRef(navState)
   const { language } = useI18n()
 
   const { scrollY } = useScroll()
@@ -303,6 +280,13 @@ export function Navbar({ menu }: Props) {
     }
     setExpanded(newVal)
   }
+
+  useEffect(() => {
+    if (prevNavState.current === 'loading' && navState === 'idle') {
+      setExpanded(false)
+    }
+    prevNavState.current = navState
+  }, [navState])
 
   return (
     <motion.div
