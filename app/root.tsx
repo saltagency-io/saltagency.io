@@ -206,7 +206,6 @@ export function App() {
       <body className="bg-gray-body">
         <StoryblokComponent blok={data.layoutStory?.content} />
         <div id="menuPortal"></div>
-        <ScrollRestoration nonce={nonce} />
         <SdLogo origin={data.requestInfo.origin} />
         {ENV.NODE_ENV === 'development' ? null : (
           <script
@@ -227,6 +226,7 @@ export function App() {
             }}
           />
         )}
+        <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <script
           nonce={nonce}

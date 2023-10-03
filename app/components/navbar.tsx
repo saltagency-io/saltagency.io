@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Link, useLocation, useNavigate, useNavigation } from '@remix-run/react'
 
@@ -253,10 +253,13 @@ type Props = {
 }
 
 export function Navbar({ menu }: Props) {
+  const { language } = useI18n()
+
   const [expanded, setExpanded] = useState(false)
+  const menuRef = useRef<HTMLDivElement | null>(null)
+
   const { state: navState } = useNavigation()
   const prevNavState = useRef(navState)
-  const { language } = useI18n()
 
   const { scrollY } = useScroll()
   const scrollYRef = useRef(scrollY)
@@ -272,21 +275,30 @@ export function Navbar({ menu }: Props) {
   )
   const logoTextColorWithExpand = expanded ? '#16151F' : logoTextColor
 
-  function handleExpand(newVal: boolean) {
-    if (!expanded) {
-      scrollYRef.current = motionValue(scrollY.get())
-    } else {
-      scrollYRef.current = scrollY
-    }
-    setExpanded(newVal)
-  }
+  const handleExpand = useCallback(
+    (newVal: boolean) => {
+      if (!expanded) {
+        scrollYRef.current = motionValue(scrollY.get())
+      } else {
+        scrollYRef.current = scrollY
+      }
+      setExpanded(newVal)
+    },
+    [expanded],
+  )
 
   useEffect(() => {
+    if (prevNavState.current === 'idle' && navState === 'loading') {
+      clearAllBodyScrollLocks()
+    }
     if (prevNavState.current === 'loading' && navState === 'idle') {
+      scrollY.set(0)
+      scrollYRef.current = scrollY
       setExpanded(false)
+      clearAllBodyScrollLocks()
     }
     prevNavState.current = navState
-  }, [navState])
+  }, [navState, scrollY])
 
   return (
     <motion.div
@@ -377,7 +389,7 @@ export function Navbar({ menu }: Props) {
           ))}
         </ul>
 
-        <div className="block lg:hidden">
+        <div className="block lg:hidden" ref={menuRef}>
           <MobileMenu
             menu={menu}
             scrollY={scrollYRef.current}
