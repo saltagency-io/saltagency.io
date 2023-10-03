@@ -104,7 +104,7 @@ function MobileMenuList({
   return (
     <AnimatePresence>
       {expanded ? (
-        <FocusTrap>
+        <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
           <motion.nav
             key="mobile-menu"
             initial="initial"
