@@ -20,12 +20,12 @@ type TitleProps = {
 )
 
 const fontSize = {
-  h1: 'text-5xl md:leading-[1.2] md:text-6xl',
-  h2: 'text-4xl md:leading-[1.16] md:text-5xl',
-  h3: 'text-3xl md:leading-[1.2] md:text-4xl',
-  h4: 'text-2xl md:leading-[1.25] md:text-3xl',
-  h5: 'text-xl md:leading-[1.33] md:text-2xl',
-  h6: 'text-lg',
+  h1: 'text-4xl leading-[1.2] md:text-6xl',
+  h2: 'text-3xl leading-[1.16] md:text-5xl',
+  h3: 'text-2xl leading-[1.2] md:text-4xl',
+  h4: 'text-xl leading-[1.25] md:text-3xl',
+  h5: 'text-base leading-[1.33] md:text-2xl',
+  h6: 'text-base',
 }
 
 export function Title({

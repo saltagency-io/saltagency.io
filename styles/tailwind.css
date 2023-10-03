@@ -128,6 +128,15 @@
     );
   }
 
+  .bg-mobile-menu {
+    background: linear-gradient(
+        180deg,
+        theme(colors.blue.500 / 10%) 0%,
+        theme(colors.blue.500 / 10%) 100%
+      ),
+      theme(colors.gray.body / 70%);
+  }
+
   .text-primary {
     @apply text-gray-900;
   }

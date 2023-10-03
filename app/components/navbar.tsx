@@ -1,8 +1,9 @@
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Link, useLocation, useNavigate } from '@remix-run/react'
 
 import clsx from 'clsx'
+import FocusTrap from 'focus-trap-react'
 import {
   AnimatePresence,
   MotionValue,
@@ -15,7 +16,6 @@ import {
 import { createPortal } from 'react-dom'
 import { useHydrated } from 'remix-utils'
 
-import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
 import {
   enableBodyScroll,
@@ -24,7 +24,6 @@ import {
 } from '~/utils/bodyScrollLock'
 import { defaultLanguage } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
-import { useLabels } from '~/utils/labels-provider'
 
 function NavLink({
   to,
@@ -44,7 +43,7 @@ function NavLink({
     <motion.li
       style={{ color: textColor }}
       animate={{
-        opacity: isSelected ? 1 : 0.75,
+        opacity: isSelected ? 1 : 0.7,
       }}
     >
       <Link
@@ -67,38 +66,25 @@ function MobileMenuList({
   menu,
   expanded,
   closeMenu,
-  scrollY,
 }: {
   menu: LinkType[]
   expanded: boolean
   closeMenu: () => void
-  scrollY: MotionValue<number>
 }) {
-  const menuRef = useRef<HTMLDivElement | null>(null)
+  const menuRef = useRef<HTMLElement | null>(null)
   const navigate = useNavigate()
-  const { language, isDefaultLanguage } = useI18n()
-  const { t } = useLabels()
   const shouldReduceMotion = useReducedMotion()
 
-  const topOffset = useTransform(scrollY, [0, 64], [112, 48])
-  const height = useTransform(
-    topOffset,
-    [112, 48],
-    ['calc(100vh - 112px)', 'calc(100vh - 48px)'],
-  )
-
-  const linkClassName = clsx(
-    'text-primary text-2xl leading-normal tracking-tight',
-    'mx-8vw border-b border-gray-200 py-6 px-0',
-    'hover:bg-primary focus:bg-primary',
-  )
-
   const handleLink =
-    (to: string) => (e: React.PointerEvent<HTMLButtonElement>) => {
+    (to: string) => async (e: React.PointerEvent<HTMLButtonElement>) => {
       e.preventDefault()
       e.stopPropagation()
-      closeMenu()
       navigate(to)
+
+      await new Promise((resolve) => {
+        setTimeout(resolve, 150)
+      })
+      closeMenu()
     }
 
   useEffect(() => {
@@ -118,51 +104,66 @@ function MobileMenuList({
   return (
     <AnimatePresence>
       {expanded ? (
-        <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -50, opacity: 0 }}
-          transition={{
-            duration: shouldReduceMotion ? 0 : 0.5,
-            type: 'spring',
-          }}
-          style={{ top: topOffset, height }}
-          className="fixed z-50  w-100vw bg-white py-12"
-          ref={menuRef}
-        >
-          <ul className="flex flex-col items-center gap-6">
-            <button onClick={handleLink('/')} className="flex">
-              <Link
-                className={linkClassName}
-                to={isDefaultLanguage ? '/' : `/${language}`}
-              >
-                {t('home')}
-              </Link>
-            </button>
-            {menu.map((link) => (
-              <button
-                key={link.id}
-                onClick={handleLink(link.url)}
-                className="flex"
-              >
-                <Link
-                  className={`${linkClassName} hover:text-gray-600 focus:text-gray-600`}
-                  to={link.url}
-                >
-                  {link.text}
-                </Link>
-              </button>
-            ))}
-          </ul>
-          <GradientCircle
-            rotate={-75}
-            height={758}
-            width={758}
-            top={140}
-            right={-540}
-            opacity={20}
-          />
-        </motion.div>
+        <FocusTrap>
+          <motion.nav
+            key="mobile-menu"
+            initial="initial"
+            animate="visible"
+            exit="exit"
+            variants={{
+              initial: { opacity: 0 },
+              visible: { opacity: 1 },
+              exit: { opacity: 0 },
+            }}
+            transition={{
+              duration: 0.4,
+              type: 'spring',
+              delayChildren: 0.2,
+            }}
+            className={clsx(
+              'bg-mobile-menu',
+              'fixed top-0 z-40 flex h-100vh w-100vw items-center justify-center backdrop-blur-lg',
+            )}
+            ref={menuRef}
+          >
+            <motion.ul
+              className="flex grow flex-col items-center gap-4 px-14 md:max-w-sm md:gap-6"
+              variants={{
+                initial: { opacity: 0, y: shouldReduceMotion ? 0 : 40 },
+                visible: { opacity: 1, y: 0 },
+                exit: { opacity: 0 },
+              }}
+              transition={{ duration: 0.4, type: 'spring' }}
+            >
+              {menu.map((link) => {
+                const active =
+                  link.url === location.pathname ||
+                  location.pathname.startsWith(`${link.url}/`)
+                return (
+                  <button
+                    key={link.id}
+                    onClick={handleLink(link.url)}
+                    className={clsx(
+                      'h-18 self-stretch border-b px-4 transition',
+                      active
+                        ? 'border-b-current opacity-100'
+                        : 'border-b-transparent opacity-70',
+                      'hover:border-b-current',
+                    )}
+                  >
+                    <Link
+                      tabIndex={-1}
+                      to={link.url}
+                      className="font-display text-2xl font-bold"
+                    >
+                      {link.text}
+                    </Link>
+                  </button>
+                )
+              })}
+            </motion.ul>
+          </motion.nav>
+        </FocusTrap>
       ) : null}
     </AnimatePresence>
   )
@@ -200,6 +201,7 @@ function MobileMenu({
   const transition = shouldReduceMotion ? { duration: 0 } : {}
 
   const iconColor = useTransform(scrollY, [60, 120], ['#16151F', '#FFFFFF'])
+  const iconColorWithExpand = expanded ? '#16151F' : iconColor
 
   if (!isHydrated) {
     return null
@@ -212,7 +214,7 @@ function MobileMenu({
           setExpanded(!expanded)
         }}
         className={clsx(
-          '-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-lg p-1 text-gray-700 transition focus:outline-none',
+          '-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-lg p-1 text-gray-700 transition',
         )}
       >
         <span className="sr-only">{expanded ? 'Close menu' : 'Open menu'}</span>
@@ -222,6 +224,7 @@ function MobileMenu({
           viewBox="0 0 32 32"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
           <motion.rect
             animate={state}
@@ -232,7 +235,7 @@ function MobileMenu({
             width="20"
             height="2"
             rx="1"
-            fill={iconColor}
+            fill={iconColorWithExpand}
           />
           <motion.rect
             animate={state}
@@ -243,7 +246,7 @@ function MobileMenu({
             width="20"
             height="2"
             rx="1"
-            fill={iconColor}
+            fill={iconColorWithExpand}
           />
           <motion.rect
             animate={state}
@@ -254,7 +257,7 @@ function MobileMenu({
             width="20"
             height="2"
             rx="1"
-            fill={iconColor}
+            fill={iconColorWithExpand}
           />
         </svg>
       </button>
@@ -263,7 +266,6 @@ function MobileMenu({
           expanded={expanded}
           menu={menu}
           closeMenu={() => setExpanded(false)}
-          scrollY={scrollY}
         />,
         document.getElementById('menuPortal') ?? document.body,
       )}
@@ -284,13 +286,14 @@ export function Navbar({ menu }: Props) {
   const bgColor = useTransform(
     scrollYRef.current,
     [60, 120],
-    ['rgba(22, 21, 31, 0)', 'rgba(22, 21, 31, 0.75)'],
+    ['rgba(22, 21, 31, 0)', 'rgba(22, 21, 31, 0.9)'],
   )
   const logoTextColor = useTransform(
     scrollYRef.current,
     [60, 120],
-    ['#000', '#fff'],
+    ['#16151F', '#fff'],
   )
+  const logoTextColorWithExpand = expanded ? '#16151F' : logoTextColor
 
   function handleExpand(newVal: boolean) {
     if (!expanded) {
@@ -303,10 +306,10 @@ export function Navbar({ menu }: Props) {
 
   return (
     <motion.div
-      className="sticky top-0 left-0 right-0 z-30 mt-16 px-8vw backdrop-blur"
-      style={{ background: bgColor }}
+      className="sticky top-0 left-0 right-0 z-50 mt-12 px-8vw backdrop-blur"
+      style={{ background: expanded ? 'transparent' : bgColor }}
     >
-      <nav className="mx-auto flex h-12 max-w-5xl items-center justify-between lg:h-18">
+      <nav className="mx-auto flex h-18 max-w-5xl items-center justify-between">
         <Link
           to={language !== defaultLanguage ? `/${language}` : '/'}
           prefetch="intent"
@@ -340,35 +343,35 @@ export function Navbar({ menu }: Props) {
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M104.17 28.5001C98.7878 28.5001 95.3119 24.6311 95.3119 18.6381C95.3119 12.6072 98.8626 8.4348 104.544 8.4348C106.861 8.4348 109.066 9.38307 110.15 10.7865V0H115.906V28.007H110.486L110.187 25.5794C109.178 27.3242 106.861 28.5001 104.17 28.5001ZM105.553 23.1518C108.244 23.1518 110.112 21.2553 110.112 18.4105C110.112 15.5657 108.244 13.6692 105.553 13.6692C102.824 13.6692 101.105 15.6037 101.105 18.4105C101.105 21.2174 102.824 23.1518 105.553 23.1518Z"
-                fill={logoTextColor}
+                fill={logoTextColorWithExpand}
               />
               <motion.path
                 d="M121.823 6.51931C120.188 6.51931 118.887 5.19851 118.887 3.53905C118.887 1.87959 120.188 0.592664 121.823 0.592664C123.425 0.592664 124.726 1.87959 124.726 3.53905C124.726 5.19851 123.425 6.51931 121.823 6.51931Z"
-                fill={logoTextColor}
+                fill={logoTextColorWithExpand}
               />
               <motion.path
                 d="M133.218 28.0071H127.462V9.04179H132.881L133.255 11.0142C134.414 9.38317 136.544 8.4349 138.974 8.4349C143.421 8.4349 146 11.3176 146 16.2865V28.0071H140.244V17.69C140.244 15.3003 138.936 13.7452 136.955 13.7452C134.675 13.7452 133.218 15.2624 133.218 17.6141V28.0071Z"
-                fill={logoTextColor}
+                fill={logoTextColorWithExpand}
               />
               <motion.path
                 d="M118.887 27.8552V8.88997H124.726V27.8552H118.887Z"
-                fill={logoTextColor}
+                fill={logoTextColorWithExpand}
               />
               <motion.path
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M83.8355 8.42079C77.8555 8.42079 73.5199 12.4414 73.5199 18.4345C73.5199 24.4275 77.8555 28.4102 83.8355 28.4102C89.7781 28.4102 94.1137 24.4275 94.1137 18.4345C94.1137 12.4414 89.7781 8.42079 83.8355 8.42079ZM83.8355 23.1758C81.1445 23.1758 79.3131 21.2792 79.3131 18.3965C79.3131 15.5517 81.1445 13.6552 83.8355 13.6552C86.4891 13.6552 88.3205 15.5517 88.3205 18.3965C88.3205 21.2792 86.4891 23.1758 83.8355 23.1758Z"
-                fill={logoTextColor}
+                fill={logoTextColorWithExpand}
               />
               <motion.path
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M51.9124 18.4345C51.9124 12.4414 56.2479 8.42079 62.2279 8.42079C68.1706 8.42079 72.5061 12.4414 72.5061 18.4345C72.5061 24.4275 68.1706 28.4102 62.2279 28.4102C56.2479 28.4102 51.9124 24.4275 51.9124 18.4345ZM57.7055 18.3965C57.7055 21.2792 59.5369 23.1758 62.2279 23.1758C64.8816 23.1758 66.7129 21.2792 66.7129 18.3965C66.7129 15.5517 64.8816 13.6552 62.2279 13.6552C59.5369 13.6552 57.7055 15.5517 57.7055 18.3965Z"
-                fill={logoTextColor}
+                fill={logoTextColorWithExpand}
               />
               <motion.path
                 d="M34.1467 27.8552H39.9866V23.7066L42.1076 21.0657L46.4104 27.8552H52.8343L46.1441 16.7037L52.8343 8.29725H45.8264L40.5706 16.0019V4.14865H34.1467V27.8552Z"
-                fill={logoTextColor}
+                fill={logoTextColorWithExpand}
               />
               <path
                 d="M18.3062 5.28341C18.7566 4.58886 18.783 3.69482 18.3742 2.97403C17.7782 1.92307 16.4581 1.56298 15.4258 2.16975L1.16451 10.5521C0.0509287 11.2066 -0.330611 12.6562 0.312313 13.7899L4.24932 20.732C5.1147 22.2579 7.25493 22.3233 8.20857 20.8529L18.3062 5.28341Z"
