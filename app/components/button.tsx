@@ -160,9 +160,10 @@ export function PhoneButton({
     <>
       {/*Mobile*/}
       <ButtonLink
-        className="inline-block lg:hidden"
+        className="inline-block w-max lg:hidden"
         variant={variant}
         href={`tel:${children}`}
+        ringOffsetColor={ringOffsetColor}
         {...rest}
       >
         <IconPhone />

@@ -223,7 +223,7 @@ export type ContactSectionBlok = SbBlokData & {
   component: BlokTypes.ContactSection
   title: string
   text: string
-  image?: Asset
+  image: Asset
   theme: 'dark' | 'light'
   actions: ButtonBlok[]
   phoneNumber?: string

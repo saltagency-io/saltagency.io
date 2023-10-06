@@ -10,7 +10,7 @@ export function ImageSection({ image }: { image: Image }) {
   return (
     <Grid>
       <motion.div
-        className="col-span-full -mx-8vw overflow-hidden lg:mx-0 lg:rounded-4xl"
+        className="col-span-full -mx-4 overflow-hidden lg:-mx-8vw lg:rounded-4xl"
         initial="initial"
         whileInView="visible"
         viewport={{ once: true, margin: '-115px 0px' }}

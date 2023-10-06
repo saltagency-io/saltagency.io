@@ -1,6 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
 
-import { DecoratedBackground } from '../decorated-background'
 import { Grid } from '~/components/grid'
 import { H3, H4, H5, Paragraph } from '~/components/typography'
 import type { Image } from '~/types'

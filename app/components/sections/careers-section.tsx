@@ -22,7 +22,7 @@ export function CareersSection({ children, subtitle, title }: Props) {
   return (
     <Grid>
       <motion.div
-        className="col-span-4 mb-12 md:col-span-8 lg:col-span-5"
+        className="col-span-4 mb-12 md:col-span-8 lg:col-span-5 lg:mb-16"
         initial="initial"
         whileInView="visible"
         viewport={{ once: true, margin: '-115px 0px' }}
