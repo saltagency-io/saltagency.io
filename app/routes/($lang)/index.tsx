@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { useCatch } from '@remix-run/react'
 
 import { NotFoundError, ServerError } from '~/components/errors'

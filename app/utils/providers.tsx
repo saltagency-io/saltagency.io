@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import type { StoryData } from '@storyblok/react'
 
-import type { VacancyStoryContent } from '~/types'
+import type { GroupTheme, VacancyStoryContent } from '~/types'
 
 export function createSimpleContext<ContextType>(name: string) {
   const defaultValue = Symbol(`Default ${name} context value`)
@@ -52,3 +52,12 @@ const { Provider: VacanciesProvider, useValue: useVacancies } =
   createSimpleContext<VacanciesState>('VacanciesContext')
 
 export { VacanciesProvider, useVacancies }
+
+type GroupState = {
+  theme: GroupTheme
+}
+
+const { Provider: GroupProvider, useValue: useGroup } =
+  createSimpleContext<GroupState>('GroupContext')
+
+export { GroupProvider, useGroup }

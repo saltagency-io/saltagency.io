@@ -1,5 +1,8 @@
 import type { SbBlokData } from '@storyblok/react'
 
+import type { GroupTheme } from 'types'
+
+import { CardIcon } from '~/components/card'
 import { SpacerSizes } from '~/components/spacer'
 import { BlokTypes } from '~/storyblok'
 
@@ -14,7 +17,7 @@ export type PageStoryContent = {
 export type VacancyStoryContent = {
   title: string
   summary: string
-  body: Array<JobDescriptionBlok | BlockWithSectionsBlok>
+  body: GroupBlok[]
   metatags: MetaTags
 }
 
@@ -24,12 +27,12 @@ export type LayoutStoryContent = {
 }
 
 export type PageBlok = SbBlokData & {
-  body: BodyComponent[]
+  body: GroupBlok[]
 }
 
 export type PageWithChildBlok = SbBlokData & {
-  topBody: BodyComponent[]
-  bottomBody: BodyComponent[]
+  topBody: GroupBlok[]
+  bottomBody: GroupBlok[]
 }
 
 export type LayoutBlok = SbBlokData & {
@@ -50,6 +53,12 @@ export type FooterBlok = SbBlokData & {
   socialText: string
 }
 
+export type GroupBlok = SbBlokData & {
+  component: BlokTypes.Group
+  theme: GroupTheme
+  content: BodyComponent[]
+}
+
 export type VacancyBlok = SbBlokData & {
   title: string
   summary: string
@@ -63,6 +72,14 @@ export type ButtonBlok = SbBlokData & {
   link: Link
   anchor?: string
   icon?: string
+}
+
+export type CardBlok = SbBlokData & {
+  component: BlokTypes.Card
+  icon: CardIcon
+  title: string
+  body: string
+  variant: 'light' | 'dark'
 }
 
 export type LinkBlok = SbBlokData & {
@@ -117,7 +134,6 @@ export type TextSectionBlok = SbBlokData & {
   title: string
   body: string
   image?: Asset
-  theme: 'dark' | 'light'
 }
 
 export type SectionBlok = SbBlokData & {
@@ -143,7 +159,6 @@ export type QuoteBlok = SbBlokData & {
   author: string
   avatar: Asset
   variant: 'basic' | 'extended'
-  theme: 'light' | 'dark'
 }
 
 export type PeopleSectionBlok = SbBlokData & {
@@ -158,7 +173,6 @@ export type CareersSectionBlok = SbBlokData & {
   component: BlokTypes.CareersSection
   subtitle: string
   title: string
-  theme: 'dark' | 'dark-alt' | 'light'
   actions: ButtonBlok[]
 }
 
@@ -175,6 +189,7 @@ export type LocationSectionBlok = SbBlokData & {
   location: LocationBlok[]
   image: Asset
   imageMobile: Asset
+  officeImage: Asset
   links: LinkBlok[]
 }
 
@@ -208,10 +223,19 @@ export type ContactSectionBlok = SbBlokData & {
   component: BlokTypes.ContactSection
   title: string
   text: string
-  image?: Asset
+  image: Asset
   theme: 'dark' | 'light'
   actions: ButtonBlok[]
   phoneNumber?: string
+}
+
+export type CardsSectionBlok = SbBlokData & {
+  component: BlokTypes.CardsSection
+  columns: number
+  sectionTitle: string
+  bodyTitle: string
+  body: string
+  cards: CardBlok[]
 }
 
 export type SpacerBlok = SbBlokData & {

@@ -1,140 +1,154 @@
-import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { Link, useLocation } from '@remix-run/react'
+import { Link, useLocation, useNavigation } from '@remix-run/react'
 
 import clsx from 'clsx'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-
+import FocusTrap from 'focus-trap-react'
 import {
-  Menu,
-  MenuButton,
-  MenuItems,
-  MenuLink,
-  MenuPopover,
-  useMenuButtonContext,
-} from '@reach/menu-button'
+  AnimatePresence,
+  MotionValue,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion'
+import { createPortal } from 'react-dom'
+import { useHydrated } from 'remix-utils'
 
-import { GradientCircle } from '~/components/gradient-circle'
 import type { LinkType } from '~/types'
+import {
+  enableBodyScroll,
+  disableBodyScroll,
+  clearAllBodyScrollLocks,
+} from '~/utils/bodyScrollLock'
 import { defaultLanguage } from '~/utils/i18n'
 import { useI18n } from '~/utils/i18n-provider'
-import { useLabels } from '~/utils/labels-provider'
 
 function NavLink({
   to,
   children,
+  scrollY,
   ...rest
-}: Omit<Parameters<typeof Link>['0'], 'to'> & { to: string }) {
+}: Omit<Parameters<typeof Link>['0'], 'to'> & {
+  to: string
+  scrollY: MotionValue<number>
+}) {
+  const textColor = useTransform(scrollY, [60, 120], ['#16151F', '#FFFFFF'])
   const location = useLocation()
   const isSelected =
     to === location.pathname || location.pathname.startsWith(`${to}/`)
 
   return (
-    <li>
+    <motion.li
+      style={{ color: textColor }}
+      animate={{
+        opacity: isSelected ? 1 : 0.7,
+      }}
+    >
       <Link
         to={to}
         prefetch="intent"
         className={clsx(
-          'underlined hover:text-primary focus:text-primary block focus:outline-none',
-          'select-none whitespace-nowrap text-2xl font-medium tracking-tight',
-          {
-            'active text-primary': isSelected,
-            'text-gray-600': !isSelected,
-          },
+          'underlined flex h-full items-center px-4 focus:outline-none ',
+          'select-none whitespace-nowrap font-bold leading-6 tracking-tight',
+          isSelected && 'active text-blue-400',
         )}
         {...rest}
       >
         {children}
       </Link>
-    </li>
+    </motion.li>
   )
 }
 
-function MobileMenuList({ menu }: { menu: LinkType[] }) {
-  const { isExpanded } = useMenuButtonContext()
-  const { language, isDefaultLanguage } = useI18n()
-  const { t } = useLabels()
+function MobileMenuList({
+  menu,
+  expanded,
+}: {
+  menu: LinkType[]
+  expanded: boolean
+}) {
+  const menuRef = useRef<HTMLElement | null>(null)
   const shouldReduceMotion = useReducedMotion()
 
-  React.useEffect(() => {
-    if (isExpanded) {
-      document.body.classList.add('fixed')
-      document.body.classList.add('overflow-y-auto')
-      document.body.style.height = 'calc(100vh - env(safe-area-inset-bottom))'
-    } else {
-      document.body.classList.remove('fixed')
-      document.body.classList.remove('overflow-y-auto')
-      document.body.style.removeProperty('height')
+  useEffect(() => {
+    if (!menuRef.current) {
+      return
     }
-  }, [isExpanded])
-
-  const linkClassName = clsx(
-    'text-primary text-2xl leading-normal tracking-tight',
-    'mx-8vw border-b border-gray-200 py-6 px-0',
-    'hover:bg-primary focus:bg-primary',
-  )
+    if (expanded) {
+      disableBodyScroll(menuRef.current)
+      return
+    }
+    enableBodyScroll(menuRef.current)
+    return () => {
+      clearAllBodyScrollLocks()
+    }
+  }, [expanded])
 
   return (
     <AnimatePresence>
-      {isExpanded ? (
-        <MenuPopover
-          position={(r) => ({
-            top: `calc(${Number(r?.top) + Number(r?.height)}px + 2rem)`,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          })}
-          style={{ display: 'block' }}
-          className="z-50"
-        >
-          <motion.div
-            initial={{ y: -50, opacity: 0, overflowY: 'hidden' }}
-            animate={{ y: 0, opacity: 1, overflowY: 'scroll' }}
-            exit={{ y: -50, opacity: 0, overflowY: 'hidden' }}
-            transition={{
-              duration: shouldReduceMotion ? 0 : 0.2,
-              ease: 'linear',
+      {expanded ? (
+        <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
+          <motion.nav
+            key="mobile-menu"
+            initial="initial"
+            animate="visible"
+            exit="exit"
+            variants={{
+              initial: { opacity: 0 },
+              visible: { opacity: 1 },
+              exit: { opacity: 0 },
             }}
-            className="bg-primary flex h-full flex-col overflow-x-hidden py-12"
+            transition={{
+              duration: 0.4,
+              type: 'spring',
+              delayChildren: 0.2,
+            }}
+            className={clsx(
+              'bg-mobile-menu',
+              'fixed top-0 z-40 flex h-100vh w-100vw items-center justify-center backdrop-blur-lg',
+            )}
+            ref={menuRef}
           >
-            <MenuItems className="border-none bg-transparent p-0">
-              <>
-                <MenuLink
-                  as={Link}
-                  className={linkClassName}
-                  to={isDefaultLanguage ? '/' : `/${language}`}
-                >
-                  {t('home')}
-                </MenuLink>
-                {menu.map((link) => (
-                  <MenuLink
-                    className={`${linkClassName} hover:text-gray-600 focus:text-gray-600`}
+            <motion.ul
+              className="flex grow flex-col items-center gap-4 px-14 md:max-w-sm md:gap-6"
+              variants={{
+                initial: { opacity: 0, y: shouldReduceMotion ? 0 : 40 },
+                visible: { opacity: 1, y: 0 },
+                exit: { opacity: 0 },
+              }}
+              transition={{ duration: 0.4, type: 'spring' }}
+            >
+              {menu.map((link) => {
+                const active =
+                  link.url === location.pathname ||
+                  location.pathname.startsWith(`${link.url}/`)
+                return (
+                  <Link
                     key={link.id}
-                    as={Link}
                     to={link.url}
+                    className={clsx(
+                      'flex h-18 items-center justify-center self-stretch border-b px-4 font-display text-2xl font-bold transition',
+                      active
+                        ? 'border-b-current opacity-100'
+                        : 'border-b-transparent opacity-70',
+                      'hover:border-b-current',
+                    )}
                   >
                     {link.text}
-                  </MenuLink>
-                ))}
-              </>
-            </MenuItems>
-            <GradientCircle
-              rotate={-75}
-              height={758}
-              width={758}
-              top={140}
-              right={-540}
-              opacity={20}
-            />
-          </motion.div>
-        </MenuPopover>
+                  </Link>
+                )
+              })}
+            </motion.ul>
+          </motion.nav>
+        </FocusTrap>
       ) : null}
     </AnimatePresence>
   )
 }
 
 const topVariants = {
-  open: { rotate: 45, y: 7 },
+  open: { rotate: 45, y: 6 },
   closed: { rotate: 0, y: 0 },
 }
 
@@ -144,125 +158,92 @@ const centerVariants = {
 }
 
 const bottomVariants = {
-  open: { rotate: -45, y: -5 },
+  open: { rotate: -45, y: -6 },
   closed: { rotate: 0, y: 0 },
 }
 
-function MobileMenu({ menu }: { menu: LinkType[] }) {
+function MobileMenu({
+  menu,
+  scrollY,
+  expanded,
+  setExpanded,
+}: {
+  menu: LinkType[]
+  scrollY: MotionValue<number>
+  expanded: boolean
+  setExpanded: (newVal: boolean) => void
+}) {
+  const isHydrated = useHydrated()
+  const state = expanded ? 'open' : 'closed'
   const shouldReduceMotion = useReducedMotion()
   const transition = shouldReduceMotion ? { duration: 0 } : {}
 
-  return (
-    <Menu>
-      {({ isExpanded }) => {
-        const state = isExpanded ? 'open' : 'closed'
-        return (
-          <>
-            <MenuButton
-              className={clsx(
-                '-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-lg p-1 text-gray-700 transition focus:outline-none',
-                {
-                  'bg-gray-100': state === 'open',
-                },
-              )}
-            >
-              <span className="sr-only">
-                {state === 'open' ? 'Close menu' : 'Open menu'}
-              </span>
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <motion.rect
-                  animate={state}
-                  variants={topVariants}
-                  transition={transition}
-                  x="6"
-                  y="9"
-                  width="20"
-                  height="2"
-                  rx="1"
-                  fill="currentColor"
-                />
-                <motion.rect
-                  animate={state}
-                  variants={centerVariants}
-                  transition={transition}
-                  x="6"
-                  y="15"
-                  width="20"
-                  height="2"
-                  rx="1"
-                  fill="currentColor"
-                />
-                <motion.rect
-                  animate={state}
-                  variants={bottomVariants}
-                  transition={transition}
-                  x="6"
-                  y="21"
-                  width="20"
-                  height="2"
-                  rx="1"
-                  fill="currentColor"
-                />
-              </svg>
-            </MenuButton>
-            <MobileMenuList menu={menu} />
-          </>
-        )
-      }}
-    </Menu>
-  )
-}
+  const iconColor = useTransform(scrollY, [60, 120], ['#16151F', '#FFFFFF'])
+  const iconColorWithExpand = expanded ? '#16151F' : iconColor
 
-function Logo({
-  className,
-  size = 'large',
-}: {
-  className?: string
-  size?: 'small' | 'large'
-}) {
+  if (!isHydrated) {
+    return null
+  }
+
   return (
-    <svg
-      className={className}
-      width={size === 'large' ? 107 : 58}
-      height={size === 'large' ? 45 : 24}
-      viewBox="0 0 107 45"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M13.8885 45C10.8439 45 8.1329 44.4984 5.75559 43.4953C3.37828 42.4921 1.45975 41.071 0 39.2319L5.38022 34.6551C6.63144 36.0344 8.04949 37.0375 9.63436 37.6645C11.2192 38.2497 12.825 38.5422 14.4515 38.5422C15.7445 38.5422 16.7871 38.2497 17.5796 37.6645C18.372 37.0793 18.7682 36.2643 18.7682 35.2193C18.7682 34.2998 18.3929 33.5683 17.6421 33.0249C16.8914 32.5234 15.098 31.8964 12.2619 31.144C8.04949 30.0573 5.06742 28.5735 3.31572 26.6926C1.77255 25.0207 1.00097 22.9517 1.00097 20.4856C1.00097 18.5211 1.58487 16.8074 2.75267 15.3445C3.92047 13.8398 5.46365 12.6694 7.38217 11.8335C9.3007 10.9975 11.3861 10.5795 13.6383 10.5795C16.2241 10.5795 18.664 11.0393 20.9578 11.9589C23.2517 12.8784 25.1703 14.1324 26.7134 15.7207L22.0839 20.7991C20.9161 19.7124 19.5607 18.8137 18.0175 18.1031C16.516 17.3508 15.1189 16.9746 13.8259 16.9746C10.823 16.9746 9.32156 18.0195 9.32156 20.1094C9.36327 21.1126 9.82205 21.9067 10.6979 22.4919C11.532 23.0771 13.4297 23.7667 16.3909 24.5609C20.3531 25.6058 23.1475 26.9852 24.7741 28.6989C26.1921 30.1618 26.9011 32.1054 26.9011 34.5297C26.9011 36.536 26.3172 38.3333 25.1494 39.9216C24.0233 41.5099 22.4802 42.7638 20.5199 43.6834C18.5597 44.5611 16.3492 45 13.8885 45Z"
-        fill="#020109"
-        fillOpacity="0.95"
-      />
-      <path
-        d="M43.2269 45C40.4742 45 37.9926 44.2476 35.7822 42.7429C33.5717 41.2382 31.7991 39.1901 30.4645 36.5987C29.1716 34.0072 28.5251 31.0605 28.5251 27.7584C28.5251 24.3728 29.1716 21.4052 30.4645 18.8555C31.7991 16.264 33.5925 14.2369 35.8447 12.7739C38.1386 11.311 40.7244 10.5795 43.6022 10.5795C45.9378 10.5795 47.9815 11.0602 49.7332 12.0216C51.4849 12.9411 52.8821 14.1533 53.9247 15.658V11.2692H62.433V44.373H53.8622V39.9216C52.6944 41.3845 51.1721 42.5966 49.2953 43.558C47.4601 44.5193 45.4374 45 43.2269 45ZM45.5416 37.5391C48.0858 37.5391 50.1503 36.6404 51.7351 34.8431C53.32 33.0458 54.1124 30.6843 54.1124 27.7584C54.1124 24.8326 53.32 22.471 51.7351 20.6737C50.1503 18.8764 48.0858 17.9778 45.5416 17.9778C43.0392 17.9778 40.9955 18.8764 39.4107 20.6737C37.8675 22.471 37.0959 24.8326 37.0959 27.7584C37.0959 30.6843 37.8675 33.0458 39.4107 34.8431C40.9955 36.6404 43.0392 37.5391 45.5416 37.5391Z"
-        fill="#020109"
-        fillOpacity="0.95"
-      />
-      <path
-        d="M67.4329 44.373V0H75.6783L75.9412 44.373H67.4329Z"
-        fill="#020109"
-        fillOpacity="0.95"
-      />
-      <path
-        d="M85.0694 44.373V18.9809H78.8133V11.2692H85.0694V2.80517L93.5776 0V11.2692H99.643L103.044 18.9809H93.5776V44.373H85.0694Z"
-        fill="#020109"
-        fillOpacity="0.95"
-      />
-      <ellipse
-        cx="102.259"
-        cy="39.9952"
-        rx="4.74052"
-        ry="4.74519"
-        fill="#EB596E"
-      />
-    </svg>
+    <>
+      <button
+        onClick={() => {
+          setExpanded(!expanded)
+        }}
+        className={clsx(
+          '-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-lg p-1 text-gray-700 transition',
+        )}
+      >
+        <span className="sr-only">{expanded ? 'Close menu' : 'Open menu'}</span>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <motion.rect
+            animate={state}
+            variants={topVariants}
+            transition={transition}
+            x="6"
+            y="10"
+            width="20"
+            height="2"
+            rx="1"
+            fill={iconColorWithExpand}
+          />
+          <motion.rect
+            animate={state}
+            variants={centerVariants}
+            transition={transition}
+            x="6"
+            y="16"
+            width="20"
+            height="2"
+            rx="1"
+            fill={iconColorWithExpand}
+          />
+          <motion.rect
+            animate={state}
+            variants={bottomVariants}
+            transition={transition}
+            x="6"
+            y="22"
+            width="20"
+            height="2"
+            rx="1"
+            fill={iconColorWithExpand}
+          />
+        </svg>
+      </button>
+      {createPortal(
+        <MobileMenuList expanded={expanded} menu={menu} />,
+        document.getElementById('menuPortal') ?? document.body,
+      )}
+    </>
   )
 }
 
@@ -273,33 +254,132 @@ type Props = {
 export function Navbar({ menu }: Props) {
   const { language } = useI18n()
 
+  const [expanded, setExpanded] = useState(false)
+
+  const navigation = useNavigation()
+  const prevNavState = useRef(navigation.state)
+
+  const { scrollY } = useScroll()
+  const bgColor = useTransform(
+    scrollY,
+    [60, 120],
+    ['rgba(22, 21, 31, 0)', 'rgba(22, 21, 31, 0.9)'],
+  )
+  const logoTextColor = useTransform(scrollY, [60, 120], ['#16151F', '#fff'])
+  const logoTextColorWithExpand = expanded ? '#16151F' : logoTextColor
+  const backgroundWithExpand = expanded ? 'transparent' : bgColor
+
+  useEffect(() => {
+    if (prevNavState.current === 'idle' && navigation.state === 'loading') {
+      clearAllBodyScrollLocks()
+    }
+    if (prevNavState.current === 'loading' && navigation.state === 'idle') {
+      setExpanded(false)
+      clearAllBodyScrollLocks()
+    }
+    scrollY.stop()
+    scrollY.jump(0)
+    prevNavState.current = navigation.state
+  }, [navigation.state])
+
   return (
-    <div className="absolute top-0 left-0 right-0 z-10 mx-8vw py-8 lg:mt-12 lg:py-8">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between">
+    <motion.div
+      className="sticky top-0 left-0 right-0 z-50 mt-12 px-8vw backdrop-blur"
+      style={{ background: backgroundWithExpand }}
+    >
+      <nav className="mx-auto flex h-18 max-w-5xl items-center justify-between">
         <Link
           to={language !== defaultLanguage ? `/${language}` : '/'}
           prefetch="intent"
           title="home"
         >
-          <span className="sr-only">Salt Agency</span>
-          {/*Mobile*/}
-          <Logo size="small" className="block lg:hidden" />
-          {/*Desktop*/}
-          <Logo size="large" className="hidden lg:block" />
+          <span className="sr-only">Koodin</span>
+          <svg
+            width={146}
+            viewBox="0 0 146 30"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <mask
+              id="mask0_772_114"
+              style={{ maskType: 'alpha' }}
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="147"
+              height="30"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M104.17 28.5001C98.7878 28.5001 95.3119 24.6311 95.3119 18.6381C95.3119 12.6072 98.8625 8.4348 104.544 8.4348C106.861 8.4348 109.066 9.38307 110.15 10.7865V0H115.906V28.007H110.486L110.187 25.5794C109.178 27.3242 106.861 28.5001 104.17 28.5001ZM105.553 23.1518C108.244 23.1518 110.112 21.2553 110.112 18.4105C110.112 15.5657 108.244 13.6692 105.553 13.6692C102.824 13.6692 101.105 15.6037 101.105 18.4105C101.105 21.2174 102.824 23.1518 105.553 23.1518ZM121.823 6.51931C120.188 6.51931 118.887 5.19851 118.887 3.53905C118.887 1.87959 120.188 0.592664 121.823 0.592664C123.425 0.592664 124.726 1.87959 124.726 3.53905C124.726 5.19851 123.425 6.51931 121.823 6.51931ZM127.462 28.0071H133.218V17.6141C133.218 15.2624 134.675 13.7452 136.955 13.7452C138.936 13.7452 140.244 15.3003 140.244 17.69V28.0071H146V16.2865C146 11.3176 143.421 8.4349 138.974 8.4349C136.544 8.4349 134.414 9.38317 133.255 11.0142L132.881 9.04179H127.462V28.0071ZM118.887 27.8552V8.88997H124.726V27.8552H118.887ZM73.5199 18.4345C73.5199 12.4414 77.8554 8.42079 83.8355 8.42079C89.7781 8.42079 94.1136 12.4414 94.1136 18.4345C94.1136 24.4275 89.7781 28.4102 83.8355 28.4102C77.8554 28.4102 73.5199 24.4275 73.5199 18.4345ZM79.3131 18.3965C79.3131 21.2792 81.1444 23.1758 83.8355 23.1758C86.4891 23.1758 88.3205 21.2792 88.3205 18.3965C88.3205 15.5517 86.4891 13.6552 83.8355 13.6552C81.1444 13.6552 79.3131 15.5517 79.3131 18.3965ZM51.9123 18.4345C51.9123 12.4414 56.2479 8.42079 62.2279 8.42079C68.1705 8.42079 72.5061 12.4414 72.5061 18.4345C72.5061 24.4275 68.1705 28.4102 62.2279 28.4102C56.2479 28.4102 51.9123 24.4275 51.9123 18.4345ZM57.7055 18.3965C57.7055 21.2792 59.5369 23.1758 62.2279 23.1758C64.8815 23.1758 66.7129 21.2792 66.7129 18.3965C66.7129 15.5517 64.8815 13.6552 62.2279 13.6552C59.5369 13.6552 57.7055 15.5517 57.7055 18.3965ZM39.9865 27.8552H34.1467V4.14865H40.5705V16.0019L45.8264 8.29725H52.8343L46.1441 16.7037L52.8343 27.8552H46.4104L42.1076 21.0657L39.9865 23.7066V27.8552ZM18.3742 2.97403C18.783 3.69482 18.7566 4.58886 18.3062 5.28341L8.20857 20.8529C7.25493 22.3233 5.1147 22.2579 4.24932 20.732L0.312313 13.7899C-0.330611 12.6562 0.0509287 11.2066 1.16451 10.5521L15.4258 2.16975C16.4581 1.56298 17.7782 1.92307 18.3742 2.97403ZM9.12769 28.901C8.71892 28.1802 8.74525 27.2861 9.1957 26.5916L19.2933 11.0221C20.247 9.55172 22.3872 9.61706 23.2526 11.143L27.1896 18.0851C27.8325 19.2188 27.451 20.6684 26.3374 21.3229L12.0761 29.7052C11.0438 30.312 9.72371 29.9519 9.12769 28.901Z"
+                fill="#4353FF"
+              />
+            </mask>
+            <g mask="url(#mask0_772_114)">
+              <motion.path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M104.17 28.5001C98.7878 28.5001 95.3119 24.6311 95.3119 18.6381C95.3119 12.6072 98.8626 8.4348 104.544 8.4348C106.861 8.4348 109.066 9.38307 110.15 10.7865V0H115.906V28.007H110.486L110.187 25.5794C109.178 27.3242 106.861 28.5001 104.17 28.5001ZM105.553 23.1518C108.244 23.1518 110.112 21.2553 110.112 18.4105C110.112 15.5657 108.244 13.6692 105.553 13.6692C102.824 13.6692 101.105 15.6037 101.105 18.4105C101.105 21.2174 102.824 23.1518 105.553 23.1518Z"
+                fill={logoTextColorWithExpand}
+              />
+              <motion.path
+                d="M121.823 6.51931C120.188 6.51931 118.887 5.19851 118.887 3.53905C118.887 1.87959 120.188 0.592664 121.823 0.592664C123.425 0.592664 124.726 1.87959 124.726 3.53905C124.726 5.19851 123.425 6.51931 121.823 6.51931Z"
+                fill={logoTextColorWithExpand}
+              />
+              <motion.path
+                d="M133.218 28.0071H127.462V9.04179H132.881L133.255 11.0142C134.414 9.38317 136.544 8.4349 138.974 8.4349C143.421 8.4349 146 11.3176 146 16.2865V28.0071H140.244V17.69C140.244 15.3003 138.936 13.7452 136.955 13.7452C134.675 13.7452 133.218 15.2624 133.218 17.6141V28.0071Z"
+                fill={logoTextColorWithExpand}
+              />
+              <motion.path
+                d="M118.887 27.8552V8.88997H124.726V27.8552H118.887Z"
+                fill={logoTextColorWithExpand}
+              />
+              <motion.path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M83.8355 8.42079C77.8555 8.42079 73.5199 12.4414 73.5199 18.4345C73.5199 24.4275 77.8555 28.4102 83.8355 28.4102C89.7781 28.4102 94.1137 24.4275 94.1137 18.4345C94.1137 12.4414 89.7781 8.42079 83.8355 8.42079ZM83.8355 23.1758C81.1445 23.1758 79.3131 21.2792 79.3131 18.3965C79.3131 15.5517 81.1445 13.6552 83.8355 13.6552C86.4891 13.6552 88.3205 15.5517 88.3205 18.3965C88.3205 21.2792 86.4891 23.1758 83.8355 23.1758Z"
+                fill={logoTextColorWithExpand}
+              />
+              <motion.path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M51.9124 18.4345C51.9124 12.4414 56.2479 8.42079 62.2279 8.42079C68.1706 8.42079 72.5061 12.4414 72.5061 18.4345C72.5061 24.4275 68.1706 28.4102 62.2279 28.4102C56.2479 28.4102 51.9124 24.4275 51.9124 18.4345ZM57.7055 18.3965C57.7055 21.2792 59.5369 23.1758 62.2279 23.1758C64.8816 23.1758 66.7129 21.2792 66.7129 18.3965C66.7129 15.5517 64.8816 13.6552 62.2279 13.6552C59.5369 13.6552 57.7055 15.5517 57.7055 18.3965Z"
+                fill={logoTextColorWithExpand}
+              />
+              <motion.path
+                d="M34.1467 27.8552H39.9866V23.7066L42.1076 21.0657L46.4104 27.8552H52.8343L46.1441 16.7037L52.8343 8.29725H45.8264L40.5706 16.0019V4.14865H34.1467V27.8552Z"
+                fill={logoTextColorWithExpand}
+              />
+              <path
+                d="M18.3062 5.28341C18.7566 4.58886 18.783 3.69482 18.3742 2.97403C17.7782 1.92307 16.4581 1.56298 15.4258 2.16975L1.16451 10.5521C0.0509287 11.2066 -0.330611 12.6562 0.312313 13.7899L4.24932 20.732C5.1147 22.2579 7.25493 22.3233 8.20857 20.8529L18.3062 5.28341Z"
+                fill="#4353FF"
+              />
+              <path
+                d="M9.1957 26.5916C8.74525 27.2861 8.71892 28.1802 9.12769 28.901C9.72371 29.9519 11.0438 30.312 12.0761 29.7052L26.3374 21.3229C27.451 20.6684 27.8325 19.2188 27.1896 18.0851L23.2526 11.143C22.3872 9.61706 20.247 9.55172 19.2933 11.0221L9.1957 26.5916Z"
+                fill="#4353FF"
+              />
+            </g>
+          </svg>
         </Link>
 
-        <ul className="hidden gap-x-10 lg:flex">
+        <ul className="hidden gap-x-2 lg:flex lg:self-stretch">
           {menu.map((link) => (
-            <NavLink key={link.id} to={link.url}>
+            <NavLink key={link.id} to={link.url} scrollY={scrollY}>
               {link.text}
             </NavLink>
           ))}
         </ul>
 
         <div className="block lg:hidden">
-          <MobileMenu menu={menu} />
+          <MobileMenu
+            menu={menu}
+            scrollY={scrollY}
+            expanded={expanded}
+            setExpanded={setExpanded}
+          />
         </div>
       </nav>
-    </div>
+    </motion.div>
   )
 }

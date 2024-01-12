@@ -1,64 +1,26 @@
 import * as React from 'react'
 
 import clsx from 'clsx'
-import { motion, useReducedMotion } from 'framer-motion'
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion'
 
 import { PhoneButton } from '~/components/button'
 import { Grid } from '~/components/grid'
-import { H3, H4 } from '~/components/typography'
+import { H3 } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
-
-const bgColorMap = ['bg-yellow-500', 'bg-pink-500', 'bg-blue-400']
-
-function Shape() {
-  const shouldReduceMotion = useReducedMotion()
-
-  const [bgColor, setBgColor] = React.useState('bg-inverse')
-
-  React.useEffect(() => {
-    const bgColorId = Math.ceil(Math.random() * 3)
-    setBgColor(bgColorMap[bgColorId - 1])
-  }, [])
-
-  return (
-    <motion.div
-      className="relative h-[286px]"
-      initial="initial"
-      animate="visible"
-      viewport={{ once: true, margin: '-115px 0px' }}
-      variants={{
-        initial: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.75 },
-        visible: {
-          opacity: 1,
-          scale: 1,
-          transition: { delay: 0.45, duration: 0.25 },
-        },
-      }}
-    >
-      <div
-        className="absolute h-[286px] w-[286px]"
-        style={{ clipPath: 'circle(50% at 100% 50%)', left: '-143px' }}
-      >
-        <div className={`h-full w-full ${bgColor}`} />
-      </div>
-      <div
-        className="absolute h-[286px] w-[286px]"
-        style={{ clipPath: 'circle(50% at 50% 50%)', left: '133px' }}
-      >
-        <div className={`h-full w-full ${bgColor}`} />
-      </div>
-    </motion.div>
-  )
-}
+import { useGroup } from '~/utils/providers'
 
 type Props = {
   title: string
   text: string
-  image?: Image
+  image: Image
   children: React.ReactNode
   phoneNumber?: string
-  theme: 'dark' | 'light'
 }
 
 export function ContactSection({
@@ -67,8 +29,9 @@ export function ContactSection({
   image,
   children,
   phoneNumber,
-  theme,
 }: Props) {
+  const { theme } = useGroup()
+  const isDark = theme.startsWith('dark')
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -77,74 +40,67 @@ export function ContactSection({
   }
 
   return (
-    <div
-      className={clsx('py-20 lg:py-32', {
-        'bg-inverse': theme === 'dark',
-        'bg-primary': theme === 'light',
-      })}
+    <motion.div
+      className="overflow-visible"
+      initial="initial"
+      animate="visible"
+      viewport={{ once: true, margin: '-115px 0px' }}
+      variants={{
+        initial: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+      }}
     >
-      <motion.div
-        initial="initial"
-        animate="visible"
-        viewport={{ once: true, margin: '-115px 0px' }}
-        variants={{
-          initial: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-        }}
-      >
-        <Grid className="gap-y-16 lg:gap-y-0">
-          <div className="col-span-full flex items-center lg:col-span-6 lg:col-start-7 lg:row-start-1">
-            <div>
-              <motion.div variants={childVariants}>
-                <H3 as="h2" inverse={theme === 'dark'} className="mb-4">
-                  {title}
-                </H3>
-              </motion.div>
-              <motion.div variants={childVariants}>
-                <H4
-                  as="p"
-                  variant="secondary"
-                  inverse={theme === 'dark'}
-                  className="mb-8"
-                >
-                  {text}
-                </H4>
-              </motion.div>
-              <motion.div
-                className="flex flex-col gap-4 lg:flex-row lg:items-center"
-                variants={childVariants}
-              >
-                {children}
-                {phoneNumber ? (
-                  <PhoneButton
-                    variant={theme === 'dark' ? 'outline-inverse' : 'outline'}
-                    ringOffsetColor={theme === 'dark' ? 'black' : 'white'}
-                  >
-                    {phoneNumber}
-                  </PhoneButton>
-                ) : null}
-              </motion.div>
-            </div>
-          </div>
-
-          <div className="col-span-full flex items-center lg:col-span-5 lg:col-start-1 lg:row-start-1">
-            {image ? (
-              <img
-                {...getImgProps(image.url, image.alt, {
-                  widths: [375, 508, 1016],
-                  sizes: [
-                    '(max-width: 1023px) 84vw',
-                    '(min-width: 1024px) 35vw',
-                    '375px',
-                  ],
-                })}
-              />
-            ) : (
-              <Shape />
+      <Grid className="gap-y-10 overflow-visible md:gap-y-0">
+        <div
+          className={clsx(
+            'relative z-10 col-span-full col-start-1 row-start-1 h-full overflow-visible',
+            'md:col-span-4',
+            'lg:col-span-5',
+          )}
+        >
+          <img
+            className={clsx(
+              'relative -left-6 -mt-8 -mb-12 block h-auto w-[calc(100%+3rem)] max-w-none',
+              'md:absolute md:left-auto md:right-0 md:bottom-1/2 md:m-0 md:h-[calc(100%+theme(spacing.10))] md:w-auto md:translate-y-1/2 md:translate-x-6',
+              'lg:h-[calc(100%+theme(spacing.72))] lg:translate-y-[calc(50%-2rem)] lg:translate-x-16',
             )}
+            {...getImgProps(image.url, image.alt, {
+              widths: [375, 508, 1016],
+              sizes: [
+                '(max-width: 1023px) 84vw',
+                '(min-width: 1024px) 35vw',
+                '375px',
+              ],
+            })}
+          />
+        </div>
+        <div className="col-span-full row-start-2 flex items-center md:col-span-5 md:col-start-5 md:row-start-1 lg:col-span-7 lg:col-start-6 lg:pt-16">
+          <div className="w-full text-center md:text-left">
+            <motion.div variants={childVariants}>
+              <H3 as="h2" inverse={isDark} className="mb-4">
+                {title}
+              </H3>
+            </motion.div>
+            <motion.div variants={childVariants}>
+              <p className={clsx('mb-8', isDark && 'text-gray-100')}>{text}</p>
+            </motion.div>
+            <motion.div
+              className="flex flex-col items-center gap-4 md:items-start lg:flex-row lg:items-center"
+              variants={childVariants}
+            >
+              {children}
+              {phoneNumber ? (
+                <PhoneButton
+                  variant={isDark ? 'outline-inverse' : 'outline'}
+                  ringOffsetColor={isDark ? 'black' : 'white'}
+                >
+                  {phoneNumber}
+                </PhoneButton>
+              ) : null}
+            </motion.div>
           </div>
-        </Grid>
-      </motion.div>
-    </div>
+        </div>
+      </Grid>
+    </motion.div>
   )
 }

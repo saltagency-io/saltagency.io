@@ -10,10 +10,7 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 export function SbContactSection({ blok }: { blok: ContactSectionBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      <ContactSection
-        {...blok}
-        image={blok.image?.filename ? mapAsset(blok.image) : undefined}
-      >
+      <ContactSection {...blok} image={mapAsset(blok.image)}>
         {blok.actions?.map((action) => (
           <StoryblokComponent
             key={action._uid}

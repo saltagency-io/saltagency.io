@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { Link } from '@remix-run/react'
 
 import clsx from 'clsx'
@@ -7,7 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
 import { IconArrowRight } from '~/components/icons'
-import { H3, H4, Paragraph, Subtitle } from '~/components/typography'
+import { H3, H4, H5, Paragraph } from '~/components/typography'
 import type { Section } from '~/types'
 
 type Props = {
@@ -26,7 +24,6 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
 
   return (
     <motion.div
-      className="bg-inverse py-20 lg:py-40"
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}
@@ -36,16 +33,16 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
         },
       }}
     >
-      <Grid>
+      <Grid className="z-10">
         <motion.div className="col-span-full" variants={childVariants}>
-          <Subtitle variant="pink" className="mb-4">
+          <H5 as="h2" variant="secondary" className="mb-4">
             {subtitle}
-          </Subtitle>
-          <H3 as="h2" className="text-inverse mb-8 lg:mb-14">
+          </H5>
+          <H3 inverse as="span" className="mb-8 lg:mb-14">
             {title}
           </H3>
         </motion.div>
-        <div className="col-span-full">
+        <div className="col-span-full mt-10">
           {sections.map((section) => (
             <motion.div key={section.id} variants={childVariants}>
               <Link
@@ -58,7 +55,7 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
                   className="border-secondary border-b pt-8 pb-16 transition hover:border-white focus:border-white lg:py-14"
                 >
                   <div className="col-span-6">
-                    <H4 as="h3" className="text-inverse mb-2 lg:mb-0">
+                    <H4 inverse as="h3" className="mb-2 lg:mb-0">
                       {section.title}
                     </H4>
                     <Paragraph
@@ -76,9 +73,7 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
                     </Paragraph>
                   </div>
                   <div className="col-span-6">
-                    <H4 as="p" className="text-inverse-secondary">
-                      {section.text}
-                    </H4>
+                    <p className="text-2xl text-gray-100">{section.text}</p>
                   </div>
                 </Grid>
               </Link>

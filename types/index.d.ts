@@ -68,4 +68,12 @@ export type TranslatedSlug = {
   lang: string
 }
 
+export type GroupTheme =
+  | 'light-gray'
+  | 'light-gray-decorated'
+  | 'dark'
+  | 'dark-decorated'
+  | 'dark-to-footer'
+  | 'light-white'
+
 export * from './storyblok'

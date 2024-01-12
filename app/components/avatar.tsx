@@ -1,34 +1,28 @@
-import * as React from 'react'
-
 import clsx from 'clsx'
+import type { GroupTheme } from 'types'
 
 import { getImgProps } from '~/utils/images'
 
 type Props = {
   url: string
   alt: string
-  theme?: 'dark' | 'light' | 'white'
   size?: 'small' | 'large'
   className?: string
+  theme: GroupTheme
 }
 
-export function Avatar({
-  url,
-  alt,
-  theme = 'dark',
-  size = 'large',
-  className,
-}: Props) {
+export function Avatar({ url, alt, size = 'large', theme, className }: Props) {
   return (
     <div
       className={clsx(
-        'flex items-center justify-center overflow-hidden rounded-full border-8',
+        'flex items-center justify-center overflow-hidden rounded-full border',
         {
-          'h-10 w-10 border-4': size === 'small',
+          'h-14 w-14 border-4': size === 'small',
           'h-16 w-16 border-8': size === 'large',
-          'border-avatar-dark': theme === 'dark',
-          'border-avatar-light': theme === 'light',
-          'border-white': theme === 'white',
+          'border-avatar-dark': theme.startsWith('dark'),
+          'border-white': theme === 'light-white',
+          'border-gray-50':
+            theme.startsWith('light-gray') || theme === 'light-hero',
         },
         className,
       )}

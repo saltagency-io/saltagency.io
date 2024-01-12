@@ -1,5 +1,5 @@
-import type { CalculatorBlok } from '~/types'
 import { Calculator } from '~/components/calculator'
+import type { CalculatorBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbCalculator({ blok }: { blok: CalculatorBlok }) {

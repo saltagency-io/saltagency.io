@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://saltagency.io/sitemap.xml
-Sitemap: https://saltagency.io/nl/sitemap.xml
+Sitemap: https://koodin.nl/sitemap.xml

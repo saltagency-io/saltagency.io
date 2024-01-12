@@ -3,8 +3,8 @@ import type * as React from 'react'
 import { Breadcrumbs } from '~/components/breadcrumbs'
 import { ButtonLink } from '~/components/button'
 import { Grid } from '~/components/grid'
-import { H1, H4 } from '~/components/typography'
-import { routes } from '~/routes/($lang)/careers/$slug.apply'
+import { H3, H5 } from '~/components/typography'
+import { routes } from '~/routes/($lang)/vacatures/$slug.solliciteren'
 import { useI18n } from '~/utils/i18n-provider'
 import { useLabels } from '~/utils/labels-provider'
 
@@ -25,10 +25,12 @@ export function Vacancy({ children, title, summary }: Props) {
           <Breadcrumbs />
         </div>
         <div className="col-span-full lg:col-span-10">
-          <H1 className="mb-4 lg:mb-6">{title}</H1>
-          <H4 as="h2" variant="secondary" className="mb-8">
+          <H5 as="h1" variant="secondary" className="mb-2">
+            {title}
+          </H5>
+          <H3 as="h2" className="mb-12">
             {summary}
-          </H4>
+          </H3>
           <ButtonLink
             to={`${routes[language]}?role=${encodeURIComponent(title)}`}
           >

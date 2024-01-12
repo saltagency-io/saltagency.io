@@ -19,7 +19,7 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(function Grid(
     <Tag
       ref={ref}
       className={clsx('relative', {
-        'mx-8vw': !nested,
+        'mx-4 md:mx-8vw': !nested,
         'w-full': nested,
       })}
     >

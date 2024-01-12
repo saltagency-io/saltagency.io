@@ -11,9 +11,9 @@ import path from 'path'
 import serverTiming from 'server-timing'
 
 type SupportedLanguage = 'en' | 'nl'
-
-const defaultLanguage: SupportedLanguage = 'en'
-const supportedLanguages: SupportedLanguage[] = ['en', 'nl']
+// TODO: Support en locale
+const defaultLanguage: SupportedLanguage = 'nl'
+const supportedLanguages: SupportedLanguage[] = ['nl']
 
 const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
   return (
@@ -36,7 +36,7 @@ app.use(serverTiming())
 
 // Setup headers
 app.use((req, res, next) => {
-  res.set('X-Powered-By', 'Salt Agency')
+  res.set('X-Powered-By', 'Koodin')
   res.set('X-Fly-Region', process.env.FLY_REGION ?? 'unknown')
   res.set('X-Fly-App', process.env.FLY_APP_NAME ?? 'unknown')
   res.set('X-Frame-Options', 'SAMEORIGIN')
@@ -70,17 +70,6 @@ app.use((req, res, next) => {
     const newHost = host.slice(4)
     app.set('trust proxy', true)
     return res.redirect(301, `${req.protocol}://${newHost}${req.originalUrl}`)
-  }
-  next()
-})
-
-//Redirect /jobs to /careers while we purge old record from Google search
-app.use((req, res, next) => {
-  if (req.path === '/jobs' && req.path.length) {
-    const proto = req.protocol
-    const query = req.url.slice(req.path.length)
-    const host = getHost(req)
-    return res.redirect(`${proto}://${host}/careers${query}`)
   }
   next()
 })
@@ -195,27 +184,27 @@ app.use(
 )
 
 // i18n middleware
-app.use((req, res, next) => {
-  const [urlLang] = req.path.slice(1).split('/')
+// app.use((req, res, next) => {
+//   const [urlLang] = req.path.slice(1).split('/')
 
-  if (isSupportedLanguage(urlLang)) {
-    res.locals.language = urlLang
-    if (urlLang === defaultLanguage) {
-      const redirectTo = req.path.replace(`/${urlLang}`, '')
-      res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
-    }
-  } else {
-    const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage
-    res.locals.language = lang
+//   if (isSupportedLanguage(urlLang)) {
+//     res.locals.language = urlLang
+//     if (urlLang === defaultLanguage) {
+//       const redirectTo = req.path.replace(`/${urlLang}`, '')
+//       res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
+//     }
+//   } else {
+//     const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage
+//     res.locals.language = lang
 
-    if (lang !== defaultLanguage) {
-      const path = `${lang}${req.path}`
-      res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
-    }
-  }
+//     if (lang !== defaultLanguage) {
+//       const path = `${lang}${req.path}`
+//       res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
+//     }
+//   }
 
-  next()
-})
+//   next()
+// })
 
 function getRequestHandlerOptions(): Parameters<
   typeof createRequestHandler
@@ -255,8 +244,8 @@ if (MODE === 'production') {
 //   app,
 // )
 
-const port = process.env.PORT ?? 3000
-app.listen(port, () => {
+const port = parseInt(process.env.PORT ?? '3000')
+app.listen(port, '0.0.0.0', 511, () => {
   require('../build')
   console.log(`Express server started on http://localhost:${port}`)
 })

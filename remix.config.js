@@ -6,22 +6,22 @@ module.exports = {
   routes(defineRoutes) {
     return defineRoutes((route) => {
       route(
-        'nl/vacatures',
-        'routes/($lang)/careers.tsx',
-        { id: 'careers-root-nl' },
+        'en/careers',
+        'routes/($lang)/vacatures.tsx',
+        { id: 'careers-root-en' },
         () => {
-          route('', 'routes/($lang)/careers/index.tsx', {
-            id: 'careers-nl',
+          route('', 'routes/($lang)/vacatures/index.tsx', {
+            id: 'careers-en',
             index: true,
           })
-          route(':slug', 'routes/($lang)/careers/$slug.tsx', {
-            id: 'vacancy-root-nl',
+          route(':slug', 'routes/($lang)/vacatures/$slug.tsx', {
+            id: 'vacancy-root-en',
           })
           route(
-            ':slug/solliciteren',
-            'routes/($lang)/careers/$slug.apply.tsx',
+            ':slug/apply',
+            'routes/($lang)/vacatures/$slug.solliciteren.tsx',
             {
-              id: 'vacancy-apply-nl',
+              id: 'vacancy-apply-en',
             },
           )
         },

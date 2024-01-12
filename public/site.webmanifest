@@ -1,6 +1,6 @@
 {
-  "name": "Salt Agency",
-  "short_name": "Salt",
+  "name": "Koodin",
+  "short_name": "Koodin",
   "icons": [
     {
       "src": "/favicons/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#0F0E17",
-  "background_color": "#0F0E17",
+  "theme_color": "#4252FF",
+  "background_color": "#F4F3Fc",
   "display": "standalone"
 }

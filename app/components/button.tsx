@@ -6,19 +6,26 @@ import { IconCheckCircle, IconPhone, IconSquareStack } from '~/components/icons'
 import { Paragraph } from '~/components/typography'
 import { AnchorOrLink } from '~/utils/misc'
 
+type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline-inverse'
+type ButtonSize = 'small' | 'medium' | 'large'
+type ButtonRingOffsetColor = 'white' | 'black'
 type ButtonProps = {
-  variant?: 'primary' | 'secondary' | 'outline' | 'outline-inverse'
-  size?: 'small' | 'medium' | 'large'
-  ringOffsetColor?: 'white' | 'black'
+  variant?: ButtonType
+  size?: ButtonSize
+  ringOffsetColor?: ButtonRingOffsetColor
   children: React.ReactNode | React.ReactNode[]
 }
 
 function getClassName({ className }: { className?: string }) {
   return clsx(
-    'group relative inline-flex text-lg font-bold focus:outline-none opacity-100 disabled:opacity:50 transition',
+    'group relative inline-flex font-bold focus:outline-none opacity-100 disabled:opacity:50 transition',
     className,
   )
 }
+
+// const variantStyles: Record<ButtonType, string> = {
+//   primary: 'focus-ring-purple ',
+// }
 
 function ButtonInner({
   children,
@@ -30,13 +37,13 @@ function ButtonInner({
     <>
       <div
         className={clsx(
-          'focus-ring absolute inset-0 transform rounded-lg font-bold opacity-100 transition disabled:opacity-50',
+          'focus-ring absolute inset-0 transform rounded-full font-bold opacity-100 transition-all disabled:opacity-50',
           {
-            'focus-ring-blue bg-blue-500': variant === 'primary',
+            'focus-ring-blue bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_100%] bg-[0%] duration-1000 group-hover:bg-[-100%] group-active:bg-[0%]':
+              variant === 'primary',
             'focus-ring-black bg-gray-900': variant === 'secondary',
             'focus-ring-black border-black': variant === 'outline',
-            'border-secondary focus-ring-inverse':
-              variant === 'outline-inverse',
+            'focus-ring-inverse border-white': variant === 'outline-inverse',
             'border-2 bg-transparent':
               variant === 'outline' || variant === 'outline-inverse',
             'ring-offset-black': ringOffsetColor === 'black',
@@ -46,7 +53,7 @@ function ButtonInner({
       />
       <div
         className={clsx(
-          'relative flex w-full items-center justify-center gap-x-2 whitespace-nowrap text-center text-lg leading-6',
+          'relative flex w-full items-center justify-center gap-x-2 whitespace-nowrap text-center text-lg leading-6 transition-all group-active:opacity-70',
           {
             'text-white': variant !== 'outline',
             'text-black': variant === 'outline',
@@ -153,9 +160,10 @@ export function PhoneButton({
     <>
       {/*Mobile*/}
       <ButtonLink
-        className="inline-block lg:hidden"
+        className="inline-block w-max lg:hidden"
         variant={variant}
         href={`tel:${children}`}
+        ringOffsetColor={ringOffsetColor}
         {...rest}
       >
         <IconPhone />

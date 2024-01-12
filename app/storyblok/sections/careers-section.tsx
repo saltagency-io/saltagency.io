@@ -9,11 +9,7 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 export function SbCareersSection({ blok }: { blok: CareersSectionBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      <CareersSection
-        subtitle={blok.subtitle}
-        title={blok.title}
-        theme={blok.theme}
-      >
+      <CareersSection subtitle={blok.subtitle} title={blok.title}>
         {blok.actions.map((action) => (
           <StoryblokComponent
             key={action._uid}

@@ -26,7 +26,11 @@ import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'
 import { handleFormSubmission } from '~/utils/actions.server'
 import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import { getLanguageFromContext, SupportedLanguage } from '~/utils/i18n'
+import {
+  defaultLanguage,
+  getLanguageFromContext,
+  SupportedLanguage,
+} from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
 import {
   createAlternateLinks,
@@ -88,7 +92,7 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   // This is a bit of a hack but these pages do not exist is storyblok currently.
   story = {
     ...story,
-    default_full_slug: `${story.default_full_slug}/${routes.en}`,
+    default_full_slug: `${story.default_full_slug}/${routes[defaultLanguage]}`,
     translated_slugs: (story.translated_slugs || []).map((slug) => ({
       ...slug,
       path: `${slug.path}/${routes[slug.lang as SupportedLanguage]}`,
@@ -114,16 +118,16 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
 
 const translatedTitle = (role: string, lang: SupportedLanguage) => {
   const titles = {
-    en: `Apply for ${role} | Salt`,
-    nl: `Soliciteer op ${role} | Salt`,
+    en: `Apply for ${role} | Koodin`,
+    nl: `Soliciteer op ${role} | Koodin`,
   }
   return titles[lang]
 }
 
 const translatedDescription = (role: string, lang: SupportedLanguage) => {
   const descriptions = {
-    en: `Apply for ${role} at Salt. Do you love to be part an excitingly new and ambitious consultancy startup?`,
-    nl: `Soliciteer op ${role} at Salt. Wil jij onderdeel zijn van een nieuwe en ambitieuze consultancy startup?`,
+    en: `Apply for ${role} at Koodin. Do you love to be part an excitingly new and ambitious consultancy startup?`,
+    nl: `Soliciteer op ${role} at Koodin. Wil jij onderdeel zijn van een nieuwe en ambitieuze consultancy startup?`,
   }
   return descriptions[lang]
 }

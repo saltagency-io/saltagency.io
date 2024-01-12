@@ -1,13 +1,18 @@
-app = "salt"
-kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
+# fly.toml app configuration file generated for koodin on 2023-09-22T09:43:04+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-[env]
-  PORT = "8080"
+app = "koodin"
+primary_region = "ams"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
 
 [experimental]
   auto_rollback = true
+
+[env]
+  PORT = "8080"
 
 [[services]]
   http_checks = []
@@ -34,3 +39,4 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+

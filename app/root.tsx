@@ -21,6 +21,7 @@ import { storyblokInit, apiPlugin, StoryblokComponent } from '@storyblok/react'
 
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
+import { SvgGradientReference } from './utils/svg-gradient-reference'
 import { ErrorPage } from '~/components/errors'
 import {
   getAllVacancies,
@@ -31,7 +32,6 @@ import { components } from '~/storyblok'
 import appStyles from '~/styles/app.css'
 import tailwindStyles from '~/styles/tailwind.css'
 import vendorStyles from '~/styles/vendors.css'
-import { DynamicLinks } from '~/utils/dynamic-links'
 import { getEnv } from '~/utils/env.server'
 import {
   getLanguageFromContext,
@@ -67,14 +67,21 @@ export const links: LinksFunction = () => {
     {
       rel: 'preload',
       as: 'font',
-      href: '/fonts/Satoshi-Medium.woff2',
+      href: '/fonts/nunito-sans-v15-latin-regular.woff2',
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
     {
       rel: 'preload',
       as: 'font',
-      href: '/fonts/Satoshi-Bold.woff2',
+      href: '/fonts/nunito-sans-v15-latin-700.woff2',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous',
+    },
+    {
+      rel: 'preload',
+      as: 'font',
+      href: '/fonts/plus-jakarta-sans-v8-latin-700.woff2',
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
@@ -135,7 +142,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
 export const meta: MetaFunction = () => {
   return {
     charset: 'utf-8',
-    title: 'Salt',
+    title: 'Koodin',
     viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
   }
 }
@@ -192,11 +199,12 @@ export function App() {
           fathomQueue={fathomQueue}
         />
         <Links />
-        <DynamicLinks />
+        {/* TODO: Enable Dynamic links once i18n support is implemented */}
+        {/* <DynamicLinks /> */}
       </head>
-      <body>
+      <body className="bg-gray-body">
         <StoryblokComponent blok={data.layoutStory?.content} />
-        <ScrollRestoration nonce={nonce} />
+        <div id="menuPortal"></div>
         <SdLogo origin={data.requestInfo.origin} />
         {ENV.NODE_ENV === 'development' ? null : (
           <script
@@ -205,7 +213,7 @@ export function App() {
             data-site="TRHLKHVT"
             data-spa="history"
             data-auto="false" // prevent tracking visit twice on initial page load
-            data-excluded-domains="localhost,salt.fly.dev"
+            data-excluded-domains="localhost,salt.fly.dev,koodin.fly.dev"
             defer
             onLoad={() => {
               fathomQueue.current.forEach(({ command }) => {
@@ -217,6 +225,7 @@ export function App() {
             }}
           />
         )}
+        <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <script
           nonce={nonce}
@@ -226,6 +235,7 @@ export function App() {
           }}
         />
         <LiveReload nonce={nonce} />
+        <SvgGradientReference />
       </body>
     </html>
   )

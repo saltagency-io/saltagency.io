@@ -1,7 +1,8 @@
 export type SupportedLanguage = 'en' | 'nl'
 
-export const defaultLanguage: SupportedLanguage = 'en'
-export const supportedLanguages: SupportedLanguage[] = ['en', 'nl']
+// TODO: Support en locale
+export const defaultLanguage: SupportedLanguage = 'nl'
+export const supportedLanguages: SupportedLanguage[] = ['nl']
 
 export const isSupportedLanguage = (
   lang: unknown,
@@ -13,13 +14,24 @@ export const isSupportedLanguage = (
 }
 
 export function getLanguageFromContext(context: Record<string, unknown>) {
-  const { language } = context
-  return isSupportedLanguage(language) ? language : defaultLanguage
+  // TODO: Restore i18n support.
+  // For now we only support en, as it is the default in Storyblok.
+  // Changing the default to nl is not feasible at this time.
+
+  return defaultLanguage
+  //   const { language } = context
+  //   return isSupportedLanguage(language) ? language : defaultLanguage
 }
 
 export function getLanguageFromPath(path: string) {
-  const [urlLang] = path.slice(1).split('/')
-  return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
+  // TODO: Restore i18n support.
+  // For now we only support en, as it is the default in Storyblok.
+  // Changing the default to nl is not feasible at this time.
+
+  return defaultLanguage
+
+  // const [urlLang] = path.slice(1).split('/')
+  // return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
 }
 
 const labels: Record<SupportedLanguage, Record<string, string>> = {
@@ -30,7 +42,7 @@ const labels: Record<SupportedLanguage, Record<string, string>> = {
     '404.more': "But wait! We're you searching for a job opening perhaps?",
     '404.careers.subtitle': "We're hiring",
     '404.careers.title':
-      "We're looking for a broad spectrum of expertise to join Salt",
+      "We're looking for a broad spectrum of expertise to join Koodin",
     '404.meta.title': 'Not found',
     '404.meta.description': 'You landed on a page that we could not find 😢',
     '500.title': '500 Error, Sorry about that!',
@@ -45,7 +57,7 @@ const labels: Record<SupportedLanguage, Record<string, string>> = {
     '404.more': 'Maar wacht even! Zocht je misschien naar een vacature?',
     '404.careers.subtitle': 'Wij zijn op zoek',
     '404.careers.title':
-      'We zoeken een breed spectrum aan expertise om Salt te versterken',
+      'We zoeken een breed spectrum aan expertise om Koodin te versterken',
     '404.meta.title': 'Niet gevonden',
     '404.meta.description':
       'Je bent op een pagina beland die we niet meer kunnen vinden 😢',

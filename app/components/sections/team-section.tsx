@@ -1,9 +1,7 @@
-import * as React from 'react'
-
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, H4, Paragraph, Subtitle } from '~/components/typography'
+import { H3, H4, H5, Paragraph } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 
@@ -31,7 +29,6 @@ export function TeamSection({ subtitle, title, members }: Props) {
   return (
     <motion.div
       id="team"
-      className="bg-inverse py-20 lg:py-40"
       initial="initial"
       whileInView="visible"
       viewport={{ once: true, margin: '-115px 0px' }}
@@ -41,63 +38,60 @@ export function TeamSection({ subtitle, title, members }: Props) {
         },
       }}
     >
-      <Grid className="gap-y-10">
+      <Grid className="z-10 gap-y-10">
         <motion.div className="col-span-full mb-10" variants={childVariants}>
-          <Subtitle className="mb-4" variant="pink">
+          <H5 as="h2" className="mb-4" variant="secondary">
             {subtitle}
-          </Subtitle>
-          <H3 as="h2" inverse>
-            {title}
-          </H3>
+          </H5>
+          <H3 inverse>{title}</H3>
         </motion.div>
-        {members.map((member) => (
-          <motion.div
-            key={member.name}
-            variants={childVariants}
-            className="bg-transparent-light col-span-full overflow-hidden rounded-lg lg:col-span-6"
-          >
-            <img
-              className="aspect-[5/4] w-full object-cover"
-              {...getImgProps(member.image.url, member.image.alt, {
-                widths: [375, 425, 506],
-                sizes: [
-                  '(max-width: 1023px) 84vw',
-                  '(min-width: 1024px) 35vw',
-                  '375px',
-                ],
-                transformations: {
-                  quality: 100,
-                },
-              })}
-            />
+        <div className="col-span-full grid grid-cols-1 gap-6 filter md:grid-cols-2">
+          {members.map((member) => (
+            <motion.div
+              key={member.name}
+              variants={childVariants}
+              className="flex flex-col"
+            >
+              <img
+                className="block aspect-[5/4] w-full rounded-t-3xl object-cover"
+                {...getImgProps(member.image.url, member.image.alt, {
+                  widths: [375, 425, 506],
+                  sizes: [
+                    '(max-width: 1023px) 84vw',
+                    '(min-width: 1024px) 35vw',
+                    '375px',
+                  ],
+                  transformations: {
+                    quality: 100,
+                  },
+                })}
+              />
 
-            <div className="relative flex min-h-[260px] flex-col px-4 py-6 lg:px-10 lg:py-12">
-              <H4 className="mb-2" as="h3" inverse>
-                {member.name}
-              </H4>
-              <Paragraph
-                as="span"
-                size="xl"
-                textColorClassName="text-inverse-secondary"
-              >
-                {member.role}
-              </Paragraph>
-              <div className="mt-auto flex flex-wrap items-center gap-x-4">
-                {member.skills.split(',').map((skill) => (
+              <div className="flex grow flex-col gap-6 rounded-b-3xl border border-white/5 bg-white/1 p-4 backdrop-blur-md lg:p-6">
+                <div>
+                  <H4 inverse>{member.name}</H4>
                   <Paragraph
-                    key={skill}
                     as="span"
                     size="xl"
-                    textColorClassName="text-inverse-secondary"
-                    className="whitespace-nowrap"
+                    textColorClassName="text-gray-100/70"
                   >
-                    #{skill}
+                    {member.role}
                   </Paragraph>
-                ))}
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  {member.skills.split(',').map((skill) => (
+                    <span
+                      key={skill}
+                      className="whitespace-nowrap rounded-full bg-purple-400 py-1 px-2 text-white"
+                    >
+                      #{skill}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
       </Grid>
     </motion.div>
   )

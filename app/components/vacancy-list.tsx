@@ -1,12 +1,10 @@
-import * as React from 'react'
-
 import { Link } from '@remix-run/react'
 
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
+import { H5 } from '~/components/typography'
 import type { Vacancy } from '~/types'
-import { H4 } from '~/components/typography'
 
 export function VacancyList({
   vacancies,
@@ -18,7 +16,6 @@ export function VacancyList({
   transition?: boolean
 }) {
   const shouldReduceMotion = useReducedMotion()
-
   return (
     <motion.ul
       className="-mt-6"
@@ -54,9 +51,9 @@ export function VacancyList({
                 theme === 'dark',
             })}
           >
-            <H4 as="span" inverse={theme === 'light'}>
+            <H5 as="span" inverse={theme === 'light'}>
               {vacancy.name}
-            </H4>
+            </H5>
           </Link>
         </motion.li>
       ))}

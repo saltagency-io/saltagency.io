@@ -22,6 +22,8 @@ import {
   defaultLanguage,
   getLanguageFromContext,
   getStaticLabel,
+  isSupportedLanguage,
+  supportedLanguages,
 } from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
@@ -60,10 +62,15 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
     throw new Response('Use other route', { status: 404 })
   }
 
-  const slug =
+  // Include whatever is in params.lang if it is not a supported langauge.
+  // This way we support arbitrary nested routes.
+  const slugStart =
+    params.slug && !isSupportedLanguage(params.lang) ? `${params.lang}/` : ''
+  const slugOrHome =
     !params.slug && params.lang === language
       ? 'home'
       : params.slug ?? params.lang ?? 'home'
+  const slug = `${slugStart}${slugOrHome}`
 
   const story = await getStoryBySlug(slug, language, preview)
 

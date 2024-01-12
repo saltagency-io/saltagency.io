@@ -3,6 +3,20 @@ import type * as React from 'react'
 import { SbBlokData, storyblokEditable, StoryData } from '@storyblok/react'
 
 import {
+  GIconCalendar,
+  GIconCommunity,
+  GIconDraw,
+  GIconEye,
+  GIconHandHeart,
+  GIconMoney,
+  GIconShield,
+  GIconSpeech,
+  GIconStar,
+  GIconTag,
+  GIconTeam,
+  IconProps as GradientIconProps,
+} from '~/components/gradient-icons'
+import {
   IconBankNotes,
   IconChatBubble,
   IconChatBubbleLeftRight,
@@ -12,6 +26,7 @@ import {
   IconEye,
   IconFingerPrint,
   IconHeart,
+  IconProps,
   IconScale,
   IconShield,
   IconUserGroup,
@@ -78,7 +93,7 @@ export function StoryBlokWrapper({
 }
 
 // Maps names in Storyblok to our icon components
-export const sbIconMap: Record<string, React.ComponentType<any>> = {
+export const sbIconMap: Record<string, React.ComponentType<IconProps>> = {
   eye: IconEye,
   users: IconUsers,
   heart: IconHeart,
@@ -92,4 +107,21 @@ export const sbIconMap: Record<string, React.ComponentType<any>> = {
   'chat-bubble-left-right': IconChatBubbleLeftRight,
   code: IconCode,
   envelope: IconEnvelope,
+}
+
+export const sbGradientIconMap: Record<
+  string,
+  React.ComponentType<GradientIconProps>
+> = {
+  star: GIconStar,
+  eye: GIconEye,
+  handHeart: GIconHandHeart,
+  calendar: GIconCalendar,
+  community: GIconCommunity,
+  draw: GIconDraw,
+  money: GIconMoney,
+  shield: GIconShield,
+  speechBubble: GIconSpeech,
+  tag: GIconTag,
+  team: GIconTeam,
 }

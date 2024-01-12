@@ -74,7 +74,7 @@ export async function loader({ request, context }: DataFunctionArgs) {
   const language = getLanguageFromContext(context)
   const { pathname } = new URL(request.url)
 
-  const story = await getStoryBySlug('careers/', language, preview)
+  const story = await getStoryBySlug('vacatures/', language, preview)
 
   if (!story) {
     throw json({}, { status: 404 })

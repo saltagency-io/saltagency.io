@@ -4,9 +4,9 @@ import { Link, useLocation, useRouteLoaderData } from '@remix-run/react'
 
 import clsx from 'clsx'
 
-import type { Breadcrumb } from '~/types'
 import { IconChevronLeft, IconChevronRight } from '~/components/icons'
 import type { LoaderData as RootLoaderData } from '~/root'
+import type { Breadcrumb } from '~/types'
 import { useI18n } from '~/utils/i18n-provider'
 import { unslugify } from '~/utils/misc'
 import { SdBreadCrumbs } from '~/utils/structured-data'

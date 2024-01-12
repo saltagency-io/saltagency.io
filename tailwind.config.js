@@ -18,54 +18,47 @@ module.exports = {
       // color scheme is defined in /app.css
       transparent: 'transparent',
       current: 'currentColor',
-      white: 'var(--color-white)',
-      black: 'var(--color-black)',
+      white: 'hsl(var(--color-white) / <alpha-value>)',
+      black: 'hsl(var(--color-black) / <alpha-value>)',
 
-      gray: {
-        100: 'var(--color-gray-100)',
-        200: 'var(--color-gray-200)',
-        300: 'var(--color-gray-300)',
-        400: 'var(--color-gray-400)',
-        500: 'var(--color-gray-500)',
-        600: 'var(--color-gray-600)',
-        700: 'var(--color-gray-700)',
-        800: 'var(--color-gray-800)',
-        900: 'var(--color-gray-900)',
-      },
-      blue: {
-        200: 'var(--color-blue-200)',
-        300: 'var(--color-blue-300)',
-        400: 'var(--color-blue-400)',
-        500: 'var(--color-blue-500)',
-        600: 'var(--color-blue-600)',
-        700: 'var(--color-blue-700)',
-        800: 'var(--color-blue-800)',
-      },
-      pink: {
-        200: 'var(--color-pink-200)',
-        300: 'var(--color-pink-300)',
-        400: 'var(--color-pink-400)',
-        500: 'var(--color-pink-500)',
-        600: 'var(--color-pink-600)',
-        700: 'var(--color-pink-700)',
-        800: 'var(--color-pink-800)',
-      },
+      gray: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 'body'].reduce(
+        (acc, cv) => ({
+          ...acc,
+          [cv]: `hsl(var(--color-gray-${cv}) / <alpha-value>)`,
+        }),
+        {},
+      ),
+      blue: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].reduce(
+        (acc, cv) => ({
+          ...acc,
+          [cv]: `hsl(var(--color-blue-${cv}) / <alpha-value>)`,
+        }),
+        {},
+      ),
+      purple: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].reduce(
+        (acc, cv) => ({
+          ...acc,
+          [cv]: `hsl(var(--color-purple-${cv}) / <alpha-value>)`,
+        }),
+        {},
+      ),
       red: {
-        500: 'var(--color-red-500)',
+        500: 'hsl(var(--color-red-500) / <alpha-value>)',
       },
       yellow: {
-        500: 'var(--color-yellow-500)',
+        500: 'hsl(var(--color-yellow-500) / <alpha-value>)',
       },
     },
     extend: {
       fontFamily: {
-        sans: ['Satoshi', ...defaultTheme.fontFamily.sans],
+        sans: ['Nunito Sans', ...defaultTheme.fontFamily.sans],
+        display: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
-        '3xl': '1.9375rem', // 31px
-        '4xl': '2.5625rem', // 41px
-        '5xl': '3.375rem', // 54px
-        '6xl': '4.375rem', // 70px
+        '3xl': '2rem', // 32px
+        '4xl': '2.5rem', // 4px
+        '5xl': '3rem', // 48px
+        '6xl': '3.5rem', // 56px
       },
       lineHeight: {
         normal: '120%',
@@ -76,6 +69,9 @@ module.exports = {
       textOpacity: {
         60: '0.6',
       },
+      borderRadius: {
+        '4xl': '2rem',
+      },
       gridTemplateRows: {
         'max-content': 'max-content',
       },
@@ -84,9 +80,22 @@ module.exports = {
       },
       spacing: {
         '8vw': '8vw', // page margin
+        '100vw': '100vw',
+        '200vw': '200vw',
+        '100vh': '100vh',
+        18: '4.5rem', //72px
+        30: '7.5rem', // 120px
       },
       blur: {
         '4xl': '100px',
+      },
+      dropShadow: {},
+      opacity: {
+        1: '0.01',
+      },
+      boxShadow: {
+        card: '0px 23px 38px 0px rgba(28, 32, 54, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.35) inset',
+        'card-container': '0px 16px 64px hsl(var(--color-purple-700) / 0.1)',
       },
     },
   },

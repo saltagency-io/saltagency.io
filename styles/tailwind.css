@@ -6,41 +6,53 @@
 @tailwind utilities;
 @tailwind screens;
 
-/* tailwind is configured to prefer this font */
+/* tailwind is configured to prefer these fonts */
+/* nunito-sans-regular - latin */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2'),
-    url('/fonts/Satoshi-Medium.woff') format('woff');
-  font-weight: 500;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
   font-style: normal;
-  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/nunito-sans-v15-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
+/* nunito-sans-700 - latin */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
-    url('/fonts/Satoshi-Bold.woff') format('woff');
-  font-weight: 700;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
   font-style: normal;
-  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/nunito-sans-v15-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* plus-jakarta-sans-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/plus-jakarta-sans-v8-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 @layer utilities {
   .focus-ring-base {
-    @apply ring-offset-4 transition duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
+    @apply ring-offset-4 duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
   }
 
   .focus-ring-black {
-    @apply focus-ring-base ring-gray-900;
+    @apply focus-ring-base ring-gray-800/50 group-active:ring-black;
   }
 
   .focus-ring-inverse {
-    --tw-ring-color: rgba(255, 255, 255, 0.2);
-    @apply focus-ring-base;
+    @apply focus-ring-base ring-white/30 group-active:ring-white;
   }
 
   .focus-ring-blue {
     @apply focus-ring-base ring-blue-500;
+  }
+
+  .focus-ring-purple {
+    @apply focus-ring-base ring-purple-500;
   }
 
   .bg-primary {
@@ -56,26 +68,35 @@
       rgba(35, 74, 134, 0.05);
   }
 
+  .bg-page-top {
+    background: linear-gradient(
+      180deg,
+      rgb(217 217 217 / 0.1) 55.81%,
+      rgb(217 217 217 / 0) 100%
+    );
+  }
+
   .bg-inverse {
     @apply bg-gray-900;
   }
 
-  .bg-transparent {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  .bg-transparent-light {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
   .bg-gradient {
-    background-image: linear-gradient(
-        360deg,
-        #0f0e17 1.67%,
-        rgba(15, 14, 23, 0) 140.45%
+    background: linear-gradient(
+        155deg,
+        hsl(246 19% 10%) 14%,
+        hsl(246 19% 10% / 0) 86%
       ),
-      linear-gradient(0deg, rgba(1, 13, 55, 0.49), rgba(1, 13, 55, 0.49)),
-      linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
+      linear-gradient(0deg, hsl(246 19% 10%) 0%, hsl(246 19% 10% / 0) 140%),
+      linear-gradient(
+        0deg,
+        hsl(227 96% 11% / 0.5) 0%,
+        hsl(227 96% 11% / 0.5) 100%
+      ),
+      linear-gradient(
+        106deg,
+        hsl(var(--color-blue-400)) -8%,
+        hsl(281 100% 50%) 108%
+      );
   }
 
   .bg-gradient-dark {
@@ -107,6 +128,15 @@
     );
   }
 
+  .bg-mobile-menu {
+    background: linear-gradient(
+        180deg,
+        theme(colors.blue.500 / 10%) 0%,
+        theme(colors.blue.500 / 10%) 100%
+      ),
+      theme(colors.gray.body / 70%);
+  }
+
   .text-primary {
     @apply text-gray-900;
   }
@@ -116,7 +146,7 @@
   }
 
   .text-inverse {
-    @apply text-white;
+    @apply text-gray-100;
   }
 
   .text-inverse-secondary {

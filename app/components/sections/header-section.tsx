@@ -25,7 +25,7 @@ export function HeaderSection({ title, body }: Props) {
   }
 
   return (
-    <div className="relative pt-8 pb-24 lg:pb-32 lg:pt-48">
+    <div className="relative">
       {/*Mobile*/}
       <GradientCircle
         className="mx-auto block lg:hidden"
@@ -60,9 +60,7 @@ export function HeaderSection({ title, body }: Props) {
             <H1 className="mb-4 lg:mb-10 lg:text-center">{title}</H1>
           </motion.div>
           <motion.div className="lg:px-32" variants={childVariants}>
-            <H4 as="p" variant="secondary" className="lg:text-center">
-              {body}
-            </H4>
+            <p className="lg:text-center lg:text-2xl">{body}</p>
           </motion.div>
           <motion.div
             className="pt-28 text-center lg:pt-72"
@@ -70,9 +68,9 @@ export function HeaderSection({ title, body }: Props) {
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}
           >
-            <Link className="inline-block" to="#formula">
+            <span className="inline-block">
               <Paragraph
-                className="hover:text-primary flex flex-col items-center gap-2 text-lg transition lg:flex-row lg:text-2xl"
+                className="flex flex-col items-center gap-2 text-lg transition lg:flex-row lg:text-2xl"
                 as="span"
                 textColorClassName="text-gray-400"
               >
@@ -90,7 +88,7 @@ export function HeaderSection({ title, body }: Props) {
                   <IconArrowDown />
                 </motion.div>
               </Paragraph>
-            </Link>
+            </span>
           </motion.div>
         </motion.div>
       </Grid>

@@ -2,7 +2,6 @@ import type * as React from 'react'
 
 import { AccordionSection } from '~/components/sections/accordion-section'
 import { ApplicationProcessSection } from '~/components/sections/application-section'
-import { ExpertiseSection } from '~/components/sections/expertise-section'
 import { FormulaSection } from '~/components/sections/formula-section'
 import { PropositionSection } from '~/components/sections/proposition-section'
 import type { BlockWithSectionsBlok, Section } from '~/types'
@@ -15,7 +14,6 @@ enum Variant {
   OurOffer = 'our-offer',
   ApplicationProcess = 'application-process',
   Accordion = 'accordion',
-  Expertise = 'expertise',
 }
 
 type SectionComponent = React.ComponentType<{
@@ -30,7 +28,6 @@ const sections: Record<Variant, SectionComponent> = {
   [Variant.OurOffer]: FormulaSection, // Re-use formula section as they're identical in terms of design
   [Variant.ApplicationProcess]: ApplicationProcessSection,
   [Variant.Accordion]: AccordionSection,
-  [Variant.Expertise]: ExpertiseSection,
 }
 
 export function SbBlockWithSections({ blok }: { blok: BlockWithSectionsBlok }) {
