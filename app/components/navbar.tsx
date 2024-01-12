@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Link, useLocation, useNavigation } from '@remix-run/react'
 
@@ -269,7 +269,7 @@ export function Navbar({ menu }: Props) {
   const logoTextColorWithExpand = expanded ? '#16151F' : logoTextColor
   const backgroundWithExpand = expanded ? 'transparent' : bgColor
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (prevNavState.current === 'idle' && navigation.state === 'loading') {
       clearAllBodyScrollLocks()
     }

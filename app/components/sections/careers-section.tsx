@@ -39,7 +39,7 @@ export function CareersSection({ children, subtitle, title }: Props) {
         </H3>
         <div className="hidden lg:mt-12 lg:block">{children}</div>
       </motion.div>
-      <div className="col-span-4 flex items-center md:col-span-8 lg:col-span-6 lg:col-start-7">
+      <div className="col-span-4 flex pt-2 md:col-span-8 lg:col-span-6 lg:col-start-7">
         <VacancyList
           theme={theme.startsWith('dark') ? 'light' : 'dark'}
           vacancies={vacancies.map(mapVacancy)}

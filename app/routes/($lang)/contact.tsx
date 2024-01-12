@@ -239,19 +239,6 @@ export default function ContactPage() {
                   error={to(contactFetcher?.data?.errors.body)}
                 />
 
-                <div className="mb-8 flex items-center gap-x-4 rounded-full bg-gray-50 p-4">
-                  <Avatar
-                    url="https://a.storyblok.com/f/198542/236x236/9a05e3ee75/dennis-round.png"
-                    alt="Dennis"
-                    size="small"
-                    theme="light-white"
-                  />
-                  <p>
-                    <strong>{t('contact.response.name')}</strong>{' '}
-                    {t('contact.response')}
-                  </p>
-                </div>
-
                 <div className="mb-8">
                   <div className="h-[78px]">
                     <HCaptcha
@@ -275,7 +262,7 @@ export default function ContactPage() {
                   <Button
                     type="submit"
                     variant="primary"
-                    className="relative mx-auto flex justify-center"
+                    className="relative mx-auto flex w-full justify-center"
                     disabled={messageSubmitted}
                   >
                     <span
