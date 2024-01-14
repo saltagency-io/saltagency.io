@@ -19,7 +19,6 @@ import {
 } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
 import { H1, H3, H4 } from '~/components/typography'
-import { sendCaptcha } from '~/lib/captcha.server'
 import { sendApplicationToNotion } from '~/lib/notion.server'
 import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
@@ -155,7 +154,6 @@ type Fields = {
   role?: string | null
   linkedin?: string | null
   motivation?: string | null
-  captcha?: string | null
 }
 
 type ActionData = {
@@ -176,16 +174,10 @@ export const action: ActionFunction = async ({ request }) => {
       role: getLabelKeyForError(isValidString, 'form.role.error'),
       linkedin: getLabelKeyForError(isValidUrl, 'form.linkedin.error'),
       motivation: getLabelKeyForError(isValidBody, 'form.motivation.error'),
-      captcha: getLabelKeyForError(isValidString, 'form.captcha.error'),
     },
     handleFormValues: async (fields) => {
-      const captchaResult = await sendCaptcha(fields.captcha)
-      if (!captchaResult.success) {
-        const actionData: ActionData = { fields, status: 'error', errors: {} }
-        return json(actionData, { status: 400 })
-      }
-
       await sendApplicationToNotion(fields)
+
       const actionData: ActionData = { fields, status: 'success', errors: {} }
       return json(actionData)
     },
@@ -346,20 +338,6 @@ export default function ApplyPage() {
                 defaultValue={applyFetcher.data?.fields.motivation ?? ''}
                 error={to(applyFetcher?.data?.errors.motivation)}
               />
-
-              <div className="mb-8">
-                <div className="h-[78px]">
-                  <HCaptcha
-                    sitekey={getRequiredGlobalEnvVar('HCAPTCHA_KEY')}
-                    onVerify={setCaptchaValue}
-                  />
-                </div>
-                {applyFetcher.data?.errors.captcha ? (
-                  <InputError id="captcha-error">
-                    {t(applyFetcher.data?.errors.captcha)}
-                  </InputError>
-                ) : null}
-              </div>
 
               {applyFetcher.data?.errors.generalError ? (
                 <ErrorPanel className="mb-8" id="apply-form-error">

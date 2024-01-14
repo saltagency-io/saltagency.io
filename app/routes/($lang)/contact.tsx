@@ -122,7 +122,6 @@ type Fields = {
   email?: string | null
   phone?: string | null
   body?: string | null
-  captcha?: string | null
 }
 
 type ActionData = {
@@ -139,15 +138,8 @@ export const action: ActionFunction = async ({ request }) => {
       email: getLabelKeyForError(isValidEmail, 'form.email.error'),
       phone: getLabelKeyForError(isValidPhoneNumber, 'form.phone.error'),
       body: getLabelKeyForError(isValidBody, 'form.message.error'),
-      captcha: getLabelKeyForError(isValidString, 'form.captcha.error'),
     },
     handleFormValues: async (fields) => {
-      const captchaResult = await sendCaptcha(fields.captcha)
-      if (!captchaResult.success) {
-        const actionData: ActionData = { fields, status: 'error', errors: {} }
-        return json(actionData, { status: 400 })
-      }
-
       await sendToContactFormNotion(fields)
 
       const actionData: ActionData = { fields, status: 'success', errors: {} }
@@ -238,20 +230,6 @@ export default function ContactPage() {
                   defaultValue={contactFetcher.data?.fields.body ?? ''}
                   error={to(contactFetcher?.data?.errors.body)}
                 />
-
-                <div className="mb-8">
-                  <div className="h-[78px]">
-                    <HCaptcha
-                      sitekey={getRequiredGlobalEnvVar('HCAPTCHA_KEY')}
-                      onVerify={setCaptchaValue}
-                    />
-                  </div>
-                  {contactFetcher.data?.errors.captcha ? (
-                    <InputError id="captcha-error">
-                      {t(contactFetcher.data?.errors.captcha)}
-                    </InputError>
-                  ) : null}
-                </div>
 
                 {contactFetcher.data?.errors.generalError ? (
                   <ErrorPanel className="mb-8" id="contact-form-error">

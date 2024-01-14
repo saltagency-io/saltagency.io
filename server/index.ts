@@ -162,7 +162,6 @@ app.use(
           'youtu.be',
           'youtube-nocookie.com',
           'www.youtube-nocookie.com',
-          '*.hcaptcha.com',
         ],
         'frame-ancestors': ["'self'", 'app.storyblok.com'],
         'img-src': ["'self'", 'data:', 'a.storyblok.com', 'cdn.usefathom.com'],
@@ -182,29 +181,6 @@ app.use(
     },
   }),
 )
-
-// i18n middleware
-// app.use((req, res, next) => {
-//   const [urlLang] = req.path.slice(1).split('/')
-
-//   if (isSupportedLanguage(urlLang)) {
-//     res.locals.language = urlLang
-//     if (urlLang === defaultLanguage) {
-//       const redirectTo = req.path.replace(`/${urlLang}`, '')
-//       res.redirect(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`)
-//     }
-//   } else {
-//     const lang = req.acceptsLanguages(...supportedLanguages) || defaultLanguage
-//     res.locals.language = lang
-
-//     if (lang !== defaultLanguage) {
-//       const path = `${lang}${req.path}`
-//       res.redirect(path.endsWith('/') ? path.slice(0, -1) : path)
-//     }
-//   }
-
-//   next()
-// })
 
 function getRequestHandlerOptions(): Parameters<
   typeof createRequestHandler
