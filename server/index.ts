@@ -23,7 +23,7 @@ import serverTiming from 'server-timing'
 // }
 
 const here = (...d: Array<string>) => path.join(__dirname, ...d)
-const devHost = 'fly.dev' // TODO: change this when we go live
+const devHost = 'koodin.nl'
 const getHost = (req: { get: (key: string) => string | undefined }) =>
   req.get('X-Forwarded-Host') ?? req.get('host') ?? ''
 
