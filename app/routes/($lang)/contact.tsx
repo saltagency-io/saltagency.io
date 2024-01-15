@@ -17,15 +17,11 @@ import {
   useTypedLoaderData,
 } from 'remix-typedjson'
 
-import HCaptcha from '@hcaptcha/react-hcaptcha'
-
-import { Avatar } from '~/components/avatar'
 import { Button } from '~/components/button'
-import { ErrorPanel, Field, InputError } from '~/components/form-elements'
+import { ErrorPanel, Field } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
 import { Spinner } from '~/components/spinner'
 import { H3, H5 } from '~/components/typography'
-import { sendCaptcha } from '~/lib/captcha.server'
 import { sendToContactFormNotion } from '~/lib/notion.server'
 import { getStoryBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
@@ -38,12 +34,7 @@ import {
   getStaticLabel,
 } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
-import {
-  createAlternateLinks,
-  getLabelKeyForError,
-  getRequiredGlobalEnvVar,
-  getUrl,
-} from '~/utils/misc'
+import { createAlternateLinks, getLabelKeyForError, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'
 import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
@@ -51,7 +42,6 @@ import {
   isValidEmail,
   isValidName,
   isValidPhoneNumber,
-  isValidString,
 } from '~/utils/validators'
 
 const dynamicLinks: DynamicLinksFunction<
@@ -154,8 +144,6 @@ export default function ContactPage() {
   const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.story, {}, data.preview)
 
-  const [captchaValue, setCaptchaValue] = React.useState<string | null>(null)
-
   const messageSuccessfullySent =
     contactFetcher.type === 'done' && contactFetcher.data.status === 'success'
 
@@ -188,12 +176,6 @@ export default function ContactPage() {
                 method="post"
                 aria-describedby="contact-form-error"
               >
-                <input
-                  type="hidden"
-                  name="captcha"
-                  value={captchaValue ?? ''}
-                  readOnly
-                />
                 <Field
                   name="name"
                   label={t('form.name.label')}

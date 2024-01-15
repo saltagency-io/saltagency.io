@@ -7,16 +7,9 @@ import { useFetcher, useSearchParams } from '@remix-run/react'
 import type { UseDataFunctionReturn } from 'remix-typedjson'
 import { typedjson } from 'remix-typedjson'
 
-import HCaptcha from '@hcaptcha/react-hcaptcha'
-
 import { Breadcrumbs } from '~/components/breadcrumbs'
 import { Button } from '~/components/button'
-import {
-  ErrorPanel,
-  Field,
-  InputError,
-  Select,
-} from '~/components/form-elements'
+import { ErrorPanel, Field, Select } from '~/components/form-elements'
 import { Grid } from '~/components/grid'
 import { H1, H3, H4 } from '~/components/typography'
 import { sendApplicationToNotion } from '~/lib/notion.server'
@@ -31,12 +24,7 @@ import {
   SupportedLanguage,
 } from '~/utils/i18n'
 import { useLabels } from '~/utils/labels-provider'
-import {
-  createAlternateLinks,
-  getLabelKeyForError,
-  getRequiredGlobalEnvVar,
-  getUrl,
-} from '~/utils/misc'
+import { createAlternateLinks, getLabelKeyForError, getUrl } from '~/utils/misc'
 import { useVacancies } from '~/utils/providers'
 import { getSocialMetas } from '~/utils/seo'
 import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
@@ -190,8 +178,6 @@ export default function ApplyPage() {
   const { t, to } = useLabels()
   const { vacancies } = useVacancies()
 
-  const [captchaValue, setCaptchaValue] = React.useState<string | null>(null)
-
   const messageSuccessfullySent =
     applyFetcher.type === 'done' && applyFetcher.data.status === 'success'
 
@@ -223,12 +209,6 @@ export default function ApplyPage() {
               method="post"
               aria-describedby="apply-form-error"
             >
-              <input
-                type="hidden"
-                name="captcha"
-                value={captchaValue ?? ''}
-                readOnly
-              />
               <Field
                 name="name"
                 className="mb-6"

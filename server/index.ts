@@ -10,17 +10,17 @@ import onFinished from 'on-finished'
 import path from 'path'
 import serverTiming from 'server-timing'
 
-type SupportedLanguage = 'en' | 'nl'
-// TODO: Support en locale
-const defaultLanguage: SupportedLanguage = 'nl'
-const supportedLanguages: SupportedLanguage[] = ['nl']
+// type SupportedLanguage = 'en' | 'nl'
+// // TODO: Support en locale
+// const defaultLanguage: SupportedLanguage = 'nl'
+// const supportedLanguages: SupportedLanguage[] = ['nl']
 
-const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
-  return (
-    typeof lang === 'string' &&
-    supportedLanguages.includes(lang as SupportedLanguage)
-  )
-}
+// const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
+//   return (
+//     typeof lang === 'string' &&
+//     supportedLanguages.includes(lang as SupportedLanguage)
+//   )
+// }
 
 const here = (...d: Array<string>) => path.join(__dirname, ...d)
 const devHost = 'fly.dev' // TODO: change this when we go live
