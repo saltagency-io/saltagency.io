@@ -79,6 +79,8 @@ export type CardBlok = SbBlokData & {
   icon: CardIcon
   title: string
   body: string
+  link?: Link
+  transparantCards: boolean
   variant: 'light' | 'dark'
 }
 
@@ -97,6 +99,7 @@ export type LocationBlok = SbBlokData & {
 
 export type HeroBlok = SbBlokData & {
   component: BlokTypes.Hero
+  heroWithShapes: boolean
   title: string
   body: string
   actions: ButtonBlok[]

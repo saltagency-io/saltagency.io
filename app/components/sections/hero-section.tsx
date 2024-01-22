@@ -1,19 +1,25 @@
-import type * as React from 'react'
-
 import { motion, useReducedMotion } from 'framer-motion'
+import RainDrops from 'public/images/rain-drops-background.svg'
 
+import { IconKeepScrolling } from '../icons'
 import { GradientCircle } from '~/components/gradient-circle'
 import { Grid } from '~/components/grid'
 import { H1, Intro } from '~/components/typography'
 import { multilineToBreaks } from '~/utils/misc'
 
-type Props = {
+type HeroSectionProps = {
+  heroWithShapes: boolean
   title: string
   body: string
   children: React.ReactNode
 }
 
-export function HeroSection({ children, title, body }: Props) {
+export function HeroSection({
+  children,
+  title,
+  body,
+  heroWithShapes,
+}: HeroSectionProps) {
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -23,6 +29,23 @@ export function HeroSection({ children, title, body }: Props) {
 
   return (
     <>
+      {heroWithShapes && (
+        <motion.img
+          src={RainDrops}
+          className="absolute top-0 left-0 object-fill w-screen h-screen select-none"
+          initial="initial"
+          animate="visible"
+          variants={{
+            initial: { opacity: 0, y: 40 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.7, delay: 0.3, ease: 'easeInOut' },
+            },
+          }}
+        />
+      )}
+
       {/*Mobile*/}
       <GradientCircle
         className="block lg:hidden"
@@ -69,7 +92,7 @@ export function HeroSection({ children, title, body }: Props) {
           }}
         >
           <motion.div variants={childVariants}>
-            <H1 className="break mb-6 text-center">
+            <H1 className="mb-6 text-center break">
               {multilineToBreaks(title)}
             </H1>
           </motion.div>
@@ -83,6 +106,13 @@ export function HeroSection({ children, title, body }: Props) {
             variants={childVariants}
           >
             {children}
+          </motion.div>
+
+          <motion.div
+            className="flex items-center justify-center mx-auto mt-14 w-fit lg:justify-start"
+            variants={childVariants}
+          >
+            <IconKeepScrolling />
           </motion.div>
         </motion.div>
       </Grid>

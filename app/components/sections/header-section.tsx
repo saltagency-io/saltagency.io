@@ -28,7 +28,7 @@ export function HeaderSection({ title, body }: Props) {
     <div className="relative">
       {/*Mobile*/}
       <GradientCircle
-        className="mx-auto block lg:hidden"
+        className="block mx-auto lg:hidden"
         opacity={15}
         height={666}
         width={666}
@@ -38,7 +38,7 @@ export function HeaderSection({ title, body }: Props) {
       />
       {/*Desktop*/}
       <GradientCircle
-        className="mx-auto hidden border border-red-500 lg:block"
+        className="hidden mx-auto border border-red-500 lg:block"
         opacity={15}
         height={920}
         width={920}
@@ -63,7 +63,7 @@ export function HeaderSection({ title, body }: Props) {
             <p className="lg:text-center lg:text-2xl">{body}</p>
           </motion.div>
           <motion.div
-            className="pt-28 text-center lg:pt-72"
+            className="text-center pt-28 lg:pt-72"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}

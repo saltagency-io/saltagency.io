@@ -7,14 +7,20 @@ import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 import { useGroup } from '~/utils/providers'
 
-type Props = {
+type TextSectionProps = {
   subtitle: string
   title: string
   body: string
+  transparantCards?: boolean
   image?: Image
 }
 
-export function TextSection({ subtitle, title, body, image }: Props) {
+export function TextSection({
+  subtitle,
+  title,
+  body,
+  image,
+}: TextSectionProps) {
   const { theme } = useGroup()
   const isDark = theme.startsWith('dark')
   const shouldReduceMotion = useReducedMotion()
@@ -23,6 +29,15 @@ export function TextSection({ subtitle, title, body, image }: Props) {
     initial: { opacity: 0, y: shouldReduceMotion ? 0 : 25 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   }
+
+  const paragraphs = body.split(/\n\s*\n/) // Voor elke paragraaf een <p> tag maken.
+  const bodyWithParagraphs = paragraphs.map((paragraph, index) => (
+    <motion.p
+      key={index}
+      variants={childVariants}
+      dangerouslySetInnerHTML={{ __html: paragraph }}
+    ></motion.p>
+  ))
 
   return (
     <Grid>
@@ -49,11 +64,13 @@ export function TextSection({ subtitle, title, body, image }: Props) {
             {title}
           </H3>
         </motion.div>
-        <motion.div variants={childVariants}>
-          <p className={clsx('text-2xl', isDark && 'text-gray-100')}>{body}</p>
+        <motion.div
+          className={clsx('space-y-6 text-2xl', isDark && 'text-gray-100')}
+        >
+          {bodyWithParagraphs}
         </motion.div>
         {image?.url ? (
-          <motion.div className="-ml-8vw -mr-8vw pt-12 lg:m-0">
+          <motion.div className="pt-12 -ml-8vw -mr-8vw lg:m-0">
             <img
               className="w-full lg:rounded-lg"
               {...getImgProps(image.url, image.alt, {
