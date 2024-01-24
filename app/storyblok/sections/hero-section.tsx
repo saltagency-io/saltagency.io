@@ -10,7 +10,8 @@ export function SbHeroSection({ blok }: { blok: HeroBlok }) {
       <HeroSection
         title={blok.title}
         body={blok.body}
-        heroWithShapes={blok.heroWithShapes}
+        hasShapes={blok.hasShapes}
+        keepScrollingEnabled={blok.keepScrollingEnabled}
       >
         {blok.actions?.map((action) => (
           <StoryblokComponent key={action._uid} blok={action} />

@@ -20,7 +20,9 @@ module.exports = {
       current: 'currentColor',
       white: 'hsl(var(--color-white) / <alpha-value>)',
       black: 'hsl(var(--color-black) / <alpha-value>)',
-
+      link: {
+        purple: '#4353FF',
+      },
       gray: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 'body'].reduce(
         (acc, cv) => ({
           ...acc,

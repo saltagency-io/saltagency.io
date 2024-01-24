@@ -5,7 +5,12 @@ import { StoryBlokWrapper } from '~/utils/storyblok'
 export function SbHeaderSection({ blok }: { blok: HeaderSectionBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      <HeaderSection title={blok.title} body={blok.body} />
+      <HeaderSection
+        title={blok.title}
+        body={blok.body}
+        hasShapes={blok.hasShapes}
+        keepScrollingEnabled={blok.keepScrollingEnabled}
+      />
     </StoryBlokWrapper>
   )
 }

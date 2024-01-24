@@ -1,14 +1,14 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import RainDrops from 'public/images/rain-drops-background.svg'
 
-import { IconKeepScrolling } from '../icons'
 import { GradientCircle } from '~/components/gradient-circle'
 import { Grid } from '~/components/grid'
+import ScrollIndicator from '~/components/scroll-indicator'
 import { H1, Intro } from '~/components/typography'
 import { multilineToBreaks } from '~/utils/misc'
 
-type HeroSectionProps = {
-  heroWithShapes: boolean
+type Props = {
+  hasShapes: boolean
+  keepScrollingEnabled: boolean
   title: string
   body: string
   children: React.ReactNode
@@ -18,8 +18,9 @@ export function HeroSection({
   children,
   title,
   body,
-  heroWithShapes,
-}: HeroSectionProps) {
+  hasShapes,
+  keepScrollingEnabled,
+}: Props) {
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -29,10 +30,10 @@ export function HeroSection({
 
   return (
     <>
-      {heroWithShapes && (
+      {hasShapes && (
         <motion.img
-          src={RainDrops}
-          className="absolute top-0 left-0 object-fill w-screen h-screen select-none"
+          src="/images/rain-drops-background.svg"
+          className="absolute left-0 top-0 h-screen w-screen select-none object-fill"
           initial="initial"
           animate="visible"
           variants={{
@@ -45,7 +46,6 @@ export function HeroSection({
           }}
         />
       )}
-
       {/*Mobile*/}
       <GradientCircle
         className="block lg:hidden"
@@ -63,7 +63,6 @@ export function HeroSection({
         left={-400}
         opacity={20}
       />
-
       {/*Mobile*/}
       <GradientCircle
         className="block lg:hidden"
@@ -92,7 +91,7 @@ export function HeroSection({
           }}
         >
           <motion.div variants={childVariants}>
-            <H1 className="mb-6 text-center break">
+            <H1 className="break mb-6 text-center">
               {multilineToBreaks(title)}
             </H1>
           </motion.div>
@@ -108,12 +107,14 @@ export function HeroSection({
             {children}
           </motion.div>
 
-          <motion.div
-            className="flex items-center justify-center mx-auto mt-14 w-fit lg:justify-start"
-            variants={childVariants}
-          >
-            <IconKeepScrolling />
-          </motion.div>
+          {keepScrollingEnabled && (
+            <motion.div
+              className="mx-auto mt-14 flex w-fit items-center justify-center lg:justify-start"
+              variants={childVariants}
+            >
+              <ScrollIndicator />
+            </motion.div>
+          )}
         </motion.div>
       </Grid>
     </>

@@ -52,25 +52,26 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
   ) {
     const Icon = sbGradientIconMap[icon ?? '']
 
-    const baseClasses = 'flex flex-col gap-4 rounded-3xl border p-6'
-    const shadowCardClass = !transparantCards ? 'shadow-card' : ''
-    const backgroundClass = transparantCards
-      ? 'bg-transparent'
-      : variantStyles[variant]
-
-    const cardClasses = clsx(
-      baseClasses,
-      shadowCardClass,
-      backgroundClass,
-      className,
-    )
     return (
-      <div ref={ref} className={cardClasses}>
+      <div
+        className={clsx(
+          'flex flex-col gap-4 rounded-3xl border p-6',
+          transparantCards ? 'bg-transparent' : variantStyles[variant],
+          {
+            'shadow-card': !transparantCards,
+          },
+          className,
+        )}
+        ref={ref}
+      >
         {Icon && <Icon width={40} height={40} />}
-        <div className="flex items-center h-12">
+        <div className="flex h-12 items-center">
           <H5 as="span" inverse={variant === 'dark'}>
             {link?.story ? (
-              <Link to={`/${link.story.full_slug}`} className="text-[#4353FF]">
+              <Link
+                to={`/${link.story.full_slug}`}
+                className="text-link-purple"
+              >
                 {title}
               </Link>
             ) : (
