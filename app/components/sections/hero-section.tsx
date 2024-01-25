@@ -1,19 +1,26 @@
-import type * as React from 'react'
-
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { GradientCircle } from '~/components/gradient-circle'
 import { Grid } from '~/components/grid'
+import { ScrollIndicator } from '~/components/scroll-indicator'
 import { H1, Intro } from '~/components/typography'
 import { multilineToBreaks } from '~/utils/misc'
 
 type Props = {
+  hasShapes: boolean
+  hasScrollIndicator: boolean
   title: string
   body: string
   children: React.ReactNode
 }
 
-export function HeroSection({ children, title, body }: Props) {
+export function HeroSection({
+  children,
+  title,
+  body,
+  hasShapes,
+  hasScrollIndicator,
+}: Props) {
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -23,6 +30,22 @@ export function HeroSection({ children, title, body }: Props) {
 
   return (
     <>
+      {hasShapes ? (
+        <motion.img
+          src="/images/rain-drops-background.svg"
+          className="absolute left-0 top-0 h-screen w-screen select-none object-fill"
+          initial="initial"
+          animate="visible"
+          variants={{
+            initial: { opacity: 0, y: 40 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.7, delay: 0.3, ease: 'easeInOut' },
+            },
+          }}
+        />
+      ) : null}
       {/*Mobile*/}
       <GradientCircle
         className="block lg:hidden"
@@ -40,7 +63,6 @@ export function HeroSection({ children, title, body }: Props) {
         left={-400}
         opacity={20}
       />
-
       {/*Mobile*/}
       <GradientCircle
         className="block lg:hidden"
@@ -84,6 +106,15 @@ export function HeroSection({ children, title, body }: Props) {
           >
             {children}
           </motion.div>
+
+          {hasScrollIndicator ? (
+            <motion.div
+              className="mx-auto mt-14 flex w-fit items-center justify-center lg:justify-start"
+              variants={childVariants}
+            >
+              <ScrollIndicator />
+            </motion.div>
+          ) : null}
         </motion.div>
       </Grid>
     </>

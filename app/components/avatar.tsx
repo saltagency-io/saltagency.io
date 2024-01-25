@@ -21,8 +21,7 @@ export function Avatar({ url, alt, size = 'large', theme, className }: Props) {
           'h-16 w-16 border-8': size === 'large',
           'border-avatar-dark': theme.startsWith('dark'),
           'border-white': theme === 'light-white',
-          'border-gray-50':
-            theme.startsWith('light-gray') || theme === 'light-hero',
+          'border-gray-50': theme.startsWith('light-gray'),
         },
         className,
       )}

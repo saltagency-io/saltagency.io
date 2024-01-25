@@ -11,6 +11,7 @@ type Props = {
   subtitle: string
   title: string
   body: string
+  transparantCards?: boolean
   image?: Image
 }
 
@@ -49,8 +50,11 @@ export function TextSection({ subtitle, title, body, image }: Props) {
             {title}
           </H3>
         </motion.div>
-        <motion.div variants={childVariants}>
-          <p className={clsx('text-2xl', isDark && 'text-gray-100')}>{body}</p>
+        <motion.div
+          variants={childVariants}
+          className={clsx('space-y-6 text-2xl', isDark && 'text-gray-100')}
+        >
+          {body}
         </motion.div>
         {image?.url ? (
           <motion.div className="-ml-8vw -mr-8vw pt-12 lg:m-0">

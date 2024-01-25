@@ -10,6 +10,7 @@ module.exports = {
 
   theme: {
     screens: {
+      sm: '370px',
       md: '640px',
       lg: '1024px',
       xl: '1500px',
@@ -20,7 +21,6 @@ module.exports = {
       current: 'currentColor',
       white: 'hsl(var(--color-white) / <alpha-value>)',
       black: 'hsl(var(--color-black) / <alpha-value>)',
-
       gray: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 'body'].reduce(
         (acc, cv) => ({
           ...acc,
@@ -102,6 +102,5 @@ module.exports = {
   plugins: [
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/line-clamp'),
   ],
 }

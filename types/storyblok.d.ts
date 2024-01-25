@@ -79,6 +79,7 @@ export type CardBlok = SbBlokData & {
   icon: CardIcon
   title: string
   body: string
+  link?: LinkBlok[]
   variant: 'light' | 'dark'
 }
 
@@ -97,6 +98,8 @@ export type LocationBlok = SbBlokData & {
 
 export type HeroBlok = SbBlokData & {
   component: BlokTypes.Hero
+  hasShapes: boolean
+  hasScrollIndicator: boolean
   title: string
   body: string
   actions: ButtonBlok[]
@@ -178,6 +181,8 @@ export type CareersSectionBlok = SbBlokData & {
 
 export type HeaderSectionBlok = SbBlokData & {
   component: BlokTypes.HeaderSection
+  hasShapes: boolean
+  hasScrollIndicator: boolean
   title: string
   body: string
 }

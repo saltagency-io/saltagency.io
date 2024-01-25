@@ -20,6 +20,7 @@ type Props = {
   bodyTitle?: string
   body?: string
 }
+
 export function CardsSection({
   cards,
   sectionTitle,
@@ -66,10 +67,11 @@ export function CardsSection({
           className="card-grid col-span-full grid grid-cols-12 gap-4 filter lg:gap-6"
           variants={childVariants}
         >
-          {cards?.map(({ id, icon, title, body }) => (
+          {cards?.map(({ id, icon, title, link, body }) => (
             <Card
               key={id}
               icon={icon}
+              link={link}
               title={title}
               variant={theme.startsWith('dark') ? 'dark' : 'light'}
               className={clsx('col-span-12', columnStyle[columns])}
