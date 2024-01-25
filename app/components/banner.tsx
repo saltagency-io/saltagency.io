@@ -7,10 +7,12 @@ import { getImgProps } from '~/utils/images'
 import { useGroup } from '~/utils/providers'
 
 type Props = {
-  subtitle: string
-  text: string
+  subtitle?: string
+  title: string
+  text?: string
   image: Image
   imagePosition: 'left' | 'right'
+  titleVariant: 'large' | 'small'
 }
 export function Banner({ subtitle, text, image, imagePosition }: Props) {
   const { theme } = useGroup()
@@ -24,9 +26,11 @@ export function Banner({ subtitle, text, image, imagePosition }: Props) {
         <H5 as="h2" variant="secondary" className="mb-2">
           {subtitle}
         </H5>
-        <H3 as="p" inverse={theme.startsWith('dark')}>
-          {text}
-        </H3>
+        {text ? (
+          <H3 as="p" inverse={theme.startsWith('dark')}>
+            {text}
+          </H3>
+        ) : null}
       </div>
       <div
         className={clsx(

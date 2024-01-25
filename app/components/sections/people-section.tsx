@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 import { Grid } from '~/components/grid'
-import { H3, H5, Subtitle } from '~/components/typography'
+import { H3, H5 } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 
@@ -65,6 +65,7 @@ export function PeopleSection({ children, subtitle, title, people }: Props) {
               )}
             >
               <img
+                loading="lazy"
                 className="aspect-[12/16] w-full rounded-lg object-contain"
                 {...getImgProps(person.url, person.alt, {
                   widths: [160, 200, 484],

@@ -36,7 +36,6 @@ export function CardsSection({
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   }
 
-  const onlySectionTitle = sectionTitle && !bodyTitle && !body
   return (
     <motion.div
       initial="initial"
@@ -48,33 +47,46 @@ export function CardsSection({
         },
       }}
     >
-      <Grid className={clsx('z-10')}>
-        <motion.div
-          className={clsx('col-span-full', onlySectionTitle ? 'mb-6' : 'mb-20')}
-          variants={childVariants}
-        >
+      <Grid className="z-10">
+        <motion.div className="col-span-full mb-10" variants={childVariants}>
           <H5 as="h2" variant="secondary">
             {sectionTitle}
           </H5>
-          {bodyTitle && (
+          {bodyTitle ? (
             <H3 as="h2" inverse={theme.startsWith('dark')} className="mt-4">
               {bodyTitle}
             </H3>
-          )}
-          {body && <Paragraph className="mt-4">{body}</Paragraph>}
+          ) : null}
+          {body ? (
+            <Paragraph
+              className="mt-4"
+              textColorClassName={theme.startsWith('dark') ? 'text-white' : ''}
+            >
+              {body}
+            </Paragraph>
+          ) : null}
         </motion.div>
         <motion.div
           className="card-grid col-span-full grid grid-cols-12 gap-4 filter lg:gap-6"
           variants={childVariants}
         >
-          {cards?.map(({ id, icon, title, link, body }) => (
+          {cards?.map(({ id, icon, title, link, body }, i) => (
             <Card
               key={id}
               icon={icon}
               link={link}
               title={title}
               variant={theme.startsWith('dark') ? 'dark' : 'light'}
-              className={clsx('col-span-12', columnStyle[columns])}
+              className={clsx(
+                'col-span-12',
+                columnStyle[columns],
+                // If we have and odd number of cards and even number of columns, center the last card
+                columns % 2 === 0 &&
+                  cards.length % 2 === 1 &&
+                  i + 1 === cards.length
+                  ? 'lg:col-start-4'
+                  : '',
+              )}
             >
               {body}
             </Card>

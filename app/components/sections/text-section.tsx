@@ -11,7 +11,6 @@ type Props = {
   subtitle: string
   title: string
   body: string
-  transparantCards?: boolean
   image?: Image
 }
 
@@ -28,7 +27,7 @@ export function TextSection({ subtitle, title, body, image }: Props) {
   return (
     <Grid>
       <motion.div
-        className="col-span-full lg:col-span-10 lg:col-start-2"
+        className="col-span-full"
         initial="initial"
         whileInView="visible"
         viewport={{ once: true, margin: '-115px 0px' }}

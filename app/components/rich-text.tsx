@@ -14,8 +14,8 @@ type Props = {
 export function RichText({ content }: Props) {
   const { theme } = useGroup()
   return (
-    <Grid className="lg:px-28">
-      <div className="col-span-full">
+    <Grid>
+      <div className="px-16 lg:col-span-10 lg:col-start-2">
         <Markdown textColor={theme.startsWith('dark') ? 'inverse' : 'primary'}>
           {content}
         </Markdown>

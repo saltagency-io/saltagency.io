@@ -4,7 +4,7 @@ import { Link } from '@remix-run/react'
 
 import clsx from 'clsx'
 
-import { H5 } from './typography'
+import { H5, Paragraph } from './typography'
 import { LinkType } from '~/types'
 import { sbGradientIconMap } from '~/utils/storyblok'
 
@@ -59,11 +59,16 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
             {title}
           </H5>
         </div>
-        <div className={`${variant === 'dark' ? 'text-gray-100' : ''}`}>
+        <Paragraph
+          textColorClassName={clsx({
+            'text-gray-100': variant === 'dark',
+            'group-hover:text-gray-800': variant === 'dark' && link,
+          })}
+        >
           {children}
-        </div>
+        </Paragraph>
         {link ? (
-          <div className="absolute -bottom-[18px] left-0 right-0 m-auto inline-flex max-w-[180px] translate-y-12 items-center justify-center rounded-[48px] bg-gray-900 px-6 py-4 font-bold text-white opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+          <div className="absolute -bottom-[18px] left-0 right-0 m-auto inline-flex max-w-[180px] translate-y-4 items-center justify-center rounded-[48px] bg-gray-900 px-6 py-4 font-bold text-white opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
             {link.text}
           </div>
         ) : null}

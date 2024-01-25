@@ -99,7 +99,6 @@ export type LocationBlok = SbBlokData & {
 export type HeroBlok = SbBlokData & {
   component: BlokTypes.Hero
   hasShapes: boolean
-  hasScrollIndicator: boolean
   title: string
   body: string
   actions: ButtonBlok[]
@@ -118,15 +117,20 @@ export type CalculatorBlok = SbBlokData & {
 
 export type BannerBlok = SbBlokData & {
   component: BlokTypes.Banner
-  subtitle: string
-  text: string
+  subtitle?: string
+  title: string
+  text?: string
   image: Asset
   imagePosition: 'left' | 'right'
   theme: 'dark' | 'light'
+  titleVariant: 'large' | 'small'
 }
 
 export type RichTextBlok = SbBlokData & {
   component: BlokTypes.RichText
+  subtitle?: string
+  title?: string
+  text?: string
   content: string
   theme: 'dark' | 'light'
 }
@@ -184,7 +188,7 @@ export type HeaderSectionBlok = SbBlokData & {
   hasShapes: boolean
   hasScrollIndicator: boolean
   title: string
-  body: string
+  body?: string
 }
 
 export type LocationSectionBlok = SbBlokData & {

@@ -9,7 +9,7 @@ type Props = {
   title: string
   hasShapes: boolean
   hasScrollIndicator: boolean
-  body: string
+  body?: string
 }
 
 export function HeaderSection({
@@ -30,7 +30,7 @@ export function HeaderSection({
       {hasShapes ? (
         <motion.img
           src="/images/rain-drops-background.svg"
-          className="absolute left-0 top-0 h-screen w-screen select-none object-fill"
+          className="absolute left-0 top-0 w-screen select-none object-fill"
           initial="initial"
           animate="visible"
           variants={{
@@ -78,13 +78,15 @@ export function HeaderSection({
             <motion.div variants={childVariants}>
               <H1 className="mb-4 lg:mb-10 lg:text-center">{title}</H1>
             </motion.div>
-            <motion.div className="lg:px-32" variants={childVariants}>
-              <p className="lg:text-center lg:text-2xl">{body}</p>
-            </motion.div>
+            {body ? (
+              <motion.div className="lg:px-32" variants={childVariants}>
+                <p className="lg:text-center lg:text-2xl">{body}</p>
+              </motion.div>
+            ) : null}
 
             {hasScrollIndicator ? (
               <motion.div
-                className="mx-auto mt-14 flex w-fit items-center justify-center lg:justify-start"
+                className="mx-auto mt-24 flex w-fit items-center justify-center lg:justify-start"
                 variants={childVariants}
               >
                 <ScrollIndicator />

@@ -39,7 +39,18 @@ function useComponents({
     textColor === 'gray' ? 'text-gray-300' : `text-${textColor}`
 
   const headingClassName = clsx(alignClassName, colorClassName, {
-    'mb-4': margins,
+    'inline-block pt-6': margins,
+    'first:pt-0': margins,
+    'mb-6': margins,
+  })
+
+  const listClassName = clsx('tracking-tight', colorClassName, {
+    'text-sm leading-6': bodyTextSize === 'sm',
+    'text-base': bodyTextSize === 'md',
+    'text-lg leading-6': bodyTextSize === 'lg',
+    'text-2xl leading-9': bodyTextSize === 'xl' && !responsive,
+    'text-lg leading-7 md:text-2xl md:leading-9':
+      bodyTextSize === 'xl' && responsive,
   })
 
   return {
@@ -83,20 +94,11 @@ function useComponents({
         {props.children}
       </strong>
     ),
-    ul: (props) => {
-      const className = clsx('text-list tracking-tight', colorClassName, {
-        'text-sm leading-6': bodyTextSize === 'sm',
-        'text-base': bodyTextSize === 'md',
-        'text-lg leading-6': bodyTextSize === 'lg',
-        'text-2xl leading-9': bodyTextSize === 'xl' && !responsive,
-        'text-lg leading-7 md:text-2xl md:leading-9':
-          bodyTextSize === 'xl' && responsive,
-      })
-      return props.ordered ? (
-        <ol className={className}>{props.children}</ol>
-      ) : (
-        <ul className={className}>{props.children}</ul>
-      )
-    },
+    ul: (props) => (
+      <ul className={`${listClassName} text-list`}>{props.children}</ul>
+    ),
+    ol: (props) => (
+      <ol className={`${listClassName} decimal-list`}>{props.children}</ol>
+    ),
   }
 }

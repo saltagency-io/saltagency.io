@@ -154,8 +154,8 @@ a {
   position: absolute;
   width: 100%;
   left: 0;
-  bottom: 2px;
-  height: 1px;
+  bottom: 0;
+  height: 3px;
   transform: scaleX(0);
   transition: transform,
     background-color 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -182,9 +182,15 @@ a {
   }
 }
 
+.decimal-list,
+.text-list {
+  margin-bottom: 1.5rem;
+}
+
+.decimal-list li,
 .text-list li {
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
   padding-left: 2rem;
 }
 
@@ -194,11 +200,24 @@ a {
   height: 0.3em;
   width: 0.3em;
   position: absolute;
-  top: 13px;
+  top: 9px;
   left: 0.5rem;
   margin: auto;
   background-color: currentColor;
   border-radius: 50%;
+}
+
+.decimal-list li {
+  counter-increment: count;
+}
+
+.decimal-list li:before {
+  content: counter(count)".";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0.5rem;
+  margin: auto;
 }
 
 .header-light nav a {
@@ -212,6 +231,7 @@ a {
 .card-grid {
   position: relative;
 }
+
 .card-grid::after {
   content: '';
   pointer-events: none;

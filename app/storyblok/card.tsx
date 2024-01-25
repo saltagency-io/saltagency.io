@@ -1,6 +1,6 @@
 import { Card } from '~/components/card'
 import type { CardBlok } from '~/types'
-import { mapLink, useLocalizedMappers } from '~/utils/mappers'
+import { useLocalizedMappers } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbCard({ blok }: { blok: CardBlok }) {

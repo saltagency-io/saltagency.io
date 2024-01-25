@@ -132,7 +132,6 @@ function MobileMenuList({
                       active
                         ? 'border-b-current opacity-100'
                         : 'border-b-transparent opacity-70',
-                      'hover:border-b-current',
                     )}
                   >
                     {link.text}
@@ -280,7 +279,7 @@ export function Navbar({ menu }: Props) {
     scrollY.stop()
     scrollY.jump(0)
     prevNavState.current = navigation.state
-  }, [navigation.state])
+  }, [navigation.state, scrollY])
 
   return (
     <motion.div

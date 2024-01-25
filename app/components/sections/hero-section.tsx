@@ -2,25 +2,17 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { GradientCircle } from '~/components/gradient-circle'
 import { Grid } from '~/components/grid'
-import { ScrollIndicator } from '~/components/scroll-indicator'
 import { H1, Intro } from '~/components/typography'
 import { multilineToBreaks } from '~/utils/misc'
 
 type Props = {
   hasShapes: boolean
-  hasScrollIndicator: boolean
   title: string
   body: string
   children: React.ReactNode
 }
 
-export function HeroSection({
-  children,
-  title,
-  body,
-  hasShapes,
-  hasScrollIndicator,
-}: Props) {
+export function HeroSection({ children, title, body, hasShapes }: Props) {
   const shouldReduceMotion = useReducedMotion()
 
   const childVariants = {
@@ -33,7 +25,7 @@ export function HeroSection({
       {hasShapes ? (
         <motion.img
           src="/images/rain-drops-background.svg"
-          className="absolute left-0 top-0 h-screen w-screen select-none object-fill"
+          className="absolute left-0 -top-[300px] h-screen w-screen select-none object-fill"
           initial="initial"
           animate="visible"
           variants={{
@@ -106,15 +98,6 @@ export function HeroSection({
           >
             {children}
           </motion.div>
-
-          {hasScrollIndicator ? (
-            <motion.div
-              className="mx-auto mt-14 flex w-fit items-center justify-center lg:justify-start"
-              variants={childVariants}
-            >
-              <ScrollIndicator />
-            </motion.div>
-          ) : null}
         </motion.div>
       </Grid>
     </>
