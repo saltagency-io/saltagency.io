@@ -19,15 +19,14 @@ type Props = {
   columns: number
   bodyTitle?: string
   body?: string
-  transparantCards?: boolean
 }
+
 export function CardsSection({
   cards,
   sectionTitle,
   columns,
   bodyTitle,
   body,
-  transparantCards,
 }: Props) {
   const { theme } = useGroup()
   const shouldReduceMotion = useReducedMotion()
@@ -65,7 +64,7 @@ export function CardsSection({
           {body && <Paragraph className="mt-4">{body}</Paragraph>}
         </motion.div>
         <motion.div
-          className="grid grid-cols-12 gap-4 card-grid col-span-full filter lg:gap-6"
+          className="card-grid col-span-full grid grid-cols-12 gap-4 filter lg:gap-6"
           variants={childVariants}
         >
           {cards?.map(({ id, icon, title, link, body }) => (
@@ -74,7 +73,6 @@ export function CardsSection({
               icon={icon}
               link={link}
               title={title}
-              transparantCards={transparantCards}
               variant={theme.startsWith('dark') ? 'dark' : 'light'}
               className={clsx('col-span-12', columnStyle[columns])}
             >

@@ -79,8 +79,7 @@ export type CardBlok = SbBlokData & {
   icon: CardIcon
   title: string
   body: string
-  link?: Link
-  transparantCards: boolean
+  link?: LinkBlok[]
   variant: 'light' | 'dark'
 }
 
