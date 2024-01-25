@@ -99,7 +99,7 @@ export type LocationBlok = SbBlokData & {
 export type HeroBlok = SbBlokData & {
   component: BlokTypes.Hero
   hasShapes: boolean
-  keepScrollingEnabled: boolean
+  hasScrollIndicator: boolean
   title: string
   body: string
   actions: ButtonBlok[]
@@ -182,7 +182,7 @@ export type CareersSectionBlok = SbBlokData & {
 export type HeaderSectionBlok = SbBlokData & {
   component: BlokTypes.HeaderSection
   hasShapes: boolean
-  keepScrollingEnabled: boolean
+  hasScrollIndicator: boolean
   title: string
   body: string
 }

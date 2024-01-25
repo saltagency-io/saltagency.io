@@ -11,7 +11,7 @@ export function SbCardsSection({ blok }: { blok: CardsSectionBlok }) {
       id: _uid,
       icon,
       title,
-      link: link ? mapLink(link[0]) : undefined,
+      link: link && link[0] ? mapLink(link[0]) : undefined,
       body,
     }
   })

@@ -5,7 +5,7 @@ type Props = {
   width?: number
 }
 
-const ScrollIndicator = ({ height = 96, width = 90 }: Props) => {
+export function ScrollIndicator({ height = 96, width = 90 }: Props) {
   return (
     <svg
       height={height}
@@ -60,5 +60,3 @@ const ScrollIndicator = ({ height = 96, width = 90 }: Props) => {
     </svg>
   )
 }
-
-export default ScrollIndicator

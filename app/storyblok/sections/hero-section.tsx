@@ -11,7 +11,7 @@ export function SbHeroSection({ blok }: { blok: HeroBlok }) {
         title={blok.title}
         body={blok.body}
         hasShapes={blok.hasShapes}
-        keepScrollingEnabled={blok.keepScrollingEnabled}
+        hasScrollIndicator={blok.hasScrollIndicator}
       >
         {blok.actions?.map((action) => (
           <StoryblokComponent key={action._uid} blok={action} />

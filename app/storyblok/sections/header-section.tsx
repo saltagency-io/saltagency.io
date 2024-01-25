@@ -9,7 +9,7 @@ export function SbHeaderSection({ blok }: { blok: HeaderSectionBlok }) {
         title={blok.title}
         body={blok.body}
         hasShapes={blok.hasShapes}
-        keepScrollingEnabled={blok.keepScrollingEnabled}
+        hasScrollIndicator={blok.hasScrollIndicator}
       />
     </StoryBlokWrapper>
   )

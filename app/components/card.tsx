@@ -63,7 +63,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
           {children}
         </div>
         {link ? (
-          <div className="absolute left-0 right-0 -bottom-[18px] m-auto inline-flex max-w-[180px] translate-y-12 items-center justify-center rounded-[48px] bg-gray-900 px-6 py-4 font-bold text-white opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+          <div className="absolute -bottom-[18px] left-0 right-0 m-auto inline-flex max-w-[180px] translate-y-12 items-center justify-center rounded-[48px] bg-gray-900 px-6 py-4 font-bold text-white opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
             {link.text}
           </div>
         ) : null}

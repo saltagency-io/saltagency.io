@@ -2,13 +2,13 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { GradientCircle } from '~/components/gradient-circle'
 import { Grid } from '~/components/grid'
-import ScrollIndicator from '~/components/scroll-indicator'
+import { ScrollIndicator } from '~/components/scroll-indicator'
 import { H1 } from '~/components/typography'
 
 type Props = {
   title: string
   hasShapes: boolean
-  keepScrollingEnabled: boolean
+  hasScrollIndicator: boolean
   body: string
 }
 
@@ -16,7 +16,7 @@ export function HeaderSection({
   title,
   body,
   hasShapes,
-  keepScrollingEnabled,
+  hasScrollIndicator,
 }: Props) {
   const shouldReduceMotion = useReducedMotion()
 
@@ -27,7 +27,7 @@ export function HeaderSection({
 
   return (
     <>
-      {hasShapes && (
+      {hasShapes ? (
         <motion.img
           src="/images/rain-drops-background.svg"
           className="absolute left-0 top-0 h-screen w-screen select-none object-fill"
@@ -42,7 +42,7 @@ export function HeaderSection({
             },
           }}
         />
-      )}
+      ) : null}
       <div className="relative">
         {/*Mobile*/}
         <GradientCircle
@@ -81,14 +81,15 @@ export function HeaderSection({
             <motion.div className="lg:px-32" variants={childVariants}>
               <p className="lg:text-center lg:text-2xl">{body}</p>
             </motion.div>
-            {keepScrollingEnabled && (
+
+            {hasScrollIndicator ? (
               <motion.div
                 className="mx-auto mt-14 flex w-fit items-center justify-center lg:justify-start"
                 variants={childVariants}
               >
                 <ScrollIndicator />
               </motion.div>
-            )}
+            ) : null}
           </motion.div>
         </Grid>
       </div>
