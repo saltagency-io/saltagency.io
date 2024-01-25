@@ -27,6 +27,7 @@ export function Avatar({ url, alt, size = 'large', theme, className }: Props) {
       )}
     >
       <img
+        loading="lazy"
         className="aspect-square h-full w-full rounded-full object-cover"
         {...getImgProps(url, alt, {
           widths: [96],

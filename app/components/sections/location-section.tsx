@@ -18,6 +18,7 @@ function Image({
 }) {
   return (
     <img
+      loading="lazy"
       className={className}
       {...getImgProps(src, alt, {
         widths: [375, 508, 1016],
@@ -36,7 +37,6 @@ type Props = {
   title: string
   address: string
   image: ImageType
-  imageMobile: ImageType
   officeImage: ImageType
   link?: LinkType
 }
@@ -46,18 +46,12 @@ export function LocationSection({
   title,
   address,
   image,
-  imageMobile,
   officeImage,
   link,
 }: Props) {
   return (
     <div className="relative -my-20 py-20 lg:-my-40 lg:py-40">
-      {/*Mobile*/}
-      <div className="absolute inset-0 z-0 block mix-blend-multiply lg:hidden">
-        <Image src={image.url} alt={image.alt} className="h-full w-auto" />
-      </div>
-      {/*Desktop*/}
-      <div className="absolute inset-0 z-0 hidden mix-blend-multiply lg:block">
+      <div className="absolute inset-0 z-0 hidden mix-blend-multiply">
         <Image src={image.url} alt={image.alt} className="h-full w-auto" />
       </div>
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-gray-800"></div>

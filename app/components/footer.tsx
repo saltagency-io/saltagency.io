@@ -90,8 +90,7 @@ function Logo() {
   )
 }
 
-const textClassName =
-  'text-white leading-6 hover:opacity-80 focus:opacity-80 transition'
+const textClassName = 'leading-6 hover:opacity-80 focus:opacity-80 transition'
 
 export function Footer({
   menu,
@@ -103,40 +102,42 @@ export function Footer({
   return (
     <footer className="bg-gray-800 py-16">
       <Grid>
-        <div className="border-secondary col-span-full border-b pb-7 lg:border-0 lg:pb-9">
+        <div className="border-secondary col-span-full mb-8 border-b lg:border-0 lg:pb-9">
           <Logo />
         </div>
-        <ul className="border-secondary col-span-full flex flex-col gap-6 border-b py-8 lg:col-span-3 lg:mb-3 lg:border-0 lg:py-0">
+        <ul className="border-secondary col-span-full flex flex-col justify-center gap-6 border-b py-8 lg:col-span-3 lg:mb-3 lg:border-0 lg:py-0">
           {menu.map((link) => (
             <li key={link.id}>
               <Link
                 to={link.url}
                 prefetch="intent"
-                className={`${textClassName} underlined block w-min font-bold`}
+                className={`${textClassName} underlined block w-min font-bold text-white`}
               >
                 {link.text}
               </Link>
             </li>
           ))}
         </ul>
-        <div className="border-secondary col-span-full border-b py-8 lg:col-span-5 lg:border-0 lg:py-0">
+        <div className="border-secondary col-span-full flex flex-col justify-center border-b py-8 lg:col-span-5 lg:border-0 lg:py-0">
           <address className="mb-8">
-            <Markdown margins={false} textColor="inverse" responsive={false}>
+            <Markdown margins={false} textColor="gray" responsive={false}>
               {address}
             </Markdown>
           </address>
-          <Link
-            to={directionsLink.url}
-            target="_blank"
-            rel="noopener"
-            className={`${textClassName} underlined active font-bold`}
-          >
-            {directionsLink.text}
-          </Link>
+          <div>
+            <Link
+              to={directionsLink.url}
+              target="_blank"
+              rel="noopener"
+              className={`${textClassName} underlined active font-bold text-gray-300`}
+            >
+              {directionsLink.text}
+            </Link>
+          </div>
         </div>
-        <div className="col-span-full py-8 lg:col-span-4 lg:py-0">
+        <div className="col-span-full flex flex-col justify-center py-8 lg:col-span-4 lg:py-0">
           <Markdown
-            textColor="inverse"
+            textColor="gray"
             linksInNewTab
             margins={false}
             responsive={false}
@@ -153,7 +154,7 @@ export function Footer({
         >
           <Paragraph
             className="mt-8 lg:mt-0"
-            textColorClassName="text-white"
+            textColorClassName="text-gray-300"
             size="sm"
           >
             <span>
@@ -169,7 +170,7 @@ export function Footer({
                   <Link
                     to={link.url}
                     prefetch="intent"
-                    className={textClassName}
+                    className={`${textClassName} text-gray-300`}
                   >
                     {link.text}
                   </Link>

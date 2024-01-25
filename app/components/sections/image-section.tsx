@@ -20,6 +20,7 @@ export function ImageSection({ image }: { image: Image }) {
         }}
       >
         <img
+          loading="lazy"
           className="aspect-[2/1] w-full object-cover"
           {...getImgProps(image.url, image.alt, {
             widths: [375, 724, 1136],

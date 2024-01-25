@@ -53,6 +53,7 @@ export function TeamSection({ subtitle, title, members }: Props) {
               className="flex flex-col"
             >
               <img
+                loading="lazy"
                 className="block aspect-[5/4] w-full rounded-t-3xl object-cover"
                 {...getImgProps(member.image.url, member.image.alt, {
                   widths: [375, 425, 506],

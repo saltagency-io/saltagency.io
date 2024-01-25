@@ -1,12 +1,7 @@
 import * as React from 'react'
 
 import clsx from 'clsx'
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 import { PhoneButton } from '~/components/button'
 import { Grid } from '~/components/grid'
@@ -59,6 +54,7 @@ export function ContactSection({
           )}
         >
           <img
+            loading="lazy"
             className={clsx(
               'relative -left-6 -mt-8 -mb-12 block h-auto w-[calc(100%+3rem)] max-w-none',
               'md:absolute md:left-auto md:right-0 md:bottom-1/2 md:m-0 md:h-[calc(100%+theme(spacing.10))] md:w-auto md:translate-y-1/2 md:translate-x-6',

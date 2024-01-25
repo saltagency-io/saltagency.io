@@ -10,7 +10,7 @@ import { AnchorOrLink } from '~/utils/misc'
 type Props = {
   children: string
   textAlign?: 'left' | 'right' | 'center'
-  textColor?: 'primary' | 'secondary' | 'inverse' | 'inverse-secondary'
+  textColor?: 'primary' | 'secondary' | 'inverse' | 'inverse-secondary' | 'gray'
   bodyTextSize?: 'sm' | 'md' | 'lg' | 'xl'
   margins?: boolean
   responsive?: boolean
@@ -35,7 +35,8 @@ function useComponents({
   const { language, isDefaultLanguage } = useI18n()
 
   const alignClassName = `text-${textAlign}`
-  const colorClassName = `text-${textColor}`
+  const colorClassName =
+    textColor === 'gray' ? 'text-gray-300' : `text-${textColor}`
 
   const headingClassName = clsx(alignClassName, colorClassName, {
     'mb-4': margins,
@@ -52,7 +53,8 @@ function useComponents({
       <Paragraph
         size={bodyTextSize}
         responsive={responsive}
-        className={clsx(alignClassName, colorClassName, {
+        textColorClassName={colorClassName}
+        className={clsx(alignClassName, {
           'mb-6': margins,
         })}
       >
