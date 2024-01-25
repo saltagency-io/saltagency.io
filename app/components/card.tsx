@@ -75,7 +75,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
       link ? 'bg-transparent' : variantStyles[variant],
       {
         'shadow-card': !link,
-        'pb-12': link,
+        'md:pb-12': link,
       },
       className,
     )
