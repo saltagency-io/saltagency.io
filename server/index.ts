@@ -185,7 +185,9 @@ app.use(
 function getRequestHandlerOptions(): Parameters<
   typeof createRequestHandler
 >[0] {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const build = require('../build')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function getLoadContext(req: any, res: any) {
     return {
       cspNonce: res.locals.cspNonce,

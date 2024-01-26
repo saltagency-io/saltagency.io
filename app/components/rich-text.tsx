@@ -1,7 +1,5 @@
 import * as React from 'react'
 
-import clsx from 'clsx'
-
 import { Grid } from '~/components/grid'
 import { Markdown } from '~/utils/markdown'
 import { useGroup } from '~/utils/providers'
