@@ -64,6 +64,14 @@ storyblokInit({
 
 export const links: LinksFunction = () => {
   return [
+    { rel: 'preload', as: 'style', href: vendorStyles },
+    { rel: 'preload', as: 'style', href: tailwindStyles },
+    { rel: 'preload', as: 'style', href: appStyles },
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/rain-drops-background.svg',
+    },
     {
       rel: 'preload',
       as: 'font',
@@ -85,6 +93,7 @@ export const links: LinksFunction = () => {
       type: 'font/woff2',
       crossOrigin: 'anonymous',
     },
+
     {
       rel: 'apple-touch-icon',
       sizes: '180x180',

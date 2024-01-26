@@ -29,6 +29,7 @@ export function HeaderSection({
     <>
       {hasShapes ? (
         <motion.img
+          loading="eager"
           src="/images/rain-drops-background.svg"
           className="absolute left-0 top-0 w-screen select-none object-fill"
           initial="initial"
