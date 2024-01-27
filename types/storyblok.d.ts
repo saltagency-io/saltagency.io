@@ -187,6 +187,7 @@ export type HeaderSectionBlok = SbBlokData & {
 	hasScrollIndicator: boolean
 	title: string
 	body?: string
+	cta: ButtonBlok[]
 }
 
 export type LocationSectionBlok = SbBlokData & {
