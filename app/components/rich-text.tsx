@@ -42,13 +42,15 @@ export function RichText({ content, title, subtitle, text }: Props) {
 					) : null}
 
 					{title ? (
-						<H3 as="span" inverse={isDark} className="mb-12 opacity-80">
+						<H3 as="span" inverse={isDark} className="mb-12">
 							{title}
 						</H3>
 					) : null}
 
 					{text ? (
-						<Paragraph className={isDark ? 'text-inverse' : 'text-primary'}>
+						<Paragraph
+							textColorClassName={isDark ? 'text-inverse' : 'text-primary'}
+						>
 							{text}
 						</Paragraph>
 					) : null}
