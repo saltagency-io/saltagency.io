@@ -1,8 +1,8 @@
-import { ButtonLink } from '~/components/button'
-import type { ButtonBlok } from '~/types'
-import { useI18n } from '~/utils/i18n-provider'
-import { formatUrl } from '~/utils/mappers'
-import { sbIconMap, StoryBlokWrapper } from '~/utils/storyblok'
+import { ButtonLink } from '#app/components/button.tsx'
+import type { ButtonBlok } from '#app/types.ts'
+import { useI18n } from '#app/utils/i18n-provider.ts'
+import { formatUrl } from '#app/utils/mappers.ts'
+import { sbIconMap, StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbButton({
 	blok,

@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import {
 	AccordionButton,
 	AccordionItem,
@@ -7,11 +5,12 @@ import {
 	Accordion as ReachAccordion,
 	useAccordionItemContext,
 } from '@reach/accordion'
-import { H5 } from '~/components/typography'
-import type { Section } from '~/types'
-import { Markdown } from '~/utils/markdown'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
+
+import { H5 } from '#app/components/typography.tsx'
+import type { Section } from '#app/types.ts'
+import { Markdown } from '#app/utils/markdown.tsx'
 
 function AccordionItemContent({
 	title,

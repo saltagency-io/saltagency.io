@@ -1,6 +1,7 @@
 import type { EntryContext } from '@remix-run/node'
-import { defaultLanguage } from '~/utils/i18n'
-import { getSitemapXml } from '~/utils/sitemap.server'
+
+import { defaultLanguage } from '#app/utils/i18n'
+import { getSitemapXml } from '#app/utils/sitemap.server'
 
 type Handler = (
 	request: Request,

@@ -1,10 +1,11 @@
 import * as React from 'react'
 
 import { Link, type LinkProps } from '@remix-run/react'
-import type { NonNullProperties, TranslatedSlug } from '~/types'
-import type { getEnv } from '~/utils/env.server'
-import { defaultLanguage } from '~/utils/i18n'
-import type { ValidateFn } from '~/utils/validators'
+
+import type { NonNullProperties, TranslatedSlug } from '#app/types.ts'
+import type { getEnv } from '#app/utils/env.server.ts'
+import { defaultLanguage } from '#app/utils/i18n.ts'
+import type { ValidateFn } from '#app/utils/validators.ts'
 
 export const LOGO_URL =
 	'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg'

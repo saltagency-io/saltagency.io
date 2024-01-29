@@ -1,8 +1,13 @@
 import type { EntryContext } from '@remix-run/node'
-import type { Handle, SitemapEntry } from '~/types'
-import type { SupportedLanguage } from '~/utils/i18n'
-import { getDomainUrl, removeTrailingSlash, typedBoolean } from '~/utils/misc'
 import { isEqual } from 'lodash'
+
+import type { Handle, SitemapEntry } from '#app/types.ts'
+import type { SupportedLanguage } from '#app/utils/i18n.ts'
+import {
+	getDomainUrl,
+	removeTrailingSlash,
+	typedBoolean,
+} from '#app/utils/misc.tsx'
 
 export async function getSitemapXml(
 	request: Request,

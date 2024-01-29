@@ -1,6 +1,7 @@
 import type * as React from 'react'
 
 import { SbBlokData, storyblokEditable, StoryData } from '@storyblok/react'
+
 import {
 	GIconCalendar,
 	GIconCommunity,
@@ -14,7 +15,7 @@ import {
 	GIconTag,
 	GIconTeam,
 	IconProps as GradientIconProps,
-} from '~/components/gradient-icons'
+} from '#app/components/gradient-icons.tsx'
 import {
 	IconBankNotes,
 	IconChatBubble,
@@ -30,14 +31,14 @@ import {
 	IconShield,
 	IconUserGroup,
 	IconUsers,
-} from '~/components/icons'
+} from '#app/components/icons.tsx'
 import type {
 	PageStoryContent,
 	TranslatedSlug,
 	VacancyStoryContent,
-} from '~/types'
-import { defaultLanguage } from '~/utils/i18n'
-import { usePreviewState } from '~/utils/providers'
+} from '#app/types.ts'
+import { defaultLanguage } from '#app/utils/i18n.tsx'
+import { usePreviewState } from '#app/utils/providers.tsx'
 
 export function isPreview(request: Request) {
 	const { searchParams } = new URL(request.url)

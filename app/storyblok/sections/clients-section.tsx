@@ -1,7 +1,7 @@
-import { ClientsSection } from '~/components/sections/clients-section'
-import type { ClientsBlok } from '~/types'
-import { mapAsset } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { ClientsSection } from '#app/components/sections/clients-section.tsx'
+import type { ClientsBlok } from '#app/types.ts'
+import { mapAsset } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbClients({ blok }: { blok: ClientsBlok }) {
 	return (

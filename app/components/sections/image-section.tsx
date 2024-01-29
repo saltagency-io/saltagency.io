@@ -1,9 +1,8 @@
-import * as React from 'react'
-
-import { Grid } from '~/components/grid'
-import type { Image } from '~/types'
-import { getImgProps } from '~/utils/images'
 import { motion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import type { Image } from '#app/types.ts'
+import { getImgProps } from '#app/utils/images.tsx'
 
 export function ImageSection({ image }: { image: Image }) {
 	return (

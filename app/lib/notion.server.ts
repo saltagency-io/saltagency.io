@@ -1,5 +1,6 @@
 import { Client } from '@notionhq/client'
-import { capitalizeFirstChar } from '~/utils/misc'
+
+import { capitalizeFirstChar } from '#app/utils/misc'
 
 type NotionMessage = {
 	name: string

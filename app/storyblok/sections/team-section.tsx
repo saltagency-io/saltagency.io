@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-import { TeamSection } from '~/components/sections/team-section'
-import type { TeamSectionBlok } from '~/types'
-import { mapAsset } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { TeamSection } from '#app/components/sections/team-section.tsx'
+import type { TeamSectionBlok } from '#app/types.ts'
+import { mapAsset } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbTeamSection({ blok }: { blok: TeamSectionBlok }) {
 	return (

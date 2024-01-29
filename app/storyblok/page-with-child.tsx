@@ -1,9 +1,10 @@
 import type * as React from 'react'
 
 import { StoryblokComponent } from '@storyblok/react'
-import type { PageWithChildBlok } from '~/types'
-import { GroupProvider } from '~/utils/providers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+
+import type { PageWithChildBlok } from '#app/types.ts'
+import { GroupProvider } from '#app/utils/providers.tsx'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbPageWithChild({
 	blok,

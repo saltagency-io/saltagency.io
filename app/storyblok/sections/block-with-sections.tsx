@@ -1,12 +1,12 @@
 import type * as React from 'react'
 
-import { AccordionSection } from '~/components/sections/accordion-section'
-import { ApplicationProcessSection } from '~/components/sections/application-section'
-import { FormulaSection } from '~/components/sections/formula-section'
-import { PropositionSection } from '~/components/sections/proposition-section'
-import type { BlockWithSectionsBlok, Section } from '~/types'
-import { useLocalizedMappers } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { AccordionSection } from '#app/components/sections/accordion-section.tsx'
+import { ApplicationProcessSection } from '#app/components/sections/application-section.tsx'
+import { FormulaSection } from '#app/components/sections/formula-section.tsx'
+import { PropositionSection } from '#app/components/sections/proposition-section.tsx'
+import type { BlockWithSectionsBlok, Section } from '#app/types.ts'
+import { useLocalizedMappers } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 enum Variant {
 	Proposition = 'proposition',

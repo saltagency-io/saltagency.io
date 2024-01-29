@@ -1,12 +1,10 @@
-import type * as React from 'react'
-
 import { Link } from '@remix-run/react'
-import { Grid } from '~/components/grid'
-// import { LanguageSwitch } from '~/components/language-switch'
-import { Paragraph } from '~/components/typography'
-import type { LinkType } from '~/types'
-import { Markdown } from '~/utils/markdown'
 import clsx from 'clsx'
+
+import { Grid } from '#app/components/grid.tsx'
+import { Paragraph } from '#app/components/typography.tsx'
+import type { LinkType } from '#app/types.ts'
+import { Markdown } from '#app/utils/markdown.tsx'
 
 type Props = {
 	menu: LinkType[]

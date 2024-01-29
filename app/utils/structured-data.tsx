@@ -1,13 +1,12 @@
-import * as React from 'react'
-
-import type { Breadcrumb } from '~/types'
-import { LOGO_URL } from '~/utils/misc'
 import type {
 	BreadcrumbList,
 	JobPosting,
 	Organization,
 	Place,
 } from 'schema-dts'
+
+import type { Breadcrumb } from '#app/types.ts'
+import { LOGO_URL } from '#app/utils/misc.tsx'
 
 const address: Place = {
 	'@type': 'Place',

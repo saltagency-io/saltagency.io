@@ -8,24 +8,27 @@ import {
 } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import { NotFoundError } from '~/components/errors'
-import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
-import type { LoaderData as RootLoaderData } from '~/root'
-import type { Handle } from '~/types'
-import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import {
-	defaultLanguage,
-	getLanguageFromContext,
-	getStaticLabel,
-} from '~/utils/i18n'
-import { createAlternateLinks, getUrl } from '~/utils/misc'
-import { getSocialMetas } from '~/utils/seo'
-import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
 	typedjson,
 	UseDataFunctionReturn,
 	useTypedLoaderData,
 } from 'remix-typedjson'
+
+import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
+import type { LoaderData as RootLoaderData } from '#app/root.tsx'
+import type { Handle } from '#app/types.ts'
+import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
+import {
+	defaultLanguage,
+	getLanguageFromContext,
+	getStaticLabel,
+} from '#app/utils/i18n.tsx'
+import { createAlternateLinks, getUrl } from '#app/utils/misc.ts'
+import { getSocialMetas } from '#app/utils/seo.ts'
+import {
+	getTranslatedSlugsFromStory,
+	isPreview,
+} from '#app/utils/storyblok.tsx'
 
 const dynamicLinks: DynamicLinksFunction<
 	UseDataFunctionReturn<typeof loader>

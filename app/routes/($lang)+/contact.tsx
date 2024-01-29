@@ -8,38 +8,46 @@ import {
 } from '@remix-run/node'
 import { useFetcher } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import { Button } from '~/components/button'
-import { ErrorPanel, Field } from '~/components/form-elements'
-import { Grid } from '~/components/grid'
-import { Spinner } from '~/components/spinner'
-import { H3, H5 } from '~/components/typography'
-import { sendToContactFormNotion } from '~/lib/notion.server'
-import { getStoryBySlug } from '~/lib/storyblok.server'
-import type { LoaderData as RootLoaderData } from '~/root'
-import type { Handle } from '~/types'
-import { handleFormSubmission } from '~/utils/actions.server'
-import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import {
-	defaultLanguage,
-	getLanguageFromContext,
-	getStaticLabel,
-} from '~/utils/i18n'
-import { useLabels } from '~/utils/labels-provider'
-import { createAlternateLinks, getLabelKeyForError, getUrl } from '~/utils/misc'
-import { getSocialMetas } from '~/utils/seo'
-import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
-import {
-	isValidBody,
-	isValidEmail,
-	isValidName,
-	isValidPhoneNumber,
-} from '~/utils/validators'
 import clsx from 'clsx'
 import {
 	typedjson,
 	UseDataFunctionReturn,
 	useTypedLoaderData,
 } from 'remix-typedjson'
+
+import { Button } from '#app/components/button.tsx'
+import { ErrorPanel, Field } from '#app/components/form-elements.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { Spinner } from '#app/components/spinner.tsx'
+import { H3, H5 } from '#app/components/typography.tsx'
+import { sendToContactFormNotion } from '#app/lib/notion.server.ts'
+import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
+import type { LoaderData as RootLoaderData } from '#app/root.tsx'
+import type { Handle } from '#app/types.ts'
+import { handleFormSubmission } from '#app/utils/actions.server.tsx'
+import type { DynamicLinksFunction } from '#app/utils/dynamic-links.ts'
+import {
+	defaultLanguage,
+	getLanguageFromContext,
+	getStaticLabel,
+} from '#app/utils/i18n.ts'
+import { useLabels } from '#app/utils/labels-provider.tsx'
+import {
+	createAlternateLinks,
+	getLabelKeyForError,
+	getUrl,
+} from '#app/utils/misc.tsx'
+import { getSocialMetas } from '#app/utils/seo.ts'
+import {
+	getTranslatedSlugsFromStory,
+	isPreview,
+} from '#app/utils/storyblok.tsx'
+import {
+	isValidBody,
+	isValidEmail,
+	isValidName,
+	isValidPhoneNumber,
+} from '#app/utils/validators.ts'
 
 const dynamicLinks: DynamicLinksFunction<
 	UseDataFunctionReturn<typeof loader>

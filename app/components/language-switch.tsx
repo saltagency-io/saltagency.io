@@ -1,12 +1,13 @@
 import type * as React from 'react'
 
 import { useLocation, useNavigate, useRevalidator } from '@remix-run/react'
-import { IconChevronDown } from '~/components/icons'
-import { defaultLanguage, isSupportedLanguage } from '~/utils/i18n'
-import { useI18n } from '~/utils/i18n-provider'
-import { useLabels } from '~/utils/labels-provider'
-import { removeTrailingSlash } from '~/utils/misc'
 import clsx from 'clsx'
+
+import { IconChevronDown } from '#app/components/icons.tsx'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { defaultLanguage, isSupportedLanguage } from '#app/utils/i18n.tsx'
+import { useLabels } from '#app/utils/labels-provider.tsx'
+import { removeTrailingSlash } from '#app/utils/misc.tsx'
 
 export function LanguageSwitch() {
 	const { t } = useLabels()

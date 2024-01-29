@@ -1,11 +1,12 @@
 import type * as React from 'react'
 
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import type { Image } from '~/types'
-import { getImgProps } from '~/utils/images'
 import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5 } from '#app/components/typography.tsx'
+import type { Image } from '#app/types.tsx'
+import { getImgProps } from '#app/utils/images.tsx'
 
 type Props = {
 	children: React.ReactNode

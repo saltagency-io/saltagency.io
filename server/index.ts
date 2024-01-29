@@ -1,41 +1,53 @@
 import crypto from 'crypto'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-import { createRequestHandler } from '@remix-run/express'
+import {
+	createRequestHandler as _createRequestHandler,
+	type RequestHandler,
+} from '@remix-run/express'
+import {
+	broadcastDevReady,
+	installGlobals,
+	type ServerBuild,
+} from '@remix-run/node'
+import * as Sentry from '@sentry/remix'
+import { ip as ipAddress } from 'address'
+import chalk from 'chalk'
+import closeWithGrace from 'close-with-grace'
 import compression from 'compression'
 import express from 'express'
-
-import 'express-async-errors'
-
-import path from 'path'
-
+import rateLimit from 'express-rate-limit'
+import getPort, { portNumbers } from 'get-port'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import onFinished from 'on-finished'
-import serverTiming from 'server-timing'
 
-// type SupportedLanguage = 'en' | 'nl'
-// // TODO: Support en locale
-// const defaultLanguage: SupportedLanguage = 'nl'
-// const supportedLanguages: SupportedLanguage[] = ['nl']
-
-// const isSupportedLanguage = (lang: unknown): lang is SupportedLanguage => {
-//   return (
-//     typeof lang === 'string' &&
-//     supportedLanguages.includes(lang as SupportedLanguage)
-//   )
-// }
-
-const here = (...d: Array<string>) => path.join(__dirname, ...d)
-const devHost = 'koodin.nl'
-const getHost = (req: { get: (key: string) => string | undefined }) =>
-	req.get('X-Forwarded-Host') ?? req.get('host') ?? ''
+installGlobals()
 
 const MODE = process.env.NODE_ENV
-const BUILD_DIR = path.join(process.cwd(), 'build')
+
+const BUILD_PATH = '../build/index.js'
+const WATCH_PATH = '../build/version.txt'
+
+const createRequestHandler = Sentry.wrapExpressCreateRequestHandler(
+	_createRequestHandler,
+)
+
+/**
+ * Initial build
+ * @type {ServerBuild}
+ */
+const build = await import(BUILD_PATH)
+let devBuild = build
 
 const app = express()
 
-app.use(serverTiming())
+const getHost = (req: { get: (key: string) => string | undefined }) =>
+	req.get('X-Forwarded-Host') ?? req.get('host') ?? ''
+
+// fly is our proxy
+app.set('trust proxy', true)
 
 // Setup headers
 app.use((req, res, next) => {
@@ -45,7 +57,7 @@ app.use((req, res, next) => {
 	res.set('X-Frame-Options', 'SAMEORIGIN')
 
 	const host = getHost(req)
-	if (host.endsWith(devHost)) {
+	if (host.endsWith('.fly.dev')) {
 		res.set('X-Robots-Tag', 'noindex')
 	}
 
@@ -77,6 +89,7 @@ app.use((req, res, next) => {
 	next()
 })
 
+// No ending slash in urls
 app.use((req, res, next) => {
 	if (req.path.endsWith('/') && req.path.length > 1) {
 		const query = req.url.slice(req.path.length)
@@ -87,30 +100,26 @@ app.use((req, res, next) => {
 	}
 })
 
-app.use(compression())
+app.disable('x-powered-by')
 
-const publicAbsolutePath = here('../public')
+app.use(Sentry.Handlers.requestHandler())
+app.use(Sentry.Handlers.tracingHandler())
 
-// Setup static files with a cache duration of 6(?!) years
+// Remix fingerprints its assets so we can cache forever.
 app.use(
-	express.static(publicAbsolutePath, {
-		maxAge: '1w',
-		setHeaders(res, resourcePath) {
-			const relativePath = resourcePath.replace(`${publicAbsolutePath}/`, '')
-			if (relativePath.startsWith('build/info.json')) {
-				res.setHeader('cache-control', 'no-cache')
-				return
-			}
-
-			if (
-				relativePath.startsWith('fonts') ||
-				relativePath.startsWith('build')
-			) {
-				res.setHeader('cache-control', 'public, max-age=31536000, immutable')
-			}
-		},
-	}),
+	'/build',
+	express.static('public/build', { immutable: true, maxAge: '1y' }),
 )
+
+// Everything else (like favicon.ico) is cached for an hour. You may want to be
+// more aggressive with this caching.
+app.use(express.static('public', { maxAge: '1h' }))
+
+app.get(['/build/*', '/img/*', '/fonts/*', '/favicons/*'], (req, res) => {
+	// if we made it past the express.static for these, then we're missing something.
+	// So we'll just send a 404 and won't bother calling other middleware.
+	return res.status(404).send('Not found')
+})
 
 // Log the referrer for 404s
 app.use((req, res, next) => {
@@ -126,23 +135,16 @@ app.use((req, res, next) => {
 })
 
 // Setup morgan logger
+morgan.token('url', (req, res) => decodeURIComponent(req.url ?? ''))
 app.use(
-	morgan((tokens, req, res) => {
-		const host = getHost(req)
-		return [
-			tokens.method?.(req, res),
-			`${host}${tokens.url?.(req, res)}`,
-			tokens.status?.(req, res),
-			tokens.res?.(req, res, 'content-length'),
-			'-',
-			tokens['response-time']?.(req, res),
-			'ms',
-		].join(' ')
+	morgan('tiny', {
+		skip: (req, res) =>
+			res.statusCode === 200 && req.url?.startsWith('/resources/healthcheck'),
 	}),
 )
 
 // Add csp nonce
-app.use((req, res, next) => {
+app.use((_, res, next) => {
 	res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
 	next()
 })
@@ -153,11 +155,13 @@ app.use(
 		crossOriginEmbedderPolicy: false,
 		contentSecurityPolicy: {
 			directives: {
-				'connect-src':
-					MODE === 'development'
-						? ['ws:', "'self'", '*.hcaptcha.com']
-						: ["'self'", 'cdn.usefathom.com', '*.hcaptcha.com'],
-				'font-src': "'self'",
+				'connect-src': [
+					MODE === 'development' ? 'ws:' : null,
+					process.env.SENTRY_DSN ? '*.ingest.sentry.io' : null,
+					'cdn.usefathom.com',
+					"'self'",
+				].filter(Boolean),
+				'font-src': ["'self'"],
 				'frame-src': [
 					"'self'",
 					'youtube.com',
@@ -176,57 +180,159 @@ app.use(
 					'app.storyblok.com',
 					'cdn.usefathom.com',
 					// @ts-expect-error locals doesn't exist on helmet's Response type
-					(req, res) => `'nonce-${res.locals.cspNonce}'`,
+					(_, res) => `'nonce-${res.locals.cspNonce}'`,
 				],
-				'script-src-attr': ["'unsafe-inline'"],
+				'script-src-attr': [
+					(_, res) =>
+						// @ts-expect-error
+						`'nonce-${res.locals.cspNonce}'`,
+				],
 				'upgrade-insecure-requests': null,
 			},
 		},
 	}),
 )
 
-function getRequestHandlerOptions(): Parameters<
-	typeof createRequestHandler
->[0] {
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const build = require('../build')
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	function getLoadContext(req: any, res: any) {
-		return {
-			cspNonce: res.locals.cspNonce,
-			language: res.locals.language,
-		}
-	}
-	return { build, mode: MODE, getLoadContext }
+// When running tests or running in development, we want to effectively disable
+// rate limiting because playwright tests are very fast and we don't want to
+// have to wait for the rate limit to reset between tests.
+const maxMultiple =
+	MODE !== 'production' || process.env.PLAYWRIGHT_TEST_BASE_URL ? 10_000 : 1
+const rateLimitDefault = {
+	windowMs: 60 * 1000,
+	max: 1000 * maxMultiple,
+	standardHeaders: true,
+	legacyHeaders: false,
+	// Fly.io prevents spoofing of X-Forwarded-For
+	// so no need to validate the trustProxy config
+	validate: { trustProxy: false },
 }
 
-function purgeRequireCache() {
-	for (const key in require.cache) {
-		if (key.startsWith(BUILD_DIR)) {
-			delete require.cache[key]
-		}
-	}
-}
-
-if (MODE === 'production') {
-	app.all('*', createRequestHandler(getRequestHandlerOptions()))
-} else {
-	app.all('*', (req, res, next) => {
-		purgeRequireCache()
-		return createRequestHandler(getRequestHandlerOptions())(req, res, next)
-	})
-}
-
-// const server = https.createServer(
-//   {
-//     cert: fs.readFileSync(here('../localhost.pem')),
-//     key: fs.readFileSync(here('../localhost-key.pem')),
-//   },
-//   app,
-// )
-
-const port = parseInt(process.env.PORT ?? '3000')
-app.listen(port, '0.0.0.0', 511, () => {
-	require('../build')
-	console.log(`Express server started on http://localhost:${port}`)
+const strongestRateLimit = rateLimit({
+	...rateLimitDefault,
+	windowMs: 60 * 1000,
+	max: 10 * maxMultiple,
 })
+
+const strongRateLimit = rateLimit({
+	...rateLimitDefault,
+	windowMs: 60 * 1000,
+	max: 100 * maxMultiple,
+})
+
+const generalRateLimit = rateLimit(rateLimitDefault)
+app.use((req, res, next) => {
+	const strongPaths = [
+		'/login',
+		'/signup',
+		'/verify',
+		'/admin',
+		'/onboarding',
+		'/reset-password',
+		'/settings/profile',
+		'/resources/login',
+		'/resources/verify',
+	]
+	if (req.method !== 'GET' && req.method !== 'HEAD') {
+		if (strongPaths.some(p => req.path.includes(p))) {
+			return strongestRateLimit(req, res, next)
+		}
+		return strongRateLimit(req, res, next)
+	}
+
+	// the verify route is a special case because it's a GET route that
+	// can have a token in the query string
+	if (req.path.includes('/verify')) {
+		return strongestRateLimit(req, res, next)
+	}
+
+	return generalRateLimit(req, res, next)
+})
+
+function getRequestHandler(build: ServerBuild): RequestHandler {
+	function getLoadContext(_: any, res: any) {
+		return { cspNonce: res.locals.cspNonce }
+	}
+	return createRequestHandler({ build, mode: MODE, getLoadContext })
+}
+
+app.all(
+	'*',
+	MODE === 'development'
+		? (...args) => getRequestHandler(devBuild)(...args)
+		: getRequestHandler(build),
+)
+
+const desiredPort = Number(process.env.PORT || 3000)
+const portToUse = await getPort({
+	port: portNumbers(desiredPort, desiredPort + 100),
+})
+
+const server = app.listen(portToUse, () => {
+	const addy = server.address()
+	const portUsed =
+		desiredPort === portToUse
+			? desiredPort
+			: addy && typeof addy === 'object'
+				? addy.port
+				: 0
+
+	if (portUsed !== desiredPort) {
+		console.warn(
+			chalk.yellow(
+				`⚠️  Port ${desiredPort} is not available, using ${portUsed} instead.`,
+			),
+		)
+	}
+
+	console.log(`🚀  We have liftoff!`)
+
+	const localUrl = `http://localhost:${portUsed}`
+	let lanUrl: string | null = null
+	const localIp = ipAddress() ?? 'Unknown'
+	// Check if the address is a private ip
+	// https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+	// https://github.com/facebook/create-react-app/blob/d960b9e38c062584ff6cfb1a70e1512509a966e7/packages/react-dev-utils/WebpackDevServerUtils.js#LL48C9-L54C10
+	if (/^10[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[.]/.test(localIp)) {
+		lanUrl = `http://${localIp}:${portUsed}`
+	}
+
+	console.log(
+		`
+${chalk.bold('Local:')}            ${chalk.cyan(localUrl)}
+${lanUrl ? `${chalk.bold('On Your Network:')}  ${chalk.cyan(lanUrl)}` : ''}
+${chalk.bold('Press Ctrl+C to stop')}
+		`.trim(),
+	)
+
+	if (MODE === 'development') {
+		broadcastDevReady(build)
+	}
+})
+
+closeWithGrace(async () => {
+	await new Promise((resolve, reject) => {
+		server.close(e => (e ? reject(e) : resolve('ok')))
+	})
+})
+
+// during dev, we'll keep the build module up to date with the changes
+if (MODE === 'development') {
+	async function reloadBuild() {
+		devBuild = await import(`${BUILD_PATH}?update=${Date.now()}`)
+		broadcastDevReady(devBuild)
+	}
+
+	// We'll import chokidar here so doesn't get bundled in production.
+	const chokidar = await import('chokidar')
+
+	const dirname = path.dirname(fileURLToPath(import.meta.url))
+	const watchPath = path.join(dirname, WATCH_PATH).replace(/\\/g, '/')
+
+	const buildWatcher = chokidar
+		.watch(watchPath, { ignoreInitial: true })
+		.on('add', reloadBuild)
+		.on('change', reloadBuild)
+
+	closeWithGrace(() => buildWatcher.close())
+}

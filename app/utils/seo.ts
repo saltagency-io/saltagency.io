@@ -1,4 +1,4 @@
-import { LOGO_URL } from '~/utils/misc'
+import { LOGO_URL } from '#app/utils/misc.tsx'
 
 export function getSocialMetas({
 	url,

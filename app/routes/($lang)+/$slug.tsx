@@ -8,26 +8,32 @@ import {
 } from '@remix-run/node'
 import { useCatch } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import { NotFoundError } from '~/components/errors'
-import { getStoriesForSitemap, getStoryBySlug } from '~/lib/storyblok.server'
-import { pathedRoutes } from '~/other-routes.server'
-import type { Handle } from '~/types'
-import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import {
-	defaultLanguage,
-	getLanguageFromContext,
-	getStaticLabel,
-	isSupportedLanguage,
-	supportedLanguages,
-} from '~/utils/i18n'
-import { createAlternateLinks, getUrl } from '~/utils/misc'
-import { getSocialMetas } from '~/utils/seo'
-import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
 	typedjson,
 	UseDataFunctionReturn,
 	useTypedLoaderData,
 } from 'remix-typedjson'
+
+import { NotFoundError } from '#app/components/errors.tsx'
+import {
+	getStoriesForSitemap,
+	getStoryBySlug,
+} from '#app/lib/storyblok.server.ts'
+import { pathedRoutes } from '#app/other-routes.server.ts'
+import type { Handle } from '#app/types.ts'
+import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
+import {
+	defaultLanguage,
+	getLanguageFromContext,
+	getStaticLabel,
+	isSupportedLanguage,
+} from '#app/utils/i18n.ts'
+import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
+import { getSocialMetas } from '#app/utils/seo.ts'
+import {
+	getTranslatedSlugsFromStory,
+	isPreview,
+} from '#app/utils/storyblok.tsx'
 
 import type { LoaderData as RootLoaderData } from '../../root'
 

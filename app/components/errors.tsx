@@ -1,22 +1,23 @@
 import * as React from 'react'
 
 import { useLocation, useMatches } from '@remix-run/react'
-import { ButtonLink } from '~/components/button'
-import { Grid } from '~/components/grid'
-import { IconArrowDown } from '~/components/icons'
-import { H1, H2, H3, H4, H5, H6 } from '~/components/typography'
-import { VacancyList } from '~/components/vacancy-list'
-import type { Vacancy } from '~/types'
+import clsx from 'clsx'
+import errorStack from 'error-stack-parser'
+import { motion } from 'framer-motion'
+
+import { ButtonLink } from '#app/components/button.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { IconArrowDown } from '#app/components/icons.tsx'
+import { H1, H2, H3, H4, H5, H6 } from '#app/components/typography.tsx'
+import { VacancyList } from '#app/components/vacancy-list.tsx'
+import type { Vacancy } from '#app/types.ts'
 import {
 	defaultLanguage,
 	getLanguageFromPath,
 	getStaticLabel,
-} from '~/utils/i18n'
-import { useLocalizedMappers } from '~/utils/mappers'
-import { useVacancies } from '~/utils/providers'
-import clsx from 'clsx'
-import errorStack from 'error-stack-parser'
-import { motion } from 'framer-motion'
+} from '#app/utils/i18n'
+import { useLocalizedMappers } from '#app/utils/mappers'
+import { useVacancies } from '#app/utils/providers'
 
 function RedBox({ error }: { error: Error }) {
 	const [isVisible, setIsVisible] = React.useState(true)

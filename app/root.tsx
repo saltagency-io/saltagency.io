@@ -17,36 +17,42 @@ import {
 	useMatches,
 } from '@remix-run/react'
 import { apiPlugin, StoryblokComponent, storyblokInit } from '@storyblok/react'
-import { ErrorPage } from '~/components/errors'
+import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+
+import { ErrorPage } from '#app/components/errors.tsx'
 import {
 	getAllVacancies,
 	getDataSource,
 	getLayout,
-} from '~/lib/storyblok.server'
-import { components } from '~/storyblok'
-import appStyles from '~/styles/app.css'
-import tailwindStyles from '~/styles/tailwind.css'
-import vendorStyles from '~/styles/vendors.css'
-import { getEnv } from '~/utils/env.server'
+} from '#app/lib/storyblok.server.ts'
+import { components } from '#app/storyblok/index.ts'
+import appStyles from '#app/styles/app.css'
+import tailwindStyles from '#app/styles/tailwind.css'
+import vendorStyles from '#app/styles/vendors.css'
+import { getEnv } from '#app/utils/env.server.ts'
+import { I18nProvider, useI18n } from '#app/utils/i18n-provider.tsx'
 import {
 	getLanguageFromContext,
 	getLanguageFromPath,
 	getStaticLabel,
-} from '~/utils/i18n'
-import { I18nProvider, useI18n } from '~/utils/i18n-provider'
-import { LabelsProvider } from '~/utils/labels-provider'
+} from '#app/utils/i18n.ts'
+import { LabelsProvider } from '#app/utils/labels-provider.tsx'
 import {
 	getDomainUrl,
 	getRequiredGlobalEnvVar,
 	removeTrailingSlash,
-} from '~/utils/misc'
-import { useNonce } from '~/utils/nonce-provider'
-import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
-import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
-import { SdLogo } from '~/utils/structured-data'
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
-
-import { SvgGradientReference } from './utils/svg-gradient-reference'
+} from '#app/utils/misc.tsx'
+import { useNonce } from '#app/utils/nonce-provider.tsx'
+import {
+	PreviewStateProvider,
+	VacanciesProvider,
+} from '#app/utils/providers.tsx'
+import {
+	getTranslatedSlugsFromStory,
+	isPreview,
+} from '#app/utils/storyblok.tsx'
+import { SdLogo } from '#app/utils/structured-data.tsx'
+import { SvgGradientReference } from '#app/utils/svg-gradient-reference.tsx'
 
 storyblokInit({
 	components,

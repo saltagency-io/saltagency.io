@@ -1,14 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { Link, useLocation, useNavigation } from '@remix-run/react'
-import type { LinkType } from '~/types'
-import {
-	clearAllBodyScrollLocks,
-	disableBodyScroll,
-	enableBodyScroll,
-} from '~/utils/bodyScrollLock'
-import { defaultLanguage } from '~/utils/i18n'
-import { useI18n } from '~/utils/i18n-provider'
 import clsx from 'clsx'
 import FocusTrap from 'focus-trap-react'
 import {
@@ -21,6 +13,15 @@ import {
 } from 'framer-motion'
 import { createPortal } from 'react-dom'
 import { useHydrated } from 'remix-utils'
+
+import type { LinkType } from '#app/types.ts'
+import {
+	clearAllBodyScrollLocks,
+	disableBodyScroll,
+	enableBodyScroll,
+} from '#app/utils/body-scroll-lock.ts'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { defaultLanguage } from '#app/utils/i18n.ts'
 
 function NavLink({
 	to,

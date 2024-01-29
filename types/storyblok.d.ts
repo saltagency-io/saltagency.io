@@ -1,8 +1,9 @@
 import type { SbBlokData } from '@storyblok/react'
-import { CardIcon } from '~/components/card'
-import { SpacerSizes } from '~/components/spacer'
-import { BlokTypes } from '~/storyblok'
 import type { GroupTheme } from 'types'
+
+import { CardIcon } from '#app/components/card'
+import { SpacerSizes } from '#app/components/spacer'
+import { BlokTypes } from '#app/storyblok'
 
 // Content that can be on a story of type Page
 export type PageStoryContent = {

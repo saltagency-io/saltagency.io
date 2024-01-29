@@ -1,10 +1,9 @@
-import React from 'react'
-
-import { Accordion } from '~/components/accordion'
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import type { Section } from '~/types'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { Accordion } from '#app/components/accordion.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5 } from '#app/components/typography.tsx'
+import type { Section } from '#app/types.ts'
 
 type Props = {
 	subtitle: string

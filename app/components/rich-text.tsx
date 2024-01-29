@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import { Grid } from '~/components/grid'
-import { Markdown } from '~/utils/markdown'
-import { useGroup } from '~/utils/providers'
+import { Grid } from '#app/components/grid'
+import { Markdown } from '#app/utils/markdown'
+import { useGroup } from '#app/utils/providers'
 
 type Props = {
 	content: string

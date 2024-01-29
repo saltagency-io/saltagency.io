@@ -1,9 +1,7 @@
-import * as React from 'react'
-
-import { TextSection } from '~/components/sections/text-section'
-import type { TextSectionBlok } from '~/types'
-import { mapAsset } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { TextSection } from '#app/components/sections/text-section.tsx'
+import type { TextSectionBlok } from '#app/types.ts'
+import { mapAsset } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbTextSection({ blok }: { blok: TextSectionBlok }) {
 	return (

@@ -1,7 +1,8 @@
 import * as React from 'react'
 
-import { IconChevronDown } from '~/components/icons'
 import clsx from 'clsx'
+
+import { IconChevronDown } from '#app/components/icons.tsx'
 
 export function Label({
 	className,

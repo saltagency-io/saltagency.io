@@ -2,24 +2,25 @@ import React from 'react'
 
 import { DataFunctionArgs, json, MetaFunction, redirect } from '@remix-run/node'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import { getStoryBySlug } from '~/lib/storyblok.server'
-import type { LoaderData as RootLoaderData } from '~/root'
-import type { Handle } from '~/types'
-import type { DynamicLinksFunction } from '~/utils/dynamic-links'
-import {
-	defaultLanguage,
-	getLanguageFromContext,
-	getStaticLabel,
-	SupportedLanguage,
-} from '~/utils/i18n'
-import { createAlternateLinks, getUrl } from '~/utils/misc'
-import { getSocialMetas } from '~/utils/seo'
-import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
 import {
 	typedjson,
 	useTypedLoaderData,
 	type UseDataFunctionReturn,
 } from 'remix-typedjson'
+
+import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
+import type { LoaderData as RootLoaderData } from '#app/root.tsx'
+import type { Handle } from '#app/types.ts'
+import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
+import {
+	defaultLanguage,
+	getLanguageFromContext,
+	getStaticLabel,
+	SupportedLanguage,
+} from '#app/utils/i18n.ts'
+import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
+import { getSocialMetas } from '#app/utils/seo.ts'
+import { getTranslatedSlugsFromStory, isPreview } from '#app/utils/storyblok.ts'
 
 export const routes: Record<SupportedLanguage, string> = {
 	en: 'careers',

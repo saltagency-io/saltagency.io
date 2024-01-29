@@ -1,12 +1,11 @@
-import * as React from 'react'
-
 import { useRouteLoaderData } from '@remix-run/react'
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
-import { Vacancy } from '~/components/vacancy'
-import type { LoaderData as RootLoaderData } from '~/root'
-import type { VacancyBlok } from '~/types'
-import { GroupProvider } from '~/utils/providers'
-import { SdJobPosting } from '~/utils/structured-data'
+
+import { Vacancy } from '#app/components/vacancy.tsx'
+import type { LoaderData as RootLoaderData } from '#app/root.tsx'
+import type { VacancyBlok } from '#app/types.ts'
+import { GroupProvider } from '#app/utils/providers.tsx'
+import { SdJobPosting } from '#app/utils/structured-data.tsx'
 
 type Props = {
 	blok: VacancyBlok

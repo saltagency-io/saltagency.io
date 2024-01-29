@@ -1,8 +1,6 @@
-import React from 'react'
-
-import { Spacer } from '~/components/spacer'
-import type { SpacerBlok } from '~/types'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { Spacer } from '#app/components/spacer.tsx'
+import type { SpacerBlok } from '#app/types.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbSpacer({ blok }: { blok: SpacerBlok }) {
 	return (

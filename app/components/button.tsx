@@ -1,9 +1,14 @@
 import * as React from 'react'
 
-import { IconCheckCircle, IconPhone, IconSquareStack } from '~/components/icons'
-import { Paragraph } from '~/components/typography'
-import { AnchorOrLink } from '~/utils/misc'
 import clsx from 'clsx'
+
+import {
+	IconCheckCircle,
+	IconPhone,
+	IconSquareStack,
+} from '#app/components/icons.tsx'
+import { Paragraph } from '#app/components/typography.tsx'
+import { AnchorOrLink } from '#app/utils/misc.tsx'
 
 type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline-inverse'
 type ButtonSize = 'small' | 'medium' | 'large'

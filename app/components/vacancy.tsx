@@ -1,12 +1,12 @@
 import type * as React from 'react'
 
-import { Breadcrumbs } from '~/components/breadcrumbs'
-import { ButtonLink } from '~/components/button'
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import { routes } from '~/routes/($lang)/vacatures/$slug.solliciteren'
-import { useI18n } from '~/utils/i18n-provider'
-import { useLabels } from '~/utils/labels-provider'
+import { Breadcrumbs } from '#app/components/breadcrumbs.tsx'
+import { ButtonLink } from '#app/components/button.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5 } from '#app/components/typography.tsx'
+import { routes } from '#app/routes/($lang)+/vacatures.$slug.solliciteren.tsx'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { useLabels } from '#app/utils/labels-provider.tsx'
 
 type Props = {
 	children: React.ReactNode

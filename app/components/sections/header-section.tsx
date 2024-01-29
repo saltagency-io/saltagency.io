@@ -1,8 +1,9 @@
-import { GradientCircle } from '~/components/gradient-circle'
-import { Grid } from '~/components/grid'
-import { ScrollIndicator } from '~/components/scroll-indicator'
-import { H1 } from '~/components/typography'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { GradientCircle } from '#app/components/gradient-circle.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { ScrollIndicator } from '#app/components/scroll-indicator.tsx'
+import { H1 } from '#app/components/typography.tsx'
 
 type Props = {
 	title: string

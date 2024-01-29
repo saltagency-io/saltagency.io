@@ -1,5 +1,6 @@
 import { useCatch } from '@remix-run/react'
-import { NotFoundError, ServerError } from '~/components/errors'
+
+import { NotFoundError, ServerError } from '#app/components/errors'
 
 export { default, loader, meta, handle } from './$slug'
 

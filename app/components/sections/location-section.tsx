@@ -1,11 +1,11 @@
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import type { Image as ImageType, LinkType } from '~/types'
-import { getImgProps } from '~/utils/images'
-import { Markdown } from '~/utils/markdown'
 import clsx from 'clsx'
 
-import { ButtonLink } from '../button'
+import { ButtonLink } from '#app/components/button.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5 } from '#app/components/typography.tsx'
+import type { Image as ImageType, LinkType } from '#app/types.ts'
+import { getImgProps } from '#app/utils/images.tsx'
+import { Markdown } from '#app/utils/markdown.tsx'
 
 function Image({
 	src,

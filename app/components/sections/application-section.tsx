@@ -1,10 +1,9 @@
-import React from 'react'
-
-import { Grid } from '~/components/grid'
-import { H3, H4, H5, Paragraph, Subtitle } from '~/components/typography'
-import type { Section } from '~/types'
-import { sbIconMap } from '~/utils/storyblok'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H4, H5, Paragraph } from '#app/components/typography.tsx'
+import type { Section } from '#app/types.ts'
+import { sbIconMap } from '#app/utils/storyblok.ts'
 
 type Props = {
 	subtitle: string

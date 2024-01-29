@@ -1,10 +1,9 @@
-import * as React from 'react'
-
 import { StoryblokComponent } from '@storyblok/react'
-import { ContactSection } from '~/components/sections/contact-section'
-import type { ContactSectionBlok } from '~/types'
-import { mapAsset } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+
+import { ContactSection } from '#app/components/sections/contact-section.tsx'
+import type { ContactSectionBlok } from '#app/types.ts'
+import { mapAsset } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbContactSection({ blok }: { blok: ContactSectionBlok }) {
 	return (

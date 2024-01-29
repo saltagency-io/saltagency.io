@@ -2,13 +2,14 @@ import { PassThrough } from 'stream'
 
 import { Response, type HandleDocumentRequestFunction } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
-import { routes as otherRoutes } from '~/other-routes.server'
-import { getEnv } from '~/utils/env.server'
-import { defaultLanguage, isSupportedLanguage } from '~/utils/i18n'
-import { I18nProvider } from '~/utils/i18n-provider'
-import { NonceProvider } from '~/utils/nonce-provider'
 import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
+
+import { routes as otherRoutes } from '#app/other-routes.server.ts'
+import { getEnv } from '#app/utils/env.server.ts'
+import { I18nProvider } from '#app/utils/i18n-provider.ts'
+import { defaultLanguage, isSupportedLanguage } from '#app/utils/i18n.ts'
+import { NonceProvider } from '#app/utils/nonce-provider.ts'
 
 global.ENV = getEnv()
 

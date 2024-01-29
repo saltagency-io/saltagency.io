@@ -1,11 +1,12 @@
 import { getStoryblokApi, type StoryData } from '@storyblok/react'
+
 import type {
 	DataSourceEntry,
 	LayoutStoryContent,
 	PageStoryContent,
 	VacancyStoryContent,
-} from '~/types'
-import { defaultLanguage, type SupportedLanguage } from '~/utils/i18n'
+} from '#app/types'
+import { defaultLanguage, type SupportedLanguage } from '#app/utils/i18n'
 
 function getDefaultParams({
 	preview,

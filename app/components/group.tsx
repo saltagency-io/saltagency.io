@@ -1,6 +1,7 @@
-import type { GroupTheme } from '~/types'
-import { GroupProvider } from '~/utils/providers'
 import clsx from 'clsx'
+
+import type { GroupTheme } from '#app/types.ts'
+import { GroupProvider } from '#app/utils/providers.tsx'
 
 import {
 	DecoratedBackgroundDark,

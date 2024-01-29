@@ -1,4 +1,5 @@
 import type { StoryData } from '@storyblok/react'
+
 import type {
 	Asset,
 	Image,
@@ -8,10 +9,10 @@ import type {
 	SectionBlok,
 	Vacancy,
 	VacancyStoryContent,
-} from '~/types'
-import { defaultLanguage, SupportedLanguage } from '~/utils/i18n'
-import { useI18n } from '~/utils/i18n-provider'
-import { removeTrailingSlash } from '~/utils/misc'
+} from '#app/types.ts'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { defaultLanguage, SupportedLanguage } from '#app/utils/i18n.ts'
+import { removeTrailingSlash } from '#app/utils/misc.ts'
 
 export function formatUrl(
 	url: string,

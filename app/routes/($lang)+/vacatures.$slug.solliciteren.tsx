@@ -8,27 +8,33 @@ import {
 	type MetaFunction,
 } from '@remix-run/node'
 import { useFetcher, useSearchParams } from '@remix-run/react'
-import { Breadcrumbs } from '~/components/breadcrumbs'
-import { Button } from '~/components/button'
-import { ErrorPanel, Field, Select } from '~/components/form-elements'
-import { Grid } from '~/components/grid'
-import { H1, H3, H4 } from '~/components/typography'
-import { sendApplicationToNotion } from '~/lib/notion.server'
-import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
-import type { LoaderData as RootLoaderData } from '~/root'
-import type { Handle } from '~/types'
-import { handleFormSubmission } from '~/utils/actions.server'
-import type { DynamicLinksFunction } from '~/utils/dynamic-links'
+import { typedjson, type UseDataFunctionReturn } from 'remix-typedjson'
+
+import { Breadcrumbs } from '#app/components/breadcrumbs.tsx'
+import { Button } from '#app/components/button.tsx'
+import { ErrorPanel, Field, Select } from '#app/components/form-elements.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { H1, H3, H4 } from '#app/components/typography.tsx'
+import { sendApplicationToNotion } from '#app/lib/notion.server.ts'
+import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
+import type { LoaderData as RootLoaderData } from '#app/root.tsx'
+import type { Handle } from '#app/types.ts'
+import { handleFormSubmission } from '#app/utils/actions.server.ts'
+import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
 	SupportedLanguage,
-} from '~/utils/i18n'
-import { useLabels } from '~/utils/labels-provider'
-import { createAlternateLinks, getLabelKeyForError, getUrl } from '~/utils/misc'
-import { useVacancies } from '~/utils/providers'
-import { getSocialMetas } from '~/utils/seo'
-import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
+} from '#app/utils/i18n.tsx'
+import { useLabels } from '#app/utils/labels-provider.tsx'
+import {
+	createAlternateLinks,
+	getLabelKeyForError,
+	getUrl,
+} from '#app/utils/misc.tsx'
+import { useVacancies } from '#app/utils/providers.tsx'
+import { getSocialMetas } from '#app/utils/seo.ts'
+import { getTranslatedSlugsFromStory, isPreview } from '#app/utils/storyblok.ts'
 import {
 	isValidBody,
 	isValidEmail,
@@ -36,8 +42,7 @@ import {
 	isValidPhoneNumber,
 	isValidString,
 	isValidUrl,
-} from '~/utils/validators'
-import { typedjson, type UseDataFunctionReturn } from 'remix-typedjson'
+} from '#app/utils/validators.ts'
 
 export const routes: Record<SupportedLanguage, string> = {
 	en: 'apply',

@@ -1,11 +1,12 @@
 import type * as React from 'react'
 
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import { VacancyList } from '~/components/vacancy-list'
-import { useLocalizedMappers } from '~/utils/mappers'
-import { useGroup, useVacancies } from '~/utils/providers'
 import { motion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5 } from '#app/components/typography.tsx'
+import { VacancyList } from '#app/components/vacancy-list.tsx'
+import { useLocalizedMappers } from '#app/utils/mappers.ts'
+import { useGroup, useVacancies } from '#app/utils/providers.tsx'
 
 type Props = {
 	children: React.ReactNode

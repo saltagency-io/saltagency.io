@@ -1,8 +1,6 @@
-import * as React from 'react'
-
-import { JobDescription } from '~/components/job-description'
-import type { JobDescriptionBlok } from '~/types'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { JobDescription } from '#app/components/job-description.tsx'
+import type { JobDescriptionBlok } from '#app/types.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbJobDescription({ blok }: { blok: JobDescriptionBlok }) {
 	return (

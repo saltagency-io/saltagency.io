@@ -1,11 +1,15 @@
 import * as React from 'react'
 
-import { Grid } from '~/components/grid'
-import { IconChevronDown } from '~/components/icons'
-import { ToggleButton, ToggleButtonGroup } from '~/components/toggle-buttons'
-import { H3, H5 } from '~/components/typography'
-import { useLabels } from '~/utils/labels-provider'
 import clsx from 'clsx'
+
+import { Grid } from '#app/components/grid.tsx'
+import { IconChevronDown } from '#app/components/icons.tsx'
+import {
+	ToggleButton,
+	ToggleButtonGroup,
+} from '#app/components/toggle-buttons.tsx'
+import { H3, H5 } from '#app/components/typography.tsx'
+import { useLabels } from '#app/utils/labels-provider.tsx'
 
 const formatter = new Intl.NumberFormat('nl-NL', {
 	style: 'currency',

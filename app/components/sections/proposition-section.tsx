@@ -1,10 +1,11 @@
 import { Link } from '@remix-run/react'
-import { Grid } from '~/components/grid'
-import { IconArrowRight } from '~/components/icons'
-import { H3, H4, H5, Paragraph } from '~/components/typography'
-import type { Section } from '~/types'
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { IconArrowRight } from '#app/components/icons.tsx'
+import { H3, H4, H5, Paragraph } from '#app/components/typography.tsx'
+import type { Section } from '#app/types.ts'
 
 type Props = {
 	subtitle: string

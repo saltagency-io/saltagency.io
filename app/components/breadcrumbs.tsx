@@ -1,13 +1,12 @@
-import * as React from 'react'
-
 import { Link, useLocation, useRouteLoaderData } from '@remix-run/react'
-import { IconChevronLeft, IconChevronRight } from '~/components/icons'
-import type { LoaderData as RootLoaderData } from '~/root'
-import type { Breadcrumb } from '~/types'
-import { useI18n } from '~/utils/i18n-provider'
-import { unslugify } from '~/utils/misc'
-import { SdBreadCrumbs } from '~/utils/structured-data'
 import clsx from 'clsx'
+
+import { IconChevronLeft, IconChevronRight } from '#app/components/icons.tsx'
+import type { LoaderData as RootLoaderData } from '#app/root.tsx'
+import type { Breadcrumb } from '#app/types.ts'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { unslugify } from '#app/utils/misc.tsx'
+import { SdBreadCrumbs } from '#app/utils/structured-data.tsx'
 
 export function Breadcrumbs() {
 	const location = useLocation()
