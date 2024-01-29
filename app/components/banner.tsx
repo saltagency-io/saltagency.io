@@ -67,11 +67,7 @@ export function Banner({ subtitle, title, text, image, imagePosition }: Props) {
 					</H3>
 				) : null}
 
-				{title ? (
-					<H2 className="-tracking-[0.6px mb-2 font-display text-xl font-bold leading-7 text-gray-800">
-						{title}
-					</H2>
-				) : null}
+				{title ? <H2 inverse={isDark}>{title}</H2> : null}
 
 				{text ? (
 					<Paragraph
