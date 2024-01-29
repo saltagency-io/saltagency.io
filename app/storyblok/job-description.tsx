@@ -5,12 +5,12 @@ import type { JobDescriptionBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbJobDescription({ blok }: { blok: JobDescriptionBlok }) {
-  return (
-    <StoryBlokWrapper blok={blok}>
-      <JobDescription
-        description={blok.description}
-        requirements={blok.requirements}
-      />
-    </StoryBlokWrapper>
-  )
+	return (
+		<StoryBlokWrapper blok={blok}>
+			<JobDescription
+				description={blok.description}
+				requirements={blok.requirements}
+			/>
+		</StoryBlokWrapper>
+	)
 }

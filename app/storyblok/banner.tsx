@@ -6,9 +6,9 @@ import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbBanner({ blok }: { blok: BannerBlok }) {
-  return (
-    <StoryBlokWrapper blok={blok}>
-      <Banner {...blok} image={mapAsset(blok.image)} />
-    </StoryBlokWrapper>
-  )
+	return (
+		<StoryBlokWrapper blok={blok}>
+			<Banner {...blok} image={mapAsset(blok.image)} />
+		</StoryBlokWrapper>
+	)
 }

@@ -6,9 +6,9 @@ import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbImageSection({ blok }: { blok: ImageSectionBlok }) {
-  return (
-    <StoryBlokWrapper blok={blok}>
-      <ImageSection image={mapAsset(blok.image)} />
-    </StoryBlokWrapper>
-  )
+	return (
+		<StoryBlokWrapper blok={blok}>
+			<ImageSection image={mapAsset(blok.image)} />
+		</StoryBlokWrapper>
+	)
 }
