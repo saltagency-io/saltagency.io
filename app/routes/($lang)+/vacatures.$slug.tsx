@@ -4,12 +4,8 @@ import {
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import {
-	typedjson,
-	UseDataFunctionReturn,
-	useTypedLoaderData,
-} from 'remix-typedjson'
 
 import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
 import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
@@ -71,8 +67,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
 		preview,
 	}
 
-	return typedjson(data, {
-		status: 200,
+	return json(data, {
 		headers: {
 			'Cache-Control': 'private, max-age=3600',
 		},
@@ -101,7 +96,7 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 }
 
 export default function VacancyRoute() {
-	const data = useTypedLoaderData()
+	const data = useLoaderData<typeof loader>()
 	const story = useStoryblokState(data.story, {})
 
 	return (

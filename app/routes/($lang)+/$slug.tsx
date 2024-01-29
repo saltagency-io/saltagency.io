@@ -4,12 +4,8 @@ import {
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import {
-	typedjson,
-	UseDataFunctionReturn,
-	useTypedLoaderData,
-} from 'remix-typedjson'
 
 import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
 import {
@@ -33,9 +29,8 @@ import {
 	isPreview,
 } from '#app/utils/storyblok.tsx'
 
-const dynamicLinks: DynamicLinksFunction<
-	UseDataFunctionReturn<typeof loader>
-> = ({ data, parentsData }) => {
+// TODO: remove the any
+const dynamicLinks: DynamicLinksFunction<any> = ({ data, parentsData }) => {
 	const requestInfo = parentsData[0].requestInfo
 	const slugs = getTranslatedSlugsFromStory(data?.story)
 	return createAlternateLinks(slugs, requestInfo.origin)
@@ -105,7 +100,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
 		preview,
 	}
 
-	return typedjson(data, {
+	return json(data, {
 		status: 200,
 		headers: {
 			'Cache-Control': 'private, max-age=3600',
@@ -135,7 +130,7 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 }
 
 export default function SlugRoute() {
-	const data = useTypedLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>()
 	const story = useStoryblokState(data.story, {})
 
 	return (

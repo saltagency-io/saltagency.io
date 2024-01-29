@@ -3,14 +3,13 @@ import * as React from 'react'
 import type { AppData, LinkDescriptor } from '@remix-run/node'
 import { useLocation, useMatches } from '@remix-run/react'
 import type { Location, Params } from 'react-router-dom'
-import { RouteData } from 'remix-typedjson/dist/remix'
 
 type HandleConventionArguments<Data extends AppData = AppData> = {
 	id: string
 	data: Data
 	params: Params
 	location: Location
-	parentsData: RouteData
+	parentsData: any
 }
 
 export interface DynamicLinksFunction<Data extends AppData = AppData> {

@@ -75,7 +75,6 @@
     "react-is": "^18.2.0",
     "react-markdown": "^8.0.5",
     "remix-flat-routes": "^0.6.4",
-    "remix-typedjson": "^0.1.7",
     "remix-utils": "^6.6.0",
     "server-timing": "^3.3.3"
   },

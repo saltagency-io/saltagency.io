@@ -8,7 +8,6 @@ import {
 	type MetaFunction,
 } from '@remix-run/node'
 import { useFetcher, useSearchParams } from '@remix-run/react'
-import { typedjson, type UseDataFunctionReturn } from 'remix-typedjson'
 
 import { Breadcrumbs } from '#app/components/breadcrumbs.tsx'
 import { Button } from '#app/components/button.tsx'
@@ -102,8 +101,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
 		preview,
 	}
 
-	return typedjson(data, {
-		status: 200,
+	return json(data, {
 		headers: {
 			'Cache-Control': 'private, max-age=3600',
 		},

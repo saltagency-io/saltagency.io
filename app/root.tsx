@@ -8,19 +8,19 @@ import type {
 	SerializeFrom,
 } from '@remix-run/node'
 import {
+	json,
 	Links,
 	LiveReload,
 	Meta,
 	Scripts,
 	ScrollRestoration,
+	useLoaderData,
 	useLocation,
 	useMatches,
 } from '@remix-run/react'
 import { apiPlugin, StoryblokComponent, storyblokInit } from '@storyblok/react'
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import {
-	ErrorPage,
 	GeneralErrorBoundary,
 	NotFoundError,
 	ServerError,
@@ -36,11 +36,7 @@ import tailwindStyles from '#app/styles/tailwind.css'
 import vendorStyles from '#app/styles/vendors.css'
 import { getEnv } from '#app/utils/env.server.ts'
 import { I18nProvider, useI18n } from '#app/utils/i18n-provider.tsx'
-import {
-	getLanguageFromContext,
-	getLanguageFromPath,
-	getStaticLabel,
-} from '#app/utils/i18n.ts'
+import { getLanguageFromContext, getLanguageFromPath } from '#app/utils/i18n.ts'
 import { LabelsProvider } from '#app/utils/labels-provider.tsx'
 import {
 	getDomainUrl,
@@ -141,7 +137,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 		getAllVacancies(language, preview),
 	])
 
-	const data = {
+	return json({
 		layoutStory,
 		preview,
 		labels,
@@ -152,9 +148,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 			origin: getDomainUrl(request),
 			path: new URL(request.url).pathname,
 		},
-	}
-
-	return typedjson(data)
+	})
 }
 
 export const meta: MetaFunction = () => {
@@ -205,7 +199,7 @@ function CanonicalUrl({
 }
 
 export function App() {
-	const data = useTypedLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>()
 	const nonce = useNonce()
 	const { language } = useI18n()
 	const fathomQueue = React.useRef<FathomQueue>([])

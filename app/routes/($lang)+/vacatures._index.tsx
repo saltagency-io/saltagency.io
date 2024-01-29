@@ -4,12 +4,8 @@ import {
 	redirect,
 	type LoaderFunctionArgs,
 } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import {
-	typedjson,
-	useTypedLoaderData,
-	type UseDataFunctionReturn,
-} from 'remix-typedjson'
 
 import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
 import type { LoaderData as RootLoaderData } from '#app/root.tsx'
@@ -30,9 +26,7 @@ export const routes: Record<SupportedLanguage, string> = {
 	nl: 'vacatures',
 }
 
-const dynamicLinks: DynamicLinksFunction<
-	UseDataFunctionReturn<typeof loader>
-> = ({ data, parentsData }) => {
+const dynamicLinks: DynamicLinksFunction<any> = ({ data, parentsData }) => {
 	const requestInfo = parentsData[0].requestInfo
 	const slugs = getTranslatedSlugsFromStory(data?.story)
 	return createAlternateLinks(slugs, requestInfo.origin)
@@ -98,8 +92,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 		preview,
 	}
 
-	return typedjson(data, {
-		status: 200,
+	return json(data, {
 		headers: {
 			'Cache-Control': 'private, max-age=3600',
 		},
@@ -107,7 +100,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 }
 
 export default function VacanciesRoute() {
-	const data = useTypedLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>()
 	const story = useStoryblokState(data.story, {})
 
 	return (

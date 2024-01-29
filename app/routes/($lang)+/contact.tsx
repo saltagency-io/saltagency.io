@@ -1,19 +1,15 @@
 import * as React from 'react'
 
 import {
+	ActionFunctionArgs,
 	json,
 	type ActionFunction,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
-import { useFetcher } from '@remix-run/react'
+import { useFetcher, useLoaderData } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import clsx from 'clsx'
-import {
-	typedjson,
-	UseDataFunctionReturn,
-	useTypedLoaderData,
-} from 'remix-typedjson'
 
 import { Button } from '#app/components/button.tsx'
 import { ErrorPanel, Field } from '#app/components/form-elements.tsx'
@@ -49,9 +45,8 @@ import {
 	isValidPhoneNumber,
 } from '#app/utils/validators.ts'
 
-const dynamicLinks: DynamicLinksFunction<
-	UseDataFunctionReturn<typeof loader>
-> = ({ data, parentsData }) => {
+// TODO: remove the any
+const dynamicLinks: DynamicLinksFunction<any> = ({ data, parentsData }) => {
 	const requestInfo = parentsData[0].requestInfo
 	const slugs = getTranslatedSlugsFromStory(data?.story)
 	return createAlternateLinks(slugs, requestInfo.origin)
@@ -83,7 +78,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 		preview,
 	}
 
-	return typedjson(data, {
+	return json(data, {
 		status: 200,
 		headers: {
 			'Cache-Control': 'private, max-age=3600',
@@ -125,7 +120,7 @@ type ActionData = {
 	errors: Fields & { generalError?: string }
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export async function action({ request }: ActionFunctionArgs) {
 	return handleFormSubmission<ActionData>({
 		request,
 		validators: {
@@ -146,7 +141,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function ContactRoute() {
 	const { t, to } = useLabels()
 	const contactFetcher = useFetcher<ActionData>()
-	const data = useTypedLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>()
 	const story = useStoryblokState(data.story, {})
 
 	const messageSuccessfullySent =
