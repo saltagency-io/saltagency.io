@@ -54,17 +54,10 @@ export function RichText({ content, title, subtitle, text }: Props) {
 					) : null}
 				</motion.div>
 
-				{content.length > 0 ? (
-					<motion.div
-						initial="initial"
-						whileInView="visible"
-						viewport={viewPort}
-						variants={textVariant}
-					>
-						<Markdown textColor={isDark ? 'inverse' : 'primary'}>
-							{content}
-						</Markdown>
-					</motion.div>
+				{content ? (
+					<Markdown textColor={isDark ? 'inverse' : 'primary'}>
+						{content}
+					</Markdown>
 				) : null}
 			</div>
 		</Grid>
