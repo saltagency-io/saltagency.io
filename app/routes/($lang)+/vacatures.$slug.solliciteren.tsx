@@ -1,10 +1,10 @@
 import * as React from 'react'
 
 import {
-	DataFunctionArgs,
 	json,
 	redirect,
 	type ActionFunction,
+	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
 import { useFetcher, useSearchParams } from '@remix-run/react'
@@ -68,7 +68,7 @@ export const handle: Handle = {
 	dynamicLinks,
 }
 
-export async function loader({ params, request, context }: DataFunctionArgs) {
+export async function loader({ params, request, context }: LoaderFunctionArgs) {
 	if (!params.slug) {
 		throw new Error('Slug is not defined!')
 	}
@@ -179,7 +179,7 @@ export const action: ActionFunction = async ({ request }) => {
 	})
 }
 
-export default function ApplyPage() {
+export default function ApplyRoute() {
 	const applyFetcher = useFetcher<ActionData>()
 	const [searchParams] = useSearchParams()
 	const { t, to } = useLabels()

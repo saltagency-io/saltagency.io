@@ -1,12 +1,9 @@
-import * as React from 'react'
-
 import {
 	json,
 	redirect,
-	type DataFunctionArgs,
+	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
-import { useCatch } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import {
 	typedjson,
@@ -14,6 +11,7 @@ import {
 	useTypedLoaderData,
 } from 'remix-typedjson'
 
+import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
 import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
 import type { LoaderData as RootLoaderData } from '#app/root.tsx'
 import type { Handle } from '#app/types.ts'
@@ -49,7 +47,7 @@ export const handle: Handle = {
 	dynamicLinks,
 }
 
-export async function loader({ params, request, context }: DataFunctionArgs) {
+export async function loader({ params, request, context }: LoaderFunctionArgs) {
 	if (!params.slug) {
 		throw new Error('Slug is not defined!')
 	}
@@ -102,9 +100,9 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 	}
 }
 
-export default function VacancyPage() {
+export default function VacancyRoute() {
 	const data = useTypedLoaderData()
-	const story = useStoryblokState(data.story, {}, data.preview)
+	const story = useStoryblokState(data.story, {})
 
 	return (
 		<main>
@@ -114,4 +112,8 @@ export default function VacancyPage() {
 			/>
 		</main>
 	)
+}
+
+export function ErrorBoundary() {
+	return <GeneralErrorBoundary statusHandlers={{ 404: NotFoundError }} />
 }

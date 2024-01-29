@@ -5,8 +5,8 @@ import type {
 	LayoutStoryContent,
 	PageStoryContent,
 	VacancyStoryContent,
-} from '#app/types'
-import { defaultLanguage, type SupportedLanguage } from '#app/utils/i18n'
+} from '#app/types.ts'
+import { defaultLanguage, type SupportedLanguage } from '#app/utils/i18n.ts'
 
 function getDefaultParams({
 	preview,

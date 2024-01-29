@@ -1,12 +1,9 @@
-import * as React from 'react'
-
 import {
 	json,
 	redirect,
-	type DataFunctionArgs,
+	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
-import { useCatch } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import {
 	typedjson,
@@ -14,12 +11,13 @@ import {
 	useTypedLoaderData,
 } from 'remix-typedjson'
 
-import { NotFoundError } from '#app/components/errors.tsx'
+import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
 import {
 	getStoriesForSitemap,
 	getStoryBySlug,
 } from '#app/lib/storyblok.server.ts'
 import { pathedRoutes } from '#app/other-routes.server.ts'
+import type { LoaderData as RootLoaderData } from '#app/root.tsx'
 import type { Handle } from '#app/types.ts'
 import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
 import {
@@ -34,8 +32,6 @@ import {
 	getTranslatedSlugsFromStory,
 	isPreview,
 } from '#app/utils/storyblok.tsx'
-
-import type { LoaderData as RootLoaderData } from '../../root'
 
 const dynamicLinks: DynamicLinksFunction<
 	UseDataFunctionReturn<typeof loader>
@@ -60,7 +56,7 @@ export const handle: Handle = {
 	dynamicLinks,
 }
 
-export async function loader({ params, request, context }: DataFunctionArgs) {
+export async function loader({ params, request, context }: LoaderFunctionArgs) {
 	const preview = isPreview(request)
 	const language = getLanguageFromContext(context)
 	const { pathname } = new URL(request.url)
@@ -138,9 +134,9 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 	}
 }
 
-export default function Page() {
+export default function SlugRoute() {
 	const data = useTypedLoaderData<typeof loader>()
-	const story = useStoryblokState(data.story, {}, data.preview)
+	const story = useStoryblokState(data.story, {})
 
 	return (
 		<main>
@@ -149,8 +145,6 @@ export default function Page() {
 	)
 }
 
-export function CatchBoundary() {
-	const caught = useCatch()
-	console.error('CatchBoundary', caught)
-	return <NotFoundError />
+export function ErrorBoundary() {
+	return <GeneralErrorBoundary statusHandlers={{ 404: NotFoundError }} />
 }

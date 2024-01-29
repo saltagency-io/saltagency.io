@@ -1,6 +1,14 @@
 import * as React from 'react'
 
-import { useLocation, useMatches } from '@remix-run/react'
+import { type ErrorResponse } from '@remix-run/node'
+import {
+	isRouteErrorResponse,
+	useLocation,
+	useMatches,
+	useParams,
+	useRouteError,
+} from '@remix-run/react'
+import { captureRemixErrorBoundaryError } from '@sentry/remix'
 import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
 import { motion } from 'framer-motion'
@@ -17,6 +25,7 @@ import {
 	getStaticLabel,
 } from '#app/utils/i18n'
 import { useLocalizedMappers } from '#app/utils/mappers'
+import { getErrorMessage } from '#app/utils/misc.tsx'
 import { useVacancies } from '#app/utils/providers'
 
 function RedBox({ error }: { error: Error }) {
@@ -201,7 +210,7 @@ export function NotFoundError() {
 	)
 }
 
-export function ServerError({ error }: { error?: Error }) {
+export function ServerError() {
 	const matches = useMatches()
 	const location = useLocation()
 
@@ -211,12 +220,49 @@ export function ServerError({ error }: { error?: Error }) {
 
 	return (
 		<ErrorPage
-			error={error}
 			errorSectionProps={{
 				title: getStaticLabel('500.title', language),
 				subtitle: `${getStaticLabel('500.subtitle', language)} "${pathname}"`,
 				ctaText: getStaticLabel('500.cta', language),
 			}}
 		/>
+	)
+}
+
+type StatusHandler = (info: {
+	error: ErrorResponse
+	params: Record<string, string | undefined>
+}) => JSX.Element | null
+
+export function GeneralErrorBoundary({
+	defaultStatusHandler = ({ error }) => (
+		<p>
+			{error.status} {error.data}
+		</p>
+	),
+	statusHandlers,
+	unexpectedErrorHandler = error => <p>{getErrorMessage(error)}</p>,
+}: {
+	defaultStatusHandler?: StatusHandler
+	statusHandlers?: Record<number, StatusHandler>
+	unexpectedErrorHandler?: (error: unknown) => JSX.Element | null
+}) {
+	const error = useRouteError()
+	captureRemixErrorBoundaryError(error)
+	const params = useParams()
+
+	if (typeof document !== 'undefined') {
+		console.error(error)
+	}
+
+	return (
+		<>
+			{isRouteErrorResponse(error)
+				? (statusHandlers?.[error.status] ?? defaultStatusHandler)({
+						error,
+						params,
+					})
+				: unexpectedErrorHandler(error)}
+		</>
 	)
 }

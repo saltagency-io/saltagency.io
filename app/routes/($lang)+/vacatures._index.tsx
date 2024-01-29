@@ -1,6 +1,9 @@
-import React from 'react'
-
-import { DataFunctionArgs, json, MetaFunction, redirect } from '@remix-run/node'
+import {
+	json,
+	MetaFunction,
+	redirect,
+	type LoaderFunctionArgs,
+} from '@remix-run/node'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import {
 	typedjson,
@@ -70,7 +73,7 @@ export const meta: MetaFunction = ({ data, parentsData }) => {
 	}
 }
 
-export async function loader({ request, context }: DataFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
 	const preview = isPreview(request)
 	const language = getLanguageFromContext(context)
 	const { pathname } = new URL(request.url)
@@ -103,9 +106,9 @@ export async function loader({ request, context }: DataFunctionArgs) {
 	})
 }
 
-export default function CareersHome() {
+export default function VacanciesRoute() {
 	const data = useTypedLoaderData<typeof loader>()
-	const story = useStoryblokState(data.story, {}, data.preview)
+	const story = useStoryblokState(data.story, {})
 
 	return (
 		<main>

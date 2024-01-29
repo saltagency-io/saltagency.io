@@ -3,7 +3,7 @@ import * as React from 'react'
 import {
 	json,
 	type ActionFunction,
-	type DataFunctionArgs,
+	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
 import { useFetcher } from '@remix-run/react'
@@ -69,7 +69,7 @@ export const handle: Handle = {
 	dynamicLinks,
 }
 
-export async function loader({ request, context }: DataFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
 	const preview = isPreview(request)
 	const language = getLanguageFromContext(context)
 	const story = await getStoryBySlug('contact', language, preview)
@@ -143,11 +143,11 @@ export const action: ActionFunction = async ({ request }) => {
 	})
 }
 
-export default function ContactPage() {
+export default function ContactRoute() {
 	const { t, to } = useLabels()
 	const contactFetcher = useFetcher<ActionData>()
 	const data = useTypedLoaderData<typeof loader>()
-	const story = useStoryblokState(data.story, {}, data.preview)
+	const story = useStoryblokState(data.story, {})
 
 	const messageSuccessfullySent =
 		contactFetcher.type === 'done' && contactFetcher.data.status === 'success'
