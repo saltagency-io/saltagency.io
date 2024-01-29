@@ -1,5 +1,5 @@
 import { Grid } from '~/components/grid'
-import { H5, Paragraph } from '~/components/typography'
+import { H2, H3, Paragraph } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 import { useGroup } from '~/utils/providers'
@@ -62,25 +62,21 @@ export function Banner({ subtitle, title, text, image, imagePosition }: Props) {
 				variants={textVariants}
 			>
 				{subtitle ? (
-					<H5 as="h2" variant="secondary" className="mb-2">
+					<H3 variant="secondary" className="mb-2">
 						{subtitle}
-					</H5>
+					</H3>
 				) : null}
 
 				{title ? (
-					<h5
-						className={clsx(
-							'-tracking-[0.6px mb-2 font-display text-xl font-bold leading-7 text-gray-800',
-							isDark && 'text-white',
-						)}
-					>
+					<H2 className="-tracking-[0.6px mb-2 font-display text-xl font-bold leading-7 text-gray-800">
 						{title}
-					</h5>
+					</H2>
 				) : null}
 
 				{text ? (
 					<Paragraph
-						className={clsx('text-lg text-gray-800', isDark && 'text-white')}
+						className="text-lg"
+						textColorClassName={isDark ? 'text-white' : 'text-gray-800'}
 					>
 						{text}
 					</Paragraph>
