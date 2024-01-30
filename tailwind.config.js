@@ -1,6 +1,6 @@
 const path = require('path')
 const defaultTheme = require('tailwindcss/defaultTheme')
-const fromRoot = (p: string) => path.join(__dirname, p)
+const fromRoot = p => path.join(__dirname, p)
 
 module.exports = {
 	// the NODE_ENV thing is for https://github.com/Acidic9/prettier-plugin-tailwind/issues/29

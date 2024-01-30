@@ -1,11 +1,9 @@
-import 'dotenv/config'
+require('@remix-run/node/dist/globals').installGlobals()
 
-import { installGlobals } from '@remix-run/node'
-
-installGlobals()
+require('dotenv/config')
 
 if (process.env.NODE_ENV === 'production') {
-	import('./server-build')
+	require('./server-build')
 } else {
-	import('./server')
+	require('./server')
 }
