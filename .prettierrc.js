@@ -1,7 +1,7 @@
 /** @typedef  {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig*/
 /** @typedef  {import("prettier").Config} PrettierConfig*/
 /** @type { PrettierConfig | SortImportsConfig } */
-export default {
+module.exports = {
 	arrowParens: 'avoid',
 	bracketSameLine: false,
 	bracketSpacing: true,
@@ -28,7 +28,7 @@ export default {
 			},
 		},
 	],
-	tailwindConfig: './tailwind.config.ts',
+	tailwindConfig: './tailwind.config.js',
 	plugins: [
 		'@ianvs/prettier-plugin-sort-imports',
 		'prettier-plugin-tailwindcss',
