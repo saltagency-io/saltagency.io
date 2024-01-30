@@ -32,7 +32,7 @@
     "build:remix": "remix build",
     "build:server": "tsx ./other/build-server.js",
     "build": "npm run build:css:prod && npm run build:remix && npm run build:server",
-    "dev": "pm2-dev ./other/pm2.config.js",
+    "dev": "pm2-dev ./other/pm2.config.cjs",
     "start": "cross-env NODE_ENV=production node ./index.js",
     "typecheck": "tsc",
     "format": "prettier --write .",
