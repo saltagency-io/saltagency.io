@@ -26,7 +26,6 @@
     "url": "https://github.com/koodin-nl/koodin.nl/issues"
   },
   "homepage": "https://github.com/koodin-nl/koodin.nl#readme",
-
   "eslintIgnore": [
     "/node_modules",
     "/build",
