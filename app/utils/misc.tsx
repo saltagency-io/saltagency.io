@@ -3,38 +3,11 @@ import * as React from 'react'
 import { Link, type LinkProps } from '@remix-run/react'
 
 import type { NonNullProperties, TranslatedSlug } from '#app/types.ts'
-import type { getEnv } from '#app/utils/env.server.ts'
 import { defaultLanguage } from '#app/utils/i18n.ts'
 import type { ValidateFn } from '#app/utils/validators.ts'
 
 export const LOGO_URL =
 	'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg'
-
-export function getRequiredEnvVarFromObj(
-	obj: Record<string, string | undefined>,
-	key: string,
-	devValue: string = `${key}-dev-value`,
-) {
-	let value = devValue
-	const envVal = obj[key]
-	if (envVal) {
-		value = envVal
-	} else if (obj.NODE_ENV === 'production') {
-		throw new Error(`${key} is a required env variable`)
-	}
-	return value
-}
-
-export function getRequiredServerEnvVar(key: string, devValue?: string) {
-	return getRequiredEnvVarFromObj(process.env, key, devValue)
-}
-
-export function getRequiredGlobalEnvVar(
-	key: keyof ReturnType<typeof getEnv>,
-	devValue?: string,
-) {
-	return getRequiredEnvVarFromObj(ENV, key, devValue)
-}
 
 type AnchorProps = React.DetailedHTMLProps<
 	React.AnchorHTMLAttributes<HTMLAnchorElement>,

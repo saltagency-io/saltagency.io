@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import type {
 	LinksFunction,
-	LoaderFunction,
 	LoaderFunctionArgs,
 	MetaFunction,
 	SerializeFrom,
@@ -38,11 +37,7 @@ import { getEnv } from '#app/utils/env.server.ts'
 import { I18nProvider, useI18n } from '#app/utils/i18n-provider.tsx'
 import { getLanguageFromContext, getLanguageFromPath } from '#app/utils/i18n.ts'
 import { LabelsProvider } from '#app/utils/labels-provider.tsx'
-import {
-	getDomainUrl,
-	getRequiredGlobalEnvVar,
-	removeTrailingSlash,
-} from '#app/utils/misc.tsx'
+import { getDomainUrl, removeTrailingSlash } from '#app/utils/misc.tsx'
 import { useNonce } from '#app/utils/nonce-provider.tsx'
 import {
 	PreviewStateProvider,
@@ -57,7 +52,7 @@ import { SvgGradientReference } from '#app/utils/svg-gradient-reference.tsx'
 
 storyblokInit({
 	components,
-	accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
+	accessToken: ENV.STORYBLOK_ACCESS_TOKEN,
 	use: [apiPlugin],
 	apiOptions: {
 		cache: {
@@ -205,11 +200,21 @@ export function App() {
 	const fathomQueue = React.useRef<FathomQueue>([])
 
 	return (
-		<Document env={data.ENV} lang={language} nonce={nonce}>
+		<Document
+			env={data.ENV}
+			lang={language}
+			nonce={nonce}
+			canonical={
+				<CanonicalUrl
+					origin={data.requestInfo.origin}
+					fathomQueue={fathomQueue}
+				/>
+			}
+		>
 			<StoryblokComponent blok={data.layoutStory?.content} />
 			<div id="menuPortal"></div>
 			<SdLogo origin={data.requestInfo.origin} />
-			{ENV.NODE_ENV === 'development' ? null : (
+			{ENV.MODE === 'development' ? null : (
 				<script
 					nonce={nonce}
 					src="https://cdn.usefathom.com/script.js"
@@ -234,7 +239,7 @@ export function App() {
 }
 
 export default function AppWithProviders() {
-	const data = useTypedLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>()
 	const matches = useMatches()
 
 	const last = matches[matches.length - 1]
@@ -258,12 +263,14 @@ function Document({
 	children,
 	nonce,
 	lang,
-	env,
+	env = {},
+	canonical = null,
 }: {
 	children: React.ReactNode
 	nonce: string
 	lang: string
-	env: Record<string, string>
+	env?: Record<string, string>
+	canonical?: React.ReactNode
 }) {
 	return (
 		<html lang={lang}>
@@ -272,6 +279,7 @@ function Document({
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
 				<Meta />
 				<Links />
+				{canonical}
 			</head>
 			<body className="bg-gray-body">
 				{children}
