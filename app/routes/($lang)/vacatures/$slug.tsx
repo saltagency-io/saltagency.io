@@ -6,9 +6,7 @@ import {
 	type DataFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
-import { useCatch } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
-import { NotFoundError } from '~/components/errors'
 import { getAllVacancies, getVacancyBySlug } from '~/lib/storyblok.server'
 import type { LoaderData as RootLoaderData } from '~/root'
 import type { Handle } from '~/types'

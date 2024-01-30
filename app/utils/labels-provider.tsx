@@ -17,7 +17,7 @@ const LabelsContext = React.createContext<{
 LabelsContext.displayName = 'LabelsContext'
 
 function parseLink(label: string) {
-	const regex = /[\[]{1}([^\]\[]+)[\]]{1}[(]{1}([^()"]+)("(.+)")?[)]{1}/g
+	const regex = /[[]{1}([^\][]+)[\]]{1}[(]{1}([^()"]+)("(.+)")?[)]{1}/g
 	return label.replace(
 		regex,
 		'<a class="underlined active focus:text-white" href="$2" title="$4">$1</a>',

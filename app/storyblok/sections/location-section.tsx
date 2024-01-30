@@ -14,7 +14,6 @@ export function SbLocationSection({ blok }: { blok: LocationSectionBlok }) {
 				title={blok.title}
 				address={location?.address}
 				image={mapAsset(blok.image)}
-				imageMobile={mapAsset(blok.imageMobile)}
 				officeImage={mapAsset(blok.officeImage)}
 				link={mapLink(location?.directionsLink[0])}
 			/>

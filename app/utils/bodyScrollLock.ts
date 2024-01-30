@@ -132,7 +132,7 @@ const setPositionFixed = () =>
 			}
 
 			// Update the dom inside an animation frame
-			const { scrollY, scrollX, innerHeight } = window
+			const { scrollY, scrollX } = window
 			window.top.document.body.style.position = 'fixed'
 			window.top.document.body.style.top = `${-scrollY}px`
 			window.top.document.body.style.left = `${-scrollX}px`

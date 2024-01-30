@@ -18,7 +18,6 @@ import {
 	getLanguageFromContext,
 	getStaticLabel,
 	isSupportedLanguage,
-	supportedLanguages,
 } from '~/utils/i18n'
 import { createAlternateLinks, getUrl } from '~/utils/misc'
 import { getSocialMetas } from '~/utils/seo'

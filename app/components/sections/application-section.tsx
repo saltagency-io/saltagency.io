@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Grid } from '~/components/grid'
-import { H3, H4, H5, Paragraph, Subtitle } from '~/components/typography'
+import { H3, H4, H5, Paragraph } from '~/components/typography'
 import type { Section } from '~/types'
 import { sbIconMap } from '~/utils/storyblok'
 import { motion, useReducedMotion } from 'framer-motion'
