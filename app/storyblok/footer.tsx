@@ -1,5 +1,5 @@
 import { Footer } from '#app/components/footer.tsx'
-import type { FooterBlok } from '#app/types.ts'
+import  { type FooterBlok } from '#app/types.ts'
 import { useLocalizedMappers } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

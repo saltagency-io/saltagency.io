@@ -1,8 +1,8 @@
-import type { EntryContext } from '@remix-run/node'
-import { isEqual } from 'lodash'
+import  { type EntryContext } from '@remix-run/node'
+import isEqual from 'lodash/isEqual'
 
-import type { Handle, SitemapEntry } from '#app/types.ts'
-import type { SupportedLanguage } from '#app/utils/i18n.ts'
+import  { type Handle, type SitemapEntry } from '#app/types.ts'
+import  { type SupportedLanguage } from '#app/utils/i18n.ts'
 import {
 	getDomainUrl,
 	removeTrailingSlash,

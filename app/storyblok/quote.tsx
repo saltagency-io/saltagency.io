@@ -1,5 +1,5 @@
 import { Quote } from '#app/components/quote.tsx'
-import type { QuoteBlok } from '#app/types.ts'
+import  { type QuoteBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

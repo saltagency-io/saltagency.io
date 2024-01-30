@@ -6,15 +6,15 @@ import FocusTrap from 'focus-trap-react'
 import {
 	AnimatePresence,
 	motion,
-	MotionValue,
+	type MotionValue,
 	useReducedMotion,
 	useScroll,
 	useTransform,
 } from 'framer-motion'
 import { createPortal } from 'react-dom'
-import { useHydrated } from 'remix-utils'
+import { useHydrated } from 'remix-utils/use-hydrated'
 
-import type { LinkType } from '#app/types.ts'
+import  { type LinkType } from '#app/types.ts'
 import {
 	clearAllBodyScrollLocks,
 	disableBodyScroll,

@@ -1,4 +1,4 @@
-import type { EntryContext } from '@remix-run/node'
+import  { type EntryContext } from '@remix-run/node'
 
 import { defaultLanguage } from '#app/utils/i18n'
 import { getSitemapXml } from '#app/utils/sitemap.server'

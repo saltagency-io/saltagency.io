@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { TeamSection } from '#app/components/sections/team-section.tsx'
-import type { TeamSectionBlok } from '#app/types.ts'
+import  { type TeamSectionBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

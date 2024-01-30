@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
 import { H3, H4, H5, Paragraph } from '#app/components/typography.tsx'
-import type { Section } from '#app/types.tsx'
+import  { type Section } from '#app/types.tsx'
 import { sbIconMap } from '#app/utils/storyblok.tsx'
 
 type Props = {

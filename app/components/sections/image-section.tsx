@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
-import type { Image } from '#app/types.ts'
-import { getImgProps } from '#app/utils/images.tsx'
+import  { type Image } from '#app/types.ts'
+import { getImgProps } from '#app/utils/images.ts'
 
 export function ImageSection({ image }: { image: Image }) {
 	return (

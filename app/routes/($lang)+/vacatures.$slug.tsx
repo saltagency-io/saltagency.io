@@ -9,15 +9,15 @@ import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
 import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
-import type { LoaderData as RootLoaderData } from '#app/root.tsx'
-import type { Handle } from '#app/types.ts'
-import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
+import  { type LoaderData as RootLoaderData } from '#app/root.tsx'
+import  { type Handle } from '#app/types.ts'
+import  { type DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
 	getStaticLabel,
-} from '#app/utils/i18n.tsx'
-import { createAlternateLinks, getUrl } from '#app/utils/misc.ts'
+} from '#app/utils/i18n.ts'
+import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
 import {
 	getTranslatedSlugsFromStory,

@@ -1,5 +1,5 @@
-import type { DynamicLinksFunction } from '#app/utils/dynamic-links'
-import type { SupportedLanguage } from '#app/utils/i18n'
+import  { type DynamicLinksFunction } from '#app/utils/dynamic-links'
+import  { type SupportedLanguage } from '#app/utils/i18n'
 
 export type NonNullProperties<Type> = {
 	[Key in keyof Type]-?: Exclude<Type[Key], null | undefined>

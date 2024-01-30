@@ -1,11 +1,11 @@
-import type * as React from 'react'
+import * as React from 'react'
 
 import { useLocation, useNavigate, useRevalidator } from '@remix-run/react'
 import clsx from 'clsx'
 
 import { IconChevronDown } from '#app/components/icons.tsx'
 import { useI18n } from '#app/utils/i18n-provider.tsx'
-import { defaultLanguage, isSupportedLanguage } from '#app/utils/i18n.tsx'
+import { defaultLanguage, isSupportedLanguage } from '#app/utils/i18n.ts'
 import { useLabels } from '#app/utils/labels-provider.tsx'
 import { removeTrailingSlash } from '#app/utils/misc.tsx'
 

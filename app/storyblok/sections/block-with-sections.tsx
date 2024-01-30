@@ -1,10 +1,10 @@
-import type * as React from 'react'
+import * as React from 'react'
 
 import { AccordionSection } from '#app/components/sections/accordion-section.tsx'
 import { ApplicationProcessSection } from '#app/components/sections/application-section.tsx'
 import { FormulaSection } from '#app/components/sections/formula-section.tsx'
 import { PropositionSection } from '#app/components/sections/proposition-section.tsx'
-import type { BlockWithSectionsBlok, Section } from '#app/types.ts'
+import  { type BlockWithSectionsBlok, type Section } from '#app/types.ts'
 import { useLocalizedMappers } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

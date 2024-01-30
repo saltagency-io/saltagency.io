@@ -1,5 +1,5 @@
 import { Banner } from '#app/components/banner.tsx'
-import type { BannerBlok } from '#app/types.ts'
+import  { type BannerBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

@@ -1,5 +1,5 @@
 import { TextSection } from '#app/components/sections/text-section.tsx'
-import type { TextSectionBlok } from '#app/types.ts'
+import  { type TextSectionBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

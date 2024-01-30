@@ -1,5 +1,4 @@
-import { GeneralErrorBoundary } from '#app/components/error-boundary'
-import { NotFoundError, ServerError } from '#app/components/errors'
+import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors'
 
 export { default, loader, meta, handle } from './$slug'
 

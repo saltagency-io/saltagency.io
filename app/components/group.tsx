@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import type { GroupTheme } from '#app/types.ts'
+import  { type GroupTheme } from '#app/types.ts'
 import { GroupProvider } from '#app/utils/providers.tsx'
 
 import {

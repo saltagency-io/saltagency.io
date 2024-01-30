@@ -9,7 +9,7 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 
 import { H5 } from '#app/components/typography.tsx'
-import type { Section } from '#app/types.ts'
+import  { type Section } from '#app/types.ts'
 import { Markdown } from '#app/utils/markdown.tsx'
 
 function AccordionItemContent({

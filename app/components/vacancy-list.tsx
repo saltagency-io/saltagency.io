@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { H5 } from '#app/components/typography.tsx'
-import type { Vacancy } from '#app/types.ts'
+import  { type Vacancy } from '#app/types.ts'
 
 export function VacancyList({
 	vacancies,

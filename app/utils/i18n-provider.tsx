@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import type { TranslatedSlug } from '#app/types'
+import  { type TranslatedSlug } from '#app/types'
 import {
 	defaultLanguage,
 	isSupportedLanguage,

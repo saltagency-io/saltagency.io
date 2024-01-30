@@ -1,11 +1,11 @@
-import type {
-	BreadcrumbList,
-	JobPosting,
-	Organization,
-	Place,
+import  {
+	type BreadcrumbList,
+	type JobPosting,
+	type Organization,
+	type Place,
 } from 'schema-dts'
 
-import type { Breadcrumb } from '#app/types.ts'
+import  { type Breadcrumb } from '#app/types.ts'
 import { LOGO_URL } from '#app/utils/misc.tsx'
 
 const address: Place = {

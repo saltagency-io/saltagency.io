@@ -1,7 +1,7 @@
 import { StoryblokComponent } from '@storyblok/react'
 
 import { ContactSection } from '#app/components/sections/contact-section.tsx'
-import type { ContactSectionBlok } from '#app/types.ts'
+import  { type ContactSectionBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

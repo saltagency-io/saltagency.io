@@ -1,17 +1,49 @@
+import { flatRoutes } from 'remix-flat-routes'
+
 /** @type {import('@remix-run/dev').AppConfig} */
-module.exports = {
-	ignoredRouteFiles: ['**/.*'],
+export default {
 	cacheDirectory: './node_modules/.cache/remix',
+	ignoredRouteFiles: ['**/.*'],
 	serverModuleFormat: 'esm',
 	serverPlatform: 'node',
 	tailwind: true,
 	postcss: true,
-	watchPaths: ['./tailwindconfig.ts'],
+	watchPaths: ['./tailwind.config.ts'],
+
+	// TODO: figure out how to do this with flatRoutes
+	// defineRoutes(route => {
+	// 	route(
+	// 		'en/careers',
+	// 		'routes/($lang)/vacatures.tsx',
+	// 		{ id: 'careers-root-en' },
+	// 		() => {
+	// 			route('', 'routes/($lang)/vacatures/index.tsx', {
+	// 				id: 'careers-en',
+	// 				index: true,
+	// 			})
+	// 			route(':slug', 'routes/($lang)/vacatures/$slug.tsx', {
+	// 				id: 'vacancy-root-en',
+	// 			})
+	// 			route(
+	// 				':slug/apply',
+	// 				'routes/($lang)/vacatures/$slug.solliciteren.tsx',
+	// 				{
+	// 					id: 'vacancy-apply-en',
+	// 				},
+	// 			)
+	// 		},
+	// 	)
+	// }),
 
 	routes: async defineRoutes => {
-		return flatRoutes(
-			'routes',
-			defineRoutes(route => {
+		return flatRoutes('routes', defineRoutes, {
+			ignoredRouteFiles: [
+				'.*',
+				'**/*.css',
+				'**/*.test.{js,jsx,ts,tsx}',
+				'**/__*.*',
+			],
+			defineRoutes: route => {
 				route(
 					'en/careers',
 					'routes/($lang)/vacatures.tsx',
@@ -33,16 +65,8 @@ module.exports = {
 						)
 					},
 				)
-			}),
-			{
-				ignoredRouteFiles: [
-					'.*',
-					'**/*.css',
-					'**/*.test.{js,jsx,ts,tsx}',
-					'**/__*.*',
-				],
 			},
-		)
+		})
 	},
 
 	serverDependenciesToBundle: [

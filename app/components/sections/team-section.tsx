@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
 import { H3, H4, H5, Paragraph } from '#app/components/typography.tsx'
-import type { Image } from '#app/types.ts'
+import  { type Image } from '#app/types.ts'
 import { getImgProps } from '#app/utils/images.ts'
 
 type Member = {

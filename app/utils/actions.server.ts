@@ -1,6 +1,6 @@
 import { json } from '@remix-run/node'
 
-import type { NonNullProperties } from '#app/types'
+import  { type NonNullProperties } from '#app/types'
 
 import { getErrorMessage, getNonNull } from './misc.tsx'
 

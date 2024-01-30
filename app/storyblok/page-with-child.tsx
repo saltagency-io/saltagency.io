@@ -1,8 +1,8 @@
-import type * as React from 'react'
+import * as React from 'react'
 
 import { StoryblokComponent } from '@storyblok/react'
 
-import type { PageWithChildBlok } from '#app/types.ts'
+import  { type PageWithChildBlok } from '#app/types.ts'
 import { GroupProvider } from '#app/utils/providers.tsx'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

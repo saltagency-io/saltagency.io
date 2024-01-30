@@ -18,7 +18,7 @@ import { Grid } from '#app/components/grid.tsx'
 import { IconArrowDown } from '#app/components/icons.tsx'
 import { H1, H2, H3, H4, H5, H6 } from '#app/components/typography.tsx'
 import { VacancyList } from '#app/components/vacancy-list.tsx'
-import type { Vacancy } from '#app/types.ts'
+import  { type Vacancy } from '#app/types.ts'
 import {
 	defaultLanguage,
 	getLanguageFromPath,

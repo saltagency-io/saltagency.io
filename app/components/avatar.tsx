@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import type { GroupTheme } from '#app/types.ts'
+import  { type GroupTheme } from '#app/types.ts'
 import { getImgProps } from '#app/utils/images.ts'
 
 type Props = {

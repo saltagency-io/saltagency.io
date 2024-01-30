@@ -1,7 +1,7 @@
 import { StoryblokComponent } from '@storyblok/react'
 
 import { PeopleSection } from '#app/components/sections/people-section.tsx'
-import type { PeopleSectionBlok } from '#app/types.ts'
+import  { type PeopleSectionBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

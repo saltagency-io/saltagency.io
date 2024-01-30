@@ -1,6 +1,6 @@
-import type * as React from 'react'
+import * as React from 'react'
 
-import { SbBlokData, storyblokEditable, StoryData } from '@storyblok/react'
+import { type SbBlokData, storyblokEditable, type StoryData } from '@storyblok/react'
 
 import {
 	GIconCalendar,
@@ -14,7 +14,7 @@ import {
 	GIconStar,
 	GIconTag,
 	GIconTeam,
-	IconProps as GradientIconProps,
+	type IconProps as GradientIconProps,
 } from '#app/components/gradient-icons.tsx'
 import {
 	IconBankNotes,
@@ -26,18 +26,18 @@ import {
 	IconEye,
 	IconFingerPrint,
 	IconHeart,
-	IconProps,
+	type IconProps,
 	IconScale,
 	IconShield,
 	IconUserGroup,
 	IconUsers,
 } from '#app/components/icons.tsx'
-import type {
-	PageStoryContent,
-	TranslatedSlug,
-	VacancyStoryContent,
+import  {
+	type PageStoryContent,
+	type TranslatedSlug,
+	type VacancyStoryContent,
 } from '#app/types.ts'
-import { defaultLanguage } from '#app/utils/i18n.tsx'
+import { defaultLanguage } from '#app/utils/i18n.ts'
 import { usePreviewState } from '#app/utils/providers.tsx'
 
 export function isPreview(request: Request) {

@@ -16,15 +16,15 @@ import { Grid } from '#app/components/grid.tsx'
 import { H1, H3, H4 } from '#app/components/typography.tsx'
 import { sendApplicationToNotion } from '#app/lib/notion.server.ts'
 import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
-import type { LoaderData as RootLoaderData } from '#app/root.tsx'
-import type { Handle } from '#app/types.ts'
+import  { type LoaderData as RootLoaderData } from '#app/root.tsx'
+import  { type Handle } from '#app/types.ts'
 import { handleFormSubmission } from '#app/utils/actions.server.ts'
-import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
+import  { type DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
-	SupportedLanguage,
-} from '#app/utils/i18n.tsx'
+	type SupportedLanguage,
+} from '#app/utils/i18n.ts'
 import { useLabels } from '#app/utils/labels-provider.tsx'
 import {
 	createAlternateLinks,
@@ -33,7 +33,10 @@ import {
 } from '#app/utils/misc.tsx'
 import { useVacancies } from '#app/utils/providers.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
-import { getTranslatedSlugsFromStory, isPreview } from '#app/utils/storyblok.ts'
+import {
+	getTranslatedSlugsFromStory,
+	isPreview,
+} from '#app/utils/storyblok.tsx'
 import {
 	isValidBody,
 	isValidEmail,

@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react'
+import React, { type PropsWithChildren } from 'react'
 
 import { Link } from '@remix-run/react'
 import clsx from 'clsx'
 
-import { LinkType } from '#app/types.ts'
+import { type LinkType } from '#app/types.ts'
 import { sbGradientIconMap } from '#app/utils/storyblok.tsx'
 
 import { H5, Paragraph } from './typography.tsx'

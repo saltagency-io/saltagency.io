@@ -3,8 +3,8 @@ import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
-import type { Image } from '#app/types.tsx'
-import { getImgProps } from '#app/utils/images.tsx'
+import  { type Image } from '#app/types.tsx'
+import { getImgProps } from '#app/utils/images.ts'
 
 function LogoGroup({ group, index }: { group: Image[]; index: number }) {
 	const prefersReducedMotion = useReducedMotion()

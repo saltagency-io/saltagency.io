@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { Avatar } from '#app/components/avatar'
 import { Grid } from '#app/components/grid'
 import { H3, H5 } from '#app/components/typography'
-import type { Image } from '#app/types'
+import  { type Image } from '#app/types'
 import { useGroup } from '#app/utils/providers'
 
 type Props = {

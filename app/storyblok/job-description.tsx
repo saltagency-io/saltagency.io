@@ -1,5 +1,5 @@
 import { JobDescription } from '#app/components/job-description.tsx'
-import type { JobDescriptionBlok } from '#app/types.ts'
+import  { type JobDescriptionBlok } from '#app/types.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbJobDescription({ blok }: { blok: JobDescriptionBlok }) {

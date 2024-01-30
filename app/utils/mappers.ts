@@ -1,18 +1,18 @@
-import type { StoryData } from '@storyblok/react'
+import  { type StoryData } from '@storyblok/react'
 
-import type {
-	Asset,
-	Image,
-	LinkBlok,
-	LinkType,
-	Section,
-	SectionBlok,
-	Vacancy,
-	VacancyStoryContent,
+import  {
+	type Asset,
+	type Image,
+	type LinkBlok,
+	type LinkType,
+	type Section,
+	type SectionBlok,
+	type Vacancy,
+	type VacancyStoryContent,
 } from '#app/types.ts'
 import { useI18n } from '#app/utils/i18n-provider.tsx'
-import { defaultLanguage, SupportedLanguage } from '#app/utils/i18n.ts'
-import { removeTrailingSlash } from '#app/utils/misc.ts'
+import { defaultLanguage, type SupportedLanguage } from '#app/utils/i18n.ts'
+import { removeTrailingSlash } from '#app/utils/misc.tsx'
 
 export function formatUrl(
 	url: string,

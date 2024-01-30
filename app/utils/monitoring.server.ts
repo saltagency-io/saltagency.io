@@ -1,8 +1,6 @@
 import { ProfilingIntegration } from '@sentry/profiling-node'
 import * as Sentry from '@sentry/remix'
 
-import { prisma } from './db.server.ts'
-
 export function init() {
 	Sentry.init({
 		dsn: ENV.SENTRY_DSN,
@@ -19,7 +17,6 @@ export function init() {
 		],
 		integrations: [
 			new Sentry.Integrations.Http({ tracing: true }),
-			new Sentry.Integrations.Prisma({ client: prisma }),
 			new ProfilingIntegration(),
 		],
 		tracesSampler(samplingContext) {

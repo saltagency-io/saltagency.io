@@ -2,8 +2,8 @@ import { useRouteLoaderData } from '@remix-run/react'
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
 
 import { Vacancy } from '#app/components/vacancy.tsx'
-import type { LoaderData as RootLoaderData } from '#app/root.tsx'
-import type { VacancyBlok } from '#app/types.ts'
+import  { type LoaderData as RootLoaderData } from '#app/root.tsx'
+import  { type VacancyBlok } from '#app/types.ts'
 import { GroupProvider } from '#app/utils/providers.tsx'
 import { SdJobPosting } from '#app/utils/structured-data.tsx'
 

@@ -3,6 +3,7 @@ import { z } from 'zod'
 const schema = z.object({
 	NODE_ENV: z.enum(['production', 'development', 'test'] as const),
 	SENTRY_DSN: z.string(),
+	NOTION_API_KEY: z.string(),
 	STORYBLOK_ACCESS_TOKEN: z.string(),
 })
 

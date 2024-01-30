@@ -2,7 +2,7 @@ import clsx from 'clsx'
 
 import { Grid } from '#app/components/grid.tsx'
 import { H3, H5 } from '#app/components/typography.tsx'
-import type { Image } from '#app/types.ts'
+import  { type Image } from '#app/types.ts'
 import { getImgProps } from '#app/utils/images.ts'
 import { useGroup } from '#app/utils/providers.tsx'
 

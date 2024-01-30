@@ -1,25 +1,28 @@
 import {
 	json,
-	MetaFunction,
 	redirect,
 	type LoaderFunctionArgs,
+	type MetaFunction,
 } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 
 import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
-import type { LoaderData as RootLoaderData } from '#app/root.tsx'
-import type { Handle } from '#app/types.ts'
-import type { DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
+import { type RootLoaderType } from '#app/root.tsx'
+import { type Handle } from '#app/types.ts'
+import { type DynamicLinksFunction } from '#app/utils/dynamic-links.tsx'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
 	getStaticLabel,
-	SupportedLanguage,
+	type SupportedLanguage,
 } from '#app/utils/i18n.ts'
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
-import { getTranslatedSlugsFromStory, isPreview } from '#app/utils/storyblok.ts'
+import {
+	getTranslatedSlugsFromStory,
+	isPreview,
+} from '#app/utils/storyblok.tsx'
 
 export const routes: Record<SupportedLanguage, string> = {
 	en: 'careers',
@@ -46,24 +49,33 @@ export const handle: Handle = {
 	dynamicLinks,
 }
 
-export const meta: MetaFunction = ({ data, parentsData }) => {
-	const { requestInfo, language } = parentsData.root as RootLoaderData
+export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
+	data,
+	matches,
+}) => {
+	const rootData = matches.find(m => m.id === 'root')?.data
+	const slugs = getTranslatedSlugsFromStory(data?.story)
+	const altLinks = createAlternateLinks(slugs, rootData.requestInfo.origin)
 
-	if (data.story) {
+	if (data?.story) {
 		const meta = data.story.content.metatags
-		return {
+		return [
 			...getSocialMetas({
 				title: meta?.title,
 				description: meta?.description,
 				image: meta?.og_image,
-				url: getUrl(requestInfo),
+				url: getUrl(rootData.requestInfo),
 			}),
-		}
+			...altLinks,
+		]
 	} else {
-		return {
-			title: getStaticLabel('404.meta.title', language),
-			description: getStaticLabel('404.meta.description', language),
-		}
+		return [
+			{ title: getStaticLabel('404.meta.title', rootData.language) },
+			{
+				name: 'description',
+				content: getStaticLabel('404.meta.description', rootData.language),
+			},
+		]
 	}
 }
 

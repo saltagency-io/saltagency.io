@@ -6,8 +6,8 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { PhoneButton } from '#app/components/button.tsx'
 import { Grid } from '#app/components/grid.tsx'
 import { H3 } from '#app/components/typography.tsx'
-import type { Image } from '#app/types.tsx'
-import { getImgProps } from '#app/utils/images.tsx'
+import  { type Image } from '#app/types.tsx'
+import { getImgProps } from '#app/utils/images.ts'
 import { useGroup } from '#app/utils/providers.tsx'
 
 type Props = {

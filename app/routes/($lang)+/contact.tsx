@@ -1,9 +1,8 @@
 import * as React from 'react'
 
 import {
-	ActionFunctionArgs,
 	json,
-	type ActionFunction,
+	type ActionFunctionArgs,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
@@ -18,10 +17,10 @@ import { Spinner } from '#app/components/spinner.tsx'
 import { H3, H5 } from '#app/components/typography.tsx'
 import { sendToContactFormNotion } from '#app/lib/notion.server.ts'
 import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
-import type { LoaderData as RootLoaderData } from '#app/root.tsx'
-import type { Handle } from '#app/types.ts'
-import { handleFormSubmission } from '#app/utils/actions.server.tsx'
-import type { DynamicLinksFunction } from '#app/utils/dynamic-links.ts'
+import { type RootLoaderType } from '#app/root.tsx'
+import { type Handle } from '#app/types.ts'
+import { handleFormSubmission } from '#app/utils/actions.server.ts'
+import { type DynamicLinksFunction } from '#app/utils/dynamic-links.ts'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
@@ -86,24 +85,33 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	})
 }
 
-export const meta: MetaFunction = ({ data, parentsData }) => {
-	const { requestInfo, language } = parentsData.root as RootLoaderData
+export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
+	data,
+	matches,
+}) => {
+	const rootData = matches.find(m => m.id === 'root')?.data
+	const slugs = getTranslatedSlugsFromStory(data?.story)
+	const altLinks = createAlternateLinks(slugs, rootData.requestInfo.origin)
 
 	if (data?.story) {
 		const meta = data.story.content.metatags
-		return {
+		return [
 			...getSocialMetas({
-				title: meta.title,
-				description: meta.description,
-				url: getUrl(requestInfo),
-				image: meta.og_image,
+				title: meta?.title,
+				description: meta?.description,
+				image: meta?.og_image,
+				url: getUrl(rootData.requestInfo),
 			}),
-		}
+			...altLinks,
+		]
 	} else {
-		return {
-			title: getStaticLabel('404.meta.title', language),
-			description: getStaticLabel('404.meta.description', language),
-		}
+		return [
+			{ title: getStaticLabel('404.meta.title', rootData.language) },
+			{
+				name: 'description',
+				content: getStaticLabel('404.meta.description', rootData.language),
+			},
+		]
 	}
 }
 

@@ -1,5 +1,5 @@
 import { HeaderSection } from '#app/components/sections/header-section.tsx'
-import type { HeaderSectionBlok } from '#app/types.ts'
+import  { type HeaderSectionBlok } from '#app/types.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbHeaderSection({ blok }: { blok: HeaderSectionBlok }) {

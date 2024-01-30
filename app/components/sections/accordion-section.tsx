@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { Accordion } from '#app/components/accordion.tsx'
 import { Grid } from '#app/components/grid.tsx'
 import { H3, H5 } from '#app/components/typography.tsx'
-import type { Section } from '#app/types.ts'
+import  { type Section } from '#app/types.ts'
 
 type Props = {
 	subtitle: string

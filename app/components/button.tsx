@@ -27,10 +27,6 @@ function getClassName({ className }: { className?: string }) {
 	)
 }
 
-// const variantStyles: Record<ButtonType, string> = {
-//   primary: 'focus-ring-purple ',
-// }
-
 function ButtonInner({
 	children,
 	variant,

@@ -1,5 +1,5 @@
 import { ImageSection } from '#app/components/sections/image-section.tsx'
-import type { ImageSectionBlok } from '#app/types.ts'
+import  { type ImageSectionBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

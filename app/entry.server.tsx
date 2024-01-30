@@ -15,7 +15,7 @@ import { renderToPipeableStream } from 'react-dom/server'
 import { getEnv, init } from './utils/env.server.ts'
 import { I18nProvider } from './utils/i18n-provider.tsx'
 import { defaultLanguage, isSupportedLanguage } from './utils/i18n.ts'
-import { NonceProvider } from './utils/nonce-provider.ts'
+import { NonceProvider } from './utils/nonce-provider.tsx'
 
 const ABORT_DELAY = 5_000
 

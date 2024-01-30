@@ -2,9 +2,9 @@ import * as React from 'react'
 
 import { Link, type LinkProps } from '@remix-run/react'
 
-import type { NonNullProperties, TranslatedSlug } from '#app/types.ts'
+import  { type NonNullProperties, type TranslatedSlug } from '#app/types.ts'
 import { defaultLanguage } from '#app/utils/i18n.ts'
-import type { ValidateFn } from '#app/utils/validators.ts'
+import  { type ValidateFn } from '#app/utils/validators.ts'
 
 export const LOGO_URL =
 	'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg'
@@ -156,6 +156,7 @@ export function unslugify(slug: string) {
 
 export function createAlternateLinks(slugs: TranslatedSlug[], origin: string) {
 	return slugs.map(slug => ({
+		tagName: 'link',
 		rel: 'alternate',
 		hrefLang: slug.lang,
 		href: removeTrailingSlash(

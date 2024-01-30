@@ -1,10 +1,9 @@
 import * as React from 'react'
 
-import type {
-	LinksFunction,
-	LoaderFunctionArgs,
-	MetaFunction,
-	SerializeFrom,
+import {
+	type LinksFunction,
+	type LoaderFunctionArgs,
+	type MetaFunction,
 } from '@remix-run/node'
 import {
 	json,
@@ -37,7 +36,7 @@ import { getEnv } from '#app/utils/env.server.ts'
 import { I18nProvider, useI18n } from '#app/utils/i18n-provider.tsx'
 import { getLanguageFromContext, getLanguageFromPath } from '#app/utils/i18n.ts'
 import { LabelsProvider } from '#app/utils/labels-provider.tsx'
-import { getDomainUrl, removeTrailingSlash } from '#app/utils/misc.tsx'
+import { getDomainUrl, getUrl, removeTrailingSlash } from '#app/utils/misc.tsx'
 import { useNonce } from '#app/utils/nonce-provider.tsx'
 import {
 	PreviewStateProvider,
@@ -49,6 +48,8 @@ import {
 } from '#app/utils/storyblok.tsx'
 import { SdLogo } from '#app/utils/structured-data.tsx'
 import { SvgGradientReference } from '#app/utils/svg-gradient-reference.tsx'
+
+import { getSocialMetas } from './utils/seo'
 
 storyblokInit({
 	components,
@@ -120,7 +121,7 @@ export const links: LinksFunction = () => {
 	]
 }
 
-export type LoaderData = SerializeFrom<typeof loader>
+export type RootLoaderType = typeof loader
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
 	const preview = isPreview(request)
@@ -146,14 +147,15 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	})
 }
 
-export const meta: MetaFunction = () => {
-	return [
-		{
-			charset: 'utf-8',
-			title: 'Koodin',
-			viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
-		},
-	]
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+	const requestInfo = data?.requestInfo
+	return getSocialMetas({
+		title: 'Koodin',
+		description: 'Wij zijn Koodin, je nieuwe digitale partner',
+		keywords:
+			'Koodin, Digital Agency, Digital Partner, Lead Consultants, Lead Developers, Lead Designers, Freelance',
+		url: getUrl(requestInfo),
+	})
 }
 
 declare global {

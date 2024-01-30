@@ -1,5 +1,5 @@
 import { LocationSection } from '#app/components/sections/location-section.tsx'
-import type { LocationSectionBlok } from '#app/types.ts'
+import  { type LocationSectionBlok } from '#app/types.ts'
 import { mapAsset, useLocalizedMappers } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

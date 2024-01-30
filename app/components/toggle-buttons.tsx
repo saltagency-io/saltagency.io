@@ -16,7 +16,6 @@ type ButtonProps = {
 } & JSX.IntrinsicElements['button']
 
 export function ToggleButton({
-	name,
 	value,
 	className,
 	selected,

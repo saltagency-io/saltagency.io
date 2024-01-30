@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import type { StoryData } from '@storyblok/react'
+import  { type StoryData } from '@storyblok/react'
 
-import type { GroupTheme, VacancyStoryContent } from '#app/types.ts'
+import  { type GroupTheme, type VacancyStoryContent } from '#app/types.ts'
 
 export function createSimpleContext<ContextType>(name: string) {
 	const defaultValue = Symbol(`Default ${name} context value`)

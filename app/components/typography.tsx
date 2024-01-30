@@ -87,7 +87,6 @@ export function H6(props: TitleProps) {
 
 type ParagraphProps = {
 	className?: string
-	prose?: boolean
 	textColorClassName?: string
 	as?: React.ElementType
 	size?: 'sm' | 'md' | 'lg' | 'xl'
@@ -99,7 +98,6 @@ type ParagraphProps = {
 
 export function Paragraph({
 	className,
-	prose = true,
 	as = 'p',
 	size = 'lg',
 	textColorClassName = 'text-primary',

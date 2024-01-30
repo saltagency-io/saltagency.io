@@ -1,5 +1,5 @@
 import { CardsSection } from '#app/components/sections/cards-section.tsx'
-import type { CardsSectionBlok } from '#app/types.ts'
+import  { type CardsSectionBlok } from '#app/types.ts'
 import { useLocalizedMappers } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

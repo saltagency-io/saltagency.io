@@ -100,6 +100,8 @@ app.use((req, res, next) => {
 	}
 })
 
+app.use(compression())
+
 app.disable('x-powered-by')
 
 app.use(Sentry.Handlers.requestHandler())
@@ -135,7 +137,7 @@ app.use((req, res, next) => {
 })
 
 // Setup morgan logger
-morgan.token('url', (req, res) => decodeURIComponent(req.url ?? ''))
+morgan.token('url', req => decodeURIComponent(req.url ?? ''))
 app.use(
 	morgan('tiny', {
 		skip: (req, res) =>

@@ -1,5 +1,5 @@
 import { ClientsSection } from '#app/components/sections/clients-section.tsx'
-import type { ClientsBlok } from '#app/types.ts'
+import  { type ClientsBlok } from '#app/types.ts'
 import { mapAsset } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 

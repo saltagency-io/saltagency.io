@@ -1,4 +1,4 @@
-import type * as React from 'react'
+import * as React from 'react'
 
 import { Breadcrumbs } from '#app/components/breadcrumbs.tsx'
 import { ButtonLink } from '#app/components/button.tsx'
