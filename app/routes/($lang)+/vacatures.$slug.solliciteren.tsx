@@ -22,6 +22,7 @@ import { handleFormSubmission } from '#app/utils/actions.server.ts'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
+	getLanguageFromPath,
 	getStaticLabel,
 	type SupportedLanguage,
 } from '#app/utils/i18n.ts'
@@ -52,7 +53,9 @@ export const routes: Record<SupportedLanguage, string> = {
 }
 
 export const handle: Handle = {
-	getSitemapEntries: async language => {
+	getSitemapEntries: async request => {
+		const { pathname } = new URL(request.url)
+		const language = getLanguageFromPath(pathname)
 		const pages = await getAllVacancies(language)
 		return (pages || []).map(page => ({
 			route: `/${page.full_slug}/${routes[language]}`,

@@ -49,6 +49,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@nasa-gcn/remix-seo": "^2.0.0",
     "@notionhq/client": "^2.2.3",
     "@reach/accordion": "^0.18.0",
     "@reach/menu-button": "^0.18.0",

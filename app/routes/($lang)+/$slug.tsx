@@ -12,16 +12,20 @@ import {
 	getStoriesForSitemap,
 	getStoryBySlug,
 } from '#app/lib/storyblok.server.ts'
-import { pathedRoutes } from '#app/other-routes.server.ts'
 import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle } from '#app/types.ts'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
+	getLanguageFromPath,
 	getStaticLabel,
 	isSupportedLanguage,
 } from '#app/utils/i18n.ts'
-import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
+import {
+	createAlternateLinks,
+	getUrl,
+	removeTrailingSlash,
+} from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
 import {
 	getTranslatedSlugsFromStory,
@@ -29,14 +33,18 @@ import {
 } from '#app/utils/storyblok.tsx'
 
 export const handle: Handle = {
-	getSitemapEntries: async language => {
+	getSitemapEntries: async request => {
+		const { pathname } = new URL(request.url)
+		const language = getLanguageFromPath(pathname)
 		const pages = await getStoriesForSitemap(language)
 		return pages.map(page => ({
-			route: `${
-				page.slug === 'home'
-					? `${language === defaultLanguage ? '' : `/${language}`}`
-					: `/${page.full_slug}`
-			}`,
+			route: removeTrailingSlash(
+				`${
+					page.slug === 'home'
+						? `${language === defaultLanguage ? '' : `/${language}`}`
+						: `/${page.full_slug}`
+				}`,
+			),
 			priority: 0.4,
 		}))
 	},
@@ -47,12 +55,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
 	const language = getLanguageFromContext(context)
 	const { pathname } = new URL(request.url)
 
-	// Block the layout path when not in preview mode
-	if (pathedRoutes[pathname] || (!preview && pathname === '/layout')) {
-		throw new Response('Use other route', { status: 404 })
-	}
-
-	// Include whatever is in params.lang if it is not a supported langauge.
+	// Include whatever is in params.lang if it is not a supported language.
 	// This way we support arbitrary nested routes.
 	const slugStart =
 		params.slug && !isSupportedLanguage(params.lang) ? `${params.lang}/` : ''
@@ -65,7 +68,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
 	const story = await getStoryBySlug(slug, language, preview)
 
 	if (!story) {
-		throw json({}, { status: 404 })
+		throw new Response('Not found', { status: 404 })
 	}
 
 	if (pathname.includes('home')) {

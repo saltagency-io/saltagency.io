@@ -1,5 +1,4 @@
-import { type DynamicLinksFunction } from '#app/utils/dynamic-links'
-import { type SupportedLanguage } from '#app/utils/i18n'
+import { type SEOHandle } from '@nasa-gcn/remix-seo'
 
 export type NonNullProperties<Type> = {
 	[Key in keyof Type]-?: Exclude<Type[Key], null | undefined>
@@ -19,15 +18,8 @@ export type SitemapEntry = {
 	priority?: 0.0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1.0
 }
 
-export type Handle = {
+export type Handle = SEOHandle & {
 	id?: string
-	getSitemapEntries?: (
-		language: SupportedLanguage,
-		request: Request,
-	) =>
-		| Promise<Array<SitemapEntry | null> | null>
-		| Array<SitemapEntry | null>
-		| null
 }
 
 export type Image = {

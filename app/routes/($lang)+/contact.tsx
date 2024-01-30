@@ -23,6 +23,7 @@ import { handleFormSubmission } from '#app/utils/actions.server.ts'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
+	getLanguageFromPath,
 	getStaticLabel,
 } from '#app/utils/i18n.ts'
 import { useLabels } from '#app/utils/labels-provider.tsx'
@@ -44,7 +45,9 @@ import {
 } from '#app/utils/validators.ts'
 
 export const handle: Handle = {
-	getSitemapEntries: language => {
+	getSitemapEntries: request => {
+		const { pathname } = new URL(request.url)
+		const language = getLanguageFromPath(pathname)
 		return [
 			{
 				route: `${language === defaultLanguage ? '' : `/${language}`}/contact`,

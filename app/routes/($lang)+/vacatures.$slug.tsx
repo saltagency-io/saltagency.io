@@ -14,6 +14,7 @@ import { type Handle } from '#app/types.ts'
 import {
 	defaultLanguage,
 	getLanguageFromContext,
+	getLanguageFromPath,
 	getStaticLabel,
 } from '#app/utils/i18n.ts'
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
@@ -24,7 +25,9 @@ import {
 } from '#app/utils/storyblok.tsx'
 
 export const handle: Handle = {
-	getSitemapEntries: async language => {
+	getSitemapEntries: async request => {
+		const { pathname } = new URL(request.url)
+		const language = getLanguageFromPath(pathname)
 		const pages = await getAllVacancies(language)
 		return (pages || []).map(page => ({
 			route: `/${page.full_slug}`,
