@@ -1,5 +1,5 @@
 import { Grid } from '~/components/grid'
-import { H2, H3, Paragraph } from '~/components/typography'
+import { H2, H5, Paragraph } from '~/components/typography'
 import type { Image } from '~/types'
 import { getImgProps } from '~/utils/images'
 import { useGroup } from '~/utils/providers'
@@ -14,7 +14,14 @@ type Props = {
 	imagePosition: 'left' | 'right'
 	titleVariant: 'large' | 'small'
 }
-export function Banner({ subtitle, title, text, image, imagePosition }: Props) {
+export function Banner({
+	subtitle,
+	title,
+	text,
+	image,
+	imagePosition,
+	titleVariant,
+}: Props) {
 	const { theme } = useGroup()
 	const isDark = theme.startsWith('dark')
 
@@ -54,21 +61,29 @@ export function Banner({ subtitle, title, text, image, imagePosition }: Props) {
 		<Grid className="items-center gap-x-0 gap-y-10 lg:gap-y-0">
 			<motion.div
 				className={clsx('col-span-full lg:col-span-6 lg:row-start-1', {
-					'lg:col-start-8': imagePosition === 'left',
+					'lg:col-start-7': imagePosition === 'left',
 				})}
 				initial="initial"
 				whileInView="visible"
 				viewport={viewPort}
 				variants={textVariants}
 			>
-				{subtitle ? (
-					<H3 variant="secondary" className="mb-2">
-						{subtitle}
-					</H3>
-				) : null}
-
-				{title ? <H2 inverse={isDark}>{title}</H2> : null}
-
+				<div className="flex flex-col-reverse">
+					{titleVariant === 'small' ? (
+						<H5 as="h2" inverse={isDark} className="mb-2">
+							{title}
+						</H5>
+					) : (
+						<H2 inverse={isDark} className="mb-2">
+							{title}
+						</H2>
+					)}
+					{subtitle ? (
+						<H5 as="h3" variant="secondary" className="mb-2">
+							{subtitle}
+						</H5>
+					) : null}
+				</div>
 				{text ? (
 					<Paragraph
 						className="text-lg"
@@ -82,10 +97,9 @@ export function Banner({ subtitle, title, text, image, imagePosition }: Props) {
 			{image ? (
 				<motion.div
 					className={clsx(
-						'col-span-full lg:row-start-1 lg:flex lg:flex-col lg:justify-center',
+						'col-span-full lg:col-span-6 lg:flex lg:flex-col lg:justify-center',
 						{
-							'lg:col-span-6 lg:col-start-7': imagePosition === 'right',
-							'lg:col-span-5 lg:col-start-1': imagePosition === 'left',
+							'lg:col-start-7': imagePosition === 'right',
 						},
 					)}
 					initial="hidden"
