@@ -23,9 +23,8 @@ export function HeroSection({ children, title, body, hasShapes }: Props) {
 		<>
 			{hasShapes ? (
 				<motion.img
-					loading="eager"
 					src="/images/rain-drops-background.svg"
-					className="absolute -top-[300px] left-0 h-screen w-screen select-none object-fill"
+					className="absolute left-0 top-0 h-screen w-screen select-none object-fill"
 					initial="initial"
 					animate="visible"
 					variants={{

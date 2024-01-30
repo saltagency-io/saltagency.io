@@ -31,13 +31,21 @@
     "build:remix": "remix build",
     "build:server": "tsx ./other/build-server.js",
     "build": "npm run build:css:prod && npm run build:remix && npm run build:server",
-    "dev": "pm2-dev ./other/pm2.config.js",
+    "dev": "pm2-dev ./other/pm2.config.cjs",
     "start": "cross-env NODE_ENV=production node ./index.js",
-    "typecheck": "tsc -b .",
+    "typecheck": "tsc",
     "format": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "proxy": "local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem",
     "deploy": "fly deploy --remote-only"
   },
+  "eslintIgnore": [
+    "/node_modules",
+    "/build",
+    "/public/build",
+    "/server-build"
+  ],
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "^1.8.1",
     "@notionhq/client": "^2.2.3",

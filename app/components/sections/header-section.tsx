@@ -9,6 +9,7 @@ type Props = {
 	hasShapes: boolean
 	hasScrollIndicator: boolean
 	body?: string
+	children: React.ReactNode
 }
 
 export function HeaderSection({
@@ -16,6 +17,7 @@ export function HeaderSection({
 	body,
 	hasShapes,
 	hasScrollIndicator,
+	children,
 }: Props) {
 	const shouldReduceMotion = useReducedMotion()
 
@@ -83,6 +85,13 @@ export function HeaderSection({
 								<p className="lg:text-center lg:text-2xl">{body}</p>
 							</motion.div>
 						) : null}
+
+						<motion.div
+							className="flex flex-col items-center justify-center gap-4 lg:flex-row lg:gap-6"
+							variants={childVariants}
+						>
+							{children}
+						</motion.div>
 
 						{hasScrollIndicator ? (
 							<motion.div
