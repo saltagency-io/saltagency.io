@@ -6,11 +6,11 @@ import type { LayoutBlok } from '~/types'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbLayout({ blok }: { blok: LayoutBlok }) {
-	return (
-		<StoryBlokWrapper blok={blok}>
-			<StoryblokComponent blok={blok.navigation[0]} />
-			<Outlet />
-			<StoryblokComponent blok={blok.footer[0]} />
-		</StoryBlokWrapper>
-	)
+  return (
+    <StoryBlokWrapper blok={blok}>
+      <StoryblokComponent blok={blok.navigation[0]} />
+      <Outlet />
+      <StoryblokComponent blok={blok.footer[0]} />
+    </StoryBlokWrapper>
+  )
 }

@@ -4,21 +4,21 @@ import { useLocalizedMappers } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbCardsSection({ blok }: { blok: CardsSectionBlok }) {
-	const { mapLink } = useLocalizedMappers()
+  const { mapLink } = useLocalizedMappers()
 
-	const cards = blok.cards.map(({ _uid, icon, link, title, body }) => {
-		return {
-			id: _uid,
-			icon,
-			title,
-			link: link && link[0] ? mapLink(link[0]) : undefined,
-			body,
-		}
-	})
+  const cards = blok.cards.map(({ _uid, icon, link, title, body }) => {
+    return {
+      id: _uid,
+      icon,
+      title,
+      link: link && link[0] ? mapLink(link[0]) : undefined,
+      body,
+    }
+  })
 
-	return (
-		<StoryBlokWrapper blok={blok}>
-			<CardsSection {...blok} cards={cards} />
-		</StoryBlokWrapper>
-	)
+  return (
+    <StoryBlokWrapper blok={blok}>
+      <CardsSection {...blok} cards={cards} />
+    </StoryBlokWrapper>
+  )
 }

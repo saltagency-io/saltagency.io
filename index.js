@@ -5,7 +5,7 @@ import { installGlobals } from '@remix-run/node'
 installGlobals()
 
 if (process.env.NODE_ENV === 'production') {
-	import('./server-build')
+  import('./server-build')
 } else {
-	import('./server')
+  import('./server')
 }

@@ -9,174 +9,174 @@
 /* tailwind is configured to prefer these fonts */
 /* nunito-sans-regular - latin */
 @font-face {
-	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-	font-family: 'Nunito Sans';
-	font-style: normal;
-	font-weight: 400;
-	src: url('/fonts/nunito-sans-v15-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/nunito-sans-v15-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 /* nunito-sans-700 - latin */
 @font-face {
-	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-	font-family: 'Nunito Sans';
-	font-style: normal;
-	font-weight: 700;
-	src: url('/fonts/nunito-sans-v15-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/nunito-sans-v15-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 /* plus-jakarta-sans-700 - latin */
 @font-face {
-	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-	font-family: 'Plus Jakarta Sans';
-	font-style: normal;
-	font-weight: 700;
-	src: url('/fonts/plus-jakarta-sans-v8-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/plus-jakarta-sans-v8-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 @layer utilities {
-	.focus-ring-base {
-		@apply ring-offset-4 duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
-	}
+  .focus-ring-base {
+    @apply ring-offset-4 duration-300 focus-within:outline-none focus-within:ring-2 hover:ring-2 focus:outline-none focus:ring-2 disabled:ring-0 group-hover:ring-2 group-focus:ring-2;
+  }
 
-	.focus-ring-black {
-		@apply focus-ring-base ring-gray-800/50 group-active:ring-black;
-	}
+  .focus-ring-black {
+    @apply focus-ring-base ring-gray-800/50 group-active:ring-black;
+  }
 
-	.focus-ring-inverse {
-		@apply focus-ring-base ring-white/30 group-active:ring-white;
-	}
+  .focus-ring-inverse {
+    @apply focus-ring-base ring-white/30 group-active:ring-white;
+  }
 
-	.focus-ring-blue {
-		@apply focus-ring-base ring-blue-500;
-	}
+  .focus-ring-blue {
+    @apply focus-ring-base ring-blue-500;
+  }
 
-	.focus-ring-purple {
-		@apply focus-ring-base ring-purple-500;
-	}
+  .focus-ring-purple {
+    @apply focus-ring-base ring-purple-500;
+  }
 
-	.bg-primary {
-		@apply bg-white;
-	}
+  .bg-primary {
+    @apply bg-white;
+  }
 
-	.bg-secondary {
-		background: linear-gradient(
-				180deg,
-				#ffffff 0%,
-				rgba(255, 255, 255, 0) 100.98%
-			),
-			rgba(35, 74, 134, 0.05);
-	}
+  .bg-secondary {
+    background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0) 100.98%
+      ),
+      rgba(35, 74, 134, 0.05);
+  }
 
-	.bg-page-top {
-		background: linear-gradient(
-			180deg,
-			rgb(217 217 217 / 0.1) 55.81%,
-			rgb(217 217 217 / 0) 100%
-		);
-	}
+  .bg-page-top {
+    background: linear-gradient(
+      180deg,
+      rgb(217 217 217 / 0.1) 55.81%,
+      rgb(217 217 217 / 0) 100%
+    );
+  }
 
-	.bg-inverse {
-		@apply bg-gray-900;
-	}
+  .bg-inverse {
+    @apply bg-gray-900;
+  }
 
-	.bg-gradient {
-		background: linear-gradient(
-				155deg,
-				hsl(246 19% 10%) 14%,
-				hsl(246 19% 10% / 0) 86%
-			),
-			linear-gradient(0deg, hsl(246 19% 10%) 0%, hsl(246 19% 10% / 0) 140%),
-			linear-gradient(
-				0deg,
-				hsl(227 96% 11% / 0.5) 0%,
-				hsl(227 96% 11% / 0.5) 100%
-			),
-			linear-gradient(
-				106deg,
-				hsl(var(--color-blue-400)) -8%,
-				hsl(281 100% 50%) 108%
-			);
-	}
+  .bg-gradient {
+    background: linear-gradient(
+        155deg,
+        hsl(246 19% 10%) 14%,
+        hsl(246 19% 10% / 0) 86%
+      ),
+      linear-gradient(0deg, hsl(246 19% 10%) 0%, hsl(246 19% 10% / 0) 140%),
+      linear-gradient(
+        0deg,
+        hsl(227 96% 11% / 0.5) 0%,
+        hsl(227 96% 11% / 0.5) 100%
+      ),
+      linear-gradient(
+        106deg,
+        hsl(var(--color-blue-400)) -8%,
+        hsl(281 100% 50%) 108%
+      );
+  }
 
-	.bg-gradient-dark {
-		background-image: linear-gradient(
-				148.67deg,
-				#0f0e17 28.61%,
-				rgba(15, 14, 23, 0) 156.76%
-			),
-			linear-gradient(360deg, #0f0e17 1.67%, rgba(15, 14, 23, 0) 140.45%),
-			linear-gradient(0deg, rgba(1, 13, 55, 0.29), rgba(1, 13, 55, 0.29)),
-			linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
-	}
+  .bg-gradient-dark {
+    background-image: linear-gradient(
+        148.67deg,
+        #0f0e17 28.61%,
+        rgba(15, 14, 23, 0) 156.76%
+      ),
+      linear-gradient(360deg, #0f0e17 1.67%, rgba(15, 14, 23, 0) 140.45%),
+      linear-gradient(0deg, rgba(1, 13, 55, 0.29), rgba(1, 13, 55, 0.29)),
+      linear-gradient(105.54deg, #4353ff 0%, #eb596e 104.83%);
+  }
 
-	.bg-gradient-radial {
-		background-image: linear-gradient(
-			143.15deg,
-			hsl(263deg 100% 50% / 100%) 3%,
-			hsl(255deg 100% 60% / 100%) 13%,
-			hsl(250deg 100% 66% / 100%) 21%,
-			hsl(244deg 100% 70% / 90%) 28%,
-			hsl(236deg 100% 72% / 90%) 35%,
-			hsl(228deg 100% 72% / 85%) 43%,
-			hsl(219deg 100% 72% / 75%) 50%,
-			hsl(210deg 100% 71% / 70%) 58%,
-			hsl(201deg 100% 69% / 50%) 67%,
-			hsl(193deg 100% 66% / 25%) 76%,
-			hsl(186deg 100% 62% / 0%) 87%,
-			hsl(180deg 100% 50% / 0%) 100%
-		);
-	}
+  .bg-gradient-radial {
+    background-image: linear-gradient(
+      143.15deg,
+      hsl(263deg 100% 50% / 100%) 3%,
+      hsl(255deg 100% 60% / 100%) 13%,
+      hsl(250deg 100% 66% / 100%) 21%,
+      hsl(244deg 100% 70% / 90%) 28%,
+      hsl(236deg 100% 72% / 90%) 35%,
+      hsl(228deg 100% 72% / 85%) 43%,
+      hsl(219deg 100% 72% / 75%) 50%,
+      hsl(210deg 100% 71% / 70%) 58%,
+      hsl(201deg 100% 69% / 50%) 67%,
+      hsl(193deg 100% 66% / 25%) 76%,
+      hsl(186deg 100% 62% / 0%) 87%,
+      hsl(180deg 100% 50% / 0%) 100%
+    );
+  }
 
-	.bg-mobile-menu {
-		background: linear-gradient(
-				180deg,
-				theme(colors.blue.500 / 10%) 0%,
-				theme(colors.blue.500 / 10%) 100%
-			),
-			theme(colors.gray.body / 70%);
-	}
+  .bg-mobile-menu {
+    background: linear-gradient(
+        180deg,
+        theme(colors.blue.500 / 10%) 0%,
+        theme(colors.blue.500 / 10%) 100%
+      ),
+      theme(colors.gray.body / 70%);
+  }
 
-	.text-primary {
-		@apply text-gray-900;
-	}
+  .text-primary {
+    @apply text-gray-900;
+  }
 
-	.text-secondary {
-		@apply text-gray-500;
-	}
+  .text-secondary {
+    @apply text-gray-500;
+  }
 
-	.text-inverse {
-		@apply text-gray-100;
-	}
+  .text-inverse {
+    @apply text-gray-100;
+  }
 
-	.text-inverse-secondary {
-		@apply text-opacity-60;
-		color: rgba(255, 255, 255, var(--tw-text-opacity));
-	}
+  .text-inverse-secondary {
+    @apply text-opacity-60;
+    color: rgba(255, 255, 255, var(--tw-text-opacity));
+  }
 
-	.border-primary {
-		@apply border-opacity-10;
-		border-color: rgba(5, 25, 107, var(--tw-border-opacity));
-	}
+  .border-primary {
+    @apply border-opacity-10;
+    border-color: rgba(5, 25, 107, var(--tw-border-opacity));
+  }
 
-	.border-secondary {
-		@apply border-opacity-20;
-		border-color: rgba(255, 255, 255, var(--tw-border-opacity));
-	}
+  .border-secondary {
+    @apply border-opacity-20;
+    border-color: rgba(255, 255, 255, var(--tw-border-opacity));
+  }
 
-	.border-input {
-		border: 2px solid rgba(4, 19, 72, 0.22);
-	}
+  .border-input {
+    border: 2px solid rgba(4, 19, 72, 0.22);
+  }
 
-	.border-input-focus {
-		border: 2px solid rgba(4, 19, 72, 0.41);
-	}
+  .border-input-focus {
+    border: 2px solid rgba(4, 19, 72, 0.41);
+  }
 
-	.border-avatar-light {
-		border-color: rgba(35, 74, 134, 0.05);
-	}
+  .border-avatar-light {
+    border-color: rgba(35, 74, 134, 0.05);
+  }
 
-	.border-avatar-dark {
-		border-color: rgba(255, 255, 255, 0.05);
-	}
+  .border-avatar-dark {
+    border-color: rgba(255, 255, 255, 0.05);
+  }
 }

@@ -7,17 +7,17 @@ import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbContactSection({ blok }: { blok: ContactSectionBlok }) {
-	return (
-		<StoryBlokWrapper blok={blok}>
-			<ContactSection {...blok} image={mapAsset(blok.image)}>
-				{blok.actions?.map(action => (
-					<StoryblokComponent
-						key={action._uid}
-						blok={action}
-						ringOffsetColor={blok.theme === 'light' ? 'white' : 'black'}
-					/>
-				))}
-			</ContactSection>
-		</StoryBlokWrapper>
-	)
+  return (
+    <StoryBlokWrapper blok={blok}>
+      <ContactSection {...blok} image={mapAsset(blok.image)}>
+        {blok.actions?.map(action => (
+          <StoryblokComponent
+            key={action._uid}
+            blok={action}
+            ringOffsetColor={blok.theme === 'light' ? 'white' : 'black'}
+          />
+        ))}
+      </ContactSection>
+    </StoryBlokWrapper>
+  )
 }

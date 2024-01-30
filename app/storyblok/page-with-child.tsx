@@ -6,26 +6,26 @@ import { GroupProvider } from '~/utils/providers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbPageWithChild({
-	blok,
-	children,
+  blok,
+  children,
 }: {
-	blok: PageWithChildBlok
-	children: React.ReactNode
+  blok: PageWithChildBlok
+  children: React.ReactNode
 }) {
-	return (
-		<StoryBlokWrapper blok={blok}>
-			{/* Fallback group theme provider */}
-			<GroupProvider value={{ theme: 'light-white' }}>
-				{blok.topBody?.map(nestedBlok => (
-					<StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
-				))}
+  return (
+    <StoryBlokWrapper blok={blok}>
+      {/* Fallback group theme provider */}
+      <GroupProvider value={{ theme: 'light-white' }}>
+        {blok.topBody?.map(nestedBlok => (
+          <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
+        ))}
 
-				{children}
+        {children}
 
-				{blok.bottomBody?.map(nestedBlok => (
-					<StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
-				))}
-			</GroupProvider>
-		</StoryBlokWrapper>
-	)
+        {blok.bottomBody?.map(nestedBlok => (
+          <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
+        ))}
+      </GroupProvider>
+    </StoryBlokWrapper>
+  )
 }

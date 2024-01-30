@@ -18,157 +18,157 @@ const ABORT_DELAY = 5000
 type DocRequestArgs = Parameters<HandleDocumentRequestFunction>
 
 export default async function handleRequest(...args: DocRequestArgs) {
-	const [
-		request,
-		responseStatusCode,
-		responseHeaders,
-		remixContext,
-		loadContext,
-	] = args
+  const [
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+    loadContext,
+  ] = args
 
-	for (const handler of otherRoutes) {
-		const otherRouteResponse = await handler(request, remixContext)
-		if (otherRouteResponse) return otherRouteResponse
-	}
+  for (const handler of otherRoutes) {
+    const otherRouteResponse = await handler(request, remixContext)
+    if (otherRouteResponse) return otherRouteResponse
+  }
 
-	if (process.env.NODE_ENV !== 'production') {
-		responseHeaders.set('Cache-Control', 'no-store')
-	}
+  if (process.env.NODE_ENV !== 'production') {
+    responseHeaders.set('Cache-Control', 'no-store')
+  }
 
-	// Preconnect to storyblok domains (image and script locations)
-	responseHeaders.append('Link', '<https://a.storyblok.com>; rel="preconnect"')
-	responseHeaders.append(
-		'Link',
-		'<https://app.storyblok.com>; rel="preconnect"',
-	)
+  // Preconnect to storyblok domains (image and script locations)
+  responseHeaders.append('Link', '<https://a.storyblok.com>; rel="preconnect"')
+  responseHeaders.append(
+    'Link',
+    '<https://app.storyblok.com>; rel="preconnect"',
+  )
 
-	if (isbot(request.headers.get('user-agent'))) {
-		return handleBotRequest(
-			request,
-			responseStatusCode,
-			responseHeaders,
-			remixContext,
-			loadContext,
-		)
-	}
+  if (isbot(request.headers.get('user-agent'))) {
+    return handleBotRequest(
+      request,
+      responseStatusCode,
+      responseHeaders,
+      remixContext,
+      loadContext,
+    )
+  }
 
-	return handleBrowserRequest(
-		request,
-		responseStatusCode,
-		responseHeaders,
-		remixContext,
-		loadContext,
-	)
+  return handleBrowserRequest(
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+    loadContext,
+  )
 }
 
 function handleBotRequest(...args: DocRequestArgs) {
-	const [
-		request,
-		responseStatusCode,
-		responseHeaders,
-		remixContext,
-		loadContext,
-	] = args
+  const [
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+    loadContext,
+  ] = args
 
-	const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
-	const language = isSupportedLanguage(loadContext.language)
-		? loadContext.language
-		: defaultLanguage
+  const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
+  const language = isSupportedLanguage(loadContext.language)
+    ? loadContext.language
+    : defaultLanguage
 
-	return new Promise((resolve, reject) => {
-		let didError = false
+  return new Promise((resolve, reject) => {
+    let didError = false
 
-		const { pipe, abort } = renderToPipeableStream(
-			<NonceProvider value={nonce}>
-				<I18nProvider language={language}>
-					<RemixServer context={remixContext} url={request.url} />
-				</I18nProvider>
-			</NonceProvider>,
-			{
-				nonce,
-				onAllReady() {
-					const body = new PassThrough()
+    const { pipe, abort } = renderToPipeableStream(
+      <NonceProvider value={nonce}>
+        <I18nProvider language={language}>
+          <RemixServer context={remixContext} url={request.url} />
+        </I18nProvider>
+      </NonceProvider>,
+      {
+        nonce,
+        onAllReady() {
+          const body = new PassThrough()
 
-					responseHeaders.set('Content-Type', 'text/html')
+          responseHeaders.set('Content-Type', 'text/html')
 
-					resolve(
-						new Response(body, {
-							headers: responseHeaders,
-							status: didError ? 500 : responseStatusCode,
-						}),
-					)
+          resolve(
+            new Response(body, {
+              headers: responseHeaders,
+              status: didError ? 500 : responseStatusCode,
+            }),
+          )
 
-					pipe(body)
-				},
-				onShellError(error: unknown) {
-					reject(error)
-				},
-				onError(error: unknown) {
-					didError = true
+          pipe(body)
+        },
+        onShellError(error: unknown) {
+          reject(error)
+        },
+        onError(error: unknown) {
+          didError = true
 
-					console.error(error)
-				},
-			},
-		)
+          console.error(error)
+        },
+      },
+    )
 
-		setTimeout(abort, ABORT_DELAY)
-	})
+    setTimeout(abort, ABORT_DELAY)
+  })
 }
 
 function handleBrowserRequest(...args: DocRequestArgs) {
-	const [
-		request,
-		responseStatusCode,
-		responseHeaders,
-		remixContext,
-		loadContext,
-	] = args
+  const [
+    request,
+    responseStatusCode,
+    responseHeaders,
+    remixContext,
+    loadContext,
+  ] = args
 
-	const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
-	const language = isSupportedLanguage(loadContext.language)
-		? loadContext.language
-		: defaultLanguage
+  const nonce = loadContext.cspNonce ? String(loadContext.cspNonce) : undefined
+  const language = isSupportedLanguage(loadContext.language)
+    ? loadContext.language
+    : defaultLanguage
 
-	return new Promise((resolve, reject) => {
-		let didError = false
+  return new Promise((resolve, reject) => {
+    let didError = false
 
-		const { pipe, abort } = renderToPipeableStream(
-			<NonceProvider value={nonce}>
-				<I18nProvider language={language}>
-					<RemixServer
-						context={remixContext}
-						url={request.url}
-						abortDelay={ABORT_DELAY}
-					/>
-				</I18nProvider>
-			</NonceProvider>,
-			{
-				nonce,
-				onShellReady() {
-					const body = new PassThrough()
+    const { pipe, abort } = renderToPipeableStream(
+      <NonceProvider value={nonce}>
+        <I18nProvider language={language}>
+          <RemixServer
+            context={remixContext}
+            url={request.url}
+            abortDelay={ABORT_DELAY}
+          />
+        </I18nProvider>
+      </NonceProvider>,
+      {
+        nonce,
+        onShellReady() {
+          const body = new PassThrough()
 
-					responseHeaders.set('Content-Type', 'text/html')
+          responseHeaders.set('Content-Type', 'text/html')
 
-					resolve(
-						new Response(body, {
-							headers: responseHeaders,
-							status: didError ? 500 : responseStatusCode,
-						}),
-					)
+          resolve(
+            new Response(body, {
+              headers: responseHeaders,
+              status: didError ? 500 : responseStatusCode,
+            }),
+          )
 
-					pipe(body)
-				},
-				onShellError(err: unknown) {
-					reject(err)
-				},
-				onError(error: unknown) {
-					didError = true
+          pipe(body)
+        },
+        onShellError(err: unknown) {
+          reject(err)
+        },
+        onError(error: unknown) {
+          didError = true
 
-					console.error(error)
-				},
-			},
-		)
+          console.error(error)
+        },
+      },
+    )
 
-		setTimeout(abort, ABORT_DELAY)
-	})
+    setTimeout(abort, ABORT_DELAY)
+  })
 }

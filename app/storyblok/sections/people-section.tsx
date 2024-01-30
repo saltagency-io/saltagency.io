@@ -7,17 +7,17 @@ import { mapAsset } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbPeopleSection({ blok }: { blok: PeopleSectionBlok }) {
-	return (
-		<StoryBlokWrapper blok={blok}>
-			<PeopleSection
-				subtitle={blok.subtitle}
-				title={blok.title}
-				people={blok.people.map(mapAsset)}
-			>
-				{blok.actions.map(action => (
-					<StoryblokComponent key={action._uid} blok={action} />
-				))}
-			</PeopleSection>
-		</StoryBlokWrapper>
-	)
+  return (
+    <StoryBlokWrapper blok={blok}>
+      <PeopleSection
+        subtitle={blok.subtitle}
+        title={blok.title}
+        people={blok.people.map(mapAsset)}
+      >
+        {blok.actions.map(action => (
+          <StoryblokComponent key={action._uid} blok={action} />
+        ))}
+      </PeopleSection>
+    </StoryBlokWrapper>
+  )
 }

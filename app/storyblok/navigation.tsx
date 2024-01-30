@@ -6,11 +6,11 @@ import { useLocalizedMappers } from '~/utils/mappers'
 import { StoryBlokWrapper } from '~/utils/storyblok'
 
 export function SbNavigation({ blok }: { blok: NavigationBlok }) {
-	const { mapLink } = useLocalizedMappers()
+  const { mapLink } = useLocalizedMappers()
 
-	return (
-		<StoryBlokWrapper blok={blok}>
-			<Navbar menu={blok.menu.map(mapLink)} />
-		</StoryBlokWrapper>
-	)
+  return (
+    <StoryBlokWrapper blok={blok}>
+      <Navbar menu={blok.menu.map(mapLink)} />
+    </StoryBlokWrapper>
+  )
 }
