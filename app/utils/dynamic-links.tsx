@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import type { AppData, LinkDescriptor } from '@remix-run/node'
 import { useLocation, useMatches } from '@remix-run/react'
-import type { RouteData } from '@remix-run/react/dist/routeData'
 import type { Location, Params } from 'react-router-dom'
 
 type HandleConventionArguments<Data extends AppData = AppData> = {
@@ -10,7 +9,7 @@ type HandleConventionArguments<Data extends AppData = AppData> = {
 	data: Data
 	params: Params
 	location: Location
-	parentsData: RouteData
+	parentsData: any
 }
 
 export interface DynamicLinksFunction<Data extends AppData = AppData> {
