@@ -51,9 +51,10 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
             as="span"
             // Somehow the text color classname gets overridden by the gray color classname in the heading component (maybe because the number is higher?)
             // Add a breakpoint prefix to make sure the classname is more specific
-            className={
-              link ? 'group-hover:text-blue-600 sm:text-blue-500' : undefined
-            }
+            className={clsx(link ? 'sm:text-blue-500' : undefined, {
+              'group-hover:text-blue-600': variant === 'light',
+              'group-hover:text-blue-400': variant === 'dark',
+            })}
             inverse={variant === 'dark'}
           >
             {title}
@@ -62,7 +63,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         <Paragraph
           textColorClassName={clsx({
             'text-gray-100': variant === 'dark',
-            'group-hover:text-gray-800': variant === 'dark' && link,
+            // 'group-hover:text-gray-800': variant === 'dark' && link,
           })}
         >
           {children}
@@ -70,9 +71,12 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         {link ? (
           <div
             className={clsx(
-              'absolute -bottom-[18px] left-0 right-0 m-auto inline-flex max-w-[120px] translate-y-4',
-              'items-center justify-center rounded-[48px] bg-gray-900 px-6 py-4 font-bold text-white opacity-0',
-              'transition-all group-hover:translate-y-0 group-hover:opacity-100',
+              'absolute -bottom-[18px] left-0 right-0 m-auto inline-flex max-w-[130px] translate-y-4 items-center justify-center',
+              'rounded-[48px] px-6 py-4 font-bold opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100',
+              {
+                'bg-gray-900 text-white': variant === 'light',
+                'bg-white text-gray-800': variant === 'dark',
+              },
             )}
           >
             {link.text}
@@ -96,8 +100,11 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         <Link
           className={clsx(
             rootClassName,
-            'transition-all hover:border-transparent hover:bg-white hover:shadow-card',
-          )}
+            'transition-all ', {
+            'border-white/10 hover:bg-gray-800/10': variant === 'dark',
+            'hover:border-transparent hover:bg-white hover:shadow-card':
+              variant === 'light',
+          })}
           to={link.url}
           prefetch="intent"
         >

@@ -1,3 +1,4 @@
+import { StoryblokComponent } from '@storyblok/react'
 import { HeaderSection } from '#app/components/sections/header-section.tsx'
 import { type HeaderSectionBlok } from '#app/types.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
@@ -10,7 +11,11 @@ export function SbHeaderSection({ blok }: { blok: HeaderSectionBlok }) {
         body={blok.body}
         hasShapes={blok.hasShapes}
         hasScrollIndicator={blok.hasScrollIndicator}
-      />
-    </StoryBlokWrapper>
+      >
+    {blok.cta?.map(action => (
+          <StoryblokComponent key={action._uid} blok={action} />
+        ))}
+      </HeaderSection>
+		</StoryBlokWrapper>
   )
 }
