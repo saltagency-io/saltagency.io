@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { GradientCircle } from '#app/components/gradient-circle.tsx'
@@ -10,6 +12,7 @@ type Props = {
   hasShapes: boolean
   hasScrollIndicator: boolean
   body?: string
+  children: React.ReactNode
 }
 
 export function HeaderSection({

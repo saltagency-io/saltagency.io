@@ -8,7 +8,7 @@ export function SbCardsSection({ blok }: { blok: CardsSectionBlok }) {
 
   const cards = blok.cards.map(({ _uid, icon, link, title, body }) => {
     return {
-      id: _uid,
+      id: _uid ?? '',
       icon,
       title,
       link: link && link[0] ? mapLink(link[0]) : undefined,

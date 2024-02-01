@@ -39,7 +39,6 @@ import { getEnv } from '#app/utils/env.server.ts'
 import { honeypot } from '#app/utils/honeypot.server.ts'
 import { I18nProvider, useI18n } from '#app/utils/i18n-provider.tsx'
 import { getLanguageFromContext, getLanguageFromPath } from '#app/utils/i18n.ts'
-import { getJsonLdLogo } from '#app/utils/json-ld'
 import { LabelsProvider } from '#app/utils/labels-provider.tsx'
 import {
   combineHeaders,

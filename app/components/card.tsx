@@ -98,9 +98,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
     if (link) {
       return (
         <Link
-          className={clsx(
-            rootClassName,
-            'transition-all ', {
+          className={clsx(rootClassName, 'transition-all ', {
             'border-white/10 hover:bg-gray-800/10': variant === 'dark',
             'hover:border-transparent hover:bg-white hover:shadow-card':
               variant === 'light',

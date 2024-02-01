@@ -3,9 +3,9 @@ import * as React from 'react'
 import clsx from 'clsx'
 
 import {
-	IconCheckCircle,
-	IconPhone,
-	IconSquareStack,
+  IconCheckCircle,
+  IconPhone,
+  IconSquareStack,
 } from '#app/components/icons.tsx'
 import { AnchorOrLink } from '#app/utils/misc.tsx'
 
@@ -211,10 +211,10 @@ export function PhoneButton({
         {hasCopied ? (
           <div
             className={clsx(
-							'pl-8 lg:font-bold',
-							variant === 'outline-inverse'
-								? 'text-inverse-secondary'
-								: 'text-primary',
+              'pl-8 lg:font-bold',
+              variant === 'outline-inverse'
+                ? 'text-inverse-secondary'
+                : 'text-primary',
             )}
           >
             Gekopieerd

@@ -49,7 +49,7 @@ export function mapLink(language: SupportedLanguage = defaultLanguage) {
         : link.target.cached_url
 
     return {
-      id: link?._uid,
+      id: link?._uid ?? '',
       url: formatUrl(urlTarget ?? '', language, link.anchor),
       text: link?.text,
     }
@@ -75,7 +75,7 @@ export function useLocalizedMappers() {
 
 export function mapSection(language = defaultLanguage) {
   return (section: SectionBlok): Section => ({
-    id: section._uid,
+    id: section._uid ?? '',
     icon: section.icon,
     title: section.title,
     text: section.text,

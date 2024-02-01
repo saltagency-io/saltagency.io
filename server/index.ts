@@ -162,7 +162,7 @@ app.use(
           process.env.SENTRY_DSN ? '*.ingest.sentry.io' : null,
           'cdn.usefathom.com',
           "'self'",
-        ].filter(Boolean),
+        ].filter((s): s is string => s !== null),
         'font-src': ["'self'"],
         'frame-src': [
           "'self'",

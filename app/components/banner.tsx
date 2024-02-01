@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
-import { H3, H5 } from '#app/components/typography.tsx'
+import { H2, H5, Paragraph } from '#app/components/typography.tsx'
 import { type Image } from '#app/types.ts'
 import { getImgProps } from '#app/utils/images.ts'
 import { useGroup } from '#app/utils/providers.tsx'
@@ -21,16 +21,22 @@ export function Banner({
   text,
   image,
   imagePosition,
-  titleVariant,}: Props) {
+  titleVariant,
+}: Props) {
   const { theme } = useGroup()
   const isDark = theme.startsWith('dark')
+  const shouldReduceMotion = useReducedMotion()
 
   const textVariants = {
     initial: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { staggerChildren: 0.1, delay: 0.1, duration: 0.3 },
+      transition: {
+        staggerChildren: 0.1,
+        delay: 0.1,
+        duration: shouldReduceMotion ? 0 : 0.3,
+      },
     },
   }
 
@@ -46,7 +52,7 @@ export function Banner({
       x: 0,
       transition: {
         delay: 0.2,
-        duration: 0.6,
+        duration: shouldReduceMotion ? 0 : 0.6,
         ease: 'easeInOut',
       },
     },
@@ -55,20 +61,22 @@ export function Banner({
   const viewPort = {
     once: true,
     margin: '-85px 0px',
-  }return (
-    <Grid className="items-center gap-x-0gap-y-10 lg:gap-y-0">
+  }
+
+  return (
+    <Grid className="gap-x-0gap-y-10 items-center lg:gap-y-0">
       <motion.div
         className={clsx('col-span-full lg:col-span-6 lg:row-start-1', {
           'lg:col-start-7': imagePosition === 'left',
         })}
-      initial="initial"
+        initial="initial"
         whileInView="visible"
         viewport={viewPort}
         variants={textVariants}
       >
         <div className="flex flex-col-reverse">
           {titleVariant === 'small' ? (
-        <H5 as="h2" inverse={isDark} className="mb-2">
+            <H5 as="h2" inverse={isDark} className="mb-2">
               {title}
             </H5>
           ) : (
@@ -77,11 +85,12 @@ export function Banner({
             </H2>
           )}
           {subtitle ? (
-            <H5 as="h3"variant="secondary" className="mb-2">
-          {subtitle}
-        </H5>
-        ) : null}
-        </div>{text ? (
+            <H5 as="h3" variant="secondary" className="mb-2">
+              {subtitle}
+            </H5>
+          ) : null}
+        </div>
+        {text ? (
           <Paragraph
             className="text-lg"
             textColorClassName={isDark ? 'text-white' : 'text-gray-800'}
@@ -92,29 +101,29 @@ export function Banner({
       </motion.div>
       {image ? (
         <motion.div
-        className={clsx(
-          'col-span-full lg:col-span-6 lg:flex lg:flex-col lg:justify-center',
-          {
-            ' lg:col-start-7': imagePosition === 'right',
+          className={clsx(
+            'col-span-full lg:col-span-6 lg:flex lg:flex-col lg:justify-center',
+            {
+              ' lg:col-start-7': imagePosition === 'right',
             },
           )}
           initial="hidden"
           whileInView="visible"
           viewport={viewPort}
-        variants={imageAnimationVariants}
-      >
-        <img
-          className="w-full object-cover"
-          {...getImgProps(image.url, image.alt, {
-            widths: [375, 508, 1016],
-            sizes: [
-              '(max-width: 1023px) 84vw',
-              '(min-width: 1024px) 35vw',
-              '375px',
-            ],
-          })}
-        />
-      </motion.div>
+          variants={imageAnimationVariants}
+        >
+          <img
+            className="w-full object-cover"
+            {...getImgProps(image.url, image.alt, {
+              widths: [375, 508, 1016],
+              sizes: [
+                '(max-width: 1023px) 84vw',
+                '(min-width: 1024px) 35vw',
+                '375px',
+              ],
+            })}
+          />
+        </motion.div>
       ) : null}
     </Grid>
   )

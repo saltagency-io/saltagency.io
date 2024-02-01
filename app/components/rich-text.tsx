@@ -1,7 +1,8 @@
+import { motion } from 'framer-motion'
+
 import { Grid } from '#app/components/grid'
 import { Markdown } from '#app/utils/markdown'
 import { useGroup } from '#app/utils/providers'
-import { motion } from 'framer-motion'
 
 import { H3, H5, Paragraph } from './typography'
 
@@ -15,7 +16,7 @@ type Props = {
 
 export function RichText({ content, title, subtitle, text }: Props) {
   const { theme } = useGroup()
-	const isDark = theme.startsWith('dark')
+  const isDark = theme.startsWith('dark')
 
   const textVariant = {
     initial: { opacity: 0 },
@@ -56,8 +57,9 @@ export function RichText({ content, title, subtitle, text }: Props) {
 
         {content ? (
           <Markdown textColor={isDark ? 'inverse' : 'primary'}>
-          {content}
-        </Markdown>) : null}
+            {content}
+          </Markdown>
+        ) : null}
       </div>
     </Grid>
   )
