@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { type StoryData } from '@storyblok/react'
+import { type ISbStoryData as StoryData } from '@storyblok/react'
 
 import { type GroupTheme, type VacancyStoryContent } from '#app/types.ts'
 

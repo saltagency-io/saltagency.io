@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "strict": true,
     "noImplicitAny": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {

@@ -6,7 +6,9 @@ import {
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
+import { createBreadcrumbs } from '#app/components/breadcrumbs'
+import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
+import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
 import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle } from '#app/types.ts'
 import {
@@ -14,9 +16,12 @@ import {
   getLanguageFromContext,
   getLanguageFromPath,
   getStaticLabel,
-  type SupportedLanguage,
 } from '#app/utils/i18n.ts'
-import { getJsonLdLogo } from '#app/utils/json-ld.ts'
+import {
+  getJsonLdBreadcrumbs,
+  getJsonLdJobPosting,
+  getJsonLdLogo,
+} from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
 import {
@@ -24,44 +29,35 @@ import {
   isPreview,
 } from '#app/utils/storyblok.tsx'
 
-export const routes: Record<SupportedLanguage, string> = {
-  en: 'careers',
-  nl: 'vacatures',
-}
-
 export const handle: Handle = {
-  getSitemapEntries: request => {
+  getSitemapEntries: async request => {
     const { pathname } = new URL(request.url)
     const language = getLanguageFromPath(pathname)
-    return [
-      {
-        route: `${language === defaultLanguage ? '' : `/${language}`}/${
-          routes[language]
-        }`,
-        priority: 0.5,
-      },
-    ]
+    const pages = await getAllVacancies(language)
+    return (pages || []).map(page => ({
+      route: `/${page.full_slug}`,
+      priority: 0.7,
+    }))
   },
 }
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ params, request, context }: LoaderFunctionArgs) {
+  if (!params.slug) {
+    throw new Error('Slug is not defined!')
+  }
+
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
   const { pathname } = new URL(request.url)
 
-  const story = await getStoryBySlug('vacatures/', language, preview)
+  const story = await getVacancyBySlug(params.slug, language, preview)
 
   if (!story) {
     throw new Response('Not found', { status: 404 })
   }
 
-  if (
-    language !== defaultLanguage &&
-    `${pathname}/` !== `/${story.full_slug}`
-  ) {
-    throw redirect(
-      `/${story.full_slug.substring(0, story.full_slug.length - 1)}`,
-    )
+  if (language !== defaultLanguage && pathname !== `/${story.full_slug}`) {
+    throw redirect(`/${story.full_slug}`)
   }
 
   return typedjson(
@@ -80,10 +76,14 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
   data,
   matches,
+  location,
 }) => {
   const rootData = matches.find(m => m.id === 'root')?.data
   const slugs = getTranslatedSlugsFromStory(data?.story)
   const altLinks = createAlternateLinks(slugs, rootData.requestInfo.origin)
+  const date = new Date(data.story.first_published_at ?? '')
+  const datePosted = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+  const breadcrumbs = createBreadcrumbs(location.pathname, rootData.language)
 
   if (data?.story) {
     const meta = data.story.content.metatags
@@ -96,6 +96,20 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
       }),
       ...altLinks,
       { 'script:ld+json': getJsonLdLogo(rootData.requestInfo.origin) },
+      {
+        'script:ld+json': getJsonLdBreadcrumbs({
+          breadcrumbs,
+          origin: rootData.requestInfo.origin,
+        }),
+      },
+      {
+        'script:ld+json': getJsonLdJobPosting({
+          title: data.story?.name ?? '',
+          description: data.story?.description ?? '',
+          origin: rootData.requestInfo.origin,
+          datePosted,
+        }),
+      },
     ]
   } else {
     return [
@@ -108,7 +122,7 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
   }
 }
 
-export default function VacanciesRoute() {
+export default function VacancyRoute() {
   const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.story)
 
@@ -117,4 +131,8 @@ export default function VacanciesRoute() {
       <StoryblokComponent blok={story?.content} />
     </main>
   )
+}
+
+export function ErrorBoundary() {
+  return <GeneralErrorBoundary statusHandlers={{ 404: NotFoundError }} />
 }

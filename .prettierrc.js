@@ -28,7 +28,7 @@ export default {
   importOrder: [
     '^(react/(.*)$)|^(react$)',
     '',
-    '^(remix/(.*)$)|^(remix$)',
+    '^(remix-run/(.*)$)|^(remix-run$)',
     '',
     '<THIRD_PARTY_MODULES>',
     '',

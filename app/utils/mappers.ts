@@ -1,4 +1,4 @@
-import { type StoryData } from '@storyblok/react'
+import { type ISbStoryData as StoryData } from '@storyblok/react'
 
 import {
   type Asset,

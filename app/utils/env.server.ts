@@ -5,6 +5,8 @@ const schema = z.object({
   SENTRY_DSN: z.string(),
   NOTION_API_KEY: z.string(),
   STORYBLOK_ACCESS_TOKEN: z.string(),
+  HONEYPOT_SECRET: z.string(),
+  SESSION_SECRET: z.string(),
 })
 
 declare global {

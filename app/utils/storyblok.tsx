@@ -3,7 +3,7 @@ import * as React from 'react'
 import {
   storyblokEditable,
   type SbBlokData,
-  type StoryData,
+  type ISbStoryData as StoryData,
 } from '@storyblok/react'
 
 import {
