@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 
 import { Link } from '@remix-run/react'
+import { IconArrowRight } from '~/components/icons'
 import { LinkType } from '~/types'
 import { sbGradientIconMap } from '~/utils/storyblok'
 import clsx from 'clsx'
@@ -49,14 +50,26 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
           <H5
             as="span"
             // Somehow the text color classname gets overridden by the gray color classname in the heading component (maybe because the number is higher?)
-            // Add a breakpoint prefix to make sure the classname is more specific
+            // Add a breakpoint prefix to make sure the classname is more specific.
+            // Check if a link is present and if the variant is light or dark. If so, add the hover effect.
             className={clsx(link ? 'sm:text-blue-500' : undefined, {
-              'group-hover:text-blue-600': variant === 'light',
-              'group-hover:text-blue-400': variant === 'dark',
+              'group-hover:text-blue-600': link && variant === 'light',
+              'group-hover:text-blue-400': link && variant === 'dark',
             })}
             inverse={variant === 'dark'}
           >
-            {title}
+            {link ? (
+              <span className="relative flex items-center gap-x-2">
+                <span className="transform-gpu transition-all duration-300 ease-in-out">
+                  {title}
+                </span>
+                <span className="card-arrow">
+                  <IconArrowRight width={22} height={22} />
+                </span>
+              </span>
+            ) : (
+              title
+            )}
           </H5>
         </div>
         <Paragraph
@@ -67,20 +80,6 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         >
           {children}
         </Paragraph>
-        {link ? (
-          <div
-            className={clsx(
-              'absolute -bottom-[18px] left-0 right-0 m-auto inline-flex max-w-[130px] translate-y-4 items-center justify-center',
-              'rounded-[48px] px-6 py-4 font-bold opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100',
-              {
-                'bg-gray-900 text-white': variant === 'light',
-                'bg-white text-gray-800': variant === 'dark',
-              },
-            )}
-          >
-            {link.text}
-          </div>
-        ) : null}
       </>
     )
 
@@ -98,8 +97,9 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
       return (
         <Link
           className={clsx(rootClassName, 'transition-all', {
-            'border-white/10 hover:bg-gray-800/10': variant === 'dark',
-            'hover:border-transparent hover:bg-white hover:shadow-card':
+            'border-white/10 hover:border-transparent hover:bg-card-dark-hover':
+              variant === 'dark',
+            'hover:border-transparent hover:bg-card-light-hover hover:shadow-card':
               variant === 'light',
           })}
           to={link.url}
