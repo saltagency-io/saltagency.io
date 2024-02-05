@@ -48,14 +48,14 @@ export function GridLines() {
   }
 
   return (
-    <div className="fixed inset-0 z-10 pointer-events-none select-none">
+    <div className="pointer-events-none fixed inset-0 z-10 select-none">
       <Grid>
         {Array.from({ length: 12 }).map((_, idx) => (
           <div
             key={idx}
-            className="flex items-start h-screen text-black bg-red-500 opacity-10"
+            className="flex h-screen items-start bg-red-500 text-black opacity-10"
           >
-            <div className="w-full pt-4 text-lg text-center text-black">
+            <div className="w-full pt-4 text-center text-lg text-black">
               {idx + 1}
             </div>
           </div>

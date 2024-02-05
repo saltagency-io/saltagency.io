@@ -20,13 +20,16 @@ const backgroundColorStyles: Record<GroupTheme, string> = {
   'light-white': 'bg-white',
   'dark-to-footer': 'bg-gradient',
 }
-export function Group({ theme, hasComponentSpacing, children }: React.PropsWithChildren<Props>) {
-
+export function Group({
+  theme,
+  hasComponentSpacing,
+  children,
+}: React.PropsWithChildren<Props>) {
   return (
     <GroupProvider value={{ theme }}>
       <section
         className={clsx(
-          !hasComponentSpacing ? "" : "gap-20 lg:gap-40",
+          !hasComponentSpacing ? '' : 'gap-20 lg:gap-40',
           'relative flex flex-col py-20 lg:py-40',
           backgroundColorStyles[theme],
         )}

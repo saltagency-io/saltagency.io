@@ -67,7 +67,7 @@ export function CardsSection({
           ) : null}
         </motion.div>
         <motion.div
-          className="grid grid-cols-12 gap-4 card-grid col-span-full filter lg:gap-8"
+          className="grid grid-cols-12 gap-4 card-grid col-span-full filter lg:gap-6"
           variants={childVariants}
         >
           {cards?.map(({ id, icon, title, link, body }, i) => (
