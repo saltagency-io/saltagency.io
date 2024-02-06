@@ -108,6 +108,7 @@ export function Banner({
           variants={imageAnimationVariants}
         >
           <img
+            loading="lazy"
             className="w-full object-cover"
             {...getImgProps(image.url, image.alt, {
               widths: [375, 508, 1016],

@@ -54,8 +54,7 @@ export function LocationSection({
       <div className="absolute inset-0 z-0 hidden mix-blend-multiply">
         <Image src={image.url} alt={image.alt} className="h-full w-auto" />
       </div>
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-gray-800"></div>
-
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-gray-800" />
       <Grid className="overflow-visible">
         <div className="relative z-10 col-span-full row-start-1 lg:col-span-5">
           <H5 as="h2" variant="secondary" className="mb-4">
@@ -75,6 +74,7 @@ export function LocationSection({
               rel="noopener"
               target="_blank"
               variant="outline-inverse"
+              ringOffsetColor="black"
             >
               {link.text}
             </ButtonLink>

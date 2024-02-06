@@ -46,7 +46,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
     const content = (
       <>
         {Icon && <Icon width={40} height={40} />}
-        <div className="flex h-12 items-center">
+        <div className="flex items-center">
           <H5
             as="span"
             // Somehow the text color classname gets overridden by the gray color classname in the heading component (maybe because the number is higher?)
@@ -83,7 +83,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
     )
 
     const rootClassName = clsx(
-      'relative group flex flex-col gap-2 rounded-3xl border p-6',
+      'relative group flex flex-col gap-4 rounded-3xl border p-6',
       link ? 'bg-transparent' : variantStyles[variant],
       {
         'shadow-card': !link,
