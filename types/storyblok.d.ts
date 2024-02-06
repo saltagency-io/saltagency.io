@@ -54,6 +54,7 @@ export type FooterBlok = SbBlokData & {
 
 export type GroupBlok = SbBlokData & {
   component: BlokTypes.Group
+  hasComponentSpacing: boolean
   theme: GroupTheme
   content: BodyComponent[]
 }

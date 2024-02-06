@@ -7,7 +7,10 @@ import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 export function SbGroup({ blok }: { blok: GroupBlok }) {
   return (
     <StoryBlokWrapper blok={blok}>
-      <Group theme={blok.theme}>
+      <Group
+        hasComponentSpacing={!blok.disableComponentSpacing}
+        theme={blok.theme}
+      >
         {blok.content?.map(nestedBlok => (
           <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
         ))}

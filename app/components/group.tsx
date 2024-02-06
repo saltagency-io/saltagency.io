@@ -10,6 +10,7 @@ import { type GroupTheme } from '#app/types.ts'
 import { GroupProvider } from '#app/utils/providers.tsx'
 
 type Props = {
+  hasComponentSpacing?: boolean
   theme: GroupTheme
   children: React.ReactNode
 }
@@ -23,12 +24,13 @@ const backgroundColorStyles: Record<GroupTheme, string> = {
   'dark-to-footer': 'bg-gradient',
 }
 
-export function Group({ theme, children }: Props) {
+export function Group({ theme, hasComponentSpacing, children }: Props) {
   return (
     <GroupProvider value={{ theme }}>
       <section
         className={clsx(
-          'relative flex flex-col gap-20 py-20 lg:gap-40 lg:py-40',
+          !hasComponentSpacing ? '' : 'gap-20 lg:gap-40',
+          'relative flex flex-col py-20 lg:py-40',
           backgroundColorStyles[theme],
         )}
       >

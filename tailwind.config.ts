@@ -92,6 +92,12 @@ export default {
         card: '0px 23px 38px 0px rgba(28, 32, 54, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.35) inset',
         'card-container': '0px 16px 64px hsl(var(--color-purple-700) / 0.1)',
       },
+      backgroundImage: {
+        'card-dark-hover':
+          'linear-gradient(77.4deg, rgba(67, 83, 255, 0.1) 0.1%, rgba(67, 83, 255, 0) 74.35%), linear-gradient(0deg, #16151F, #16151F), linear-gradient(0deg, rgba(26, 26, 26, 0), rgba(26, 26, 26, 0))',
+        'card-light-hover':
+          'linear-gradient(77.4deg, rgba(67, 83, 255, 0.1) 0.1%, rgba(67, 83, 255, 0) 74.35%), linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0))',
+      },
     },
   },
 } satisfies Config
