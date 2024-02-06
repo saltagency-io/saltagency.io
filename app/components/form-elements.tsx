@@ -88,7 +88,6 @@ export function InputError({ children, id }: InputErrorProps) {
 }
 
 type FieldProps = {
-  defaultValue?: string | null
   name: string
   label: string
   className?: string

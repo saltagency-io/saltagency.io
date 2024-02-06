@@ -1,7 +1,13 @@
 import * as React from 'react'
 
-import { conform, useForm } from '@conform-to/react'
-import { getFieldsetConstraint, parse } from '@conform-to/zod'
+import {
+  getFormProps,
+  getInputProps,
+  getSelectProps,
+  getTextareaProps,
+  useForm,
+} from '@conform-to/react'
+import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import {
   json,
   redirect,
@@ -12,6 +18,7 @@ import {
 import { Form, useActionData, useSearchParams } from '@remix-run/react'
 import { type ISbStoryData as StoryData } from '@storyblok/react'
 import clsx from 'clsx'
+import { get } from 'lodash'
 import { typedjson } from 'remix-typedjson'
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
@@ -194,7 +201,7 @@ export async function action({ request }: ActionFunctionArgs) {
     String(formData.get('vacancies') ?? ''),
   ) as StoryData<Vacancy>[]
 
-  const submission = await parse(formData, {
+  const submission = await parseWithZod(formData, {
     async: true,
     schema: ApplicationFormSchema.superRefine(async (data, ctx) => {
       if (!(vacancies || []).find(v => v.name === data.role)) {
@@ -207,17 +214,16 @@ export async function action({ request }: ActionFunctionArgs) {
       }
     }),
   })
-
-  if (submission.intent !== 'submit') {
-    return json({ status: 'idle', submission } as const)
-  }
-  if (!submission.value) {
-    return json({ status: 'error', submission } as const, { status: 400 })
+  if (submission.status !== 'success' || !submission.value) {
+    return json(
+      { result: submission.reply() },
+      { status: submission.status === 'error' ? 400 : 200 },
+    )
   }
 
   await sendApplicationToNotion(submission.value)
 
-  return json({ status: 'success', submission } as const)
+  return json({ result: submission.reply() })
 }
 
 export default function VacancyApplyRoute() {
@@ -229,26 +235,25 @@ export default function VacancyApplyRoute() {
 
   const [form, fields] = useForm({
     id: 'application-form',
-    constraint: getFieldsetConstraint(ApplicationFormSchema),
-    lastSubmission: actionData?.submission,
+    constraint: getZodConstraint(ApplicationFormSchema),
+    lastResult: actionData?.result,
+    shouldRevalidate: 'onBlur',
     defaultValue: {
-      role:
-        actionData?.submission.value?.role ?? searchParams.get('role') ?? '',
+      role: searchParams.get('role') ?? '',
     },
     onValidate({ formData }) {
-      return parse(formData, { schema: ApplicationFormSchema })
+      return parseWithZod(formData, { schema: ApplicationFormSchema })
     },
-    shouldRevalidate: 'onBlur',
   })
 
   React.useEffect(() => {
-    if (actionData?.status === 'success') {
+    if (actionData?.result.status === 'success') {
       window.scrollTo({ top: 0 })
       if (window.fathom) {
         window.fathom.trackGoal('51XZFYES', 0)
       }
     }
-  }, [actionData?.status])
+  }, [actionData?.result.status])
 
   return (
     <main>
@@ -263,12 +268,12 @@ export default function VacancyApplyRoute() {
           <H3 as="h2">{t('apply.text')}</H3>
         </div>
         <div className="col-span-full py-10 lg:col-span-7 lg:px-8 lg:py-3">
-          {actionData?.status === 'success' ? (
+          {actionData?.result.status === 'success' ? (
             <div className="min-h-[60vh]">
               <H3 as="span">{t('form.apply.success')}</H3>
             </div>
           ) : (
-            <Form method="POST" {...form.props}>
+            <Form method="POST" {...getFormProps(form)}>
               <AuthenticityTokenInput />
               <HoneypotInputs />
               <input
@@ -277,7 +282,7 @@ export default function VacancyApplyRoute() {
                 value={JSON.stringify(vacancies)}
               />
               <Field
-                {...conform.input(fields.name)}
+                {...getInputProps(fields.name, { type: 'text' })}
                 label={t('form.name.label')}
                 placeholder={t('form.name.placeholder')}
                 autoComplete="name"
@@ -285,7 +290,7 @@ export default function VacancyApplyRoute() {
                 errors={fields.name.errors}
               />
               <Field
-                {...conform.input(fields.email)}
+                {...getInputProps(fields.email, { type: 'email' })}
                 label={t('form.email.label')}
                 placeholder={t('form.email.placeholder')}
                 type="email"
@@ -293,7 +298,7 @@ export default function VacancyApplyRoute() {
                 errors={fields.email.errors}
               />
               <Field
-                {...conform.input(fields.phone)}
+                {...getInputProps(fields.phone, { type: 'tel' })}
                 label={t('form.phone.label')}
                 placeholder={t('form.phone.placeholder')}
                 type="tel"
@@ -301,7 +306,7 @@ export default function VacancyApplyRoute() {
                 errors={fields.phone.errors}
               />
               <Select
-                name="employment"
+                {...getSelectProps(fields.employment)}
                 className="text-primary"
                 label={t('form.employment.label')}
                 errors={fields.employment.errors}
@@ -321,7 +326,7 @@ export default function VacancyApplyRoute() {
                 </option>
               </Select>
               <Select
-                name="citizenship"
+                {...getSelectProps(fields.citizenship)}
                 label={t('form.citizenship.label')}
                 errors={fields.citizenship.errors}
               >
@@ -339,7 +344,7 @@ export default function VacancyApplyRoute() {
                 </option>
               </Select>
               <Select
-                {...conform.input(fields.role, { type: 'select' })}
+                {...getSelectProps(fields.role)}
                 label={t('form.role.label')}
                 errors={fields.role.errors}
               >
@@ -350,13 +355,13 @@ export default function VacancyApplyRoute() {
                 ))}
               </Select>
               <Field
-                {...conform.input(fields.linkedin, { type: 'url' })}
+                {...getInputProps(fields.linkedin, { type: 'url' })}
                 label={t('form.linkedin.label')}
                 placeholder={t('form.linkedin.placeholder')}
                 errors={fields.linkedin.errors}
               />
               <Field
-                {...conform.input(fields.motivation, { type: 'textarea' })}
+                {...getTextareaProps(fields.motivation)}
                 label={t('form.motivation.label')}
                 placeholder={t('form.motivation.placeholder')}
                 type="textarea"

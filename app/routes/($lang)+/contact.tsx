@@ -6,7 +6,7 @@ import {
   getTextareaProps,
   useForm,
 } from '@conform-to/react'
-import { getFieldsetConstraint, parse } from '@conform-to/zod'
+import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import {
   json,
   type ActionFunctionArgs,
@@ -131,20 +131,20 @@ export async function action({ request }: ActionFunctionArgs) {
   await validateCSRF(formData, request.headers)
   checkHoneypot(formData)
 
-  const submission = await parse(formData, {
+  const submission = await parseWithZod(formData, {
     schema: ContactFormSchema,
     async: true,
   })
-  if (submission.intent !== 'submit') {
-    return json({ status: 'idle', submission } as const)
-  }
-  if (!submission.value) {
-    return json({ status: 'error', submission } as const, { status: 400 })
+  if (submission.status !== 'success' || !submission.value) {
+    return json(
+      { result: submission.reply() },
+      { status: submission.status === 'error' ? 400 : 200 },
+    )
   }
 
   await sendToContactFormNotion(submission.value)
 
-  return json({ status: 'success', submission } as const)
+  return json({ result: submission.reply() })
 }
 
 export default function ContactRoute() {
@@ -156,22 +156,22 @@ export default function ContactRoute() {
 
   const [form, fields] = useForm({
     id: 'contact-form',
-    constraint: getFieldsetConstraint(ContactFormSchema),
-    lastSubmission: actionData?.submission,
+    constraint: getZodConstraint(ContactFormSchema),
+    lastResult: actionData?.result,
     onValidate({ formData }) {
-      return parse(formData, { schema: ContactFormSchema })
+      return parseWithZod(formData, { schema: ContactFormSchema })
     },
     shouldRevalidate: 'onBlur',
   })
 
   React.useEffect(() => {
-    if (actionData?.status === 'success') {
+    if (actionData?.result.status === 'success') {
       window.scrollTo({ top: 0 })
       if (window.fathom) {
         window.fathom.trackGoal('BDSMAWUC', 0)
       }
     }
-  }, [actionData?.status])
+  }, [actionData?.result.status])
 
   return (
     <main>
@@ -185,7 +185,7 @@ export default function ContactRoute() {
             <p className="mb-4">{t('contact.body')}</p>
           </div>
           <div className="col-span-full lg:col-span-6 lg:col-start-7">
-            {actionData?.status === 'success' ? (
+            {actionData?.result.status === 'success' ? (
               <div className="min-h-[50vh]">
                 <H3 as="span">{t('form.contact.success')}</H3>
               </div>
