@@ -14,3 +14,6 @@ localhost.pem
 .env
 
 *.logs
+
+# generated files
+/app/components/ui/icons
