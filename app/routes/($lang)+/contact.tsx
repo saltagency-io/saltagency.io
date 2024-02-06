@@ -1,6 +1,11 @@
 import * as React from 'react'
 
-import { conform, useForm } from '@conform-to/react'
+import {
+  getFormProps,
+  getInputProps,
+  getTextareaProps,
+  useForm,
+} from '@conform-to/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import {
   json,
@@ -185,11 +190,11 @@ export default function ContactRoute() {
                 <H3 as="span">{t('form.contact.success')}</H3>
               </div>
             ) : (
-              <Form method="POST" {...form.props}>
+              <Form method="POST" {...getFormProps(form)}>
                 <AuthenticityTokenInput />
                 <HoneypotInputs />
                 <Field
-                  {...conform.input(fields.name)}
+                  {...getInputProps(fields.name, { type: 'text' })}
                   autoComplete="name"
                   autoFocus
                   label={t('form.name.label')}
@@ -197,21 +202,21 @@ export default function ContactRoute() {
                   errors={fields.name.errors}
                 />
                 <Field
-                  {...conform.input(fields.email, { type: 'email' })}
+                  {...getInputProps(fields.email, { type: 'email' })}
                   label={t('form.email.label')}
                   placeholder={t('form.email.placeholder')}
                   autoComplete="email"
                   errors={fields.email.errors}
                 />
                 <Field
-                  {...conform.input(fields.phone, { type: 'tel' })}
+                  {...getInputProps(fields.phone, { type: 'tel' })}
                   label={t('form.phone.label')}
                   placeholder={t('form.phone.placeholder')}
                   autoComplete="tel"
                   errors={fields.phone.errors}
                 />
                 <Field
-                  {...conform.input(fields.body, { type: 'textarea' })}
+                  {...getTextareaProps(fields.body)}
                   className="mb-6"
                   label={t('form.message.label')}
                   placeholder={t('form.message.placeholder')}
