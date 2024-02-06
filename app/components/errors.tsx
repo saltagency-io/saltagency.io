@@ -26,7 +26,7 @@ import {
 } from '#app/utils/i18n'
 import { useLocalizedMappers } from '#app/utils/mappers'
 import { getErrorMessage } from '#app/utils/misc.tsx'
-import { useVacancies } from '#app/utils/providers'
+import { useVacancies } from '#app/utils/providers.tsx'
 
 function RedBox({ error }: { error: Error }) {
   const [isVisible, setIsVisible] = React.useState(true)

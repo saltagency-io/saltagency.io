@@ -3,8 +3,8 @@ import clsx from 'clsx'
 
 import { Icon } from '#app/components/ui/icon.tsx'
 import { type Breadcrumb } from '#app/types.ts'
-import { type SupportedLanguage } from '#app/utils/i18n'
 import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { type SupportedLanguage } from '#app/utils/i18n.ts'
 import { unslugify } from '#app/utils/misc.tsx'
 
 export function createBreadcrumbs(path: string, language: SupportedLanguage) {

@@ -8,7 +8,7 @@ import {
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 
-import { H5 } from '#app/components/ui/typography'
+import { H5 } from '#app/components/ui/typography.tsx'
 import { type Section } from '#app/types.ts'
 import { Markdown } from '#app/utils/markdown.tsx'
 

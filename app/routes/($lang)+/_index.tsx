@@ -1,4 +1,4 @@
-import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors'
+import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
 
 export { default, loader, meta, handle } from './$slug'
 

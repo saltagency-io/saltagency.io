@@ -25,8 +25,8 @@ import { sendToContactFormNotion } from '#app/lib/notion.server.ts'
 import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
 import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle } from '#app/types.ts'
-import { validateCSRF } from '#app/utils/csrf.server'
-import { checkHoneypot } from '#app/utils/honeypot.server'
+import { validateCSRF } from '#app/utils/csrf.server.ts'
+import { checkHoneypot } from '#app/utils/honeypot.server.ts'
 import {
   defaultLanguage,
   getLanguageFromContext,
