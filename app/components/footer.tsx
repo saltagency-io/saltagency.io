@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react'
 import clsx from 'clsx'
 
 import { Grid } from '#app/components/grid.tsx'
-import { Paragraph } from '#app/components/typography.tsx'
+import { Paragraph } from '#app/components/ui/typography.tsx'
 import { type LinkType } from '#app/types.ts'
 import { Markdown } from '#app/utils/markdown.tsx'
 

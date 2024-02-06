@@ -11,7 +11,7 @@ import {
   H5,
   H6,
   Paragraph,
-} from '#app/components/typography.tsx'
+} from '#app/components/ui/typography.tsx'
 import { useI18n } from '#app/utils/i18n-provider.tsx'
 import { AnchorOrLink } from '#app/utils/misc.tsx'
 

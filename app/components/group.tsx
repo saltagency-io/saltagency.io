@@ -1,15 +1,17 @@
-import clsx from 'clsx'
+import * as React from 'react'
 
-import { type GroupTheme } from '#app/types.ts'
-import { GroupProvider } from '#app/utils/providers.tsx'
+import clsx from 'clsx'
 
 import {
   DecoratedBackgroundDark,
   DecoratedBackgroundHero,
-} from './decorated-background'
+} from '#app/components/decorated-background.tsx'
+import { type GroupTheme } from '#app/types.ts'
+import { GroupProvider } from '#app/utils/providers.tsx'
 
 type Props = {
   theme: GroupTheme
+  children: React.ReactNode
 }
 
 const backgroundColorStyles: Record<GroupTheme, string> = {
@@ -20,7 +22,8 @@ const backgroundColorStyles: Record<GroupTheme, string> = {
   'light-white': 'bg-white',
   'dark-to-footer': 'bg-gradient',
 }
-export function Group({ theme, children }: React.PropsWithChildren<Props>) {
+
+export function Group({ theme, children }: Props) {
   return (
     <GroupProvider value={{ theme }}>
       <section

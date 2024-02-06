@@ -95,37 +95,3 @@ export function StoryBlokWrapper({
 
   return <>{children}</>
 }
-
-// Maps names in Storyblok to our icon components
-export const sbIconMap: Record<string, React.ComponentType<IconProps>> = {
-  eye: IconEye,
-  users: IconUsers,
-  heart: IconHeart,
-  banknotes: IconBankNotes,
-  shield: IconShield,
-  'finger-print': IconFingerPrint,
-  document: IconDocument,
-  scale: IconScale,
-  'user-group': IconUserGroup,
-  'chat-bubble': IconChatBubble,
-  'chat-bubble-left-right': IconChatBubbleLeftRight,
-  code: IconCode,
-  envelope: IconEnvelope,
-}
-
-export const sbGradientIconMap: Record<
-  string,
-  React.ComponentType<GradientIconProps>
-> = {
-  star: GIconStar,
-  eye: GIconEye,
-  handHeart: GIconHandHeart,
-  calendar: GIconCalendar,
-  community: GIconCommunity,
-  draw: GIconDraw,
-  money: GIconMoney,
-  shield: GIconShield,
-  speechBubble: GIconSpeech,
-  tag: GIconTag,
-  team: GIconTeam,
-}

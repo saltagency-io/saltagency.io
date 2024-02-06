@@ -32,8 +32,8 @@ const sections: Record<Variant, SectionComponent> = {
 
 export function SbBlockWithSections({ blok }: { blok: BlockWithSectionsBlok }) {
   const { mapSection } = useLocalizedMappers()
-
   const Section = sections[blok.variant]
+
   return (
     <StoryBlokWrapper blok={blok}>
       {Section ? (

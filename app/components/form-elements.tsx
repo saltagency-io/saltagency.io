@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import clsx from 'clsx'
 
-import { IconChevronDown } from '#app/components/icons.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
 
 export type ListOfErrors = Array<string | null | undefined> | null | undefined
 
@@ -217,7 +217,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
               {children}
             </select>
             <div className="pointer-events-none absolute bottom-0 right-4 top-0 m-auto h-6 w-6 text-gray-500">
-              <IconChevronDown />
+              <Icon name="chevron-down" size="lg" />
             </div>
           </div>
         )}

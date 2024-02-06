@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
-import { Card, type Props as CardProps } from '#app/components/card.tsx'
 import { Grid } from '#app/components/grid.tsx'
-import { H3, H5, Paragraph } from '#app/components/typography.tsx'
+import { Card, type Props as CardProps } from '#app/components/ui/card.tsx'
+import { H3, H5, Paragraph } from '#app/components/ui/typography'
 import { useGroup } from '#app/utils/providers.tsx'
 
 const columnStyle: Record<number, string> = {

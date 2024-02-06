@@ -1,4 +1,4 @@
-import { Card } from '#app/components/card.tsx'
+import { Card } from '#app/components/ui/card'
 import { type CardBlok } from '#app/types.ts'
 import { useLocalizedMappers } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'

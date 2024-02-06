@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react'
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
-import { H5 } from '#app/components/typography.tsx'
+import { H5 } from '#app/components/ui/typography.tsx'
 import { type Vacancy } from '#app/types.ts'
 
 export function VacancyList({

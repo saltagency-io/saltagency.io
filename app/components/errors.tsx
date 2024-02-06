@@ -13,10 +13,10 @@ import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
 import { motion } from 'framer-motion'
 
-import { ButtonLink } from '#app/components/button.tsx'
 import { Grid } from '#app/components/grid.tsx'
-import { IconArrowDown } from '#app/components/icons.tsx'
-import { H1, H2, H3, H4, H5, H6 } from '#app/components/typography.tsx'
+import { ButtonLink } from '#app/components/ui/button.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
+import { H1, H2, H3, H4, H5, H6 } from '#app/components/ui/typography.tsx'
 import { VacancyList } from '#app/components/vacancy-list.tsx'
 import { type Vacancy } from '#app/types.ts'
 import {
@@ -160,7 +160,7 @@ export function ErrorPage({
                       repeatDelay: 1,
                     }}
                   >
-                    <IconArrowDown />
+                    <Icon name="chevron-down" />
                   </motion.div>
                 </H5>
               </div>

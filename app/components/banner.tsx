@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
-import { H2, H5, Paragraph } from '#app/components/typography.tsx'
+import { H2, H5, Paragraph } from '#app/components/ui/typography.tsx'
 import { type Image } from '#app/types.ts'
 import { getImgProps } from '#app/utils/images.ts'
 import { useGroup } from '#app/utils/providers.tsx'

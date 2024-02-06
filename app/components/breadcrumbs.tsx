@@ -1,7 +1,7 @@
 import { Link, useLocation } from '@remix-run/react'
 import clsx from 'clsx'
 
-import { IconChevronLeft, IconChevronRight } from '#app/components/icons.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
 import { type Breadcrumb } from '#app/types.ts'
 import { type SupportedLanguage } from '#app/utils/i18n'
 import { useI18n } from '#app/utils/i18n-provider.tsx'
@@ -38,7 +38,7 @@ export function Breadcrumbs() {
       to={`/${parts.slice(0, -1).join('/')}`}
       className="inline-flex items-center gap-x-2 text-gray-600"
     >
-      <IconChevronLeft height={16} width={16} />
+      <Icon name="chevron-left" />
       <span className="text-lg font-bold lg:text-2xl">
         {unslugify(parts[parts.length - 2])}
       </span>
@@ -83,9 +83,7 @@ export function Breadcrumbs() {
                       {breadcrumb.name}
                     </span>
                   </Link>
-                  {!isLastItem ? (
-                    <IconChevronRight height={16} width={16} />
-                  ) : null}
+                  {!isLastItem ? <Icon name="chevron-right" /> : null}
                 </li>
               )
             })}

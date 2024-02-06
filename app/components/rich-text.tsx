@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion'
 
-import { Grid } from '#app/components/grid'
-import { Markdown } from '#app/utils/markdown'
-import { useGroup } from '#app/utils/providers'
-
-import { H3, H5, Paragraph } from './typography'
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5, Paragraph } from '#app/components/ui/typography.tsx'
+import { Markdown } from '#app/utils/markdown.tsx'
+import { useGroup } from '#app/utils/providers.tsx'
 
 type Props = {
   content: string

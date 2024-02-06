@@ -9,6 +9,8 @@ import {
 } from '#app/components/icons.tsx'
 import { AnchorOrLink } from '#app/utils/misc.tsx'
 
+import { Icon } from './icon'
+
 type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline-inverse'
 type ButtonSize = 'small' | 'medium' | 'large'
 type ButtonRingOffsetColor = 'white' | 'black'
@@ -165,7 +167,7 @@ export function PhoneButton({
         ringOffsetColor={ringOffsetColor}
         {...rest}
       >
-        <IconPhone />
+        <Icon name="phone" size="lg" />
         {children}
       </ButtonLink>
 
@@ -179,32 +181,32 @@ export function PhoneButton({
         <div className="absolute bottom-0 left-6 top-0 flex flex-col items-center gap-4 overflow-hidden">
           <div
             className={clsx(
-              `h-12 w-12 -translate-y-12 transition group-hover:translate-y-4 group-focus:translate-y-4`,
+              `h-6 w-6 -translate-y-12 transition group-hover:translate-y-4 group-focus:translate-y-4`,
               {
                 hidden: hasCopied,
               },
             )}
           >
-            <IconSquareStack />
+            <Icon name="square-stack" size="lg" />
           </div>
           <div
             className={clsx(
-              `h-12 w-12 -translate-y-6 transition group-hover:translate-y-12 group-focus:translate-y-12`,
+              `h-6 w-6 -translate-y-6 transition group-hover:translate-y-12 group-focus:translate-y-12`,
               {
                 hidden: hasCopied,
               },
             )}
           >
-            <IconPhone />
+            <Icon name="phone" size="lg" />
           </div>
           <div
-            className={clsx('h-12 w-12 translate-y-4', {
+            className={clsx('h-6 w-6 translate-y-4', {
               'text-inverse-secondary': variant === 'outline-inverse',
               hidden: !hasCopied,
               block: hasCopied,
             })}
           >
-            <IconCheckCircle />
+            <Icon name="check-circle" size="lg" />
           </div>
         </div>
 

@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 import { GradientCircle } from '#app/components/gradient-circle.tsx'
 import { Grid } from '#app/components/grid.tsx'
-import { H1, Intro } from '#app/components/typography.tsx'
+import { H1, Intro } from '#app/components/ui/typography.tsx'
 import { multilineToBreaks } from '#app/utils/misc.tsx'
 
 type Props = {

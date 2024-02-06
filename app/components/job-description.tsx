@@ -1,5 +1,5 @@
 import { Grid } from '#app/components/grid.tsx'
-import { H3, H5 } from '#app/components/typography.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
 import { useLabels } from '#app/utils/labels-provider.tsx'
 import { Markdown } from '#app/utils/markdown.tsx'
 

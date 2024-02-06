@@ -3,7 +3,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
-import { H3, H5 } from '#app/components/typography.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
 import { VacancyList } from '#app/components/vacancy-list.tsx'
 import { useLocalizedMappers } from '#app/utils/mappers.ts'
 import { useGroup, useVacancies } from '#app/utils/providers.tsx'

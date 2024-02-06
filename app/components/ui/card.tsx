@@ -4,8 +4,8 @@ import { Link } from '@remix-run/react'
 import clsx from 'clsx'
 
 import { type LinkType } from '#app/types.ts'
-import { sbGradientIconMap } from '#app/utils/storyblok.tsx'
 
+import { Icon, type IconName } from './icon.tsx'
 import { H5, Paragraph } from './typography.tsx'
 
 export type CardIcon =
@@ -24,7 +24,7 @@ export type CardIcon =
 type Variant = 'light' | 'dark'
 
 export type Props = {
-  icon: CardIcon
+  icon: string
   title: string
   link?: LinkType
   variant?: Variant
@@ -36,16 +36,35 @@ const variantStyles: Record<Variant, string> = {
   dark: 'border-white/5 bg-black/1 backdrop-blur-sm',
 }
 
+const iconConversionMap: Record<string, IconName> = {
+  star: 'star-gradient',
+  eye: 'eye-gradient',
+  handHeart: 'hand-heart-gradient',
+  calendar: 'calendar-gradient',
+  community: 'community-gradient',
+  draw: 'draw-gradient',
+  money: 'money-gradient',
+  shield: 'shield-gradient',
+  speechBubble: 'speech-bubble-gradient',
+  tag: 'tag-gradient',
+  team: 'team-gradient',
+}
+
+// TODO: this is a temporary solution so we can deploy this before renaming the icon values in storyblok
+function getTemporaryIconName(icon: string): IconName {
+  return Object.keys(iconConversionMap).includes(icon)
+    ? iconConversionMap[icon]
+    : (icon as IconName)
+}
+
 export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
   function Card(
     { icon, title, link, variant = 'light', className, children },
     ref,
   ) {
-    const Icon = sbGradientIconMap[icon ?? '']
-
     const content = (
       <>
-        {Icon && <Icon width={40} height={40} />}
+        <Icon name={getTemporaryIconName(icon)} size="3xl" align="start" />
         <div className="flex h-12 items-center">
           <H5
             as="span"

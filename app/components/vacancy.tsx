@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 import { Breadcrumbs } from '#app/components/breadcrumbs.tsx'
-import { ButtonLink } from '#app/components/button.tsx'
 import { Grid } from '#app/components/grid.tsx'
-import { H3, H5 } from '#app/components/typography.tsx'
+import { ButtonLink } from '#app/components/ui/button.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
 import { routes } from '#app/routes/($lang)+/vacatures.$slug.solliciteren.tsx'
 import { useI18n } from '#app/utils/i18n-provider.tsx'
 import { useLabels } from '#app/utils/labels-provider.tsx'

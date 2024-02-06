@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 import { Grid } from '#app/components/grid.tsx'
-import { H3, H5 } from '#app/components/typography.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
 import { type Image } from '#app/types.tsx'
 import { getImgProps } from '#app/utils/images.ts'
 

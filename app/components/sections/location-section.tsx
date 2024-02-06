@@ -1,8 +1,8 @@
 import clsx from 'clsx'
 
-import { ButtonLink } from '#app/components/button.tsx'
 import { Grid } from '#app/components/grid.tsx'
-import { H3, H5 } from '#app/components/typography.tsx'
+import { ButtonLink } from '#app/components/ui/button.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
 import { type Image as ImageType, type LinkType } from '#app/types.ts'
 import { getImgProps } from '#app/utils/images.ts'
 import { Markdown } from '#app/utils/markdown.tsx'
