@@ -40,6 +40,7 @@
     "build:remix": "remix build",
     "build:server": "tsx ./other/build-server.ts",
     "build": "run-s build:*",
+    "predev": "npm run build:icons --silent",
     "dev": "remix dev -c \"node ./server/dev-server.js\" --manual",
     "start": "cross-env NODE_ENV=production node .",
     "typecheck": "tsc",

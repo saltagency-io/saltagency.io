@@ -1,7 +1,6 @@
 import React, { type PropsWithChildren } from 'react'
 
 import { Link } from '@remix-run/react'
-import { IconArrowRight } from '~/components/icons'
 import clsx from 'clsx'
 
 import { type LinkType } from '#app/types.ts'
@@ -65,7 +64,9 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
   ) {
     const content = (
       <>
-        <Icon name={getTemporaryIconName(icon)} size="3xl" align="start" />
+        {icon ? (
+          <Icon name={getTemporaryIconName(icon)} size="3xl" align="start" />
+        ) : null}
         <div className="flex h-12 items-center">
           <H5
             as="span"
@@ -80,7 +81,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
           >
             {link ? (
               <span className="relative flex items-center gap-x-2">
-                <span className="transform-gpu transition-all duration-300 ease-in-out">
+                <span className="transition-all duration-300 ease-in-out">
                   {title}
                 </span>
                 <span className="card-arrow">
@@ -95,7 +96,6 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         <Paragraph
           textColorClassName={clsx({
             'text-gray-100': variant === 'dark',
-            // 'group-hover:text-gray-800': variant === 'dark' && link,
           })}
         >
           {children}
@@ -104,11 +104,10 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
     )
 
     const rootClassName = clsx(
-      'relative group flex flex-col gap-4 rounded-3xl border p-6',
+      'relative group flex flex-col gap-2 rounded-3xl border p-6',
       link ? 'bg-transparent' : variantStyles[variant],
       {
         'shadow-card': !link,
-        'md:pb-12': link,
       },
       className,
     )
