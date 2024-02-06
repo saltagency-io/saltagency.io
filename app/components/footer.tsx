@@ -109,7 +109,7 @@ export function Footer({
               <Link
                 to={link.url}
                 prefetch="intent"
-                className={`${textClassName} underlined block w-min font-bold text-white`}
+                className={`${textClassName} block w-min whitespace-nowrap font-bold text-white hover:underline`}
               >
                 {link.text}
               </Link>
@@ -127,7 +127,7 @@ export function Footer({
               to={directionsLink.url}
               target="_blank"
               rel="noopener"
-              className={`${textClassName} underlined active font-bold text-gray-300`}
+              className={`${textClassName} active font-bold text-gray-300 underline`}
             >
               {directionsLink.text}
             </Link>

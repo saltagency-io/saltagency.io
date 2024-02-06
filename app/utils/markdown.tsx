@@ -80,7 +80,7 @@ function useComponents({
         }
         target={linksInNewTab ? '_blank' : undefined}
         rel={linksInNewTab ? 'noopener' : undefined}
-        className={clsx('underlined active', colorClassName, {
+        className={clsx('active underline', colorClassName, {
           'transition hover:text-white focus:text-white':
             textColor === 'inverse-secondary',
         })}

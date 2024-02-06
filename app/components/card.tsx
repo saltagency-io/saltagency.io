@@ -60,10 +60,10 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
           >
             {link ? (
               <span className="relative flex items-center gap-x-2">
-                <span className="transform-gpu transition-all duration-300 ease-in-out">
+                <span className="transition-all duration-300 ease-in-out">
                   {title}
                 </span>
-                <span className="card-arrow">
+                <span className="relative transition-all duration-300 ease-in-out md:absolute md:-right-6 md:opacity-0 md:group-hover:-right-8 md:group-hover:opacity-100">
                   <IconArrowRight width={22} height={22} />
                 </span>
               </span>
@@ -75,7 +75,6 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         <Paragraph
           textColorClassName={clsx({
             'text-gray-100': variant === 'dark',
-            // 'group-hover:text-gray-800': variant === 'dark' && link,
           })}
         >
           {children}
@@ -84,11 +83,10 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
     )
 
     const rootClassName = clsx(
-      'relative group flex flex-col gap-4 rounded-3xl border p-6',
+      'relative group flex flex-col gap-2 rounded-3xl border p-6',
       link ? 'bg-transparent' : variantStyles[variant],
       {
         'shadow-card': !link,
-        'md:pb-12': link,
       },
       className,
     )
@@ -97,9 +95,9 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
       return (
         <Link
           className={clsx(rootClassName, 'transition-all', {
-            'border-white/10 hover:border-transparent hover:bg-card-dark-hover':
+            'hover:bg-card-dark-hover border-white/10 hover:border-transparent':
               variant === 'dark',
-            'hover:border-transparent hover:bg-card-light-hover hover:shadow-card':
+            'hover:bg-card-light-hover hover:border-transparent hover:shadow-card':
               variant === 'light',
           })}
           to={link.url}
