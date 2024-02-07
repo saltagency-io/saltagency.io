@@ -70,6 +70,7 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         <div className="flex items-center">
           <H5
             as="span"
+            inverse={variant === 'dark'}
             // Somehow the text color classname gets overridden by the gray color classname in the heading component (maybe because the number is higher?)
             // Add a breakpoint prefix to make sure the classname is more specific.
             // Check if a link is present and if the variant is light or dark. If so, add the hover effect.
@@ -77,14 +78,13 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
               'group-hover:text-blue-600': link && variant === 'light',
               'group-hover:text-blue-400': link && variant === 'dark',
             })}
-            inverse={variant === 'dark'}
           >
             {link ? (
               <span className="relative flex items-center gap-x-2">
                 <span className="transition-all duration-300 ease-in-out">
                   {title}
                 </span>
-                <span className="card-arrow">
+                <span className="relative transition-all duration-300 ease-in-out md:absolute md:-right-6 md:opacity-0 md:group-hover:-right-8 md:group-hover:opacity-100">
                   <Icon name="arrow-right" size="md" />
                 </span>
               </span>
