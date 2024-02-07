@@ -1,8 +1,9 @@
-import { GradientCircle } from '~/components/gradient-circle'
-import { Grid } from '~/components/grid'
-import { H1, Intro } from '~/components/typography'
-import { multilineToBreaks } from '~/utils/misc'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { GradientCircle } from '#app/components/gradient-circle.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { H1, Intro } from '#app/components/ui/typography.tsx'
+import { multilineToBreaks } from '#app/utils/misc.tsx'
 
 type Props = {
   hasShapes: boolean

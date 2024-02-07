@@ -1,11 +1,15 @@
 import * as React from 'react'
 
-import { Grid } from '~/components/grid'
-import { IconChevronDown } from '~/components/icons'
-import { ToggleButton, ToggleButtonGroup } from '~/components/toggle-buttons'
-import { H3, H5 } from '~/components/typography'
-import { useLabels } from '~/utils/labels-provider'
 import clsx from 'clsx'
+
+import { Grid } from '#app/components/grid.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+} from '#app/components/ui/toggle-buttons.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
+import { useLabels } from '#app/utils/labels-provider.tsx'
 
 const formatter = new Intl.NumberFormat('nl-NL', {
   style: 'currency',
@@ -298,7 +302,7 @@ export function Calculator({ title, subtitle }: Props) {
                   ))}
                 </select>
                 <div className="pointer-events-none absolute bottom-0 right-4 top-0 m-auto h-6 w-6 text-white">
-                  <IconChevronDown />
+                  <Icon name="chevron-down" size="lg" />
                 </div>
               </div>
             </div>

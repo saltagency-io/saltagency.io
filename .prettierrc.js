@@ -1,7 +1,7 @@
 /** @typedef  {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig*/
 /** @typedef  {import("prettier").Config} PrettierConfig*/
 /** @type { PrettierConfig | SortImportsConfig } */
-module.exports = {
+export default {
   arrowParens: 'avoid',
   bracketSameLine: false,
   bracketSpacing: true,
@@ -20,7 +20,7 @@ module.exports = {
   tabWidth: 2,
   trailingComma: 'all',
   useTabs: false,
-  tailwindConfig: './tailwind.config.js',
+  tailwindConfig: './tailwind.config.ts',
   plugins: [
     '@ianvs/prettier-plugin-sort-imports',
     'prettier-plugin-tailwindcss',
@@ -28,7 +28,7 @@ module.exports = {
   importOrder: [
     '^(react/(.*)$)|^(react$)',
     '',
-    '^(remix/(.*)$)|^(remix$)',
+    '^(remix-run/(.*)$)|^(remix-run$)',
     '',
     '<THIRD_PARTY_MODULES>',
     '',

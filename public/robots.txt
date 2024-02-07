@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://koodin.nl/sitemap.xml

@@ -1,13 +1,14 @@
 import * as React from 'react'
 
-import { PhoneButton } from '~/components/button'
-import { Grid } from '~/components/grid'
-import { H3 } from '~/components/typography'
-import type { Image } from '~/types'
-import { getImgProps } from '~/utils/images'
-import { useGroup } from '~/utils/providers'
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { PhoneButton } from '#app/components/ui/button.tsx'
+import { H3 } from '#app/components/ui/typography.tsx'
+import { type Image } from '#app/types.tsx'
+import { getImgProps } from '#app/utils/images.ts'
+import { useGroup } from '#app/utils/providers.tsx'
 
 type Props = {
   title: string

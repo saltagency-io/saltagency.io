@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import type { DataSourceEntry } from '~/types'
+import { type DataSourceEntry } from '#app/types'
 
 type Options = {
   replace?: boolean

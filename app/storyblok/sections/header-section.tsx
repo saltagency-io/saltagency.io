@@ -1,7 +1,8 @@
 import { StoryblokComponent } from '@storyblok/react'
-import { HeaderSection } from '~/components/sections/header-section'
-import type { HeaderSectionBlok } from '~/types'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+
+import { HeaderSection } from '#app/components/sections/header-section.tsx'
+import { type HeaderSectionBlok } from '#app/types.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbHeaderSection({ blok }: { blok: HeaderSectionBlok }) {
   return (

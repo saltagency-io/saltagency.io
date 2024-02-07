@@ -1,12 +1,13 @@
-import type * as React from 'react'
+import * as React from 'react'
 
 import { useLocation, useNavigate, useRevalidator } from '@remix-run/react'
-import { IconChevronDown } from '~/components/icons'
-import { defaultLanguage, isSupportedLanguage } from '~/utils/i18n'
-import { useI18n } from '~/utils/i18n-provider'
-import { useLabels } from '~/utils/labels-provider'
-import { removeTrailingSlash } from '~/utils/misc'
 import clsx from 'clsx'
+
+import { Icon } from '#app/components/ui/icon.tsx'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { defaultLanguage, isSupportedLanguage } from '#app/utils/i18n.ts'
+import { useLabels } from '#app/utils/labels-provider.tsx'
+import { removeTrailingSlash } from '#app/utils/misc.tsx'
 
 export function LanguageSwitch() {
   const { t } = useLabels()
@@ -54,7 +55,7 @@ export function LanguageSwitch() {
         <option value="nl">🇳🇱 {t('language.dutch')}</option>
       </select>
       <div className="pointer-events-none absolute bottom-0 right-4 top-0 m-auto h-4 w-4 text-white">
-        <IconChevronDown height={16} width={16} />
+        <Icon name="chevron-down" />
       </div>
     </div>
   )

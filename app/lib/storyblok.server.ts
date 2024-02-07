@@ -1,11 +1,15 @@
-import { getStoryblokApi, type StoryData } from '@storyblok/react'
-import type {
-  DataSourceEntry,
-  LayoutStoryContent,
-  PageStoryContent,
-  VacancyStoryContent,
-} from '~/types'
-import { defaultLanguage, type SupportedLanguage } from '~/utils/i18n'
+import {
+  getStoryblokApi,
+  type ISbStoryData as StoryData,
+} from '@storyblok/react'
+
+import {
+  type DataSourceEntry,
+  type LayoutStoryContent,
+  type PageStoryContent,
+  type VacancyStoryContent,
+} from '#app/types.ts'
+import { defaultLanguage, type SupportedLanguage } from '#app/utils/i18n.ts'
 
 function getDefaultParams({
   preview,
@@ -15,8 +19,8 @@ function getDefaultParams({
   language?: SupportedLanguage
 }) {
   return {
-    version: preview ? 'draft' : 'published',
-    resolve_links: 'url',
+    version: preview ? ('draft' as const) : ('published' as const),
+    resolve_links: 'url' as const,
     language: language ?? defaultLanguage,
   }
 }
@@ -77,7 +81,7 @@ export async function getAllVacancies(
   const params = {
     ...getDefaultParams({ preview, language }),
     starts_with: 'vacatures/',
-    is_startpage: 0,
+    is_startpage: false,
   }
 
   try {

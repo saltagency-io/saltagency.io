@@ -1,9 +1,9 @@
-import { LOGO_URL } from '~/utils/misc'
+import { LOGO_URL } from '#app/utils/misc.tsx'
 
 export function getSocialMetas({
   url,
   title = 'Koodin',
-  description = 'Wij leveren lead consultants',
+  description = 'Wij zijn Koodin, je nieuwe digitale partner',
   image = LOGO_URL,
   keywords,
 }: {
@@ -13,21 +13,24 @@ export function getSocialMetas({
   description?: string
   keywords?: string
 }) {
-  return {
-    title,
-    description,
-    keywords,
-    image,
-    'og:url': url,
-    'og:title': title,
-    'og:description': description,
-    'og:image': image,
-    'twitter:card': image ? 'summary_large_image' : 'summary',
-    'twitter:creator': '@koodin',
-    'twitter:site': '@koodin',
-    'twitter:title': title,
-    'twitter:description': description,
-    'twitter:image': image,
-    'twitter:alt': title,
-  }
+  return [
+    { title },
+    { name: 'description', content: description },
+    { name: keywords, content: keywords },
+    { name: 'image', content: image },
+    { name: 'og:url', content: url },
+    { name: 'og:title', content: title },
+    { name: 'og:description', content: description },
+    { name: 'og:image', content: image },
+    {
+      name: 'twitter:card',
+      content: image ? 'summary_large_image' : 'summary',
+    },
+    { name: 'twitter:creator', content: '@koodin' },
+    { name: 'twitter:site', content: '@koodin' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: image },
+    { name: 'twitter:alt', content: title },
+  ]
 }

@@ -1,7 +1,30 @@
 import * as React from 'react'
 
-import { IconChevronDown } from '~/components/icons'
 import clsx from 'clsx'
+
+import { Icon } from '#app/components/ui/icon.tsx'
+
+export type ListOfErrors = Array<string | null | undefined> | null | undefined
+
+export function ErrorList({
+  id,
+  errors,
+}: {
+  errors?: ListOfErrors
+  id?: string
+}) {
+  const errorsToRender = errors?.filter(Boolean)
+  if (!errorsToRender?.length) return null
+  return (
+    <ul id={id} className="flex flex-col gap-1">
+      {errorsToRender.map(e => (
+        <li key={e} className="text-[12px] font-bold text-[#8A0020]">
+          {e}
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 export function Label({
   className,
@@ -26,11 +49,9 @@ const isTextarea = (props: InputProps): props is TextAreaProps =>
   props.type === 'textarea'
 
 export const inputClassName = clsx(
-  'px-6 py-4 bg-white w-full rounded-xl border border-gray-800/10 transition',
-  'hover:border-gray-800',
-  'focus-visible:border-blue-500',
-  '[&:not(:placeholder-shown,:focus-within)]:border-gray-800',
-  'placeholder:opacity-50 placeholder:text-base placeholder:font-bold',
+  'px-6 py-4 bg-white w-full rounded-xl border border-transparent transition',
+  'focus-visible:border-purple-500 outline-none aria-[invalid]:border-[#8A0020]',
+  'placeholder:opacity-70 placeholder:text-base placeholder:font-bold',
 )
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -67,11 +88,10 @@ export function InputError({ children, id }: InputErrorProps) {
 }
 
 type FieldProps = {
-  defaultValue?: string | null
   name: string
   label: string
   className?: string
-  error?: string | null
+  errors?: ListOfErrors
   description?: React.ReactNode
 }
 
@@ -79,7 +99,7 @@ export const Field = React.forwardRef<
   HTMLInputElement,
   React.ComponentPropsWithRef<typeof Input> & FieldProps
 >(function Field(
-  { defaultValue, error, name, label, className, description, id, ...props },
+  { defaultValue, errors, name, label, className, description, id, ...props },
   ref,
 ) {
   return (
@@ -87,7 +107,7 @@ export const Field = React.forwardRef<
       id={id}
       label={label}
       className={className}
-      error={error}
+      errors={errors}
       description={description}
     >
       {({ inputProps }) => (
@@ -113,7 +133,7 @@ type FieldContainerRenderProp = (props: {
 }) => React.ReactNode
 
 export function FieldContainer({
-  error,
+  errors,
   label,
   className,
   description,
@@ -123,7 +143,7 @@ export function FieldContainer({
   id?: string
   label: string
   className?: string
-  error?: string | null
+  errors?: ListOfErrors
   description?: React.ReactNode
   children: FieldContainerRenderProp
 }) {
@@ -134,27 +154,24 @@ export function FieldContainer({
 
   return (
     <div className={clsx('mb-4', className)}>
-      <div className="mb-2 flex items-baseline justify-between gap-2">
+      <div className="mb-2">
         <Label htmlFor={inputId}>{label}</Label>
-        {error ? (
-          <InputError id={errorId}>{error}</InputError>
-        ) : description ? (
-          <div id={descriptionId} className="text-primary text-lg">
-            {description}
-          </div>
-        ) : null}
       </div>
 
       {children({
         inputProps: {
           id: inputId,
-          'aria-describedby': error
+          'aria-describedby': errors
             ? errorId
             : description
               ? descriptionId
               : undefined,
         },
       })}
+
+      <div className="pt-2">
+        {errors ? <ErrorList id={errorId} errors={errors} /> : null}
+      </div>
     </div>
   )
 }
@@ -170,7 +187,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       id,
       label,
       name,
-      error,
+      errors,
       children,
       defaultValue,
       description,
@@ -183,7 +200,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         id={id}
         label={label}
         className={className}
-        error={error}
+        errors={errors}
         description={description}
       >
         {({ inputProps }) => (
@@ -199,7 +216,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
               {children}
             </select>
             <div className="pointer-events-none absolute bottom-0 right-4 top-0 m-auto h-6 w-6 text-gray-500">
-              <IconChevronDown />
+              <Icon name="chevron-down" size="lg" />
             </div>
           </div>
         )}
@@ -216,29 +233,6 @@ export function ButtonGroup({
   return (
     <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
       {children}
-    </div>
-  )
-}
-
-export function ErrorPanel({
-  children,
-  id,
-  className,
-}: {
-  children: React.ReactNode
-  id?: string
-  className?: string
-}) {
-  return (
-    <div
-      role="alert"
-      className={clsx('relative mt-8 px-11 py-8', className)}
-      id={id}
-    >
-      <div className="absolute inset-0 rounded-lg bg-red-500 opacity-25" />
-      <div className="text-primary relative text-lg font-medium">
-        {children}
-      </div>
     </div>
   )
 }

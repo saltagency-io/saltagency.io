@@ -1,9 +1,7 @@
-import * as React from 'react'
-
-import { Navbar } from '~/components/navbar'
-import type { NavigationBlok } from '~/types'
-import { useLocalizedMappers } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { Navbar } from '#app/components/navbar.tsx'
+import { type NavigationBlok } from '#app/types.ts'
+import { useLocalizedMappers } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbNavigation({ blok }: { blok: NavigationBlok }) {
   const { mapLink } = useLocalizedMappers()

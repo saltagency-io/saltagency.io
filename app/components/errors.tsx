@@ -1,22 +1,32 @@
 import * as React from 'react'
 
-import { useLocation, useMatches } from '@remix-run/react'
-import { ButtonLink } from '~/components/button'
-import { Grid } from '~/components/grid'
-import { IconArrowDown } from '~/components/icons'
-import { H1, H2, H3, H4, H5, H6 } from '~/components/typography'
-import { VacancyList } from '~/components/vacancy-list'
-import type { Vacancy } from '~/types'
+import { type ErrorResponse } from '@remix-run/node'
+import {
+  isRouteErrorResponse,
+  useLocation,
+  useMatches,
+  useParams,
+  useRouteError,
+} from '@remix-run/react'
+import { captureRemixErrorBoundaryError } from '@sentry/remix'
+import clsx from 'clsx'
+import errorStack from 'error-stack-parser'
+import { motion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { ButtonLink } from '#app/components/ui/button.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
+import { H1, H2, H3, H4, H5, H6 } from '#app/components/ui/typography.tsx'
+import { VacancyList } from '#app/components/vacancy-list.tsx'
+import { type Vacancy } from '#app/types.ts'
 import {
   defaultLanguage,
   getLanguageFromPath,
   getStaticLabel,
-} from '~/utils/i18n'
-import { useLocalizedMappers } from '~/utils/mappers'
-import { useVacancies } from '~/utils/providers'
-import clsx from 'clsx'
-import errorStack from 'error-stack-parser'
-import { motion } from 'framer-motion'
+} from '#app/utils/i18n'
+import { useLocalizedMappers } from '#app/utils/mappers'
+import { getErrorMessage } from '#app/utils/misc.tsx'
+import { useVacancies } from '#app/utils/providers.tsx'
 
 function RedBox({ error }: { error: Error }) {
   const [isVisible, setIsVisible] = React.useState(true)
@@ -150,7 +160,7 @@ export function ErrorPage({
                       repeatDelay: 1,
                     }}
                   >
-                    <IconArrowDown />
+                    <Icon name="chevron-down" />
                   </motion.div>
                 </H5>
               </div>
@@ -200,7 +210,7 @@ export function NotFoundError() {
   )
 }
 
-export function ServerError({ error }: { error?: Error }) {
+export function ServerError() {
   const matches = useMatches()
   const location = useLocation()
 
@@ -210,12 +220,49 @@ export function ServerError({ error }: { error?: Error }) {
 
   return (
     <ErrorPage
-      error={error}
       errorSectionProps={{
         title: getStaticLabel('500.title', language),
         subtitle: `${getStaticLabel('500.subtitle', language)} "${pathname}"`,
         ctaText: getStaticLabel('500.cta', language),
       }}
     />
+  )
+}
+
+type StatusHandler = (info: {
+  error: ErrorResponse
+  params: Record<string, string | undefined>
+}) => JSX.Element | null
+
+export function GeneralErrorBoundary({
+  defaultStatusHandler = ({ error }) => (
+    <p>
+      {error.status} {error.data}
+    </p>
+  ),
+  statusHandlers,
+  unexpectedErrorHandler = error => <p>{getErrorMessage(error)}</p>,
+}: {
+  defaultStatusHandler?: StatusHandler
+  statusHandlers?: Record<number, StatusHandler>
+  unexpectedErrorHandler?: (error: unknown) => JSX.Element | null
+}) {
+  const error = useRouteError()
+  captureRemixErrorBoundaryError(error)
+  const params = useParams()
+
+  if (typeof document !== 'undefined') {
+    console.error(error)
+  }
+
+  return (
+    <>
+      {isRouteErrorResponse(error)
+        ? (statusHandlers?.[error.status] ?? defaultStatusHandler)({
+            error,
+            params,
+          })
+        : unexpectedErrorHandler(error)}
+    </>
   )
 }

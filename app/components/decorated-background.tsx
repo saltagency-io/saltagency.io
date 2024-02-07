@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import { GradientCircle } from './gradient-circle'
+import { GradientCircle } from './gradient-circle.tsx'
 
 export function DecoratedBackgroundDark() {
   return (

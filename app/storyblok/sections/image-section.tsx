@@ -1,9 +1,7 @@
-import * as React from 'react'
-
-import { ImageSection } from '~/components/sections/image-section'
-import type { ImageSectionBlok } from '~/types'
-import { mapAsset } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { ImageSection } from '#app/components/sections/image-section.tsx'
+import { type ImageSectionBlok } from '#app/types.ts'
+import { mapAsset } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbImageSection({ blok }: { blok: ImageSectionBlok }) {
   return (

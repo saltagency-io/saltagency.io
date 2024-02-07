@@ -1,9 +1,8 @@
-import * as React from 'react'
-
 import { Outlet } from '@remix-run/react'
 import { StoryblokComponent } from '@storyblok/react'
-import type { LayoutBlok } from '~/types'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+
+import { type LayoutBlok } from '#app/types.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbLayout({ blok }: { blok: LayoutBlok }) {
   return (

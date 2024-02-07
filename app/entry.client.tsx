@@ -1,23 +1,12 @@
-import * as React from 'react'
+import { startTransition } from 'react'
 
 import { RemixBrowser } from '@remix-run/react'
 import { hydrateRoot } from 'react-dom/client'
 
-function hydrate() {
-  React.startTransition(() => {
-    hydrateRoot(
-      document,
-      <React.StrictMode>
-        <RemixBrowser />
-      </React.StrictMode>,
-    )
-  })
+if (ENV.MODE === 'production' && ENV.SENTRY_DSN) {
+  import('./utils/monitoring.client.ts').then(({ init }) => init())
 }
 
-if (window.requestIdleCallback) {
-  window.requestIdleCallback(hydrate)
-} else {
-  // Safari doesn't support requestIdleCallback
-  // https://caniuse.com/requestidlecallback
-  window.setTimeout(hydrate, 1)
-}
+startTransition(() => {
+  hydrateRoot(document, <RemixBrowser />)
+})

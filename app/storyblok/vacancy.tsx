@@ -1,37 +1,17 @@
-import * as React from 'react'
-
-import { useRouteLoaderData } from '@remix-run/react'
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
-import { Vacancy } from '~/components/vacancy'
-import type { LoaderData as RootLoaderData } from '~/root'
-import type { VacancyBlok } from '~/types'
-import { GroupProvider } from '~/utils/providers'
-import { SdJobPosting } from '~/utils/structured-data'
+
+import { Vacancy } from '#app/components/vacancy.tsx'
+import { type VacancyBlok } from '#app/types.ts'
+import { GroupProvider } from '#app/utils/providers.tsx'
 
 type Props = {
   blok: VacancyBlok
-  slug: string
-  publishDate: string
 }
 
-export function SbVacancy({ blok, publishDate }: Props) {
-  const { requestInfo }: RootLoaderData = useRouteLoaderData('root')
-  const jobDescription = blok.body.find(b => b.component === 'jobDescription')
-
-  const date = new Date(publishDate ?? '')
-  const datePosted = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-
+export function SbVacancy({ blok }: Props) {
   return (
     <div {...storyblokEditable(blok)}>
-      {/* Fallback group theme provider */}
       <GroupProvider value={{ theme: 'light-white' }}>
-        <SdJobPosting
-          title={blok.title}
-          origin={requestInfo.origin}
-          description={(jobDescription?.description as string) ?? ''}
-          datePosted={datePosted}
-        />
-
         <Vacancy title={blok.title} summary={blok.summary}>
           {blok.body.map(nestedBlok => (
             <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />

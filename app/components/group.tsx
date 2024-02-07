@@ -1,15 +1,18 @@
-import type { GroupTheme } from '~/types'
-import { GroupProvider } from '~/utils/providers'
+import * as React from 'react'
+
 import clsx from 'clsx'
 
 import {
   DecoratedBackgroundDark,
   DecoratedBackgroundHero,
-} from './decorated-background'
+} from '#app/components/decorated-background.tsx'
+import { type GroupTheme } from '#app/types.ts'
+import { GroupProvider } from '#app/utils/providers.tsx'
 
 type Props = {
   hasComponentSpacing?: boolean
   theme: GroupTheme
+  children: React.ReactNode
 }
 
 const backgroundColorStyles: Record<GroupTheme, string> = {
@@ -20,11 +23,8 @@ const backgroundColorStyles: Record<GroupTheme, string> = {
   'light-white': 'bg-white',
   'dark-to-footer': 'bg-gradient',
 }
-export function Group({
-  theme,
-  hasComponentSpacing,
-  children,
-}: React.PropsWithChildren<Props>) {
+
+export function Group({ theme, hasComponentSpacing, children }: Props) {
   return (
     <GroupProvider value={{ theme }}>
       <section

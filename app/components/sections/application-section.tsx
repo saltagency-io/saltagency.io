@@ -1,10 +1,9 @@
-import React from 'react'
-
-import { Grid } from '~/components/grid'
-import { H3, H4, H5, Paragraph } from '~/components/typography'
-import type { Section } from '~/types'
-import { sbIconMap } from '~/utils/storyblok'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { Icon, type IconName } from '#app/components/ui/icon.tsx'
+import { H3, H4, H5, Paragraph } from '#app/components/ui/typography.tsx'
+import { type Section } from '#app/types.ts'
 
 type Props = {
   subtitle: string
@@ -51,20 +50,17 @@ export function ApplicationProcessSection({
         </motion.div>
         <div className="col-span-full lg:col-span-8 lg:col-start-5">
           {sections.map(section => {
-            const Icon = sbIconMap[section.icon ?? '']
             return (
               <motion.div
                 key={section.id}
                 variants={childVariants}
                 className="border-secondary border-b py-6 first:pt-0 lg:px-4 lg:py-8"
               >
-                {Icon ? (
+                {section.icon ? (
                   <div className="mb-3 text-white">
-                    <Icon height={32} width={32} />
+                    <Icon name={section.icon as IconName} size="2xl" />
                   </div>
-                ) : (
-                  `Unknown icon: ${section.icon}`
-                )}
+                ) : null}
                 <H4 as="h3" className="mb-2" inverse>
                   {section.title}
                 </H4>

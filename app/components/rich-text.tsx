@@ -1,9 +1,9 @@
-import { Grid } from '~/components/grid'
-import { Markdown } from '~/utils/markdown'
-import { useGroup } from '~/utils/providers'
 import { motion } from 'framer-motion'
 
-import { H3, H5, Paragraph } from './typography'
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5, Paragraph } from '#app/components/ui/typography.tsx'
+import { Markdown } from '#app/utils/markdown.tsx'
+import { useGroup } from '#app/utils/providers.tsx'
 
 type Props = {
   content: string
@@ -15,7 +15,6 @@ type Props = {
 
 export function RichText({ content, title, subtitle, text }: Props) {
   const { theme } = useGroup()
-
   const isDark = theme.startsWith('dark')
 
   const textVariant = {
@@ -24,7 +23,6 @@ export function RichText({ content, title, subtitle, text }: Props) {
   }
 
   const viewPort = { once: true, margin: '-115px 0px' }
-
   return (
     <Grid className="max-w-6xl">
       <div className="col-span-full px-16 lg:col-span-10 lg:col-start-2">

@@ -1,10 +1,19 @@
-import type * as React from 'react'
+import * as React from 'react'
 
-import { H1, H2, H3, H4, H5, H6, Paragraph } from '~/components/typography'
-import { useI18n } from '~/utils/i18n-provider'
-import { AnchorOrLink } from '~/utils/misc'
 import clsx from 'clsx'
 import ReactMarkdown from 'react-markdown'
+
+import {
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Paragraph,
+} from '#app/components/ui/typography.tsx'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { AnchorOrLink } from '#app/utils/misc.tsx'
 
 type Props = {
   children: string

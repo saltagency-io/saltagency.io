@@ -1,14 +1,14 @@
-import { CardsSection } from '~/components/sections/cards-section'
-import type { CardsSectionBlok } from '~/types'
-import { useLocalizedMappers } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { CardsSection } from '#app/components/sections/cards-section.tsx'
+import { type CardsSectionBlok } from '#app/types.ts'
+import { useLocalizedMappers } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbCardsSection({ blok }: { blok: CardsSectionBlok }) {
   const { mapLink } = useLocalizedMappers()
 
   const cards = blok.cards.map(({ _uid, icon, link, title, body }) => {
     return {
-      id: _uid,
+      id: _uid ?? '',
       icon,
       title,
       link: link && link[0] ? mapLink(link[0]) : undefined,

@@ -1,11 +1,47 @@
+import { z } from 'zod'
+
+const schema = z.object({
+  NODE_ENV: z.enum(['production', 'development', 'test'] as const),
+  SENTRY_DSN: z.string(),
+  NOTION_API_KEY: z.string(),
+  STORYBLOK_ACCESS_TOKEN: z.string(),
+  HONEYPOT_SECRET: z.string(),
+  SESSION_SECRET: z.string(),
+})
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv extends z.infer<typeof schema> {}
+  }
+}
+
+export function init() {
+  const parsed = schema.safeParse(process.env)
+
+  if (parsed.success === false) {
+    console.error(
+      '❌ Invalid environment variables:',
+      parsed.error.flatten().fieldErrors,
+    )
+
+    throw new Error('Invalid environment variables')
+  }
+}
+
+/**
+ * This is used in both `entry.server.ts` and `root.tsx` to ensure that
+ * the environment variables are set and globally available before the app is
+ * started.
+ *
+ * NOTE: Do *not* add any environment variables in here that you do not wish to
+ * be included in the client.
+ * @returns all public ENV variables
+ */
 export function getEnv() {
   return {
-    NODE_ENV: process.env.NODE_ENV,
+    MODE: process.env.NODE_ENV,
+    SENTRY_DSN: process.env.SENTRY_DSN,
     STORYBLOK_ACCESS_TOKEN: process.env.STORYBLOK_ACCESS_TOKEN,
-    GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS,
-    GOOGLE_AW_TAG: process.env.GOOGLE_AW_TAG,
-    GOOGLE_AW_CONVERSION_EVENT: process.env.GOOGLE_AW_CONVERSION_EVENT,
-    HCAPTCHA_KEY: process.env.HCAPTCHA_KEY,
   }
 }
 

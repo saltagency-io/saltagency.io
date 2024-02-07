@@ -1,10 +1,11 @@
-import { Avatar } from '~/components/avatar'
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import type { Image } from '~/types'
-import { useGroup } from '~/utils/providers'
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { Avatar } from '#app/components/ui/avatar.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
+import { type Image } from '#app/types.ts'
+import { useGroup } from '#app/utils/providers.tsx'
 
 type Props = {
   subtitle?: string

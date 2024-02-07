@@ -38,29 +38,3 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(function Grid(
     </Tag>
   )
 })
-
-/**
- * Use for development only! It renders the grid columns and gaps as page overlay
- */
-export function GridLines() {
-  if (ENV.NODE_ENV !== 'development') {
-    throw new Error('<GridLines />  should only be used during development')
-  }
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-10 select-none">
-      <Grid>
-        {Array.from({ length: 12 }).map((_, idx) => (
-          <div
-            key={idx}
-            className="flex h-screen items-start bg-red-500 text-black opacity-10"
-          >
-            <div className="w-full pt-4 text-center text-lg text-black">
-              {idx + 1}
-            </div>
-          </div>
-        ))}
-      </Grid>
-    </div>
-  )
-}

@@ -1,10 +1,10 @@
-import { useGroup } from '~/utils/providers'
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
-import { Card, type Props as CardProps } from '../card'
-import { Grid } from '../grid'
-import { H3, H5, Paragraph } from '../typography'
+import { Grid } from '#app/components/grid.tsx'
+import { Card, type Props as CardProps } from '#app/components/ui/card.tsx'
+import { H3, H5, Paragraph } from '#app/components/ui/typography'
+import { useGroup } from '#app/utils/providers.tsx'
 
 const columnStyle: Record<number, string> = {
   1: 'lg:col-span-12',

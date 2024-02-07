@@ -1,7 +1,7 @@
-import { Quote } from '~/components/quote'
-import type { QuoteBlok } from '~/types'
-import { mapAsset } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { Quote } from '#app/components/quote.tsx'
+import { type QuoteBlok } from '#app/types.ts'
+import { mapAsset } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbQuote({ blok }: { blok: QuoteBlok }) {
   return (

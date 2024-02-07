@@ -1,12 +1,12 @@
 import * as React from 'react'
 
-import type { TranslatedSlug } from '~/types'
+import { type TranslatedSlug } from '#app/types'
 import {
   defaultLanguage,
   isSupportedLanguage,
   supportedLanguages,
   type SupportedLanguage,
-} from '~/utils/i18n'
+} from '#app/utils/i18n'
 
 type I18nContextState = {
   language: SupportedLanguage

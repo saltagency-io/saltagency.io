@@ -1,17 +1,18 @@
-import type { StoryData } from '@storyblok/react'
-import type {
-  Asset,
-  Image,
-  LinkBlok,
-  LinkType,
-  Section,
-  SectionBlok,
-  Vacancy,
-  VacancyStoryContent,
-} from '~/types'
-import { defaultLanguage, SupportedLanguage } from '~/utils/i18n'
-import { useI18n } from '~/utils/i18n-provider'
-import { removeTrailingSlash } from '~/utils/misc'
+import { type ISbStoryData as StoryData } from '@storyblok/react'
+
+import {
+  type Asset,
+  type Image,
+  type LinkBlok,
+  type LinkType,
+  type Section,
+  type SectionBlok,
+  type Vacancy,
+  type VacancyStoryContent,
+} from '#app/types.ts'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { defaultLanguage, type SupportedLanguage } from '#app/utils/i18n.ts'
+import { removeTrailingSlash } from '#app/utils/misc.tsx'
 
 export function formatUrl(
   url: string,
@@ -48,7 +49,7 @@ export function mapLink(language: SupportedLanguage = defaultLanguage) {
         : link.target.cached_url
 
     return {
-      id: link?._uid,
+      id: link?._uid ?? '',
       url: formatUrl(urlTarget ?? '', language, link.anchor),
       text: link?.text,
     }
@@ -74,7 +75,7 @@ export function useLocalizedMappers() {
 
 export function mapSection(language = defaultLanguage) {
   return (section: SectionBlok): Section => ({
-    id: section._uid,
+    id: section._uid ?? '',
     icon: section.icon,
     title: section.title,
     text: section.text,

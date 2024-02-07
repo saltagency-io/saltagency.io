@@ -1,10 +1,9 @@
 import * as React from 'react'
 
-import type {
-  DataFunctionArgs,
-  LinksFunction,
-  MetaFunction,
-  SerializeFrom,
+import {
+  type LinksFunction,
+  type LoaderFunctionArgs,
+  type MetaFunction,
 } from '@remix-run/node'
 import {
   Links,
@@ -12,52 +11,66 @@ import {
   Meta,
   Scripts,
   ScrollRestoration,
-  useCatch,
   useLocation,
   useMatches,
 } from '@remix-run/react'
 import { apiPlugin, StoryblokComponent, storyblokInit } from '@storyblok/react'
-import { ErrorPage } from '~/components/errors'
+import { typedjson, useTypedLoaderData } from 'remix-typedjson'
+import { AuthenticityTokenProvider } from 'remix-utils/csrf/react'
+import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import { z } from 'zod'
+
+import {
+  GeneralErrorBoundary,
+  NotFoundError,
+  ServerError,
+} from '#app/components/errors.tsx'
 import {
   getAllVacancies,
   getDataSource,
   getLayout,
-} from '~/lib/storyblok.server'
-import { components } from '~/storyblok'
-import appStyles from '~/styles/app.css'
-import tailwindStyles from '~/styles/tailwind.css'
-import vendorStyles from '~/styles/vendors.css'
-import { getEnv } from '~/utils/env.server'
+} from '#app/lib/storyblok.server.ts'
+import { components } from '#app/storyblok/index.ts'
+import appStyles from '#app/styles/app.css'
+import tailwindStyles from '#app/styles/tailwind.css'
+import vendorStyles from '#app/styles/vendors.css'
+import { csrf } from '#app/utils/csrf.server.ts'
+import { getEnv } from '#app/utils/env.server.ts'
+import { honeypot } from '#app/utils/honeypot.server.ts'
+import { I18nProvider, useI18n } from '#app/utils/i18n-provider.tsx'
+import { getLanguageFromContext, getLanguageFromPath } from '#app/utils/i18n.ts'
+import { LabelsProvider } from '#app/utils/labels-provider.tsx'
 import {
-  getLanguageFromContext,
-  getLanguageFromPath,
-  getStaticLabel,
-} from '~/utils/i18n'
-import { I18nProvider, useI18n } from '~/utils/i18n-provider'
-import { LabelsProvider } from '~/utils/labels-provider'
-import {
+  combineHeaders,
   getDomainUrl,
-  getRequiredGlobalEnvVar,
+  getUrl,
   removeTrailingSlash,
-} from '~/utils/misc'
-import { useNonce } from '~/utils/nonce-provider'
-import { PreviewStateProvider, VacanciesProvider } from '~/utils/providers'
-import { getTranslatedSlugsFromStory, isPreview } from '~/utils/storyblok'
-import { SdLogo } from '~/utils/structured-data'
-import { typedjson, useTypedLoaderData } from 'remix-typedjson'
-
-import { SvgGradientReference } from './utils/svg-gradient-reference'
+} from '#app/utils/misc.tsx'
+import { useNonce } from '#app/utils/nonce-provider.tsx'
+import {
+  PreviewStateProvider,
+  VacanciesProvider,
+} from '#app/utils/providers.tsx'
+import { getSocialMetas } from '#app/utils/seo.ts'
+import {
+  getTranslatedSlugsFromStory,
+  isPreview,
+} from '#app/utils/storyblok.tsx'
+import { SvgGradientReference } from '#app/utils/svg-gradient-reference.tsx'
 
 storyblokInit({
   components,
-  accessToken: getRequiredGlobalEnvVar('STORYBLOK_ACCESS_TOKEN'),
+  accessToken: ENV.STORYBLOK_ACCESS_TOKEN,
   use: [apiPlugin],
-  apiOptions: {
-    cache: {
-      clear: 'auto',
-      type: 'memory',
-    },
-  },
+  apiOptions:
+    ENV.MODE === 'production'
+      ? {
+          cache: {
+            clear: 'auto',
+            type: 'memory',
+          },
+        }
+      : {},
 })
 
 export const links: LinksFunction = () => {
@@ -118,9 +131,9 @@ export const links: LinksFunction = () => {
   ]
 }
 
-export type LoaderData = SerializeFrom<typeof loader>
+export type RootLoaderType = typeof loader
 
-export async function loader({ request, context }: DataFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const preview = isPreview(request)
   const language = getLanguageFromContext(context)
 
@@ -130,28 +143,43 @@ export async function loader({ request, context }: DataFunctionArgs) {
     getAllVacancies(language, preview),
   ])
 
-  const data = {
-    layoutStory,
-    preview,
-    labels,
-    vacancies,
-    language,
-    ENV: getEnv(),
-    requestInfo: {
-      origin: getDomainUrl(request),
-      path: new URL(request.url).pathname,
-    },
-  }
+  const honeyProps = honeypot.getInputProps()
+  const [csrfToken, csrfCookieHeader] = await csrf.commitToken()
 
-  return typedjson(data)
+  return typedjson(
+    {
+      layoutStory,
+      preview,
+      labels,
+      vacancies,
+      language,
+      ENV: getEnv(),
+      requestInfo: {
+        origin: getDomainUrl(request),
+        path: new URL(request.url).pathname,
+      },
+      honeyProps,
+      csrfToken,
+    },
+    {
+      headers: combineHeaders(
+        csrfCookieHeader ? { 'Set-Cookie': csrfCookieHeader } : null,
+      ),
+    },
+  )
 }
 
-export const meta: MetaFunction = () => {
-  return {
-    charset: 'utf-8',
-    title: 'Koodin',
-    viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
-  }
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const requestInfo = data?.requestInfo
+  return [
+    ...getSocialMetas({
+      title: 'Koodin',
+      description: 'Wij zijn Koodin, je nieuwe digitale partner',
+      keywords:
+        'Koodin, Digital Agency, Digital Partner, Lead Consultants, Lead Developers, Lead Designers, Freelance',
+      url: getUrl(requestInfo),
+    }),
+  ]
 }
 
 declare global {
@@ -198,155 +226,131 @@ export function App() {
   const fathomQueue = React.useRef<FathomQueue>([])
 
   return (
-    <html lang={language}>
-      <head>
-        <Meta />
+    <Document
+      env={data.ENV}
+      lang={language}
+      nonce={nonce}
+      canonical={
         <CanonicalUrl
           origin={data.requestInfo.origin}
           fathomQueue={fathomQueue}
         />
+      }
+    >
+      <StoryblokComponent blok={data.layoutStory?.content} />
+      <div id="menuPortal"></div>
+      {ENV.MODE === 'development' ? null : (
+        <script
+          nonce={nonce}
+          src="https://cdn.usefathom.com/script.js"
+          data-site="TRHLKHVT"
+          data-spa="history"
+          data-auto="false" // prevent tracking visit twice on initial page load
+          data-excluded-domains="localhost,salt.fly.dev,koodin.fly.dev"
+          defer
+          onLoad={() => {
+            fathomQueue.current.forEach(({ command }) => {
+              if (window.fathom) {
+                window.fathom[command]()
+              }
+            })
+            fathomQueue.current = []
+          }}
+        />
+      )}
+      <SvgGradientReference />
+    </Document>
+  )
+}
+
+const RouteWithStorySchema = z.object({
+  story: z.any(),
+})
+
+export default function AppWithProviders() {
+  const data = useTypedLoaderData<typeof loader>()
+  const matches = useMatches()
+
+  const lastMatch = matches[matches.length - 1]
+  const result = RouteWithStorySchema.safeParse(lastMatch.data)
+  const translatedSlugs =
+    result.success && result.data.story
+      ? getTranslatedSlugsFromStory(result.data.story)
+      : []
+
+  return (
+    <AuthenticityTokenProvider token={data.csrfToken}>
+      <HoneypotProvider {...data.honeyProps}>
+        <I18nProvider
+          language={data.language}
+          translatedSlugs={translatedSlugs}
+        >
+          <PreviewStateProvider value={{ preview: data.preview }}>
+            <LabelsProvider data={data.labels}>
+              <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
+                <App />
+              </VacanciesProvider>
+            </LabelsProvider>
+          </PreviewStateProvider>
+        </I18nProvider>
+      </HoneypotProvider>
+    </AuthenticityTokenProvider>
+  )
+}
+
+function Document({
+  children,
+  nonce,
+  lang,
+  env = {},
+  canonical = null,
+}: {
+  children: React.ReactNode
+  nonce?: string
+  lang: string
+  env?: Record<string, string>
+  canonical?: React.ReactNode
+}) {
+  return (
+    <html lang={lang}>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
         <Links />
-        {/* TODO: Enable Dynamic links once i18n support is implemented */}
-        {/* <DynamicLinks /> */}
+        {canonical}
       </head>
       <body className="bg-gray-body">
-        <StoryblokComponent blok={data.layoutStory?.content} />
-        <div id="menuPortal"></div>
-        <SdLogo origin={data.requestInfo.origin} />
-        {ENV.NODE_ENV === 'development' ? null : (
-          <script
-            nonce={nonce}
-            src="https://cdn.usefathom.com/script.js"
-            data-site="TRHLKHVT"
-            data-spa="history"
-            data-auto="false" // prevent tracking visit twice on initial page load
-            data-excluded-domains="localhost,salt.fly.dev,koodin.fly.dev"
-            defer
-            onLoad={() => {
-              fathomQueue.current.forEach(({ command }) => {
-                if (window.fathom) {
-                  window.fathom[command]()
-                }
-              })
-              fathomQueue.current = []
-            }}
-          />
-        )}
+        {children}
+        <Scripts nonce={nonce} />
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <script
           nonce={nonce}
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)};`,
+            __html: `window.ENV = ${JSON.stringify(env)};`,
           }}
         />
         <LiveReload nonce={nonce} />
-        <SvgGradientReference />
       </body>
     </html>
   )
 }
 
-export default function AppWithProviders() {
-  const data = useTypedLoaderData<typeof loader>()
-  const matches = useMatches()
-
-  const last = matches[matches.length - 1]
-  const story = last?.data?.story
-  const translatedSlugs = getTranslatedSlugsFromStory(story)
-
-  return (
-    <I18nProvider language={data.language} translatedSlugs={translatedSlugs}>
-      <PreviewStateProvider value={{ preview: data.preview }}>
-        <LabelsProvider data={data.labels}>
-          <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
-            <App />
-          </VacanciesProvider>
-        </LabelsProvider>
-      </PreviewStateProvider>
-    </I18nProvider>
-  )
-}
-
-function ErrorDoc({ children }: { children: React.ReactNode }) {
+export function ErrorBoundary() {
   const nonce = useNonce()
-  const { language } = useI18n()
-
-  return (
-    <html lang={language}>
-      <head>
-        <title>Oh no...</title>
-        <Links />
-      </head>
-      <body className="bg-gradient">
-        {children}
-        <Scripts nonce={nonce} />
-      </body>
-    </html>
-  )
-}
-
-export function ErrorBoundary({ error }: { error: Error }) {
   const location = useLocation()
   const language = getLanguageFromPath(location.pathname)
 
-  console.error(error)
-
   return (
-    <ErrorDoc>
-      <ErrorPage
-        error={error}
-        errorSectionProps={{
-          title: getStaticLabel('500.title', language),
-          subtitle: `${getStaticLabel('500.subtitle', language)} "${
-            location.pathname
-          }"`,
-          ctaText: getStaticLabel('500.cta', language),
+    <Document nonce={nonce} lang={language}>
+      <GeneralErrorBoundary
+        statusHandlers={{
+          404: NotFoundError,
+          500: ServerError,
         }}
       />
-    </ErrorDoc>
+    </Document>
   )
-}
-
-export function CatchBoundary() {
-  const caught = useCatch()
-  const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
-
-  console.error('CatchBoundary', caught)
-
-  if (caught.status === 404) {
-    return (
-      <ErrorDoc>
-        <ErrorPage
-          errorSectionProps={{
-            title: getStaticLabel('404.title', language),
-            subtitle: `${getStaticLabel('404.subtitle', language)} "${
-              location.pathname
-            }"`,
-            ctaText: getStaticLabel('404.cta', language),
-          }}
-        />
-      </ErrorDoc>
-    )
-  }
-
-  if (caught.status !== 500) {
-    return (
-      <ErrorDoc>
-        <ErrorPage
-          errorSectionProps={{
-            title: getStaticLabel('500.title', language),
-            subtitle: `${getStaticLabel('500.subtitle', language)} "${
-              location.pathname
-            }"`,
-            ctaText: getStaticLabel('500.cta', language),
-          }}
-        />
-      </ErrorDoc>
-    )
-  }
-
-  throw new Error(`Unhandled error: ${caught.status}`)
 }

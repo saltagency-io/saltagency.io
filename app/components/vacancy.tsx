@@ -1,12 +1,12 @@
-import type * as React from 'react'
+import * as React from 'react'
 
-import { Breadcrumbs } from '~/components/breadcrumbs'
-import { ButtonLink } from '~/components/button'
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import { routes } from '~/routes/($lang)/vacatures/$slug.solliciteren'
-import { useI18n } from '~/utils/i18n-provider'
-import { useLabels } from '~/utils/labels-provider'
+import { Breadcrumbs } from '#app/components/breadcrumbs.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { ButtonLink } from '#app/components/ui/button.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
+import { routes } from '#app/routes/($lang)+/vacatures.$slug.solliciteren.tsx'
+import { useI18n } from '#app/utils/i18n-provider.tsx'
+import { useLabels } from '#app/utils/labels-provider.tsx'
 
 type Props = {
   children: React.ReactNode
@@ -21,7 +21,7 @@ export function Vacancy({ children, title, summary }: Props) {
   return (
     <>
       <Grid as="header" className="pt-8 lg:pt-14">
-        <div className="col-span-full mb-4 lg:mb-8">
+        <div className="col-span-full mb-4 lg:mb-16">
           <Breadcrumbs />
         </div>
         <div className="col-span-full lg:col-span-10">

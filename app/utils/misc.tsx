@@ -1,39 +1,17 @@
 import * as React from 'react'
 
-import { Link, type LinkProps } from '@remix-run/react'
-import type { NonNullProperties, TranslatedSlug } from '~/types'
-import type { getEnv } from '~/utils/env.server'
-import { defaultLanguage } from '~/utils/i18n'
-import type { ValidateFn } from '~/utils/validators'
+import {
+  Link,
+  useFormAction,
+  useNavigation,
+  type LinkProps,
+} from '@remix-run/react'
+
+import { type NonNullProperties, type TranslatedSlug } from '#app/types.ts'
+import { defaultLanguage } from '#app/utils/i18n.ts'
 
 export const LOGO_URL =
   'https://a.storyblok.com/f/180005/107x45/038e65a2bd/logo-salt.svg'
-
-export function getRequiredEnvVarFromObj(
-  obj: Record<string, string | undefined>,
-  key: string,
-  devValue: string = `${key}-dev-value`,
-) {
-  let value = devValue
-  const envVal = obj[key]
-  if (envVal) {
-    value = envVal
-  } else if (obj.NODE_ENV === 'production') {
-    throw new Error(`${key} is a required env variable`)
-  }
-  return value
-}
-
-export function getRequiredServerEnvVar(key: string, devValue?: string) {
-  return getRequiredEnvVarFromObj(process.env, key, devValue)
-}
-
-export function getRequiredGlobalEnvVar(
-  key: keyof ReturnType<typeof getEnv>,
-  devValue?: string,
-) {
-  return getRequiredEnvVarFromObj(ENV, key, devValue)
-}
 
 type AnchorProps = React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -168,13 +146,6 @@ export function capitalizeFirstChar(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-export function getLabelKeyForError(validator: ValidateFn, errorKey: string) {
-  return (val: string | null) => {
-    const valid = validator(val)
-    return valid ? null : errorKey
-  }
-}
-
 export function unslugify(slug: string) {
   const words = slug.split('-')
   return words.map(capitalizeFirstChar).join(' ')
@@ -182,6 +153,7 @@ export function unslugify(slug: string) {
 
 export function createAlternateLinks(slugs: TranslatedSlug[], origin: string) {
   return slugs.map(slug => ({
+    tagName: 'link',
     rel: 'alternate',
     hrefLang: slug.lang,
     href: removeTrailingSlash(
@@ -197,5 +169,53 @@ export function multilineToBreaks(text: string): React.ReactNode {
   return lines.flatMap((line, i) =>
     // eslint-disable-next-line react/jsx-key
     i < lines.length - 1 ? [line, <br key={`break--${i}`} />] : [line],
+  )
+}
+
+/**
+ * Combine multiple header objects into one (uses append so headers are not overridden)
+ */
+export function combineHeaders(
+  ...headers: Array<ResponseInit['headers'] | null | undefined>
+) {
+  const combined = new Headers()
+  for (const header of headers) {
+    if (!header) continue
+    for (const [key, value] of new Headers(header).entries()) {
+      combined.append(key, value)
+    }
+  }
+  return combined
+}
+
+/**
+ * Returns true if the current navigation is submitting the current route's
+ * form. Defaults to the current route's form action and method POST.
+ *
+ * Defaults state to 'non-idle'
+ *
+ * NOTE: the default formAction will include query params, but the
+ * navigation.formAction will not, so don't use the default formAction if you
+ * want to know if a form is submitting without specific query params.
+ */
+export function useIsPending({
+  formAction,
+  formMethod = 'POST',
+  state = 'non-idle',
+}: {
+  formAction?: string
+  formMethod?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE'
+  state?: 'submitting' | 'loading' | 'non-idle'
+} = {}) {
+  const contextualFormAction = useFormAction()
+  const navigation = useNavigation()
+  const isPendingState =
+    state === 'non-idle'
+      ? navigation.state !== 'idle'
+      : navigation.state === state
+  return (
+    isPendingState &&
+    navigation.formAction === (formAction ?? contextualFormAction) &&
+    navigation.formMethod === formMethod
   )
 }

@@ -1,8 +1,11 @@
-import { GradientCircle } from '~/components/gradient-circle'
-import { Grid } from '~/components/grid'
-import { ScrollIndicator } from '~/components/scroll-indicator'
-import { H1 } from '~/components/typography'
+import * as React from 'react'
+
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { GradientCircle } from '#app/components/gradient-circle.tsx'
+import { Grid } from '#app/components/grid.tsx'
+import { ScrollIndicator } from '#app/components/scroll-indicator.tsx'
+import { H1 } from '#app/components/ui/typography.tsx'
 
 type Props = {
   title: string
@@ -17,7 +20,6 @@ export function HeaderSection({
   body,
   hasShapes,
   hasScrollIndicator,
-  children,
 }: Props) {
   const shouldReduceMotion = useReducedMotion()
 
@@ -85,13 +87,6 @@ export function HeaderSection({
                 <p className="lg:text-center lg:text-2xl">{body}</p>
               </motion.div>
             ) : null}
-
-            <motion.div
-              className="flex flex-col items-center justify-center gap-4 lg:flex-row lg:gap-6"
-              variants={childVariants}
-            >
-              {children}
-            </motion.div>
 
             {hasScrollIndicator ? (
               <motion.div

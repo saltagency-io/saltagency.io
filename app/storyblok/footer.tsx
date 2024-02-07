@@ -1,9 +1,7 @@
-import * as React from 'react'
-
-import { Footer } from '~/components/footer'
-import type { FooterBlok } from '~/types'
-import { useLocalizedMappers } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { Footer } from '#app/components/footer.tsx'
+import { type FooterBlok } from '#app/types.ts'
+import { useLocalizedMappers } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbFooter({ blok }: { blok: FooterBlok }) {
   const { mapLink } = useLocalizedMappers()

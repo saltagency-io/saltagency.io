@@ -7,7 +7,6 @@ node_modules/
 /build
 /server-build
 /public/build
-/app/styles/**/*.css
 
 localhost-key.pem
 localhost.pem
@@ -15,3 +14,6 @@ localhost.pem
 .env
 
 *.logs
+
+# generated files
+/app/components/ui/icons

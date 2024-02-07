@@ -1,6 +1,6 @@
-import { Calculator } from '~/components/calculator'
-import type { CalculatorBlok } from '~/types'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { Calculator } from '#app/components/calculator.tsx'
+import { type CalculatorBlok } from '#app/types.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbCalculator({ blok }: { blok: CalculatorBlok }) {
   return (

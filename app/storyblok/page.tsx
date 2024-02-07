@@ -1,7 +1,8 @@
 import { StoryblokComponent } from '@storyblok/react'
-import type { PageBlok } from '~/types'
-import { GroupProvider } from '~/utils/providers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+
+import { type PageBlok } from '#app/types.ts'
+import { GroupProvider } from '#app/utils/providers.tsx'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbPage({ blok }: { blok: PageBlok }) {
   return (

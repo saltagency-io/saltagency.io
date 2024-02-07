@@ -1,9 +1,7 @@
-import * as React from 'react'
-
-import { Grid } from '~/components/grid'
-import { H3, H5 } from '~/components/typography'
-import { useLabels } from '~/utils/labels-provider'
-import { Markdown } from '~/utils/markdown'
+import { Grid } from '#app/components/grid.tsx'
+import { H3, H5 } from '#app/components/ui/typography.tsx'
+import { useLabels } from '#app/utils/labels-provider.tsx'
+import { Markdown } from '#app/utils/markdown.tsx'
 
 type Props = {
   description: string

@@ -1,10 +1,11 @@
 import { Link } from '@remix-run/react'
-import { Grid } from '~/components/grid'
-import { IconArrowRight } from '~/components/icons'
-import { H3, H4, H5, Paragraph } from '~/components/typography'
-import type { Section } from '~/types'
 import clsx from 'clsx'
 import { motion, useReducedMotion } from 'framer-motion'
+
+import { Grid } from '#app/components/grid.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
+import { H3, H4, H5, Paragraph } from '#app/components/ui/typography.tsx'
+import { type Section } from '#app/types.ts'
 
 type Props = {
   subtitle: string
@@ -67,7 +68,7 @@ export function PropositionSection({ subtitle, title, sections }: Props) {
                       textColorClassName="text-white"
                     >
                       <span>{section.link?.text}</span>
-                      <IconArrowRight height={18} width={18} />
+                      <Icon name="arrow-right" size="md" />
                     </Paragraph>
                   </div>
                   <div className="col-span-6">

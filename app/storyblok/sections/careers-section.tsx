@@ -1,9 +1,8 @@
-import * as React from 'react'
-
 import { StoryblokComponent } from '@storyblok/react'
-import { CareersSection } from '~/components/sections/careers-section'
-import type { CareersSectionBlok } from '~/types'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+
+import { CareersSection } from '#app/components/sections/careers-section.tsx'
+import { type CareersSectionBlok } from '#app/types.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbCareersSection({ blok }: { blok: CareersSectionBlok }) {
   return (

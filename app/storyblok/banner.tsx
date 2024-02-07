@@ -1,9 +1,7 @@
-import * as React from 'react'
-
-import { Banner } from '~/components/banner'
-import type { BannerBlok } from '~/types'
-import { mapAsset } from '~/utils/mappers'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+import { Banner } from '#app/components/banner.tsx'
+import { type BannerBlok } from '#app/types.ts'
+import { mapAsset } from '#app/utils/mappers.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbBanner({ blok }: { blok: BannerBlok }) {
   return (

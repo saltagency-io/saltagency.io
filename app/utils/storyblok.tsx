@@ -1,6 +1,11 @@
-import type * as React from 'react'
+import * as React from 'react'
 
-import { SbBlokData, storyblokEditable, StoryData } from '@storyblok/react'
+import {
+  storyblokEditable,
+  type SbBlokData,
+  type ISbStoryData as StoryData,
+} from '@storyblok/react'
+
 import {
   GIconCalendar,
   GIconCommunity,
@@ -13,8 +18,8 @@ import {
   GIconStar,
   GIconTag,
   GIconTeam,
-  IconProps as GradientIconProps,
-} from '~/components/gradient-icons'
+  type IconProps as GradientIconProps,
+} from '#app/components/gradient-icons.tsx'
 import {
   IconBankNotes,
   IconChatBubble,
@@ -25,19 +30,19 @@ import {
   IconEye,
   IconFingerPrint,
   IconHeart,
-  IconProps,
   IconScale,
   IconShield,
   IconUserGroup,
   IconUsers,
-} from '~/components/icons'
-import type {
-  PageStoryContent,
-  TranslatedSlug,
-  VacancyStoryContent,
-} from '~/types'
-import { defaultLanguage } from '~/utils/i18n'
-import { usePreviewState } from '~/utils/providers'
+  type IconProps,
+} from '#app/components/icons.tsx'
+import {
+  type PageStoryContent,
+  type TranslatedSlug,
+  type VacancyStoryContent,
+} from '#app/types.ts'
+import { defaultLanguage } from '#app/utils/i18n.ts'
+import { usePreviewState } from '#app/utils/providers.tsx'
 
 export function isPreview(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -89,38 +94,4 @@ export function StoryBlokWrapper({
   }
 
   return <>{children}</>
-}
-
-// Maps names in Storyblok to our icon components
-export const sbIconMap: Record<string, React.ComponentType<IconProps>> = {
-  eye: IconEye,
-  users: IconUsers,
-  heart: IconHeart,
-  banknotes: IconBankNotes,
-  shield: IconShield,
-  'finger-print': IconFingerPrint,
-  document: IconDocument,
-  scale: IconScale,
-  'user-group': IconUserGroup,
-  'chat-bubble': IconChatBubble,
-  'chat-bubble-left-right': IconChatBubbleLeftRight,
-  code: IconCode,
-  envelope: IconEnvelope,
-}
-
-export const sbGradientIconMap: Record<
-  string,
-  React.ComponentType<GradientIconProps>
-> = {
-  star: GIconStar,
-  eye: GIconEye,
-  handHeart: GIconHandHeart,
-  calendar: GIconCalendar,
-  community: GIconCommunity,
-  draw: GIconDraw,
-  money: GIconMoney,
-  shield: GIconShield,
-  speechBubble: GIconSpeech,
-  tag: GIconTag,
-  team: GIconTeam,
 }

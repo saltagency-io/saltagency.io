@@ -1,7 +1,8 @@
 import { StoryblokComponent } from '@storyblok/react'
-import { Group } from '~/components/group'
-import type { GroupBlok } from '~/types'
-import { StoryBlokWrapper } from '~/utils/storyblok'
+
+import { Group } from '#app/components/group.tsx'
+import { type GroupBlok } from '#app/types.ts'
+import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
 export function SbGroup({ blok }: { blok: GroupBlok }) {
   return (
