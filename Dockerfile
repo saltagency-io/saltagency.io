@@ -1,35 +1,32 @@
 # base node image
-FROM node:20-bullseye-slim as base
+FROM node:20-bookworm-slim as base
+
+# set for base and all layer that inherit from it
+ENV NODE_ENV production
 
 # Install all node_modules, including dev dependencies
 FROM base as deps
 
-RUN mkdir /app
-WORKDIR /app
+WORKDIR /myapp
 
 ADD package.json .npmrc package-lock.json ./
-ADD other/patches ./other/patches
-RUN npm install
+RUN npm install --include=dev
 
 # Setup production node_modules
 FROM base as production-deps
 
-RUN mkdir /app
-WORKDIR /app
+WORKDIR /myapp
 
-COPY --from=deps /app/node_modules /app/node_modules
+COPY --from=deps /myapp/node_modules /myapp/node_modules
 ADD package.json .npmrc package-lock.json ./
 RUN npm prune --omit=dev
 
 # Build the app
 FROM base as build
 
-ENV NODE_ENV=production
+WORKDIR /myapp
 
-RUN mkdir /app
-WORKDIR /app
-
-COPY --from=deps /app/node_modules /app/node_modules
+COPY --from=deps /myapp/node_modules /myapp/node_modules
 
 ADD . .
 RUN npm run build
@@ -38,15 +35,17 @@ RUN npm run build
 FROM base
 
 ENV FLY="true"
-ENV NODE_ENV=production
+ENV NODE_ENV="production"
 
-RUN mkdir /app
-WORKDIR /app
+WORKDIR /myapp
 
-COPY --from=production-deps /app/node_modules /app/node_modules
-COPY --from=build /app/build /app/build
-COPY --from=build /app/public /app/public
-COPY --from=build /app/server-build /app/server-build
+COPY --from=production-deps /myapp/node_modules /myapp/node_modules
+
+COPY --from=build /myapp/server-build /myapp/server-build
+COPY --from=build /myapp/build /myapp/build
+COPY --from=build /myapp/public /myapp/public
+COPY --from=build /myapp/package.json /myapp/package.json
+COPY --from=build /myapp/app/components/ui/icons /myapp/app/components/ui/icons
 
 ADD . .
 

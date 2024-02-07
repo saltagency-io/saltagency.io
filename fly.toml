@@ -1,14 +1,11 @@
-# fly.toml app configuration file generated for koodin on 2023-09-22T09:43:04+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
 app = "koodin"
 primary_region = "ams"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
+processes = [ ]
 
 [experimental]
+  allowed_public_ports = [ ]
   auto_rollback = true
 
 [env]
@@ -20,9 +17,10 @@ kill_timeout = "5s"
   processes = ["app"]
   protocol = "tcp"
   script_checks = []
+
   [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
+    hard_limit = 100
+    soft_limit = 80
     type = "connections"
 
   [[services.ports]]

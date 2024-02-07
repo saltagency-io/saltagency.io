@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Link, useLocation, useNavigation } from '@remix-run/react'
 import clsx from 'clsx'
-import FocusTrap from 'focus-trap-react'
 import {
   AnimatePresence,
   motion,
@@ -87,59 +86,57 @@ function MobileMenuList({
   return (
     <AnimatePresence>
       {expanded ? (
-        <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
-          <motion.nav
-            key="mobile-menu"
-            initial="initial"
-            animate="visible"
-            exit="exit"
+        <motion.nav
+          key="mobile-menu"
+          initial="initial"
+          animate="visible"
+          exit="exit"
+          variants={{
+            initial: { opacity: 0 },
+            visible: { opacity: 1 },
+            exit: { opacity: 0 },
+          }}
+          transition={{
+            duration: 0.4,
+            type: 'spring',
+            delayChildren: 0.2,
+          }}
+          className={clsx(
+            'bg-mobile-menu',
+            'fixed top-0 z-40 flex h-100vh w-100vw items-center justify-center backdrop-blur-lg',
+          )}
+          ref={menuRef}
+        >
+          <motion.ul
+            className="flex grow flex-col items-center gap-4 px-14 md:max-w-sm md:gap-6"
             variants={{
-              initial: { opacity: 0 },
-              visible: { opacity: 1 },
+              initial: { opacity: 0, y: shouldReduceMotion ? 0 : 40 },
+              visible: { opacity: 1, y: 0 },
               exit: { opacity: 0 },
             }}
-            transition={{
-              duration: 0.4,
-              type: 'spring',
-              delayChildren: 0.2,
-            }}
-            className={clsx(
-              'bg-mobile-menu',
-              'fixed top-0 z-40 flex h-100vh w-100vw items-center justify-center backdrop-blur-lg',
-            )}
-            ref={menuRef}
+            transition={{ duration: 0.4, type: 'spring' }}
           >
-            <motion.ul
-              className="flex grow flex-col items-center gap-4 px-14 md:max-w-sm md:gap-6"
-              variants={{
-                initial: { opacity: 0, y: shouldReduceMotion ? 0 : 40 },
-                visible: { opacity: 1, y: 0 },
-                exit: { opacity: 0 },
-              }}
-              transition={{ duration: 0.4, type: 'spring' }}
-            >
-              {menu.map(link => {
-                const active =
-                  link.url === location.pathname ||
-                  location.pathname.startsWith(`${link.url}/`)
-                return (
-                  <Link
-                    key={link.id}
-                    to={link.url}
-                    className={clsx(
-                      'flex h-18 items-center justify-center self-stretch border-b px-4 font-display text-2xl font-bold transition',
-                      active
-                        ? 'border-b-current opacity-100'
-                        : 'border-b-transparent opacity-70',
-                    )}
-                  >
-                    {link.text}
-                  </Link>
-                )
-              })}
-            </motion.ul>
-          </motion.nav>
-        </FocusTrap>
+            {menu.map(link => {
+              const active =
+                link.url === location.pathname ||
+                location.pathname.startsWith(`${link.url}/`)
+              return (
+                <Link
+                  key={link.id}
+                  to={link.url}
+                  className={clsx(
+                    'flex h-18 items-center justify-center self-stretch border-b px-4 font-display text-2xl font-bold transition',
+                    active
+                      ? 'border-b-current opacity-100'
+                      : 'border-b-transparent opacity-70',
+                  )}
+                >
+                  {link.text}
+                </Link>
+              )
+            })}
+          </motion.ul>
+        </motion.nav>
       ) : null}
     </AnimatePresence>
   )
