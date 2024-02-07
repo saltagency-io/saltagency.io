@@ -2,17 +2,19 @@ app = "koodin"
 primary_region = "ams"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
-processes = [ ]
+processes = []
 
 [experimental]
-  allowed_public_ports = [ ]
+  allowed_public_ports = []
   auto_rollback = true
 
 [env]
   PORT = "8080"
 
+[deploy]
+  release_command = "node ./other/sentry-create-release"
+
 [[services]]
-  http_checks = []
   internal_port = 8080
   processes = ["app"]
   protocol = "tcp"
@@ -37,4 +39,14 @@ processes = [ ]
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+
+  [[services.http_checks]]
+    interval = "10s"
+    grace_period = "5s"
+    method = "get"
+    path = "/resources/healthcheck"
+    protocol = "http"
+    timeout = "2s"
+    tls_skip_verify = false
+    headers = {}
 

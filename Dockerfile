@@ -4,6 +4,9 @@ FROM node:20-bookworm-slim as base
 # set for base and all layer that inherit from it
 ENV NODE_ENV production
 
+# Install extra packages
+RUN apt-get update && apt-get install -y ca-certificates
+
 # Install all node_modules, including dev dependencies
 FROM base as deps
 

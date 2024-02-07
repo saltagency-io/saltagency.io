@@ -34,10 +34,8 @@
     "/server-build"
   ],
   "scripts": {
-    "clean": "rimraf ./node_modules/.cache ./server/dist ./build ./public/build \"./app/styles/**/.css\"",
-    "prebuild": "npm run clean && echo clean ✨",
     "build:icons": "tsx ./other/build-icons.ts",
-    "build:remix": "remix build",
+    "build:remix": "remix build --sourcemap",
     "build:server": "tsx ./other/build-server.ts",
     "build": "run-s build:*",
     "predev": "npm run build:icons --silent",
@@ -126,7 +124,6 @@
     "postcss-import": "^16.0.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
-    "rimraf": "^5.0.5",
     "schema-dts": "^1.1.2",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.7.0",
