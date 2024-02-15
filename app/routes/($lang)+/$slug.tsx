@@ -55,15 +55,23 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
   const language = getLanguageFromContext(context)
   const { pathname } = new URL(request.url)
 
+  console.log({ language })
+
+  console.log({ params })
+
   // Include whatever is in params.lang if it is not a supported language.
   // This way we support arbitrary nested routes.
   const slugStart =
     params.slug && !isSupportedLanguage(params.lang) ? `${params.lang}/` : ''
+
   const slugOrHome =
     !params.slug && params.lang === language
       ? 'home'
       : params.slug ?? params.lang ?? 'home'
+
   const slug = `${slugStart}${slugOrHome}`
+
+  console.log({ slug })
 
   const story = await getStoryBySlug(slug, language, preview)
 

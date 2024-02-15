@@ -14,24 +14,13 @@ export const isSupportedLanguage = (
 }
 
 export function getLanguageFromContext(context: Record<string, unknown>) {
-  // TODO: Restore i18n support.
-  // For now we only support en, as it is the default in Storyblok.
-  // Changing the default to nl is not feasible at this time.
-
-  return defaultLanguage
-  //   const { language } = context
-  //   return isSupportedLanguage(language) ? language : defaultLanguage
+  const { language } = context
+  return isSupportedLanguage(language) ? language : defaultLanguage
 }
 
 export function getLanguageFromPath(path: string) {
-  // TODO: Restore i18n support.
-  // For now we only support en, as it is the default in Storyblok.
-  // Changing the default to nl is not feasible at this time.
-
-  return defaultLanguage
-
-  // const [urlLang] = path.slice(1).split('/')
-  // return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
+  const [urlLang] = path.slice(1).split('/')
+  return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
 }
 
 const labels: Record<SupportedLanguage, Record<string, string>> = {

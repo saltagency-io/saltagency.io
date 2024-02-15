@@ -14,7 +14,12 @@ import {
   useLocation,
   useMatches,
 } from '@remix-run/react'
-import { apiPlugin, StoryblokComponent, storyblokInit } from '@storyblok/react'
+import {
+  apiPlugin,
+  getStoryblokApi,
+  StoryblokComponent,
+  storyblokInit,
+} from '@storyblok/react'
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 import { AuthenticityTokenProvider } from 'remix-utils/csrf/react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
@@ -223,6 +228,14 @@ export function App() {
   const nonce = useNonce()
   const { language } = useI18n()
   const fathomQueue = React.useRef<FathomQueue>([])
+
+  React.useEffect(() => {
+    getStoryblokApi().get(`cdn/datasource_entries`, {
+      datasource: 'labels',
+      dimension: 'nl',
+      per_page: 200,
+    })
+  }, [])
 
   return (
     <Document
