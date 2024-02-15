@@ -67,6 +67,9 @@ export function Icon({
   return (
     <svg
       {...props}
+      style={{
+        fill: `purple`,
+      }}
       className={clsx(
         sizeClassName[size],
         'inline',

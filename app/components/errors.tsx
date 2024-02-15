@@ -114,6 +114,13 @@ export function ErrorPage({
   const location = useLocation()
   const language = getLanguageFromPath(location.pathname)
 
+  React.useEffect(() => {
+    document.body.classList.add('header-light')
+    return () => {
+      document.body.classList.remove('header-light')
+    }
+  }, [])
+
   return (
     <>
       <noscript>

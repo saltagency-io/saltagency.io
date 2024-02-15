@@ -56,7 +56,6 @@ import {
   getTranslatedSlugsFromStory,
   isPreview,
 } from '#app/utils/storyblok.tsx'
-import { SvgGradientReference } from '#app/utils/svg-gradient-reference.tsx'
 
 storyblokInit({
   components,
@@ -258,7 +257,6 @@ export function App() {
           }}
         />
       )}
-      <SvgGradientReference />
     </Document>
   )
 }

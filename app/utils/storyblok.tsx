@@ -7,36 +7,6 @@ import {
 } from '@storyblok/react'
 
 import {
-  GIconCalendar,
-  GIconCommunity,
-  GIconDraw,
-  GIconEye,
-  GIconHandHeart,
-  GIconMoney,
-  GIconShield,
-  GIconSpeech,
-  GIconStar,
-  GIconTag,
-  GIconTeam,
-  type IconProps as GradientIconProps,
-} from '#app/components/gradient-icons.tsx'
-import {
-  IconBankNotes,
-  IconChatBubble,
-  IconChatBubbleLeftRight,
-  IconCode,
-  IconDocument,
-  IconEnvelope,
-  IconEye,
-  IconFingerPrint,
-  IconHeart,
-  IconScale,
-  IconShield,
-  IconUserGroup,
-  IconUsers,
-  type IconProps,
-} from '#app/components/icons.tsx'
-import {
   type PageStoryContent,
   type TranslatedSlug,
   type VacancyStoryContent,

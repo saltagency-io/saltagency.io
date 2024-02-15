@@ -258,3 +258,7 @@ a {
 	filter: blur(2rem);
 	transform: scale(1.125);
 }
+
+.gradient-brand {
+  fill: url(#gradient-brand) #8954FF;
+}
