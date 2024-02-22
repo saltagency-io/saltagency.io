@@ -88,7 +88,7 @@ export async function getLayout(
   }
 }
 
-const sitemapBlackList = ['layout', 'contact', 'careers/*']
+const sitemapBlackList = ['layout', 'contact', 'vacatures/*']
 
 export async function getStoriesForSitemap(language: string) {
   const params = {

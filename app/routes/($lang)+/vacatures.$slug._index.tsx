@@ -37,7 +37,7 @@ export const handle: Handle = {
     const pages = await getAllVacancies(locale)
     return (pages || []).map(page => ({
       route: `/${page.full_slug}`,
-      priority: 0.7,
+      priority: 0.6,
     }))
   },
 }

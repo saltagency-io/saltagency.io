@@ -107,10 +107,10 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
     ]
   } else {
     return [
-      { title: getStaticLabel('404.meta.title', rootData.language) },
+      { title: getStaticLabel('404.meta.title', rootData.locale) },
       {
         name: 'description',
-        content: getStaticLabel('404.meta.description', rootData.language),
+        content: getStaticLabel('404.meta.description', rootData.locale),
       },
     ]
   }

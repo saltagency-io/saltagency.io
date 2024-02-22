@@ -70,7 +70,7 @@ export const handle: Handle = {
     const pages = await getAllVacancies(locale)
     return (pages || []).map(page => ({
       route: `/${page.full_slug}/${routes[locale]}`,
-      priority: 0.6,
+      priority: 0.3,
     }))
   },
 }
