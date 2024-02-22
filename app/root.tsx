@@ -161,8 +161,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
         path: new URL(request.url).pathname,
       },
       errorLabels: {
-        title: t('404.meta.title'),
-        subtitle: t('404.meta.subtitle'),
+        title: t('404.meta.title', { lng: locale }),
+        subtitle: t('404.meta.subtitle', { lng: locale }),
       },
       honeyProps,
       csrfToken,

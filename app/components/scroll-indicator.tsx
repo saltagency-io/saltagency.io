@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   height?: number
@@ -6,6 +7,8 @@ type Props = {
 }
 
 export function ScrollIndicator({ height = 96, width = 90 }: Props) {
+  const { t } = useTranslation()
+
   return (
     <button
       className="rounded-[50%]"
@@ -16,6 +19,7 @@ export function ScrollIndicator({ height = 96, width = 90 }: Props) {
         })
       }}
     >
+      <span className="sr-only">{t('indicator.scroll')}</span>
       <svg
         height={height}
         width={width}

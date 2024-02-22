@@ -18,6 +18,7 @@ import {
 import { Form, useActionData, useSearchParams } from '@remix-run/react'
 import { type ISbStoryData as StoryData } from '@storyblok/react'
 import clsx from 'clsx'
+import { type TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { typedjson } from 'remix-typedjson'
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react'
@@ -35,6 +36,7 @@ import { type Handle, type Vacancy } from '#app/types.ts'
 import { validateCSRF } from '#app/utils/csrf.server.ts'
 import { checkHoneypot } from '#app/utils/honeypot.server.ts'
 import { defaultLanguage, getLocaleFromRequest } from '#app/utils/i18n.ts'
+import { i18next } from '#app/utils/i18next.server'
 import { getJsonLdBreadcrumbs, getJsonLdLogo } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl, useIsPending } from '#app/utils/misc.tsx'
 import { sendApplicationToNotion } from '#app/utils/notion.server'
@@ -49,10 +51,10 @@ import {
   isPreview,
 } from '#app/utils/storyblok.tsx'
 import {
-  EmailSchema,
-  MessageSchema,
-  NameSchema,
-  PhoneSchema,
+  getEmailSchema,
+  getMessageSchema,
+  getNameSchema,
+  getPhoneSchema,
 } from '#app/utils/validation.ts'
 
 export const routes: Record<string, string> = {
@@ -170,25 +172,30 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
   }
 }
 
-const ApplicationFormSchema = z.object({
-  name: NameSchema,
-  email: EmailSchema,
-  phone: PhoneSchema,
-  employment: z.enum(['employed', 'searching', 'freelance'], {
-    required_error: 'Selecteer een werkstatus optie.',
-  }),
-  citizenship: z.enum(['dutch', 'expat', 'relocation'], {
-    required_error: 'Selecteer een nationaliteit optie.',
-  }),
-  role: z.string(),
-  linkedin: z
-    .string({ required_error: 'Dit veld is verplicht.' })
-    .url({ message: 'Vul een geldige URL in.' }),
-  motivation: MessageSchema,
-})
+function getApplicationFormSchema(t: TFunction, locale: string) {
+  return z.object({
+    name: getNameSchema(t, locale),
+    email: getEmailSchema(t, locale),
+    phone: getPhoneSchema(t, locale),
+    employment: z.enum(['employed', 'searching', 'freelance'], {
+      required_error: t('form.employment.error', { lng: locale }),
+    }),
+    citizenship: z.enum(['dutch', 'expat', 'relocation'], {
+      required_error: t('form.citizenship.error', { lng: locale }),
+    }),
+    role: z.string(),
+    linkedin: z
+      .string({ required_error: t('form.errors.required') })
+      .url({ message: t('form.linkedin.error', { lng: locale }) }),
+    motivation: getMessageSchema(t, locale),
+  })
+}
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData()
+  const locale = getLocaleFromRequest(request)
+  const t = await i18next.getFixedT(request)
+
   await validateCSRF(formData, request.headers)
   checkHoneypot(formData)
 
@@ -198,16 +205,18 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const submission = await parseWithZod(formData, {
     async: true,
-    schema: ApplicationFormSchema.superRefine(async (data, ctx) => {
-      if (!(vacancies || []).find(v => v.name === data.role)) {
-        ctx.addIssue({
-          path: ['role'],
-          code: z.ZodIssueCode.custom,
-          message: 'Deze rol is momenteel niet beschikbaar.',
-        })
-        return
-      }
-    }),
+    schema: getApplicationFormSchema(t, locale).superRefine(
+      async (data, ctx) => {
+        if (!(vacancies || []).find(v => v.name === data.role)) {
+          ctx.addIssue({
+            path: ['role'],
+            code: z.ZodIssueCode.custom,
+            message: t('form.role.unavailable', { lng: locale }),
+          })
+          return
+        }
+      },
+    ),
   })
   if (submission.status !== 'success' || !submission.value) {
     return json(
@@ -225,19 +234,21 @@ export default function VacancyApplyRoute() {
   const actionData = useActionData<typeof action>()
   const [searchParams] = useSearchParams()
   const isPending = useIsPending()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { vacancies } = useVacancies()
 
   const [form, fields] = useForm({
     id: 'application-form',
-    constraint: getZodConstraint(ApplicationFormSchema),
+    constraint: getZodConstraint(getApplicationFormSchema(t, i18n.language)),
     lastResult: actionData?.result,
     shouldRevalidate: 'onBlur',
     defaultValue: {
       role: searchParams.get('role') ?? '',
     },
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: ApplicationFormSchema })
+      return parseWithZod(formData, {
+        schema: getApplicationFormSchema(t, i18n.language),
+      })
     },
   })
 

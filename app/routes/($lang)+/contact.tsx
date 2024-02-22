@@ -16,6 +16,7 @@ import {
 import { Form, useActionData } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import clsx from 'clsx'
+import { type TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react'
@@ -32,6 +33,7 @@ import { type Handle } from '#app/types.ts'
 import { validateCSRF } from '#app/utils/csrf.server.ts'
 import { checkHoneypot } from '#app/utils/honeypot.server.ts'
 import { defaultLanguage, getLocaleFromRequest } from '#app/utils/i18n.ts'
+import { i18next } from '#app/utils/i18next.server.ts'
 import { getJsonLdLogo } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl, useIsPending } from '#app/utils/misc.tsx'
 import { sendToContactFormNotion } from '#app/utils/notion.server'
@@ -42,10 +44,10 @@ import {
   isPreview,
 } from '#app/utils/storyblok.tsx'
 import {
-  EmailSchema,
-  MessageSchema,
-  NameSchema,
-  PhoneSchema,
+  getEmailSchema,
+  getMessageSchema,
+  getNameSchema,
+  getPhoneSchema,
 } from '#app/utils/validation.ts'
 
 export const handle: Handle = {
@@ -60,12 +62,14 @@ export const handle: Handle = {
   },
 }
 
-const ContactFormSchema = z.object({
-  name: NameSchema,
-  email: EmailSchema,
-  phone: PhoneSchema,
-  body: MessageSchema,
-})
+function getContactFormSchema(t: TFunction, locale: string) {
+  return z.object({
+    name: getNameSchema(t, locale),
+    email: getEmailSchema(t, locale),
+    phone: getPhoneSchema(t, locale),
+    body: getMessageSchema(t, locale),
+  })
+}
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const preview = isPreview(request)
@@ -122,11 +126,14 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData()
+  const locale = getLocaleFromRequest(request)
+  const t = await i18next.getFixedT(request)
+
   await validateCSRF(formData, request.headers)
   checkHoneypot(formData)
 
   const submission = await parseWithZod(formData, {
-    schema: ContactFormSchema,
+    schema: getContactFormSchema(t, locale),
     async: true,
   })
   if (submission.status !== 'success' || !submission.value) {
@@ -142,7 +149,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ContactRoute() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const data = useTypedLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
   const story = useStoryblokState(data.story)
@@ -150,10 +157,12 @@ export default function ContactRoute() {
 
   const [form, fields] = useForm({
     id: 'contact-form',
-    constraint: getZodConstraint(ContactFormSchema),
+    constraint: getZodConstraint(getContactFormSchema(t, i18n.language)),
     lastResult: actionData?.result,
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: ContactFormSchema })
+      return parseWithZod(formData, {
+        schema: getContactFormSchema(t, i18n.language),
+      })
     },
     shouldRevalidate: 'onBlur',
   })
