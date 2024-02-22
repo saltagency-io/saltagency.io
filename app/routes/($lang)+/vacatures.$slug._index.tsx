@@ -8,13 +8,11 @@ import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
 import { createBreadcrumbs } from '#app/components/breadcrumbs'
 import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
-import { getAllVacancies, getVacancyBySlug } from '#app/lib/storyblok.server.ts'
 import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle } from '#app/types.ts'
 import {
   defaultLanguage,
-  getLanguageFromContext,
-  getLanguageFromPath,
+  getLocaleFromRequest,
   getStaticLabel,
 } from '#app/utils/i18n.ts'
 import {
@@ -25,15 +23,18 @@ import {
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
 import {
+  getAllVacancies,
+  getVacancyBySlug,
+} from '#app/utils/storyblok.server.ts'
+import {
   getTranslatedSlugsFromStory,
   isPreview,
 } from '#app/utils/storyblok.tsx'
 
 export const handle: Handle = {
   getSitemapEntries: async request => {
-    const { pathname } = new URL(request.url)
-    const language = getLanguageFromPath(pathname)
-    const pages = await getAllVacancies(language)
+    const locale = getLocaleFromRequest(request)
+    const pages = await getAllVacancies(locale)
     return (pages || []).map(page => ({
       route: `/${page.full_slug}`,
       priority: 0.7,
@@ -41,22 +42,22 @@ export const handle: Handle = {
   },
 }
 
-export async function loader({ params, request, context }: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
   if (!params.slug) {
     throw new Error('Slug is not defined!')
   }
 
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
+  const locale = getLocaleFromRequest(request)
   const { pathname } = new URL(request.url)
 
-  const story = await getVacancyBySlug(params.slug, language, preview)
+  const story = await getVacancyBySlug(params.slug, locale, preview)
 
   if (!story) {
     throw new Response('Not found', { status: 404 })
   }
 
-  if (language !== defaultLanguage && pathname !== `/${story.full_slug}`) {
+  if (locale !== defaultLanguage && pathname !== `/${story.full_slug}`) {
     throw redirect(`/${story.full_slug}`)
   }
 
@@ -113,10 +114,10 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
     ]
   } else {
     return [
-      { title: getStaticLabel('404.meta.title', rootData.language) },
+      { title: getStaticLabel('404.meta.title', rootData.locale) },
       {
         name: 'description',
-        content: getStaticLabel('404.meta.description', rootData.language),
+        content: getStaticLabel('404.meta.description', rootData.locale),
       },
     ]
   }

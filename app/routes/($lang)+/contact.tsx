@@ -16,6 +16,7 @@ import {
 import { Form, useActionData } from '@remix-run/react'
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
@@ -26,22 +27,20 @@ import { Grid } from '#app/components/grid.tsx'
 import { Button } from '#app/components/ui/button'
 import { Spinner } from '#app/components/ui/spinner'
 import { H3, H5 } from '#app/components/ui/typography'
-import { sendToContactFormNotion } from '#app/lib/notion.server.ts'
-import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
 import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle } from '#app/types.ts'
 import { validateCSRF } from '#app/utils/csrf.server.ts'
 import { checkHoneypot } from '#app/utils/honeypot.server.ts'
 import {
   defaultLanguage,
-  getLanguageFromContext,
-  getLanguageFromPath,
+  getLocaleFromRequest,
   getStaticLabel,
 } from '#app/utils/i18n.ts'
 import { getJsonLdLogo } from '#app/utils/json-ld.ts'
-import { useLabels } from '#app/utils/labels-provider.tsx'
 import { createAlternateLinks, getUrl, useIsPending } from '#app/utils/misc.tsx'
+import { sendToContactFormNotion } from '#app/utils/notion.server'
 import { getSocialMetas } from '#app/utils/seo.ts'
+import { getStoryBySlug } from '#app/utils/storyblok.server.ts'
 import {
   getTranslatedSlugsFromStory,
   isPreview,
@@ -55,11 +54,10 @@ import {
 
 export const handle: Handle = {
   getSitemapEntries: request => {
-    const { pathname } = new URL(request.url)
-    const language = getLanguageFromPath(pathname)
+    const locale = getLocaleFromRequest(request)
     return [
       {
-        route: `${language === defaultLanguage ? '' : `/${language}`}/contact`,
+        route: `${locale === defaultLanguage ? '' : `/${locale}`}/contact`,
         priority: 0.4,
       },
     ]
@@ -73,10 +71,10 @@ const ContactFormSchema = z.object({
   body: MessageSchema,
 })
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
-  const story = await getStoryBySlug('contact', language, preview)
+  const locale = getLocaleFromRequest(request)
+  const story = await getStoryBySlug('contact', locale, preview)
 
   if (!story) {
     throw new Response('Not found', { status: 404 })
@@ -117,10 +115,10 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
     ]
   } else {
     return [
-      { title: getStaticLabel('404.meta.title', rootData.language) },
+      { title: getStaticLabel('404.meta.title', rootData.locale) },
       {
         name: 'description',
-        content: getStaticLabel('404.meta.description', rootData.language),
+        content: getStaticLabel('404.meta.description', rootData.locale),
       },
     ]
   }
@@ -148,7 +146,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ContactRoute() {
-  const { t } = useLabels()
+  const { t } = useTranslation()
   const data = useTypedLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
   const story = useStoryblokState(data.story)

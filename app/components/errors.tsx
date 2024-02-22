@@ -3,7 +3,6 @@ import * as React from 'react'
 import { type ErrorResponse } from '@remix-run/node'
 import {
   isRouteErrorResponse,
-  useLocation,
   useMatches,
   useParams,
   useRouteError,
@@ -12,6 +11,7 @@ import { captureRemixErrorBoundaryError } from '@sentry/remix'
 import clsx from 'clsx'
 import errorStack from 'error-stack-parser'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 import { Grid } from '#app/components/grid.tsx'
 import { ButtonLink } from '#app/components/ui/button.tsx'
@@ -19,11 +19,7 @@ import { Icon } from '#app/components/ui/icon.tsx'
 import { H1, H2, H3, H4, H5, H6 } from '#app/components/ui/typography.tsx'
 import { VacancyList } from '#app/components/vacancy-list.tsx'
 import { type Vacancy } from '#app/types.ts'
-import {
-  defaultLanguage,
-  getLanguageFromPath,
-  getStaticLabel,
-} from '#app/utils/i18n'
+import { defaultLanguage, getStaticLabel } from '#app/utils/i18n'
 import { useLocalizedMappers } from '#app/utils/mappers'
 import { getErrorMessage } from '#app/utils/misc.tsx'
 import { useVacancies } from '#app/utils/providers.tsx'
@@ -76,8 +72,7 @@ type ErrorSectionProps = {
 }
 
 export function ErrorSection({ title, subtitle, ctaText }: ErrorSectionProps) {
-  const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
+  const { i18n } = useTranslation()
 
   return (
     <div className="py-40">
@@ -92,7 +87,7 @@ export function ErrorSection({ title, subtitle, ctaText }: ErrorSectionProps) {
           <ButtonLink
             className="mx-auto"
             ringOffsetColor="black"
-            to={language === defaultLanguage ? '/' : `/${language}`}
+            to={i18n.language === defaultLanguage ? '/' : `/${i18n.language}`}
           >
             {ctaText}
           </ButtonLink>
@@ -111,8 +106,7 @@ export function ErrorPage({
   errorSectionProps: ErrorSectionProps
   vacancies?: Vacancy[]
 }) {
-  const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
+  const { i18n } = useTranslation()
 
   React.useEffect(() => {
     document.body.classList.add('header-light')
@@ -156,7 +150,7 @@ export function ErrorPage({
                   variant="primary"
                   inverse
                 >
-                  {getStaticLabel('404.more', language)}
+                  {getStaticLabel('404.more', i18n.language)}
                   <motion.div
                     animate={{
                       y: [0, -5, 5, 0],
@@ -174,10 +168,10 @@ export function ErrorPage({
 
               <div className="col-span-4 md:col-span-8 lg:col-span-5">
                 <H5 as="h2" variant="secondary" className="mb-4">
-                  {getStaticLabel('404.careers.subtitle', language)}
+                  {getStaticLabel('404.careers.subtitle', i18n.language)}
                 </H5>
                 <H3 inverse className="mb-14 lg:mb-12">
-                  {getStaticLabel('404.careers.title', language)}
+                  {getStaticLabel('404.careers.title', i18n.language)}
                 </H3>
               </div>
               <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
@@ -199,9 +193,8 @@ export function NotFoundError() {
   const matches = useMatches()
   const { vacancies } = useVacancies()
   const { mapVacancy } = useLocalizedMappers()
-  const location = useLocation()
+  const { i18n } = useTranslation()
 
-  const language = getLanguageFromPath(location.pathname)
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
 
@@ -209,9 +202,9 @@ export function NotFoundError() {
     <ErrorPage
       vacancies={vacancies.map(mapVacancy)}
       errorSectionProps={{
-        title: getStaticLabel('404.title', language),
-        subtitle: `${getStaticLabel('404.subtitle', language)} "${pathname}"`,
-        ctaText: getStaticLabel('404.cta', language),
+        title: getStaticLabel('404.title', i18n.language),
+        subtitle: `${getStaticLabel('404.subtitle', i18n.language)} "${pathname}"`,
+        ctaText: getStaticLabel('404.cta', i18n.language),
       }}
     />
   )
@@ -219,18 +212,17 @@ export function NotFoundError() {
 
 export function ServerError() {
   const matches = useMatches()
-  const location = useLocation()
+  const { i18n } = useTranslation()
 
-  const language = getLanguageFromPath(location.pathname)
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
 
   return (
     <ErrorPage
       errorSectionProps={{
-        title: getStaticLabel('500.title', language),
-        subtitle: `${getStaticLabel('500.subtitle', language)} "${pathname}"`,
-        ctaText: getStaticLabel('500.cta', language),
+        title: getStaticLabel('500.title', i18n.language),
+        subtitle: `${getStaticLabel('500.subtitle', i18n.language)} "${pathname}"`,
+        ctaText: getStaticLabel('500.cta', i18n.language),
       }}
     />
   )

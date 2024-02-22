@@ -1,29 +1,25 @@
-export type SupportedLanguage = 'en' | 'nl'
+export const supportedLanguages = ['nl', 'en']
+export const defaultLanguage = 'nl'
 
-// TODO: Support en locale
-export const defaultLanguage: SupportedLanguage = 'nl'
-export const supportedLanguages: SupportedLanguage[] = ['nl']
-
-export const isSupportedLanguage = (
-  lang: unknown,
-): lang is SupportedLanguage => {
-  return (
-    typeof lang === 'string' &&
-    supportedLanguages.includes(lang as SupportedLanguage)
-  )
+export default {
+  supportLngs: supportedLanguages,
+  fallbackLng: defaultLanguage,
+  defaultNS: 'common',
+  react: { useSuspense: false },
 }
 
-export function getLanguageFromContext(context: Record<string, unknown>) {
-  const { language } = context
-  return isSupportedLanguage(language) ? language : defaultLanguage
+export function isSupportedLocale(locale: string) {
+  return typeof locale === 'string' && supportedLanguages.includes(locale)
 }
 
-export function getLanguageFromPath(path: string) {
-  const [urlLang] = path.slice(1).split('/')
-  return isSupportedLanguage(urlLang) ? urlLang : defaultLanguage
+export function getLocaleFromRequest(request: Request) {
+  const { pathname } = new URL(request.url)
+  const [locale] = pathname.slice(1).split('/')
+  return isSupportedLocale(locale) ? locale : defaultLanguage
 }
 
-const labels: Record<SupportedLanguage, Record<string, string>> = {
+// TODO: we can add these to storyblok
+const labels: Record<string, Record<string, string>> = {
   en: {
     '404.title': "Oh no.. it seems we've lost this page",
     '404.subtitle': "We searched everywhere but we couldn't find",
@@ -56,7 +52,7 @@ const labels: Record<SupportedLanguage, Record<string, string>> = {
   },
 }
 
-export function getStaticLabel(key: string, lang: SupportedLanguage) {
+export function getStaticLabel(key: string, lang: string) {
   const labelSet = labels[lang]
   if (!labelSet) return `unknown language: ${lang}`
   return labelSet[key] ?? `unknown static label key: ${key}`

@@ -1,13 +1,12 @@
 import { Link, useLocation } from '@remix-run/react'
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 
 import { Icon } from '#app/components/ui/icon.tsx'
 import { type Breadcrumb } from '#app/types.ts'
-import { useI18n } from '#app/utils/i18n-provider.tsx'
-import { type SupportedLanguage } from '#app/utils/i18n.ts'
 import { unslugify } from '#app/utils/misc.tsx'
 
-export function createBreadcrumbs(path: string, language: SupportedLanguage) {
+export function createBreadcrumbs(path: string, language: string) {
   const parts = path.slice(1).split('/')
 
   let breadcrumbs = parts.map<Breadcrumb>((part, i) => {
@@ -28,10 +27,10 @@ export function createBreadcrumbs(path: string, language: SupportedLanguage) {
 
 export function Breadcrumbs() {
   const location = useLocation()
-  const { language } = useI18n()
+  const { i18n } = useTranslation()
 
   const parts = location.pathname.slice(1).split('/')
-  const breadcrumbs = createBreadcrumbs(location.pathname, language)
+  const breadcrumbs = createBreadcrumbs(location.pathname, i18n.language)
 
   const BackLink = () => (
     <Link

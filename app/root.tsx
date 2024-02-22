@@ -14,12 +14,9 @@ import {
   useLocation,
   useMatches,
 } from '@remix-run/react'
-import {
-  apiPlugin,
-  getStoryblokApi,
-  StoryblokComponent,
-  storyblokInit,
-} from '@storyblok/react'
+import { apiPlugin, StoryblokComponent, storyblokInit } from '@storyblok/react'
+import { useTranslation } from 'react-i18next'
+import { useChangeLanguage } from 'remix-i18next'
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 import { AuthenticityTokenProvider } from 'remix-utils/csrf/react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
@@ -30,11 +27,6 @@ import {
   NotFoundError,
   ServerError,
 } from '#app/components/errors.tsx'
-import {
-  getAllVacancies,
-  getDataSource,
-  getLayout,
-} from '#app/lib/storyblok.server.ts'
 import { components } from '#app/storyblok/index.ts'
 import appStyles from '#app/styles/app.css'
 import tailwindStyles from '#app/styles/tailwind.css'
@@ -42,9 +34,7 @@ import vendorStyles from '#app/styles/vendors.css'
 import { csrf } from '#app/utils/csrf.server.ts'
 import { getEnv } from '#app/utils/env.server.ts'
 import { honeypot } from '#app/utils/honeypot.server.ts'
-import { I18nProvider, useI18n } from '#app/utils/i18n-provider.tsx'
-import { getLanguageFromContext, getLanguageFromPath } from '#app/utils/i18n.ts'
-import { LabelsProvider } from '#app/utils/labels-provider.tsx'
+import { getLocaleFromRequest } from '#app/utils/i18n.ts'
 import {
   combineHeaders,
   getDomainUrl,
@@ -54,13 +44,17 @@ import {
 import { useNonce } from '#app/utils/nonce-provider.tsx'
 import {
   PreviewStateProvider,
+  SlugsProvider,
   VacanciesProvider,
 } from '#app/utils/providers.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
+import { getAllVacancies, getLayout } from '#app/utils/storyblok.server'
 import {
   getTranslatedSlugsFromStory,
   isPreview,
 } from '#app/utils/storyblok.tsx'
+
+import { type Handle } from './types'
 
 storyblokInit({
   components,
@@ -76,6 +70,10 @@ storyblokInit({
         }
       : {},
 })
+
+export const handle: Handle = {
+  i18n: ['common'],
+}
 
 export const links: LinksFunction = () => {
   return [
@@ -137,14 +135,13 @@ export const links: LinksFunction = () => {
 
 export type RootLoaderType = typeof loader
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
+  const locale = getLocaleFromRequest(request)
 
-  const [layoutStory, labels, vacancies] = await Promise.all([
-    getLayout(language, preview),
-    getDataSource('labels', language),
-    getAllVacancies(language, preview),
+  const [layoutStory, vacancies] = await Promise.all([
+    getLayout(locale, preview),
+    getAllVacancies(locale, preview),
   ])
 
   const honeyProps = honeypot.getInputProps()
@@ -154,9 +151,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     {
       layoutStory,
       preview,
-      labels,
       vacancies,
-      language,
+      locale,
       ENV: getEnv(),
       requestInfo: {
         origin: getDomainUrl(request),
@@ -226,21 +222,14 @@ function CanonicalUrl({
 export function App() {
   const data = useTypedLoaderData<typeof loader>()
   const nonce = useNonce()
-  const { language } = useI18n()
   const fathomQueue = React.useRef<FathomQueue>([])
 
-  React.useEffect(() => {
-    getStoryblokApi().get(`cdn/datasource_entries`, {
-      datasource: 'labels',
-      dimension: 'nl',
-      per_page: 200,
-    })
-  }, [])
+  useChangeLanguage(data.locale)
 
   return (
     <Document
       env={data.ENV}
-      lang={language}
+      lang={data.locale}
       nonce={nonce}
       canonical={
         <CanonicalUrl
@@ -292,18 +281,13 @@ export default function AppWithProviders() {
   return (
     <AuthenticityTokenProvider token={data.csrfToken}>
       <HoneypotProvider {...data.honeyProps}>
-        <I18nProvider
-          language={data.language}
-          translatedSlugs={translatedSlugs}
-        >
-          <PreviewStateProvider value={{ preview: data.preview }}>
-            <LabelsProvider data={data.labels}>
-              <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
-                <App />
-              </VacanciesProvider>
-            </LabelsProvider>
-          </PreviewStateProvider>
-        </I18nProvider>
+        <PreviewStateProvider value={{ preview: data.preview }}>
+          <SlugsProvider value={{ slugs: translatedSlugs }}>
+            <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
+              <App />
+            </VacanciesProvider>
+          </SlugsProvider>
+        </PreviewStateProvider>
       </HoneypotProvider>
     </AuthenticityTokenProvider>
   )
@@ -351,11 +335,10 @@ function Document({
 
 export function ErrorBoundary() {
   const nonce = useNonce()
-  const location = useLocation()
-  const language = getLanguageFromPath(location.pathname)
+  const { i18n } = useTranslation()
 
   return (
-    <Document nonce={nonce} lang={language}>
+    <Document nonce={nonce} lang={i18n.language}>
       <GeneralErrorBoundary
         statusHandlers={{
           404: NotFoundError,

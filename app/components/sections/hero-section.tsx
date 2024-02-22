@@ -82,8 +82,8 @@ export function HeroSection({ children, title, body, hasShapes }: Props) {
             visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
           }}
         >
-          <motion.div variants={childVariants}>
-            <H1 className="break mb-6 text-center">
+          <motion.div variants={childVariants} className="m-auto max-w-4xl">
+            <H1 className="break mb-6 text-balance text-center">
               {multilineToBreaks(title)}
             </H1>
           </motion.div>

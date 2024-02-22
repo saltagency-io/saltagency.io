@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 
 import { Grid } from '#app/components/grid.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
@@ -9,7 +10,6 @@ import {
   ToggleButtonGroup,
 } from '#app/components/ui/toggle-buttons.tsx'
 import { H3, H5 } from '#app/components/ui/typography.tsx'
-import { useLabels } from '#app/utils/labels-provider.tsx'
 
 const formatter = new Intl.NumberFormat('nl-NL', {
   style: 'currency',
@@ -230,7 +230,7 @@ type Props = {
 }
 
 export function Calculator({ title, subtitle }: Props) {
-  const { t } = useLabels()
+  const { t } = useTranslation()
 
   const [rate, setRate] = React.useState(rates[1])
   const [period, setPeriod] = React.useState<Period>(Period.Month)

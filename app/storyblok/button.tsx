@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next'
+
 import { ButtonLink } from '#app/components/ui/button'
 import { Icon, type IconName } from '#app/components/ui/icon.tsx'
 import { type ButtonBlok } from '#app/types.ts'
-import { useI18n } from '#app/utils/i18n-provider.tsx'
 import { formatUrl } from '#app/utils/mappers.ts'
 import { StoryBlokWrapper } from '#app/utils/storyblok.tsx'
 
@@ -12,7 +13,7 @@ export function SbButton({
   blok: ButtonBlok
   ringOffsetColor: 'white' | 'black'
 }) {
-  const { language } = useI18n()
+  const { i18n } = useTranslation()
   const { link, anchor, icon, text, variant } = blok
 
   const urlTarget =
@@ -20,7 +21,7 @@ export function SbButton({
       ? link.story?.full_slug
       : link.cached_url
 
-  const url = formatUrl(urlTarget, language, anchor)
+  const url = formatUrl(urlTarget, i18n.language, anchor)
 
   return (
     <StoryBlokWrapper blok={blok}>
