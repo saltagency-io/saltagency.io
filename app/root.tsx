@@ -55,6 +55,7 @@ import {
 } from '#app/utils/storyblok.tsx'
 
 import { type Handle } from './types'
+import { i18next } from './utils/i18next.server'
 
 storyblokInit({
   components,
@@ -138,6 +139,7 @@ export type RootLoaderType = typeof loader
 export async function loader({ request }: LoaderFunctionArgs) {
   const preview = isPreview(request)
   const locale = getLocaleFromRequest(request)
+  const t = await i18next.getFixedT(request)
 
   const [layoutStory, vacancies] = await Promise.all([
     getLayout(locale, preview),
@@ -157,6 +159,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
       requestInfo: {
         origin: getDomainUrl(request),
         path: new URL(request.url).pathname,
+      },
+      errorLabels: {
+        title: t('404.meta.title'),
+        subtitle: t('404.meta.subtitle'),
       },
       honeyProps,
       csrfToken,

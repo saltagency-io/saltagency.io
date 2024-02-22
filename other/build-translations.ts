@@ -18,14 +18,17 @@ type Label = {
   dimension_value: string
 }
 
-// Init
-await generateTranslationFiles()
+if (process.env.STORYBLOK_ACCESS_TOKEN) {
+  await generateTranslationFiles()
+} else {
+  console.log('No STORYBLOK_ACCESS_TOKEN found')
+}
 
 async function fetchTranslations(lang: string): Promise<Label[]> {
   const params = new URLSearchParams({
     datasource: 'labels',
     dimension: lang,
-    per_page: '300',
+    per_page: '500',
     token: process.env.STORYBLOK_ACCESS_TOKEN ?? '',
   })
   const res = await fetch(

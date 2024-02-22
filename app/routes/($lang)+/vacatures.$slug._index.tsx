@@ -10,11 +10,7 @@ import { createBreadcrumbs } from '#app/components/breadcrumbs'
 import { GeneralErrorBoundary, NotFoundError } from '#app/components/errors.tsx'
 import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle } from '#app/types.ts'
-import {
-  defaultLanguage,
-  getLocaleFromRequest,
-  getStaticLabel,
-} from '#app/utils/i18n.ts'
+import { defaultLanguage, getLocaleFromRequest } from '#app/utils/i18n.ts'
 import {
   getJsonLdBreadcrumbs,
   getJsonLdJobPosting,
@@ -114,10 +110,10 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
     ]
   } else {
     return [
-      { title: getStaticLabel('404.meta.title', rootData.locale) },
+      { title: rootData.errorLabels.title },
       {
         name: 'description',
-        content: getStaticLabel('404.meta.description', rootData.locale),
+        content: rootData.errorLabels.title,
       },
     ]
   }

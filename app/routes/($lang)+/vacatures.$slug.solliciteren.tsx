@@ -34,11 +34,7 @@ import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle, type Vacancy } from '#app/types.ts'
 import { validateCSRF } from '#app/utils/csrf.server.ts'
 import { checkHoneypot } from '#app/utils/honeypot.server.ts'
-import {
-  defaultLanguage,
-  getLocaleFromRequest,
-  getStaticLabel,
-} from '#app/utils/i18n.ts'
+import { defaultLanguage, getLocaleFromRequest } from '#app/utils/i18n.ts'
 import { getJsonLdBreadcrumbs, getJsonLdLogo } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl, useIsPending } from '#app/utils/misc.tsx'
 import { sendApplicationToNotion } from '#app/utils/notion.server'
@@ -165,10 +161,10 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
     ]
   } else {
     return [
-      { title: getStaticLabel('404.meta.title', rootData.locale) },
+      { title: rootData.errorLabels.title },
       {
         name: 'description',
-        content: getStaticLabel('404.meta.description', rootData.locale),
+        content: rootData.errorLabels.title,
       },
     ]
   }

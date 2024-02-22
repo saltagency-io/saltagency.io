@@ -19,7 +19,7 @@ import { Icon } from '#app/components/ui/icon.tsx'
 import { H1, H2, H3, H4, H5, H6 } from '#app/components/ui/typography.tsx'
 import { VacancyList } from '#app/components/vacancy-list.tsx'
 import { type Vacancy } from '#app/types.ts'
-import { defaultLanguage, getStaticLabel } from '#app/utils/i18n'
+import { defaultLanguage } from '#app/utils/i18n.ts'
 import { useLocalizedMappers } from '#app/utils/mappers'
 import { getErrorMessage } from '#app/utils/misc.tsx'
 import { useVacancies } from '#app/utils/providers.tsx'
@@ -106,7 +106,7 @@ export function ErrorPage({
   errorSectionProps: ErrorSectionProps
   vacancies?: Vacancy[]
 }) {
-  const { i18n } = useTranslation()
+  const { t } = useTranslation()
 
   React.useEffect(() => {
     document.body.classList.add('header-light')
@@ -150,7 +150,7 @@ export function ErrorPage({
                   variant="primary"
                   inverse
                 >
-                  {getStaticLabel('404.more', i18n.language)}
+                  {t('404.more')}
                   <motion.div
                     animate={{
                       y: [0, -5, 5, 0],
@@ -168,10 +168,10 @@ export function ErrorPage({
 
               <div className="col-span-4 md:col-span-8 lg:col-span-5">
                 <H5 as="h2" variant="secondary" className="mb-4">
-                  {getStaticLabel('404.careers.subtitle', i18n.language)}
+                  {t('404.careers.subtitle')}
                 </H5>
                 <H3 inverse className="mb-14 lg:mb-12">
-                  {getStaticLabel('404.careers.title', i18n.language)}
+                  {t('404.careers.title')}
                 </H3>
               </div>
               <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
@@ -193,7 +193,7 @@ export function NotFoundError() {
   const matches = useMatches()
   const { vacancies } = useVacancies()
   const { mapVacancy } = useLocalizedMappers()
-  const { i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
@@ -202,9 +202,9 @@ export function NotFoundError() {
     <ErrorPage
       vacancies={vacancies.map(mapVacancy)}
       errorSectionProps={{
-        title: getStaticLabel('404.title', i18n.language),
-        subtitle: `${getStaticLabel('404.subtitle', i18n.language)} "${pathname}"`,
-        ctaText: getStaticLabel('404.cta', i18n.language),
+        title: t('404.title'),
+        subtitle: `${t('404.subtitle')} "${pathname}"`,
+        ctaText: t('404.cta'),
       }}
     />
   )
@@ -212,7 +212,7 @@ export function NotFoundError() {
 
 export function ServerError() {
   const matches = useMatches()
-  const { i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
@@ -220,9 +220,9 @@ export function ServerError() {
   return (
     <ErrorPage
       errorSectionProps={{
-        title: getStaticLabel('500.title', i18n.language),
-        subtitle: `${getStaticLabel('500.subtitle', i18n.language)} "${pathname}"`,
-        ctaText: getStaticLabel('500.cta', i18n.language),
+        title: t('500.title'),
+        subtitle: `${t('500.subtitle')} "${pathname}"`,
+        ctaText: t('500.cta'),
       }}
     />
   )
