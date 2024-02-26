@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 
 import {
@@ -12,8 +13,9 @@ import {
   H6,
   Paragraph,
 } from '#app/components/ui/typography.tsx'
-import { useI18n } from '#app/utils/i18n-provider.tsx'
 import { AnchorOrLink } from '#app/utils/misc.tsx'
+
+import { defaultLanguage } from './i18n'
 
 type Props = {
   children: string
@@ -40,7 +42,7 @@ function useComponents({
   responsive = true,
   linksInNewTab = false,
 }: Omit<Props, 'children'>): Components {
-  const { language, isDefaultLanguage } = useI18n()
+  const { i18n } = useTranslation()
 
   const alignClassName = `text-${textAlign}`
   const colorClassName =
@@ -83,9 +85,9 @@ function useComponents({
     a: props => (
       <AnchorOrLink
         to={
-          props.href?.includes(':') || isDefaultLanguage
+          props.href?.includes(':') || i18n.language === defaultLanguage
             ? props.href
-            : `/${language}${props.href}`
+            : `/${i18n.language}${props.href}`
         }
         target={linksInNewTab ? '_blank' : undefined}
         rel={linksInNewTab ? 'noopener' : undefined}

@@ -17,3 +17,4 @@ localhost.pem
 
 # generated files
 /app/components/ui/icons
+/public/locales

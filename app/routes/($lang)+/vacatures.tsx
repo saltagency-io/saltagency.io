@@ -6,6 +6,6 @@ export const handle: Handle = {
   getSitemapEntries: () => null,
 }
 
-export default function VacanciesRoute() {
+export default function VacanciesLayoutRoute() {
   return <Outlet />
 }

@@ -6,37 +6,30 @@ import {
 import { StoryblokComponent, useStoryblokState } from '@storyblok/react'
 import { typedjson, useTypedLoaderData } from 'remix-typedjson'
 
-import { getStoryBySlug } from '#app/lib/storyblok.server.ts'
 import { type RootLoaderType } from '#app/root.tsx'
 import { type Handle } from '#app/types.ts'
-import {
-  defaultLanguage,
-  getLanguageFromContext,
-  getLanguageFromPath,
-  getStaticLabel,
-  type SupportedLanguage,
-} from '#app/utils/i18n.ts'
+import { defaultLanguage, getLocaleFromRequest } from '#app/utils/i18n.ts'
 import { getJsonLdLogo } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
+import { getStoryBySlug } from '#app/utils/storyblok.server.ts'
 import {
   getTranslatedSlugsFromStory,
   isPreview,
 } from '#app/utils/storyblok.tsx'
 
-export const routes: Record<SupportedLanguage, string> = {
+export const routes: Record<string, string> = {
   en: 'careers',
   nl: 'vacatures',
 }
 
 export const handle: Handle = {
   getSitemapEntries: request => {
-    const { pathname } = new URL(request.url)
-    const language = getLanguageFromPath(pathname)
+    const locale = getLocaleFromRequest(request)
     return [
       {
-        route: `${language === defaultLanguage ? '' : `/${language}`}/${
-          routes[language]
+        route: `${locale === defaultLanguage ? '' : `/${locale}`}/${
+          routes[locale]
         }`,
         priority: 0.5,
       },
@@ -44,21 +37,18 @@ export const handle: Handle = {
   },
 }
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
+  const locale = getLocaleFromRequest(request)
   const preview = isPreview(request)
-  const language = getLanguageFromContext(context)
   const { pathname } = new URL(request.url)
 
-  const story = await getStoryBySlug('vacatures/', language, preview)
+  const story = await getStoryBySlug('vacatures/', locale, preview)
 
   if (!story) {
     throw new Response('Not found', { status: 404 })
   }
 
-  if (
-    language !== defaultLanguage &&
-    `${pathname}/` !== `/${story.full_slug}`
-  ) {
+  if (locale !== defaultLanguage && `${pathname}/` !== `/${story.full_slug}`) {
     throw redirect(
       `/${story.full_slug.substring(0, story.full_slug.length - 1)}`,
     )
@@ -71,7 +61,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     },
     {
       headers: {
-        'Cache-Control': 'private, max-age=3600',
+        'Cache-Control': 'private, max-age=900', // 15 min.
       },
     },
   )
@@ -99,10 +89,10 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
     ]
   } else {
     return [
-      { title: getStaticLabel('404.meta.title', rootData.language) },
+      { title: rootData.errorLabels.title },
       {
         name: 'description',
-        content: getStaticLabel('404.meta.description', rootData.language),
+        content: rootData.errorLabels.title,
       },
     ]
   }

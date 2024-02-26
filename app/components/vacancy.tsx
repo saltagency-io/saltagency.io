@@ -1,12 +1,12 @@
 import * as React from 'react'
 
+import { useTranslation } from 'react-i18next'
+
 import { Breadcrumbs } from '#app/components/breadcrumbs.tsx'
 import { Grid } from '#app/components/grid.tsx'
 import { ButtonLink } from '#app/components/ui/button.tsx'
 import { H3, H5 } from '#app/components/ui/typography.tsx'
 import { routes } from '#app/routes/($lang)+/vacatures.$slug.solliciteren.tsx'
-import { useI18n } from '#app/utils/i18n-provider.tsx'
-import { useLabels } from '#app/utils/labels-provider.tsx'
 
 type Props = {
   children: React.ReactNode
@@ -15,8 +15,8 @@ type Props = {
 }
 
 export function Vacancy({ children, title, summary }: Props) {
-  const { language } = useI18n()
-  const { t } = useLabels()
+  const { i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -32,7 +32,7 @@ export function Vacancy({ children, title, summary }: Props) {
             {summary}
           </H3>
           <ButtonLink
-            to={`${routes[language]}?role=${encodeURIComponent(title)}`}
+            to={`${routes[i18n.language]}?role=${encodeURIComponent(title)}`}
           >
             {t('cta.apply')}
           </ButtonLink>

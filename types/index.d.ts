@@ -20,6 +20,7 @@ export type SitemapEntry = {
 
 export type Handle = SEOHandle & {
   id?: string
+  i18n?: string | string[]
 }
 
 export type Image = {

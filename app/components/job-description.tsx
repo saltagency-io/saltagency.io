@@ -1,6 +1,7 @@
+import { useTranslation } from 'react-i18next'
+
 import { Grid } from '#app/components/grid.tsx'
 import { H3, H5 } from '#app/components/ui/typography.tsx'
-import { useLabels } from '#app/utils/labels-provider.tsx'
 import { Markdown } from '#app/utils/markdown.tsx'
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 }
 
 export function JobDescription({ description, requirements }: Props) {
-  const { t } = useLabels()
+  const { t } = useTranslation()
 
   return (
     <Grid>

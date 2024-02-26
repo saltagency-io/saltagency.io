@@ -49,7 +49,7 @@ export function Title({
   return (
     <Tag
       className={clsx(
-        'tracking-tight',
+        'text-balance tracking-tight',
         textColor,
         body ? 'font-sans' : 'font-display',
         isBold && 'font-bold',
@@ -105,7 +105,7 @@ export function Paragraph({
   ...rest
 }: ParagraphProps) {
   return React.createElement(as, {
-    className: clsx('max-w-full', textColorClassName, className, {
+    className: clsx('max-w-full text-balance', textColorClassName, className, {
       'text-sm': size === 'sm',
       'text-base': size === 'md',
       'text-lg': size === 'lg',

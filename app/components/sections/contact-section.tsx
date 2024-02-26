@@ -78,7 +78,11 @@ export function ContactSection({
               </H3>
             </motion.div>
             <motion.div variants={childVariants}>
-              <p className={clsx('mb-8', isDark && 'text-gray-100')}>{text}</p>
+              <p
+                className={clsx('mb-8 text-balance', isDark && 'text-gray-100')}
+              >
+                {text}
+              </p>
             </motion.div>
             <motion.div
               className="flex flex-col items-center gap-4 md:items-start lg:flex-row lg:items-center"

@@ -1,4 +1,5 @@
 import { type ISbStoryData as StoryData } from '@storyblok/react'
+import { useTranslation } from 'react-i18next'
 
 import {
   type Asset,
@@ -10,15 +11,10 @@ import {
   type Vacancy,
   type VacancyStoryContent,
 } from '#app/types.ts'
-import { useI18n } from '#app/utils/i18n-provider.tsx'
-import { defaultLanguage, type SupportedLanguage } from '#app/utils/i18n.ts'
+import { defaultLanguage } from '#app/utils/i18n.ts'
 import { removeTrailingSlash } from '#app/utils/misc.tsx'
 
-export function formatUrl(
-  url: string,
-  language: SupportedLanguage,
-  anchor?: string,
-) {
+export function formatUrl(url: string, language: string, anchor?: string) {
   if (url.includes(':')) {
     return url
   }
@@ -41,7 +37,7 @@ export function formatUrl(
   return removeTrailingSlash(formatted)
 }
 
-export function mapLink(language: SupportedLanguage = defaultLanguage) {
+export function mapLink(language: string = defaultLanguage) {
   return (link: LinkBlok): LinkType => {
     const urlTarget =
       link.target.linktype === 'story' && link.target.story?.full_slug
@@ -65,11 +61,11 @@ export function mapAsset(asset: Asset): Image {
 }
 
 export function useLocalizedMappers() {
-  const { language } = useI18n()
+  const { i18n } = useTranslation()
   return {
-    mapLink: mapLink(language),
-    mapSection: mapSection(language),
-    mapVacancy: mapVacancy(language),
+    mapLink: mapLink(i18n.language),
+    mapSection: mapSection(i18n.language),
+    mapVacancy: mapVacancy(i18n.language),
   }
 }
 
@@ -86,14 +82,14 @@ export function mapSection(language = defaultLanguage) {
   })
 }
 
-export function mapVacancy(lang = defaultLanguage) {
+export function mapVacancy(language = defaultLanguage) {
   return (vacancy: StoryData<VacancyStoryContent>): Vacancy => {
     let slug = ''
-    if (lang === defaultLanguage) {
+    if (language === defaultLanguage) {
       slug = vacancy.default_full_slug ?? ''
     } else {
       const translatedSlug = vacancy.translated_slugs?.find(
-        slug => slug.lang === lang,
+        slug => slug.lang === language,
       )
       slug = `${translatedSlug?.lang}/${translatedSlug?.path}`
     }

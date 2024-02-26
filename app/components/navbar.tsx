@@ -11,6 +11,7 @@ import {
   type MotionValue,
 } from 'framer-motion'
 import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 import { useHydrated } from 'remix-utils/use-hydrated'
 
 import { type LinkType } from '#app/types.ts'
@@ -19,7 +20,6 @@ import {
   disableBodyScroll,
   enableBodyScroll,
 } from '#app/utils/body-scroll-lock.ts'
-import { useI18n } from '#app/utils/i18n-provider.tsx'
 import { defaultLanguage } from '#app/utils/i18n.ts'
 
 function NavLink({
@@ -247,7 +247,7 @@ type Props = {
 }
 
 export function Navbar({ menu }: Props) {
-  const { language } = useI18n()
+  const { i18n } = useTranslation()
 
   const [expanded, setExpanded] = useState(false)
 
@@ -284,7 +284,7 @@ export function Navbar({ menu }: Props) {
     >
       <nav className="mx-auto flex h-18 max-w-5xl items-center justify-between">
         <Link
-          to={language !== defaultLanguage ? `/${language}` : '/'}
+          to={i18n.language !== defaultLanguage ? `/${i18n.language}` : '/'}
           prefetch="intent"
           title="Home"
         >
