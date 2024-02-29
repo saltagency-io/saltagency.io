@@ -42,10 +42,7 @@ import { createAlternateLinks, getUrl, useIsPending } from '#app/utils/misc.tsx'
 import { sendApplicationToNotion } from '#app/utils/notion.server'
 import { useVacancies } from '#app/utils/providers.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
-import {
-  getAllVacancies,
-  getVacancyBySlug,
-} from '#app/utils/storyblok.server.ts'
+import { getAllVacancies, getVacancyBySlug } from '#app/utils/storyblok-api.ts'
 import {
   getTranslatedSlugsFromStory,
   isPreview,

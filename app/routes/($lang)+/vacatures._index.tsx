@@ -12,7 +12,7 @@ import { defaultLanguage, getLocaleFromRequest } from '#app/utils/i18n.ts'
 import { getJsonLdLogo } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
-import { getStoryBySlug } from '#app/utils/storyblok.server.ts'
+import { getStoryBySlug } from '#app/utils/storyblok-api'
 import {
   getTranslatedSlugsFromStory,
   isPreview,

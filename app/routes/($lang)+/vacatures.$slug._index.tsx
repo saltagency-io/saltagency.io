@@ -18,10 +18,7 @@ import {
 } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
-import {
-  getAllVacancies,
-  getVacancyBySlug,
-} from '#app/utils/storyblok.server.ts'
+import { getAllVacancies, getVacancyBySlug } from '#app/utils/storyblok-api.ts'
 import {
   getTranslatedSlugsFromStory,
   isPreview,

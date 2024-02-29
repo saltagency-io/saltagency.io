@@ -36,11 +36,11 @@
   "scripts": {
     "build:icons": "tsx ./other/build-icons.ts",
     "build:translations": "tsx ./other/build-translations.ts",
-    "build:remix": "remix build --sourcemap",
+    "build:remix": "remix vite:build --sourcemapClient",
     "build:server": "tsx ./other/build-server.ts",
     "build": "run-s build:*",
     "predev": "npm run build:icons --silent && npm run build:translations --silent",
-    "dev": "remix dev -c \"node ./server/dev-server.js\" --manual",
+    "dev": "node ./server/dev-server.js",
     "start": "cross-env NODE_ENV=production node .",
     "typecheck": "tsc",
     "format": "prettier --write .",
@@ -57,9 +57,10 @@
     "@notionhq/client": "^2.2.14",
     "@radix-ui/react-label": "^2.0.2",
     "@reach/accordion": "^0.18.0",
-    "@remix-run/express": "^2.6.0",
-    "@remix-run/node": "^2.6.0",
-    "@remix-run/react": "^2.6.0",
+    "@remix-run/express": "^2.7.2",
+    "@remix-run/node": "^2.7.2",
+    "@remix-run/react": "^2.7.2",
+    "@remix-run/server-runtime": "2.7.2",
     "@sentry/profiling-node": "^1.3.5",
     "@sentry/remix": "^7.99.0",
     "@storyblok/react": "^3.0.8",
@@ -101,8 +102,10 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
-    "@remix-run/dev": "^2.6.0",
-    "@remix-run/eslint-config": "^2.6.0",
+    "@remix-run/dev": "^2.7.2",
+    "@remix-run/eslint-config": "^2.7.2",
+    "@remix-run/serve": "2.7.2",
+    "@remix-run/testing": "2.7.2",
     "@types/clone-deep": "^4.0.4",
     "@types/compression": "^1.7.5",
     "@types/eslint": "^8.56.2",
@@ -133,6 +136,7 @@
     "schema-dts": "^1.1.2",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4"
   }
 }

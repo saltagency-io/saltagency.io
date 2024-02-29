@@ -3,15 +3,14 @@
 .DS_Store
 node_modules/
 
-/.cache
+.env
+.cache
 /build
 /server-build
-/public/build
 
 localhost-key.pem
 localhost.pem
 
-.env
 
 *.logs
 
