@@ -38,7 +38,7 @@ import { getJsonLdLogo } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl, useIsPending } from '#app/utils/misc.tsx'
 import { sendToContactFormNotion } from '#app/utils/notion.server'
 import { getSocialMetas } from '#app/utils/seo.ts'
-import { getStoryBySlug } from '#app/utils/storyblok.server.ts'
+import { getStoryBySlug } from '#app/utils/storyblok-api.ts'
 import {
   getTranslatedSlugsFromStory,
   isPreview,

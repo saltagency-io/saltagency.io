@@ -20,7 +20,7 @@ import { getSocialMetas } from '#app/utils/seo.ts'
 import {
   getStoriesForSitemap,
   getStoryBySlug,
-} from '#app/utils/storyblok.server.ts'
+} from '#app/utils/storyblok-api.ts'
 import {
   getTranslatedSlugsFromStory,
   isPreview,
@@ -47,7 +47,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const preview = isPreview(request)
   const locale = getLocaleFromRequest(request)
   const { pathname } = new URL(request.url)
-  const slug = locale === defaultLanguage ? params.lang : params['*']
+
+  const slug =
+    locale === defaultLanguage && params.lang !== undefined
+      ? `${params.lang}${params['*'] ? `/${params['*']}` : ''}`
+      : params['*']
 
   const story = await getStoryBySlug(slug ?? 'home', locale, preview)
 

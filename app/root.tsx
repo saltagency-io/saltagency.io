@@ -7,7 +7,6 @@ import {
 } from '@remix-run/node'
 import {
   Links,
-  LiveReload,
   Meta,
   Scripts,
   ScrollRestoration,
@@ -26,36 +25,32 @@ import {
   GeneralErrorBoundary,
   NotFoundError,
   ServerError,
-} from '#app/components/errors.tsx'
-import { components } from '#app/storyblok/index.ts'
-import appStyles from '#app/styles/app.css'
-import tailwindStyles from '#app/styles/tailwind.css'
-import vendorStyles from '#app/styles/vendors.css'
-import { csrf } from '#app/utils/csrf.server.ts'
-import { getEnv } from '#app/utils/env.server.ts'
-import { honeypot } from '#app/utils/honeypot.server.ts'
-import { getLocaleFromRequest } from '#app/utils/i18n.ts'
+} from './components/errors.tsx'
+import { components } from './storyblok/index.ts'
+import appStylesheetUrl from './styles/app.css?url'
+import tailwindStylesheetUrl from './styles/tailwind.css?url'
+import vendorStylesheetUrl from './styles/vendors.css?url'
+import { type Handle } from './types'
+import { csrf } from './utils/csrf.server.ts'
+import { getEnv } from './utils/env.server.ts'
+import { honeypot } from './utils/honeypot.server.ts'
+import { getLocaleFromRequest } from './utils/i18n.ts'
+import { i18next } from './utils/i18next.server'
 import {
   combineHeaders,
   getDomainUrl,
   getUrl,
   removeTrailingSlash,
-} from '#app/utils/misc.tsx'
-import { useNonce } from '#app/utils/nonce-provider.tsx'
+} from './utils/misc.tsx'
+import { useNonce } from './utils/nonce-provider.tsx'
 import {
   PreviewStateProvider,
   SlugsProvider,
   VacanciesProvider,
-} from '#app/utils/providers.tsx'
-import { getSocialMetas } from '#app/utils/seo.ts'
-import { getAllVacancies, getLayout } from '#app/utils/storyblok.server'
-import {
-  getTranslatedSlugsFromStory,
-  isPreview,
-} from '#app/utils/storyblok.tsx'
-
-import { type Handle } from './types'
-import { i18next } from './utils/i18next.server'
+} from './utils/providers.tsx'
+import { getSocialMetas } from './utils/seo.ts'
+import { getAllVacancies, getLayout } from './utils/storyblok-api.ts'
+import { getTranslatedSlugsFromStory, isPreview } from './utils/storyblok.tsx'
 
 storyblokInit({
   components,
@@ -78,9 +73,9 @@ export const handle: Handle = {
 
 export const links: LinksFunction = () => {
   return [
-    { rel: 'preload', as: 'style', href: vendorStyles },
-    { rel: 'preload', as: 'style', href: tailwindStyles },
-    { rel: 'preload', as: 'style', href: appStyles },
+    { rel: 'preload', as: 'style', href: vendorStylesheetUrl },
+    { rel: 'preload', as: 'style', href: tailwindStylesheetUrl },
+    { rel: 'preload', as: 'style', href: appStylesheetUrl },
     {
       rel: 'preload',
       as: 'image',
@@ -128,9 +123,9 @@ export const links: LinksFunction = () => {
     { rel: 'manifest', href: '/site.webmanifest' },
     { rel: 'icon', href: '/favicon.ico' },
     { rel: 'icon', href: '/favicon.ico' },
-    { rel: 'stylesheet', href: vendorStyles },
-    { rel: 'stylesheet', href: tailwindStyles },
-    { rel: 'stylesheet', href: appStyles },
+    { rel: 'stylesheet', href: vendorStylesheetUrl },
+    { rel: 'stylesheet', href: tailwindStylesheetUrl },
+    { rel: 'stylesheet', href: appStylesheetUrl },
   ]
 }
 
@@ -333,7 +328,6 @@ function Document({
             __html: `window.ENV = ${JSON.stringify(env)};`,
           }}
         />
-        <LiveReload nonce={nonce} />
       </body>
     </html>
   )
