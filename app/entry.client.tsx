@@ -14,7 +14,7 @@ if (ENV.MODE === 'production' && ENV.SENTRY_DSN) {
   import('./utils/monitoring.client.ts').then(({ init }) => init())
 }
 
-await i18next
+i18next
   .use(initReactI18next)
   .use(LanguageDetector)
   .use(Backend)
@@ -27,12 +27,13 @@ await i18next
       caches: [],
     },
   })
-
-startTransition(() => {
-  hydrateRoot(
-    document,
-    <I18nextProvider i18n={i18next}>
-      <RemixBrowser />
-    </I18nextProvider>,
-  )
-})
+  .then(() => {
+    startTransition(() => {
+      hydrateRoot(
+        document,
+        <I18nextProvider i18n={i18next}>
+          <RemixBrowser />
+        </I18nextProvider>,
+      )
+    })
+  })
