@@ -5,7 +5,6 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   const command =
     'tsx watch --clear-screen=false --ignore ".cache/**" --ignore "app/**" --ignore "vite.config.ts.timestamp-*" --ignore "build/**" --ignore "node_modules/**" --inspect ./index.js'
-
   execa(command, {
     stdio: ['ignore', 'inherit', 'inherit'],
     shell: true,
@@ -14,6 +13,7 @@ if (process.env.NODE_ENV === 'production') {
       MOCKS: true,
       ...process.env,
     },
+    // https://github.com/sindresorhus/execa/issues/433
     windowsHide: false,
   })
 }

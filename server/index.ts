@@ -1,16 +1,7 @@
 import crypto from 'crypto'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
-import {
-  createRequestHandler as _createRequestHandler,
-  type RequestHandler,
-} from '@remix-run/express'
-import {
-  broadcastDevReady,
-  installGlobals,
-  type ServerBuild,
-} from '@remix-run/node'
+import { createRequestHandler as _createRequestHandler } from '@remix-run/express'
+import { installGlobals, type ServerBuild } from '@remix-run/node'
 import * as Sentry from '@sentry/remix'
 import { ip as ipAddress } from 'address'
 import chalk from 'chalk'
@@ -25,7 +16,7 @@ import onFinished from 'on-finished'
 
 installGlobals()
 
-const MODE = process.env.NODE_ENV
+const MODE = process.env.NODE_ENV ?? 'development'
 
 const createRequestHandler =
   MODE === 'production'
@@ -36,7 +27,9 @@ const viteDevServer =
   MODE === 'production'
     ? undefined
     : await import('vite').then(vite =>
-        vite.createServer({ server: { middlewareMode: true } }),
+        vite.createServer({
+          server: { middlewareMode: true },
+        }),
       )
 
 const app = express()
@@ -82,7 +75,7 @@ app.use((req, res, next) => {
   if (host.startsWith('www.')) {
     const newHost = host.slice(4)
     app.set('trust proxy', true)
-    return res.redirect(301, `${req.protocol}://${newHost}${req.originalUrl}`)
+    return res.redirect(302, `${req.protocol}://${newHost}${req.originalUrl}`)
   }
   next()
 })
@@ -108,13 +101,22 @@ app.use(Sentry.Handlers.tracingHandler())
 if (viteDevServer) {
   app.use(viteDevServer.middlewares)
 } else {
+  // Remix fingerprints its assets so we can cache forever.
   app.use(
     '/assets',
     express.static('build/client/assets', { immutable: true, maxAge: '1y' }),
   )
 
-  app.use(express.static('build/client', { maxAge: '2h' }))
+  // Everything else (like favicon.ico) is cached for an hour. You may want to be
+  // more aggressive with this caching.
+  app.use(express.static('build/client', { maxAge: '1h' }))
 }
+
+app.get(['/img/*', '/favicons/*'], (req, res) => {
+  // if we made it past the express.static for these, then we're missing something.
+  // So we'll just send a 404 and won't bother calling other middleware.
+  return res.status(404).send('Not found')
+})
 
 // Log the referrer for 404s
 app.use((req, res, next) => {
@@ -257,7 +259,7 @@ async function getBuild() {
 app.all(
   '*',
   createRequestHandler({
-    getLoadContext: (_, res: any) => ({
+    getLoadContext: (_: any, res: any) => ({
       cspNonce: res.locals.cspNonce,
       serverBuild: getBuild(),
     }),
@@ -288,9 +290,7 @@ const server = app.listen(portToUse, () => {
       ),
     )
   }
-
   console.log(`🚀  We have liftoff!`)
-
   const localUrl = `http://localhost:${portUsed}`
   let lanUrl: string | null = null
   const localIp = ipAddress() ?? 'Unknown'

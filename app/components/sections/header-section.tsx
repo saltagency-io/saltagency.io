@@ -17,6 +17,7 @@ type Props = {
 
 export function HeaderSection({
   title,
+  children,
   body,
   hasShapes,
   hasScrollIndicator,
@@ -87,6 +88,7 @@ export function HeaderSection({
                 <p className="lg:text-center lg:text-2xl">{body}</p>
               </motion.div>
             ) : null}
+            <div className="mt-8 flex justify-center">{children}</div>
 
             {hasScrollIndicator ? (
               <motion.div
