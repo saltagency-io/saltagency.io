@@ -222,7 +222,7 @@ function calculate({
   }
 }
 
-const rates = [80, 90, 100, 110, 120, 130, 140, 150]
+const rates = [80, 90, 100, 110, 120, 130]
 
 type Props = {
   title?: string
