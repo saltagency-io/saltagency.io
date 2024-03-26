@@ -34,8 +34,9 @@ export function HeaderSection({
       {hasShapes ? (
         <motion.img
           loading="eager"
+          alt="Koodin waterdrops"
           src="/images/rain-drops-background.svg"
-          className="absolute left-0 top-0 w-screen select-none object-fill"
+          className="absolute left-0 top-0 hidden w-screen select-none object-fill lg:block"
           initial="initial"
           animate="visible"
           variants={{
@@ -43,7 +44,7 @@ export function HeaderSection({
             visible: {
               opacity: 1,
               y: 0,
-              transition: { duration: 0.7, delay: 0.3, ease: 'easeInOut' },
+              transition: { duration: 0.35, ease: 'easeIn' },
             },
           }}
         />
