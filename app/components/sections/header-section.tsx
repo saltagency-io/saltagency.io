@@ -1,11 +1,16 @@
-import * as React from 'react'
+import { lazy, Suspense } from 'react'
 
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { GradientCircle } from '#app/components/gradient-circle.tsx'
 import { Grid } from '#app/components/grid.tsx'
-import { ScrollIndicator } from '#app/components/scroll-indicator.tsx'
 import { H1 } from '#app/components/ui/typography.tsx'
+
+const ScrollIndicator = lazy(() =>
+  import('#app/components/scroll-indicator.tsx').then(
+    ({ ScrollIndicator }) => ({ default: ScrollIndicator }),
+  ),
+)
 
 type Props = {
   title: string
@@ -96,7 +101,9 @@ export function HeaderSection({
                 className="mx-auto mt-24 flex w-fit items-center justify-center lg:justify-start"
                 variants={childVariants}
               >
-                <ScrollIndicator />
+                <Suspense fallback={null}>
+                  <ScrollIndicator />
+                </Suspense>
               </motion.div>
             ) : null}
           </motion.div>

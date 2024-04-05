@@ -44,6 +44,7 @@ function LogoGroup({ group, index }: { group: Image[]; index: number }) {
           }}
         >
           <img
+            loading="lazy"
             className="aspect-[3.1/1] w-full object-cover"
             {...getImgProps(logo.url, logo.alt, {
               widths: [156, 312],

@@ -1,4 +1,6 @@
 import crypto from 'crypto'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 import { createRequestHandler as _createRequestHandler } from '@remix-run/express'
 import { installGlobals, type ServerBuild } from '@remix-run/node'
@@ -34,6 +36,8 @@ const viteDevServer =
 
 const app = express()
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const here = (...d: Array<string>) => path.join(__dirname, ...d)
 const getHost = (req: { get: (key: string) => string | undefined }) =>
   req.get('X-Forwarded-Host') ?? req.get('host') ?? ''
 
@@ -91,28 +95,42 @@ app.use((req, res, next) => {
   }
 })
 
-app.use(compression())
-
 app.disable('x-powered-by')
 
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
+const publicAbsolutePath = here('../build/client')
+
+app.use(compression())
+
 if (viteDevServer) {
   app.use(viteDevServer.middlewares)
 } else {
-  // Remix fingerprints its assets so we can cache forever.
   app.use(
-    '/assets',
-    express.static('build/client/assets', { immutable: true, maxAge: '1y' }),
+    express.static(publicAbsolutePath, {
+      maxAge: '1w',
+      setHeaders(res, resourcePath) {
+        const relativePath = resourcePath.replace(`${publicAbsolutePath}/`, '')
+        if (relativePath.startsWith('build/info.json')) {
+          res.setHeader('cache-control', 'no-cache')
+          return
+        }
+        // If we ever change our font (which we quite possibly never will)
+        // then we'll just want to change the filename or something...
+        // Remix fingerprints its assets so we can cache forever
+        if (
+          relativePath.startsWith('fonts') ||
+          relativePath.startsWith('build')
+        ) {
+          res.setHeader('cache-control', 'public, max-age=31536000, immutable')
+        }
+      },
+    }),
   )
-
-  // Everything else (like favicon.ico) is cached for an hour. You may want to be
-  // more aggressive with this caching.
-  app.use(express.static('build/client', { maxAge: '1h' }))
 }
 
-app.get(['/img/*', '/favicons/*'], (req, res) => {
+app.get(['/build/*', '/images/*', '/fonts/*', '/favicons/*'], (req, res) => {
   // if we made it past the express.static for these, then we're missing something.
   // So we'll just send a 404 and won't bother calling other middleware.
   return res.status(404).send('Not found')
