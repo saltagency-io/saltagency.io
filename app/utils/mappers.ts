@@ -2,6 +2,8 @@ import { type ISbStoryData as StoryData } from '@storyblok/react'
 import { useTranslation } from 'react-i18next'
 
 import {
+  Story,
+  StoryPostContent,
   type Asset,
   type Image,
   type LinkBlok,
@@ -66,6 +68,7 @@ export function useLocalizedMappers() {
     mapLink: mapLink(i18n.language),
     mapSection: mapSection(i18n.language),
     mapVacancy: mapVacancy(i18n.language),
+    mapStories: mapStories(i18n.language),
   }
 }
 
@@ -98,6 +101,33 @@ export function mapVacancy(language = defaultLanguage) {
       id: vacancy.id?.toString() ?? '',
       name: vacancy.name,
       slug: slug,
+    }
+  }
+}
+
+export function mapStories(language = defaultLanguage) {
+  return (stories: StoryData<StoryPostContent>): Story => {
+    let slug = ''
+    if (language === defaultLanguage) {
+      slug = stories.default_full_slug ?? ''
+    } else {
+      const translatedSlug = stories.translated_slugs?.find(
+        slug => slug.lang === language,
+      )
+      slug = `${translatedSlug?.lang}/${translatedSlug?.path}`
+    }
+
+    return {
+      id: stories.id?.toString() ?? '',
+      name: stories.name,
+      slug: slug,
+      content: {
+        intro: stories.content.intro,
+        image: stories.content.image,
+        title: stories.content.title,
+        published_at: stories.content.published_at,
+        component: stories.content.component, // TEMP
+      },
     }
   }
 }

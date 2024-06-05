@@ -18,7 +18,7 @@ type ButtonProps = {
 
 function getClassName({ className }: { className?: string }) {
   return clsx(
-    'group relative inline-flex font-bold focus:outline-none opacity-100 disabled:opacity:50 transition',
+    'group relative inline-flex place-self-center font-bold focus:outline-none opacity-100 disabled:opacity:50 transition',
     className,
   )
 }
