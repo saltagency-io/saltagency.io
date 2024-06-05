@@ -1,5 +1,7 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 
+import { Asset } from './storyblok'
+
 export type NonNullProperties<Type> = {
   [Key in keyof Type]-?: Exclude<Type[Key], null | undefined>
 }
@@ -47,6 +49,19 @@ export type Vacancy = {
   id: string
   name: string
   slug: string
+}
+
+export type Story = {
+  id: string
+  name: string
+  slug: string
+  content: {
+    intro: string
+    image: Asset
+    title: string
+    published_at: Date
+    component: 'story'
+  }
 }
 
 export type Breadcrumb = {

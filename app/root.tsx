@@ -46,10 +46,15 @@ import { useNonce } from './utils/nonce-provider.tsx'
 import {
   PreviewStateProvider,
   SlugsProvider,
+  StoriesProvider,
   VacanciesProvider,
 } from './utils/providers.tsx'
 import { getSocialMetas } from './utils/seo.ts'
-import { getAllVacancies, getLayout } from './utils/storyblok-api.ts'
+import {
+  getAllStories,
+  getAllVacancies,
+  getLayout,
+} from './utils/storyblok-api.ts'
 import { getTranslatedSlugsFromStory, isPreview } from './utils/storyblok.tsx'
 
 storyblokInit({
@@ -136,9 +141,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const locale = getLocaleFromRequest(request)
   const t = await i18next.getFixedT(request)
 
-  const [layoutStory, vacancies] = await Promise.all([
+  const [layoutStory, vacancies, stories] = await Promise.all([
     getLayout(locale, preview),
     getAllVacancies(locale, preview),
+    getAllStories(locale, preview),
   ])
 
   const honeyProps = honeypot.getInputProps()
@@ -149,6 +155,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       layoutStory,
       preview,
       vacancies,
+      stories,
       locale,
       ENV: getEnv(),
       requestInfo: {
@@ -285,7 +292,9 @@ export default function AppWithProviders() {
         <PreviewStateProvider value={{ preview: data.preview }}>
           <SlugsProvider value={{ slugs: translatedSlugs }}>
             <VacanciesProvider value={{ vacancies: data.vacancies ?? [] }}>
-              <App />
+              <StoriesProvider value={{ stories: data.stories ?? [] }}>
+                <App />
+              </StoriesProvider>
             </VacanciesProvider>
           </SlugsProvider>
         </PreviewStateProvider>

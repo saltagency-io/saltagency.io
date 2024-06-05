@@ -4,6 +4,7 @@ import { type ISbStoryData as StoryData } from '@storyblok/react'
 
 import {
   type GroupTheme,
+  type StoryPostContent,
   type TranslatedSlug,
   type VacancyStoryContent,
 } from '#app/types.ts'
@@ -59,6 +60,16 @@ const { Provider: VacanciesProvider, useValue: useVacancies } =
   createSimpleContext<VacanciesState>('VacanciesContext')
 
 export { VacanciesProvider, useVacancies }
+
+// Stories provider
+type StoriesState = {
+  stories: StoryData<StoryPostContent>[]
+}
+
+const { Provider: StoriesProvider, useValue: useStories } =
+  createSimpleContext<StoriesState>('StoriesContext')
+
+export { StoriesProvider, useStories }
 
 // Group provider
 type GroupState = {

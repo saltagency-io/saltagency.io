@@ -6,6 +6,7 @@ import {
 import {
   type LayoutStoryContent,
   type PageStoryContent,
+  type StoryPostContent,
   type VacancyStoryContent,
 } from '#app/types.ts'
 import i18n from '#app/utils/i18n.ts'
@@ -71,6 +72,41 @@ export async function getAllVacancies(
     return getStoryblokApi().getAll(`cdn/stories`, params)
   } catch (error) {
     console.error(`Failed to fetch all vacancies`, error)
+  }
+}
+
+export async function getStoryPostBySlug(
+  slug: string,
+  language: string,
+  preview = false,
+): Promise<StoryData<StoryPostContent> | undefined> {
+  const params = getDefaultParams({ preview, language })
+
+  try {
+    const { data } = await getStoryblokApi().get(
+      `cdn/stories/stories/${slug}`,
+      params,
+    )
+    return data?.story
+  } catch (error) {
+    console.error(`Failed to fetch story for slug: ${slug}`, error)
+  }
+}
+
+export async function getAllStories(
+  language: string,
+  preview = false,
+): Promise<StoryData<StoryPostContent>[] | undefined> {
+  const params = {
+    ...getDefaultParams({ preview, language }),
+    starts_with: 'stories/',
+    is_startpage: false,
+  }
+
+  try {
+    return getStoryblokApi().getAll(`cdn/stories`, params)
+  } catch (error) {
+    console.error(`Failed to fetch all stories`, error)
   }
 }
 

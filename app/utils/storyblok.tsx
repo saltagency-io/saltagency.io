@@ -8,6 +8,7 @@ import {
 
 import {
   type PageStoryContent,
+  type StoryPostContent,
   type TranslatedSlug,
   type VacancyStoryContent,
 } from '#app/types.ts'
@@ -24,7 +25,9 @@ function mapHomeToRoot(slug: TranslatedSlug) {
 }
 
 export function getTranslatedSlugsFromStory(
-  story: StoryData<PageStoryContent | VacancyStoryContent> | undefined,
+  story:
+    | StoryData<StoryPostContent | PageStoryContent | VacancyStoryContent>
+    | undefined,
 ): TranslatedSlug[] {
   if (!story) return []
 

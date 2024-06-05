@@ -24,7 +24,9 @@ import { SbHeaderSection } from './sections/header-section.tsx'
 import { SbHeroSection } from './sections/hero-section.tsx'
 import { SbLocationSection } from './sections/location-section.tsx'
 import { SbPeopleSection } from './sections/people-section.tsx'
+import { SbStoriesSection } from './sections/stories-section.tsx'
 import { SbTextSection } from './sections/text-section.tsx'
+import { SbStory } from './story.tsx'
 import { SbVacancy } from './vacancy.tsx'
 
 // Would prefer to put this in types/storyblok.d.ts but that breaks the build for some reason 🤷
@@ -33,6 +35,7 @@ export enum BlokTypes {
   Page = 'page',
   PageWithChild = 'pageWithChild',
   Vacancy = 'vacancy',
+  Story = 'story',
 
   // Global components
   Layout = 'layout',
@@ -67,6 +70,7 @@ export enum BlokTypes {
   LocationSection = 'locationSection',
   ImageSection = 'imageSection',
   TeamSection = 'teamSection',
+  StoriesSection = 'storiesSection',
   ContactSection = 'contactSection',
   CardsSection = 'cardsSection',
 }
@@ -97,6 +101,8 @@ export const components = {
   [BlokTypes.RichText]: SbRichText,
   [BlokTypes.Spacer]: SbSpacer,
   [BlokTypes.TeamSection]: SbTeamSection,
+  [BlokTypes.StoriesSection]: SbStoriesSection,
   [BlokTypes.TextSection]: SbTextSection,
   [BlokTypes.Vacancy]: SbVacancy,
+  [BlokTypes.Story]: SbStory,
 }

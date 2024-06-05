@@ -20,6 +20,16 @@ export type VacancyStoryContent = {
   metatags: MetaTags
 }
 
+export type StoryPostContent = {
+  title: string
+  body: GroupBlok[]
+  metatags: MetaTags
+  intro: string
+  image: Asset
+  published_at: Date
+  component: 'story'
+}
+
 export type LayoutStoryContent = {
   navigation: NavigationBlok[]
   footer: FooterBlok[]
@@ -63,6 +73,15 @@ export type VacancyBlok = SbBlokData & {
   title: string
   summary: string
   body: Array<JobDescriptionBlok | BlockWithSectionsBlok>
+}
+
+export type StoryBlok = SbBlokData & {
+  title: string
+  image: Asset
+  category: string
+  read_time?: number
+  published_at: Date
+  body: Array<BlockWithSectionsBlok>
 }
 
 export type ButtonBlok = SbBlokData & {
@@ -229,6 +248,10 @@ export type TeamSectionBlok = SbBlokData & {
   members: TeamMemberBlok[]
 }
 
+export type StoriesSectionBlok = SbBlokData & {
+  component: BlokTypes.StoriesSection
+}
+
 export type ContactSectionBlok = SbBlokData & {
   component: BlokTypes.ContactSection
   title: string
@@ -267,6 +290,7 @@ export type BodyComponent =
   | LocationSectionBlok
   | ImageSectionBlok
   | TeamSectionBlok
+  | StoriesSectionBlok
   | ContactSectionBlok
 
 export type MetaTags = {
