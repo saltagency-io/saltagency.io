@@ -27,7 +27,6 @@ export type StoryPostContent = {
   intro: string
   image: Asset
   published_at: Date
-  component: 'story'
 }
 
 export type LayoutStoryContent = {
@@ -340,3 +339,4 @@ type DataSourceEntry = {
   value: string
   dimension_value: string | null
 }
+

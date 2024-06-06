@@ -126,8 +126,8 @@ export function mapStories(language = defaultLanguage) {
         image: stories.content.image,
         title: stories.content.title,
         published_at: stories.content.published_at,
-        component: stories.content.component, // TEMP
       },
     }
   }
 }
+

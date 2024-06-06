@@ -13,9 +13,9 @@ import { multilineToBreaks, unslugify } from '#app/utils/misc.js'
 type Props = {
   children: React.ReactNode
   category: string
-  publishedAt: Date
+  publishedAt?: Date | string
   readTime?: number
-  image: {
+  image?: {
     url: string
     alt: string
   }
@@ -43,17 +43,19 @@ export function Story({
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   }
 
-  const date = new Date(publishedAt ?? '')
-  const datePosted = date.toLocaleDateString(language, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
+  const date = publishedAt ? new Date(publishedAt) : null
+  const datePosted = date
+    ? date.toLocaleDateString(language, {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : ''
 
   return (
     <>
       <div className="relative z-20 mb-16 lg:mt-5">
-        {image ? (
+        {image?.url && (
           <>
             <div className="bg-story-gradient-hero absolute bottom-0 left-0 z-0 h-full w-full"></div>
 
@@ -92,7 +94,7 @@ export function Story({
               })}
             />
           </>
-        ) : null}
+        )}
 
         <motion.div
           className={clsx(
@@ -106,42 +108,44 @@ export function Story({
             visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
           }}
         >
-          <motion.div variants={childVariants}>
-            <H6 className="text-center" inverse={image ? true : undefined}>
-              {datePosted}
-            </H6>
-
-            <motion.div variants={childVariants} className="m-auto max-w-4xl">
-              <H1
-                className="break mb-6 mt-3 text-balance text-center"
-                inverse={image ? true : undefined}
-              >
-                {multilineToBreaks(title)}
-              </H1>
+          {datePosted && (
+            <motion.div variants={childVariants}>
+              <H6 className="text-center" inverse={image ? true : undefined}>
+                {datePosted}
+              </H6>
             </motion.div>
+          )}
 
-            <div className="flex flex-col items-center justify-center gap-2 pt-4 lg:flex-row">
-              {category ? (
-                <Button
-                  variant={image ? 'outline-inverse' : 'outline'}
-                  size="small"
-                  className="pointer-events-none relative"
-                >
-                  {category}
-                </Button>
-              ) : null}
-
-              {readTime ? (
-                <Button
-                  variant={image ? 'outline-inverse' : 'outline'}
-                  size="small"
-                  className="pointer-events-none relative"
-                >
-                  {readTime} {t('read.time')}
-                </Button>
-              ) : null}
-            </div>
+          <motion.div variants={childVariants} className="m-auto max-w-4xl">
+            <H1
+              className="break mb-6 mt-3 text-balance text-center"
+              inverse={image ? true : undefined}
+            >
+              {multilineToBreaks(title)}
+            </H1>
           </motion.div>
+
+          <div className="flex flex-col items-center justify-center gap-2 pt-4 lg:flex-row">
+            {category && (
+              <Button
+                variant={image ? 'outline-inverse' : 'outline'}
+                size="small"
+                className="pointer-events-none relative"
+              >
+                {category}
+              </Button>
+            )}
+
+            {readTime != null && (
+              <Button
+                variant={image ? 'outline-inverse' : 'outline'}
+                size="small"
+                className="pointer-events-none relative"
+              >
+                {readTime} {t('read.time')}
+              </Button>
+            )}
+          </div>
         </motion.div>
       </div>
 
@@ -165,3 +169,4 @@ export function Story({
     </>
   )
 }
+
