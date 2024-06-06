@@ -35,7 +35,6 @@ export function StoriesSection({ stories }: Props) {
     >
       <div className="grid grid-cols-12 place-content-start gap-2 p-2">
         {stories
-          .filter(item => item.content.component === 'story')
           .sort(
             (a, b) =>
               new Date(b.content.published_at).getTime() -

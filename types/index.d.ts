@@ -60,7 +60,6 @@ export type Story = {
     image: Asset
     title: string
     published_at: Date
-    component: 'story'
   }
 }
 

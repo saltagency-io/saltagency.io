@@ -27,7 +27,6 @@ export type StoryPostContent = {
   intro: string
   image: Asset
   published_at: Date
-  component: 'story'
 }
 
 export type LayoutStoryContent = {
