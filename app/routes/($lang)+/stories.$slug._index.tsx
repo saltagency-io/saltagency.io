@@ -120,8 +120,6 @@ export default function StoryRoute() {
   const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.story)
 
-  console.log(data)
-
   return (
     <main>
       <StoryblokComponent blok={story?.content} />
