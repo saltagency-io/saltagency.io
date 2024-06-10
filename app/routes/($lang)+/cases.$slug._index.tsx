@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
   redirect,
   type LoaderFunctionArgs,
@@ -18,7 +20,7 @@ import {
 } from '#app/utils/json-ld.ts'
 import { createAlternateLinks, getUrl } from '#app/utils/misc.tsx'
 import { getSocialMetas } from '#app/utils/seo.ts'
-import { getAllStories, getStoryPostBySlug } from '#app/utils/storyblok-api.ts'
+import { getAllCases, getCaseBySlug } from '#app/utils/storyblok-api.ts'
 import {
   getTranslatedSlugsFromStory,
   isPreview,
@@ -27,7 +29,7 @@ import {
 export const handle: Handle = {
   getSitemapEntries: async request => {
     const locale = getLocaleFromRequest(request)
-    const pages = await getAllStories(locale)
+    const pages = await getAllCases(locale)
     return (pages || []).map(page => ({
       route: `/${page.full_slug}`,
       priority: 0.6,
@@ -44,7 +46,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const locale = getLocaleFromRequest(request)
   const { pathname } = new URL(request.url)
 
-  const story = await getStoryPostBySlug(params.slug, locale, preview)
+  const story = await getCaseBySlug(params.slug, locale, preview)
 
   if (!story) {
     throw new Response('Not found', { status: 404 })
@@ -133,8 +135,16 @@ export default function StoryRoute() {
   const data = useTypedLoaderData<typeof loader>()
   const story = useStoryblokState(data.story)
 
+  React.useEffect(() => {
+    document.body.classList.add('header-light')
+    return () => {
+      document.body.classList.remove('header-light')
+    }
+  }, [])
+
   return (
-    <main>
+    <main className="relative -mt-[230px] overflow-x-visible">
+      <div className="bg-gradient fixed bottom-0 left-0 right-0 top-0 z-0" />
       <StoryblokComponent blok={story?.content} />
     </main>
   )

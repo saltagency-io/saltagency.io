@@ -17,6 +17,7 @@ type Props = {
 
 const backgroundColorStyles: Record<GroupTheme, string> = {
   'dark-decorated': 'bg-black/80',
+  'dark-clean': 'bg-[#161423]',
   dark: 'bg-black/80',
   'light-gray': 'bg-transparent',
   'light-gray-decorated': 'bg-transparent',

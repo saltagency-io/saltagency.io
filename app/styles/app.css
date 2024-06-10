@@ -238,8 +238,12 @@ a {
   color: hsl(var(--color-white)) !important;
 }
 
-.header-light svg path {
+.header-light svg#koodin-logo path {
   fill: hsl(var(--color-white)) !important;
+}
+
+.header-light svg path#icon {
+  fill: #4353ff !important;
 }
 
 .card-grid {
@@ -278,4 +282,14 @@ a {
   );
 
   filter: blur(100px);
+}
+
+.the-case-content p {
+  margin: 0;
+  margin-bottom: 1rem;
+  @apply text-[#474557];
+}
+
+.the-case-content h5 {
+  margin-bottom: 1rem;
 }

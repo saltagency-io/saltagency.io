@@ -4,6 +4,7 @@ import {
 } from '@storyblok/react'
 
 import {
+  CasePostContent,
   type LayoutStoryContent,
   type PageStoryContent,
   type StoryPostContent,
@@ -107,6 +108,41 @@ export async function getAllStories(
     return getStoryblokApi().getAll(`cdn/stories`, params)
   } catch (error) {
     console.error(`Failed to fetch all stories`, error)
+  }
+}
+
+export async function getCaseBySlug(
+  slug: string,
+  language: string,
+  preview = false,
+): Promise<StoryData<CasePostContent> | undefined> {
+  const params = getDefaultParams({ preview, language })
+
+  try {
+    const { data } = await getStoryblokApi().get(
+      `cdn/stories/cases/${slug}`,
+      params,
+    )
+    return data?.story
+  } catch (error) {
+    console.error(`Failed to fetch case for slug: ${slug}`, error)
+  }
+}
+
+export async function getAllCases(
+  language: string,
+  preview = false,
+): Promise<StoryData<CasePostContent>[] | undefined> {
+  const params = {
+    ...getDefaultParams({ preview, language }),
+    starts_with: 'cases/',
+    is_startpage: false,
+  }
+
+  try {
+    return getStoryblokApi().getAll(`cdn/cases`, params)
+  } catch (error) {
+    console.error(`Failed to fetch all cases`, error)
   }
 }
 

@@ -79,8 +79,8 @@ export type GroupTheme =
   | 'light-gray-decorated'
   | 'dark'
   | 'dark-decorated'
+  | 'dark-clean'
   | 'dark-to-footer'
   | 'light-white'
 
 export * from './storyblok'
-
