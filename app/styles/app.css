@@ -293,3 +293,7 @@ a {
 .the-case-content h5 {
   margin-bottom: 1rem;
 }
+
+.story section:first-of-type {
+  gap: 4rem;
+}
