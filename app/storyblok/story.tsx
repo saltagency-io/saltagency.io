@@ -11,7 +11,7 @@ type Props = {
 
 export function SbStory({ blok }: Props) {
   return (
-    <div {...storyblokEditable(blok)}>
+    <div {...storyblokEditable(blok)} className="story">
       <GroupProvider value={{ theme: 'light-white' }}>
         <Story
           title={blok.title}
