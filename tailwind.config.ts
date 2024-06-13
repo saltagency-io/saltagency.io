@@ -93,6 +93,10 @@ export default {
         'card-container': '0px 16px 64px hsl(var(--color-purple-700) / 0.1)',
       },
       backgroundImage: {
+        'case-overlay':
+          'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%)',
+        'video-overlay':
+          'linear-gradient(180deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.78) 96%, #000 100%)',
         'story-gradient-card':
           'linear-gradient(180deg, rgba(67, 83, 255, 0.00) 28.69%, rgba(67, 83, 255, 0.14) 41.75%, rgba(67, 83, 255, 0.60) 77.53%)',
         'story-gradient-hero':

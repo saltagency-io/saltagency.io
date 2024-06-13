@@ -29,6 +29,13 @@ export type StoryPostContent = {
   published_at: Date
 }
 
+export type CasePostContent = {
+  title: string
+  intro: string
+  metatags: MetaTags
+  body: GroupBlok[]
+}
+
 export type LayoutStoryContent = {
   navigation: NavigationBlok[]
   footer: FooterBlok[]
@@ -210,6 +217,59 @@ export type HeaderSectionBlok = SbBlokData & {
   cta: ButtonBlok[]
 }
 
+export type CaseHeaderSectionBlok = SbBlokData & {
+  component: BlokTypes.CaseHeaderSection
+  hasShapes: boolean
+  hasScrollIndicator: boolean
+  title: string
+  body?: string
+  logo?: Asset
+  deliverables?: string
+  duration?: number
+  website?: {
+    url: string
+  }
+}
+
+export type CaseBlocksSectionBlok = SbBlokData & {
+  component: BlokTypes.CaseBlocksSection
+  block_image_first: Assset
+  block_image_second: Asset
+  block_title_first: string
+  block_title_second: string
+  content: string
+  image: Asset
+  video_id?: string
+  video_title?: string
+  video_image: Asset
+}
+
+export type CaseWidgetSectionBlok = SbBlokData & {
+  cases: {
+    _uid: string
+    color: string
+    intro: string
+    content: string
+    image: Asset
+    link: Link
+    logo: Asset
+    tab_logo: Asset
+  }[]
+}
+
+export type RelatedCasesSectionBlock = SbBlokData & {
+  component: BlokTypes.RelatedCaseSection
+  cases: {
+    _uid: string
+    link: Link
+    color: string
+    logo: Asset
+    image: Asset
+    intro: string
+  }[]
+  title: string
+}
+
 export type LocationSectionBlok = SbBlokData & {
   component: BlokTypes.LocationSection
   subtitle: string
@@ -339,4 +399,3 @@ type DataSourceEntry = {
   value: string
   dimension_value: string | null
 }
-

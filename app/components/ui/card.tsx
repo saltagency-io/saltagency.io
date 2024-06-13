@@ -116,9 +116,9 @@ export const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
       return (
         <Link
           className={clsx(rootClassName, 'transition-all ', {
-            'hover:bg-card-dark-hover border-white/10 hover:border-transparent':
+            'border-white/10 hover:border-transparent hover:bg-card-dark-hover':
               variant === 'dark',
-            'hover:bg-card-light-hover hover:border-transparent hover:shadow-card':
+            'hover:border-transparent hover:bg-card-light-hover hover:shadow-card':
               variant === 'light',
           })}
           to={link.url}

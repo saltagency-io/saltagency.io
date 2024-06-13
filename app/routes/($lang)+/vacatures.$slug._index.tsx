@@ -73,19 +73,32 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
   location,
 }) => {
   const rootData = matches.find(m => m.id === 'root')?.data
-  const slugs = getTranslatedSlugsFromStory(data?.story)
+
+  if (!rootData) {
+    return [
+      { title: 'Error' },
+      {
+        name: 'description',
+        content: 'Root data is missing',
+      },
+    ]
+  }
+
+  const slugs = data?.story ? getTranslatedSlugsFromStory(data.story) : []
   const altLinks = createAlternateLinks(slugs, rootData.requestInfo.origin)
-  const date = new Date(data.story.first_published_at ?? '')
-  const datePosted = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+  const date = data?.story?.first_published_at
+    ? new Date(data.story.first_published_at)
+    : new Date()
+  const datePosted = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
   const breadcrumbs = createBreadcrumbs(location.pathname, rootData.language)
 
   if (data?.story) {
     const meta = data.story.content.metatags
     return [
       ...getSocialMetas({
-        title: meta?.title,
-        description: meta?.description,
-        image: meta?.og_image,
+        title: meta?.title ?? 'Default Title',
+        description: meta?.description ?? 'Default Description',
+        image: meta?.og_image ?? 'default-image.png',
         url: getUrl(rootData.requestInfo),
       }),
       ...altLinks,
@@ -98,8 +111,8 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
       },
       {
         'script:ld+json': getJsonLdJobPosting({
-          title: data.story?.name ?? '',
-          description: data.story?.description ?? '',
+          title: data.story?.name ?? 'Default Job Title',
+          description: data.story?.description ?? 'Default Job Description',
           origin: rootData.requestInfo.origin,
           datePosted,
         }),
@@ -107,10 +120,10 @@ export const meta: MetaFunction<typeof loader, { root: RootLoaderType }> = ({
     ]
   } else {
     return [
-      { title: rootData.errorLabels.title },
+      { title: rootData.errorLabels?.title ?? 'Error' },
       {
         name: 'description',
-        content: rootData.errorLabels.title,
+        content: rootData.errorLabels?.description ?? 'An error occurred',
       },
     ]
   }

@@ -1,3 +1,4 @@
+import { CaseWidgetSection } from '#app/components/sections/case-widget-section.js'
 import { SbBanner } from '#app/storyblok/banner.tsx'
 import { SbLayout } from '#app/storyblok/layout.tsx'
 import { SbPageWithChild } from '#app/storyblok/page-with-child.tsx'
@@ -19,11 +20,15 @@ import { SbQuote } from './quote.tsx'
 import { SbBlockWithSections } from './sections/block-with-sections.tsx'
 import { SbCardsSection } from './sections/cards-section.tsx'
 import { SbCareersSection } from './sections/careers-section.tsx'
+import { SbCaseBlocksSection } from './sections/case-blocks-section.tsx'
+import { SbCaseHeaderSection } from './sections/case-header-section.tsx'
+import { SbCaseWidgetSection } from './sections/case-widget-section.tsx'
 import { SbClients } from './sections/clients-section.tsx'
 import { SbHeaderSection } from './sections/header-section.tsx'
 import { SbHeroSection } from './sections/hero-section.tsx'
 import { SbLocationSection } from './sections/location-section.tsx'
 import { SbPeopleSection } from './sections/people-section.tsx'
+import { SbRelatedCaseSection } from './sections/related-case-section.tsx'
 import { SbStoriesSection } from './sections/stories-section.tsx'
 import { SbTextSection } from './sections/text-section.tsx'
 import { SbStory } from './story.tsx'
@@ -67,10 +72,14 @@ export enum BlokTypes {
   PeopleSection = 'peopleSection',
   CareersSection = 'careersSection',
   HeaderSection = 'headerSection',
+  CaseHeaderSection = 'caseHeaderSection',
+  CaseBlocksSection = 'caseBlocksSection',
+  CaseWidgetSection = 'caseWidgetSection',
   LocationSection = 'locationSection',
   ImageSection = 'imageSection',
   TeamSection = 'teamSection',
   StoriesSection = 'storiesSection',
+  RelatedCaseSection = 'relatedCaseSection',
   ContactSection = 'contactSection',
   CardsSection = 'cardsSection',
 }
@@ -88,6 +97,9 @@ export const components = {
   [BlokTypes.Footer]: SbFooter,
   [BlokTypes.Group]: SbGroup,
   [BlokTypes.HeaderSection]: SbHeaderSection,
+  [BlokTypes.CaseHeaderSection]: SbCaseHeaderSection,
+  [BlokTypes.CaseBlocksSection]: SbCaseBlocksSection,
+  [BlokTypes.CaseWidgetSection]: SbCaseWidgetSection,
   [BlokTypes.Hero]: SbHeroSection,
   [BlokTypes.ImageSection]: SbImageSection,
   [BlokTypes.JobDescription]: SbJobDescription,
@@ -102,6 +114,7 @@ export const components = {
   [BlokTypes.Spacer]: SbSpacer,
   [BlokTypes.TeamSection]: SbTeamSection,
   [BlokTypes.StoriesSection]: SbStoriesSection,
+  [BlokTypes.RelatedCaseSection]: SbRelatedCaseSection,
   [BlokTypes.TextSection]: SbTextSection,
   [BlokTypes.Vacancy]: SbVacancy,
   [BlokTypes.Story]: SbStory,
