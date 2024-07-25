@@ -25,7 +25,7 @@ export function RichText({ content, title, subtitle, text }: Props) {
   const viewPort = { once: true, margin: '-115px 0px' }
   return (
     <Grid className="max-w-6xl">
-      <div className="col-span-full px-16 lg:col-span-10 lg:col-start-2">
+      <div className="col-span-full px-4 md:px-16 lg:col-span-10 lg:col-start-2">
         <motion.div
           className="mb-8 space-y-4"
           initial="initial"
