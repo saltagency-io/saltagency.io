@@ -58,7 +58,7 @@ export function CaseHeaderSection({
           loading="eager"
           alt="Koodin waterdrops"
           src="/images/case-class-drops-background.svg"
-          className="absolute left-0 top-28 hidden w-screen select-none object-fill lg:block"
+          className="absolute left-0 top-40 hidden w-screen select-none object-fill lg:block"
           initial="initial"
           animate="visible"
           variants={{

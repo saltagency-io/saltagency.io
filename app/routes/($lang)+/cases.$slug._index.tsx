@@ -143,8 +143,7 @@ export default function StoryRoute() {
   }, [])
 
   return (
-    <main className="relative -mt-[230px] overflow-x-visible">
-      <div className="bg-gradient fixed bottom-0 left-0 right-0 top-0 z-0" />
+    <main className="relative p-0">
       <StoryblokComponent blok={story?.content} />
     </main>
   )

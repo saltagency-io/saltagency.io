@@ -66,7 +66,7 @@ export function RelatedCaseSection({ cases, title }: Props) {
                   <div
                     className="absolute left-0 top-0 z-10 h-full w-full"
                     style={{
-                      backgroundImage: `radial-gradient(166.98% 89.73% at 50% 103.12%, ${singleCase.color} 0%, ${singleCase.color} 22.99%, rgba(254, 84, 84, 0.00) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%)`,
+                      backgroundImage: `radial-gradient(147.22% 165.72% at 3.57% 107.56%, #4353ff 0%, #4353ff 22.99%, rgba(254, 84, 84, 0) 90%)`,
                     }}
                   />
 

@@ -285,13 +285,11 @@ a {
 }
 
 .the-case-content p {
-  margin: 0;
-  margin-bottom: 1rem;
-  @apply text-[#474557];
+  @apply text-sm leading-5 text-[#474557];
 }
 
 .the-case-content h5 {
-  margin-bottom: 1rem;
+  @apply mb-2 !pt-3 text-xl first-of-type:!pt-0;
 }
 
 .story section:first-of-type {

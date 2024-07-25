@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { Link } from '@remix-run/react'
 import { Asset } from '#types/storyblok.js'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
@@ -57,7 +58,7 @@ export function CaseBlocksSection({
             >
               {blockVideoImage ? (
                 <figure>
-                  <div className="bg-video-overlay absolute left-0 top-0 h-full w-full" />
+                  <div className="absolute left-0 top-0 h-full w-full bg-video-overlay" />
 
                   <img
                     src={blockVideoImage.filename}
@@ -86,33 +87,53 @@ export function CaseBlocksSection({
 
           {blockTitleFirst || blockImageFirst ? (
             <div className="relative h-[474px] overflow-hidden rounded-[32px]">
-              <div className="bg-case-overlay absolute left-0 top-0 h-full w-full" />
+              <Link
+                to={blockImageFirst.filename}
+                target="_blank"
+                rel="noopener"
+              >
+                <div className="absolute left-0 top-0 h-full w-full bg-case-overlay" />
 
-              <img
-                src={blockImageFirst.filename}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
+                <img
+                  src={blockImageFirst.filename}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
 
-              <H5 as="figcaption" className="absolute bottom-6 left-6" inverse>
-                {blockTitleFirst}
-              </H5>
+                <H5
+                  as="figcaption"
+                  className="absolute bottom-6 left-6"
+                  inverse
+                >
+                  {blockTitleFirst}
+                </H5>
+              </Link>
             </div>
           ) : null}
 
           {blockTitleSecond || blockImageSecond ? (
             <div className="relative h-[474px] overflow-hidden rounded-[32px]">
-              <div className="bg-case-overlay absolute left-0 top-0 h-full w-full" />
+              <Link
+                to={blockImageSecond.filename}
+                target="_blank"
+                rel="noopener"
+              >
+                <div className="absolute left-0 top-0 h-full w-full bg-case-overlay" />
 
-              <img
-                src={blockImageSecond.filename}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
+                <img
+                  src={blockImageSecond.filename}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
 
-              <H5 as="figcaption" className="absolute bottom-6 left-6" inverse>
-                {blockTitleSecond}
-              </H5>
+                <H5
+                  as="figcaption"
+                  className="absolute bottom-6 left-6"
+                  inverse
+                >
+                  {blockTitleSecond}
+                </H5>
+              </Link>
             </div>
           ) : null}
         </motion.div>
@@ -128,7 +149,6 @@ export function CaseBlocksSection({
           }}
         >
           <motion.div
-            className="sticky top-24"
             initial="initial"
             whileInView="visible"
             viewport={{ once: true }}
