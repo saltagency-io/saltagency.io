@@ -57,7 +57,7 @@ export function Story({
       <div className="relative z-20 mb-16 lg:mt-5">
         {image?.url && (
           <>
-            <div className="bg-story-gradient-hero absolute bottom-0 left-0 z-0 h-full w-full"></div>
+            <div className="absolute bottom-0 left-0 z-0 h-full w-full bg-story-gradient-hero"></div>
 
             <div className="circle-gradient"></div>
 
@@ -151,7 +151,7 @@ export function Story({
 
       <div className="relative z-10 mx-4 -mb-20 md:mx-8vw lg:-mb-40">
         <div className="relative mx-auto grid max-w-6xl grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12 lg:gap-x-6">
-          <div className="col-span-full px-16 lg:col-span-10 lg:col-start-2">
+          <div className="col-span-full px-4 md:px-16 lg:col-span-10 lg:col-start-2">
             <Link
               to={`/${parts.slice(0, -1).join('/')}`}
               className="hover:text-primary text-secondary inline-flex items-center gap-x-2 text-base transition-all duration-200 ease-in-out"

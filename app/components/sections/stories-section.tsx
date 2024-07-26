@@ -109,7 +109,7 @@ export function StoriesSection({ stories }: Props) {
 
                   <div className="group">
                     <div className="absolute bottom-0 left-0 z-auto h-full w-full bg-black/20"></div>
-                    <div className="bg-story-gradient-card absolute bottom-0 left-0 z-auto h-full w-full opacity-0 transition-all duration-500 ease-in-out group-hover:opacity-100"></div>
+                    <div className="absolute bottom-0 left-0 z-auto h-full w-full bg-story-gradient-card opacity-0 transition-all duration-500 ease-in-out group-hover:opacity-100"></div>
                   </div>
 
                   <div
@@ -120,7 +120,7 @@ export function StoriesSection({ stories }: Props) {
                         'grid grid-cols-12 items-end lg:gap-4',
                     )}
                   >
-                    <div className="col-span-full lg:col-span-6">
+                    <div className="col-span-full lg:col-span-7">
                       <Paragraph
                         as="time"
                         textColorClassName="text-white"
@@ -133,7 +133,7 @@ export function StoriesSection({ stories }: Props) {
                       </H4>
                     </div>
 
-                    <div className="col-span-full lg:col-span-6">
+                    <div className="col-span-full lg:col-span-5">
                       <Paragraph
                         size="md"
                         className="line-clamp-2 md:line-clamp-3 xl:line-clamp-4"
@@ -151,4 +151,3 @@ export function StoriesSection({ stories }: Props) {
     </motion.div>
   )
 }
-

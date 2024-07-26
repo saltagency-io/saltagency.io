@@ -92,13 +92,13 @@ export function CaseWidgetSection({ cases }: Props) {
             }}
           />
 
-          <ul className="grid w-full grid-cols-4">
-            {cases?.map((item, index) => {
-              return (
+          {cases.length > 1 ? (
+            <ul className="grid w-full grid-cols-4">
+              {cases.map((item, index) => (
                 <li
                   key={item._uid}
                   className={clsx(
-                    'group relative flex cursor-pointer place-content-center border border-b-0 border-[#DCDBF1] px-8 py-5',
+                    'group relative flex cursor-pointer place-content-center border border-b-0 border-[#DCDBF1] px-1.5 py-3 md:px-8 md:py-5',
                     index === selectedTab ? 'border-solid' : 'border-dashed',
                   )}
                   onClick={() => handleTabClick(index)}
@@ -112,7 +112,6 @@ export function CaseWidgetSection({ cases }: Props) {
                         index === selectedTab ? 'width 7s linear' : 'none',
                     }}
                   />
-
                   <img
                     src={item.tab_logo.filename}
                     alt={item.tab_logo.alt}
@@ -122,15 +121,15 @@ export function CaseWidgetSection({ cases }: Props) {
                     )}
                   />
                 </li>
-              )
-            })}
-          </ul>
+              ))}
+            </ul>
+          ) : null}
 
-          <div className="mt-8">
+          <div className="mt-4 md:mt-8">
             <AnimatePresence>
               <motion.div
                 key={cases[selectedTab]._uid}
-                className="relative grid h-full w-full grid-cols-12 items-start gap-x-4 gap-y-8 overflow-hidden"
+                className="relative grid h-full w-full grid-cols-12 items-start gap-x-5 gap-y-8 overflow-hidden"
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
@@ -151,19 +150,18 @@ export function CaseWidgetSection({ cases }: Props) {
 
                 <div className="relative order-1 col-span-full lg:order-2 lg:col-span-9">
                   <Link
-                    className="group group relative flex aspect-video h-full w-full flex-col items-center space-x-4 overflow-hidden rounded-2xl bg-black/50 object-cover"
+                    className="group group relative flex h-full min-h-[230px] w-full flex-col items-center overflow-hidden rounded-2xl bg-black/50 object-cover md:aspect-video"
                     to={`/${cases[selectedTab].link.story?.full_slug}`}
                   >
                     <div
-                      className="absolute left-0 top-0 z-10 h-full w-full"
+                      className="bg-gradient absolute left-0 top-0 z-10 h-full w-full"
                       style={{
-                        backgroundImage: `radial-gradient(166.98% 89.73% at 50% 103.12%, ${cases[selectedTab].color} 0%, ${cases[selectedTab].color} 22.99%, rgba(254, 84, 84, 0.00) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%)`,
+                        backgroundImage: `radial-gradient(147.22% 165.72% at 3.57% 107.56%, #4353ff 0%, #4353ff 22.99%, rgba(254, 84, 84, 0) 90%)`,
                       }}
                     />
                     {cases[selectedTab].image && (
                       <img
-                        className="absolute left-0 top-0 z-0 h-full w-full object-cover transition-all duration-700 ease-in-out
-                          group-hover:rotate-1 group-hover:scale-105"
+                        className="absolute left-0 top-0 z-0 h-full w-full object-cover transition-all duration-700 ease-in-out group-hover:rotate-1 group-hover:scale-105"
                         {...getImgProps(
                           cases[selectedTab].image.filename,
                           cases[selectedTab].image.alt,
@@ -178,7 +176,7 @@ export function CaseWidgetSection({ cases }: Props) {
                         )}
                       />
                     )}
-                    <div className="absolute bottom-6 left-4 z-10 space-y-4">
+                    <div className="absolute bottom-6 left-6 z-10 space-y-4">
                       {cases[selectedTab].logo && (
                         <div className="relative flex">
                           <img
@@ -198,7 +196,7 @@ export function CaseWidgetSection({ cases }: Props) {
                       {cases[selectedTab].intro && (
                         <Paragraph
                           textColorClassName="text-white"
-                          className="text-sm leading-relaxed"
+                          className="!max-w-[440px] text-sm leading-relaxed"
                         >
                           {cases[selectedTab].intro}
                         </Paragraph>

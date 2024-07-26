@@ -279,7 +279,7 @@ export function Navbar({ menu }: Props) {
 
   return (
     <motion.div
-      className="sticky left-0 right-0 top-0 z-50 mt-12 px-8vw backdrop-blur"
+      className="sticky left-0 right-0 top-0 z-50 mt-8 px-8vw backdrop-blur"
       style={{ background: backgroundWithExpand }}
     >
       <nav className="mx-auto flex h-18 max-w-5xl items-center justify-between">
