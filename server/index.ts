@@ -84,11 +84,6 @@ app.use((req, res, next) => {
   next()
 })
 
-// Redirect /academy to www.koodinacademy.nl
-app.get('/academy', (_, res) => {
-  res.redirect(302, 'https://www.koodinacademy.nl')
-})
-
 // No ending slash in urls
 app.use((req, res, next) => {
   if (req.path.endsWith('/') && req.path.length > 1) {
